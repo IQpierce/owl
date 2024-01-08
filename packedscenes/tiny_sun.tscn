@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://bptwcbjukx17w"]
+
+[ext_resource type="Script" path="res://scripts/util/ToggleBoolSignal.gd" id="1_o1d3a"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e5cdc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3d2bo"]
+size = Vector2(1927, 1087)
+
+[node name="TinySun" type="StaticBody2D"]
+
+[node name="Area" type="CollisionShape2D" parent="."]
+position = Vector2(9610, 5370)
+shape = SubResource("CircleShape2D_e5cdc")
+
+[node name="Visuals" type="Node2D" parent="Area"]
+scale = Vector2(1.00176, 1)
+
+[node name="Line2D" type="Line2D" parent="Area/Visuals"]
+points = PackedVector2Array(0, 0, 12, 7, -7, -12, 0, 0, 12, -12, -11, 13, 6, -3, 0, 0, -6, 0)
+width = 2.0
+
+[node name="Flicker" type="Timer" parent="Area/Visuals"]
+wait_time = 0.45
+autostart = true
+script = ExtResource("1_o1d3a")
+current_toggle_val = true
+
+[node name="GravityWell" type="Area2D" parent="."]
+scale = Vector2(10, 10)
+collision_layer = 2
+collision_mask = 11
+gravity_space_override = 4
+gravity_point = true
+gravity_point_center = Vector2(960, 540)
+gravity_direction = Vector2(960, 540)
+gravity = 250.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GravityWell"]
+position = Vector2(960.5, 539.5)
+shape = SubResource("RectangleShape2D_3d2bo")
+
+[connection signal="timeout" from="Area/Visuals/Flicker" to="Area/Visuals/Flicker" method="toggle_value"]
+[connection signal="toggle_value_changed" from="Area/Visuals/Flicker" to="Area/Visuals" method="set_visible"]

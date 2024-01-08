@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://jymuym62nmct"]
+
+[ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creature.tscn" id="1_5vrjf"]
+[ext_resource type="Script" path="res://scripts/Player.gd" id="2_7yjal"]
+[ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="3_0fbu5"]
+[ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]
+
+[node name="Player" instance=ExtResource("1_5vrjf")]
+script = ExtResource("2_7yjal")
+thrust_speed = 750
+turn_speed = 30
+
+[node name="ThrustTriangle" type="Polygon2D" parent="." index="0"]
+visible = false
+modulate = Color(0.670588, 0.670588, 0.670588, 1)
+position = Vector2(0, 10)
+rotation = 3.14159
+scale = Vector2(8.40468, 8.03502)
+polygon = PackedVector2Array(-0.5, 0.5, 0.5, 0.5, 0, -0.857147)
+
+[node name="Gun" type="Node2D" parent="." index="3" node_paths=PackedStringArray("inherit_velocity", "shot_parent")]
+script = ExtResource("3_r8khv")
+shot_proto = ExtResource("3_0fbu5")
+shot_force = 1200.0
+cooldown_duration_secs = 0.275
+inherit_velocity = NodePath("..")
+shot_parent = NodePath("..")
+
+[connection signal="shot_fired" from="." to="Gun" method="shoot"]
+[connection signal="thrusting_state_change" from="." to="ThrustTriangle" method="set_visible"]

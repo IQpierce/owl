@@ -1,0 +1,108 @@
+[gd_scene load_steps=5 format=3 uid="uid://ct07g6ir65aye"]
+
+[ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="1_6cr6p"]
+[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/player.tscn" id="3_002p2"]
+[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroid.tscn" id="3_gacsu"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vbcit"]
+custom_solver_bias = 0.1
+
+[node name="WrappingScreenTest" type="Node2D"]
+
+[node name="WrappingWalls" type="Node2D" parent="."]
+position = Vector2(1, 1)
+
+[node name="BottomWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(960, 1080)
+scale = Vector2(6, 6)
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("1_6cr6p")
+teleport_translation = Vector2(0, -1050)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/BottomWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_vbcit")
+
+[node name="TopWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(960, 0)
+rotation = 3.14159
+scale = Vector2(6, 6)
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("1_6cr6p")
+teleport_translation = Vector2(0, 1050)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/TopWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_vbcit")
+
+[node name="RightWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(1920, 540)
+rotation = -1.5708
+scale = Vector2(6, 6)
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("1_6cr6p")
+teleport_translation = Vector2(-1900, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/RightWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_vbcit")
+
+[node name="LeftWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(0, 540)
+rotation = 1.5708
+scale = Vector2(6, 6)
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("1_6cr6p")
+teleport_translation = Vector2(1900, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/LeftWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_vbcit")
+
+[node name="Asteroids" type="Node2D" parent="."]
+
+[node name="Asteroid" parent="Asteroids" instance=ExtResource("3_gacsu")]
+position = Vector2(857, 327)
+emit_per_damage = {}
+
+[node name="Asteroid2" parent="Asteroids" instance=ExtResource("3_gacsu")]
+position = Vector2(609, 433)
+emit_per_damage = {}
+
+[node name="Asteroid3" parent="Asteroids" instance=ExtResource("3_gacsu")]
+position = Vector2(517, 571)
+emit_per_damage = {}
+
+[node name="Asteroid4" parent="Asteroids" instance=ExtResource("3_gacsu")]
+position = Vector2(583, 691)
+emit_per_damage = {}
+
+[node name="Asteroid5" parent="Asteroids" instance=ExtResource("3_gacsu")]
+position = Vector2(725, 863)
+emit_per_damage = {}
+
+[node name="Asteroid6" parent="Asteroids" instance=ExtResource("3_gacsu")]
+position = Vector2(1087, 841)
+emit_per_damage = {}
+
+[node name="Asteroid7" parent="Asteroids" instance=ExtResource("3_gacsu")]
+position = Vector2(1329, 729)
+emit_per_damage = {}
+
+[node name="Asteroid8" parent="Asteroids" instance=ExtResource("3_gacsu")]
+position = Vector2(1371, 419)
+emit_per_damage = {}
+
+[node name="Player" parent="." instance=ExtResource("3_002p2")]
+position = Vector2(977, 547)
+thrust_speed = 750
+turn_speed = 30
+
+[connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/RightWrappingWall" to="WrappingWalls/RightWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/LeftWrappingWall" to="WrappingWalls/LeftWrappingWall" method="on_body_entered"]
