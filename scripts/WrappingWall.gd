@@ -1,10 +1,5 @@
 extends Area2D
 
-#var speed = 400
-#var angular_speed = PI
-# srpnow 
-#func _process(delta):
-
 @export var teleport_translation := Vector2(0,0)
 
 func on_body_entered(body:Node2D):

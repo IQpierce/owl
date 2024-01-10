@@ -4,8 +4,8 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e5cdc"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3d2bo"]
-size = Vector2(963.5, 543.5)
+[sub_resource type="CircleShape2D" id="CircleShape2D_0jcqu"]
+radius = 256.0
 
 [node name="TinySun" type="StaticBody2D"]
 
@@ -38,7 +38,7 @@ gravity = 250.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GravityWell"]
 position = Vector2(960.5, 539.5)
-shape = SubResource("RectangleShape2D_3d2bo")
+shape = SubResource("CircleShape2D_0jcqu")
 
 [connection signal="timeout" from="Area/Visuals/Flicker" to="Area/Visuals/Flicker" method="toggle_value"]
 [connection signal="toggle_value_changed" from="Area/Visuals/Flicker" to="Area/Visuals" method="set_visible"]

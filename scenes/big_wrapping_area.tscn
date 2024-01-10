@@ -76,7 +76,7 @@ position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="Player" parent="." instance=ExtResource("3_e3nbw")]
-position = Vector2(9600, 5400)
+position = Vector2(9600, 2568)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 process_callback = 0

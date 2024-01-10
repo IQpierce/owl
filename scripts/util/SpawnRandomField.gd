@@ -13,8 +13,7 @@ func _ready():
 		else:
 			var circle_shape:CircleShape2D = shape as CircleShape2D
 			if circle_shape:
-				var srpnow:Vector2 = Randomness.random_inside_unit_circle() * randf_range(0, circle_shape.radius)
-				proto_instance.position = srpnow
+				proto_instance.position = Randomness.random_inside_unit_circle() * randf_range(0, circle_shape.radius)
 			else:
 				printerr("ERROR: Unsupported shape type: " + proto_instance.to_string())
 	

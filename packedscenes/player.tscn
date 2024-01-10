@@ -1,11 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://jymuym62nmct"]
+[gd_scene load_steps=7 format=3 uid="uid://jymuym62nmct"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creature.tscn" id="1_5vrjf"]
 [ext_resource type="Script" path="res://scripts/Player.gd" id="2_7yjal"]
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="3_0fbu5"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]
+[ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="5_iboy3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ntkiv"]
+radius = 64.0
 
 [node name="Player" instance=ExtResource("1_5vrjf")]
+position = Vector2(0, 0)
 script = ExtResource("2_7yjal")
 thrust_speed = 750.0
 turn_speed = 30.0
@@ -22,9 +27,23 @@ polygon = PackedVector2Array(-0.5, 0.5, 0.5, 0.5, 0, -0.857147)
 script = ExtResource("3_r8khv")
 shot_proto = ExtResource("3_0fbu5")
 shot_force = 1200.0
-cooldown_duration_secs = 0.225
+cooldown_duration_secs = 0.023
 inherit_velocity = NodePath("..")
 shot_parent = NodePath("..")
 
+[node name="PickupVacuum" type="Area2D" parent="." index="4"]
+collision_mask = 16
+gravity_space_override = 4
+gravity_point = true
+gravity_point_unit_distance = 128.0
+gravity_point_center = Vector2(0, 0)
+gravity_direction = Vector2(0, 0)
+gravity = 512.0
+script = ExtResource("5_iboy3")
+
+[node name="VacuumCollisionShape" type="CollisionShape2D" parent="PickupVacuum" index="0"]
+shape = SubResource("CircleShape2D_ntkiv")
+
 [connection signal="shot_fired" from="." to="Gun" method="shoot"]
 [connection signal="thrusting_state_change" from="." to="ThrustTriangle" method="set_visible"]
+[connection signal="body_entered" from="PickupVacuum" to="PickupVacuum" method="_on_body_entered"]
