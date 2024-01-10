@@ -27,7 +27,7 @@ polygon = PackedVector2Array(-0.5, 0.5, 0.5, 0.5, 0, -0.857147)
 script = ExtResource("3_r8khv")
 shot_proto = ExtResource("3_0fbu5")
 shot_force = 1200.0
-cooldown_duration_secs = 0.023
+cooldown_duration_secs = 0.23
 inherit_velocity = NodePath("..")
 shot_parent = NodePath("..")
 
