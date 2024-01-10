@@ -2,8 +2,8 @@ extends Creature
 
 class_name Player
 
-@export var thrust_speed := 10
-@export var turn_speed := 10
+@export var thrust_speed:float
+@export var turn_speed:float
 
 var thrusting:bool
 

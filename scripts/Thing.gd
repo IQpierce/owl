@@ -51,8 +51,16 @@ func deal_damage(dmg_amt:float, global_position:Vector2):
 		die()
 
 func emit(packed_scene:PackedScene, global_position:Vector2):
+	
+	var emit_owner:Node = owner
+	
+	if (owner == null):
+		emit_owner = get_tree().current_scene
+	
+	assert(emit_owner != null)	
+		
 	var emitted_instance:CollisionObject2D = packed_scene.instantiate()
-	owner.add_child(emitted_instance)
+	emit_owner.add_child(emitted_instance)
 	
 	var emission_angle_degrees:float = randf_range(-emission_angle_range*0.5, emission_angle_range*0.5)
 	var emission_dist:float = randf_range(emission_dist_min, emission_dist_max)

@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://ct07g6ir65aye"]
+[gd_scene load_steps=7 format=3 uid="uid://ct07g6ir65aye"]
 
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="1_6cr6p"]
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_x2cv8"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/player.tscn" id="3_002p2"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroid.tscn" id="3_gacsu"]
+[ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="5_m00qi"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vbcit"]
 custom_solver_bias = 0.1
@@ -101,6 +102,8 @@ linear_velocity = Vector2(0, 200)
 
 [node name="Player" parent="." instance=ExtResource("3_002p2")]
 position = Vector2(977, 547)
+
+[node name="HUD" parent="." instance=ExtResource("5_m00qi")]
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]

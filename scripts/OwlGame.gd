@@ -4,6 +4,7 @@ extends Node2D
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	Engine.max_fps = 60
 
 func reset_score():
 	current_score = 0

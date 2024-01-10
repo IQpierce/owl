@@ -5,7 +5,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_e5cdc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3d2bo"]
-size = Vector2(1927, 1087)
+size = Vector2(963.5, 543.5)
 
 [node name="TinySun" type="StaticBody2D"]
 

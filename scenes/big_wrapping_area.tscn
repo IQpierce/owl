@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://l0ljwo0hkdoq"]
+[gd_scene load_steps=12 format=3 uid="uid://l0ljwo0hkdoq"]
 
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="1_vm4r1"]
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_w7ll5"]
@@ -7,12 +7,16 @@
 [ext_resource type="PackedScene" uid="uid://bptwcbjukx17w" path="res://packedscenes/tiny_sun.tscn" id="5_0c86p"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/star.tscn" id="6_86odn"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="6_q82vl"]
+[ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_k1cvn"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8n8cw"]
 size = Vector2(23040, 12960)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
+radius = 6400.0
 
 [node name="BigWrappingArea" type="Node2D"]
 script = ExtResource("1_w7ll5")
@@ -75,55 +79,36 @@ shape = SubResource("WorldBoundaryShape2D_ed0ja")
 position = Vector2(9600, 5400)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-
-[node name="Asteroids" type="Node2D" parent="."]
-position = Vector2(8638, 4776)
-
-[node name="Asteroid" parent="Asteroids" instance=ExtResource("4_fnpcl")]
-position = Vector2(857, 327)
-linear_velocity = Vector2(210, 0)
-
-[node name="Asteroid2" parent="Asteroids" instance=ExtResource("4_fnpcl")]
-position = Vector2(609, 433)
-linear_velocity = Vector2(150, -75)
-
-[node name="Asteroid3" parent="Asteroids" instance=ExtResource("4_fnpcl")]
-position = Vector2(517, 571)
-linear_velocity = Vector2(150, -150)
-
-[node name="Asteroid4" parent="Asteroids" instance=ExtResource("4_fnpcl")]
-position = Vector2(583, 691)
-linear_velocity = Vector2(-50, -200)
-
-[node name="Asteroid5" parent="Asteroids" instance=ExtResource("4_fnpcl")]
-position = Vector2(725, 863)
-linear_velocity = Vector2(-150, 100)
-
-[node name="Asteroid6" parent="Asteroids" instance=ExtResource("4_fnpcl")]
-position = Vector2(1087, 841)
-linear_velocity = Vector2(-210, 0)
-
-[node name="Asteroid7" parent="Asteroids" instance=ExtResource("4_fnpcl")]
-position = Vector2(1329, 729)
-linear_velocity = Vector2(-150, 100)
-
-[node name="Asteroid8" parent="Asteroids" instance=ExtResource("4_fnpcl")]
-position = Vector2(1371, 419)
-linear_velocity = Vector2(0, 200)
+process_callback = 0
 
 [node name="TinySun" parent="." instance=ExtResource("5_0c86p")]
 position = Vector2(1, 1)
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="StarfieldBG" type="Area2D" parent="."]
+z_index = -100
 position = Vector2(9600, 5400)
 collision_layer = 0
 collision_mask = 0
 
-[node name="SpawnRandomStarField" type="CollisionShape2D" parent="Area2D"]
+[node name="SpawnRandomStarField" type="CollisionShape2D" parent="StarfieldBG"]
 shape = SubResource("RectangleShape2D_8n8cw")
 script = ExtResource("6_q82vl")
 num_to_spawn = 50000
 proto = ExtResource("6_86odn")
+
+[node name="AsteroidField" type="Area2D" parent="."]
+position = Vector2(9600, 5400)
+disable_mode = 1
+collision_layer = 0
+collision_mask = 0
+
+[node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidField"]
+shape = SubResource("CircleShape2D_xkjbt")
+script = ExtResource("6_q82vl")
+num_to_spawn = 512
+proto = ExtResource("4_fnpcl")
+
+[node name="HUD" parent="." instance=ExtResource("8_k1cvn")]
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]

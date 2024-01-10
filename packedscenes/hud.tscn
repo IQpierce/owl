@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cv5asni7oqeby"]
+
+[ext_resource type="Script" path="res://scripts/HUD.gd" id="1_ohgch"]
+[ext_resource type="FontFile" uid="uid://bfc5s6j3cdokw" path="res://fonts/Vectorb.ttf" id="2_ebi6m"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_pl6hg"]
+font = ExtResource("2_ebi6m")
+font_size = 48
+font_color = Color(0.588235, 0.588235, 0.588235, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("debug_fps_label")]
+script = ExtResource("1_ohgch")
+debug_fps_label = NodePath("FPS")
+
+[node name="FPS" type="Label" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+text = "FPS: 88"
+label_settings = SubResource("LabelSettings_pl6hg")
