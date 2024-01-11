@@ -4,9 +4,9 @@
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_w7ll5"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/player.tscn" id="3_e3nbw"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroid.tscn" id="4_fnpcl"]
-[ext_resource type="PackedScene" uid="uid://bptwcbjukx17w" path="res://packedscenes/tiny_sun.tscn" id="5_0c86p"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/star.tscn" id="6_86odn"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="6_q82vl"]
+[ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/sun.tscn" id="7_mlajb"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_k1cvn"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
@@ -81,9 +81,6 @@ position = Vector2(9600, 2568)
 [node name="Camera2D" type="Camera2D" parent="Player"]
 process_callback = 0
 
-[node name="TinySun" parent="." instance=ExtResource("5_0c86p")]
-position = Vector2(1, 1)
-
 [node name="StarfieldBG" type="Area2D" parent="."]
 z_index = -100
 position = Vector2(9600, 5400)
@@ -96,17 +93,20 @@ script = ExtResource("6_q82vl")
 num_to_spawn = 50000
 proto = ExtResource("6_86odn")
 
-[node name="AsteroidField" type="Area2D" parent="."]
+[node name="AsteroidBelt" type="Area2D" parent="."]
 position = Vector2(9600, 5400)
 disable_mode = 1
 collision_layer = 0
 collision_mask = 0
 
-[node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidField"]
+[node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidBelt"]
 shape = SubResource("CircleShape2D_xkjbt")
 script = ExtResource("6_q82vl")
 num_to_spawn = 512
 proto = ExtResource("4_fnpcl")
+
+[node name="Sun" parent="." instance=ExtResource("7_mlajb")]
+position = Vector2(9600, 5400)
 
 [node name="HUD" parent="." instance=ExtResource("8_k1cvn")]
 

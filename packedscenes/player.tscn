@@ -11,6 +11,12 @@ radius = 64.0
 
 [node name="Player" instance=ExtResource("1_5vrjf")]
 position = Vector2(0, 0)
+disable_mode = 2
+collision_mask = 2
+freeze_mode = 1
+continuous_cd = 2
+max_contacts_reported = 1
+contact_monitor = true
 script = ExtResource("2_7yjal")
 thrust_speed = 750.0
 turn_speed = 30.0

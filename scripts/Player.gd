@@ -19,8 +19,9 @@ func _physics_process(delta):
 		angular_velocity += delta * turn_speed	
 	
 	if Input.is_action_pressed("thrust"):
-		var facing_dir:Vector2 = Vector2(0, 1).rotated(rotation)
-		linear_velocity -= (facing_dir * delta * thrust_speed)
+		var facing_dir:Vector2 = Vector2.UP.rotated(rotation)
+		#linear_velocity -= (facing_dir * delta * thrust_speed)
+		apply_central_impulse(facing_dir * delta * thrust_speed)
 		
 		if (!thrusting):
 			thrusting_state_change.emit(true)
