@@ -37,7 +37,7 @@ shape = SubResource("CircleShape2D_0jcqu")
 
 [node name="Visuals" type="Node2D" parent="."]
 script = ExtResource("2_h2as5")
-rotate_angle_per_sec = 1.0
+rotate_angle_per_sec = 0.1
 
 [node name="Visuals2" type="Node2D" parent="Visuals"]
 scale = Vector2(20, -19.96)
