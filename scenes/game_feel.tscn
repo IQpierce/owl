@@ -1,0 +1,119 @@
+[gd_scene load_steps=12 format=3 uid="uid://db8x1abnnwv3d"]
+
+[ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_80w6u"]
+[ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_rhngu"]
+[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/player.tscn" id="3_r2sfy"]
+[ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
+[ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/star.tscn" id="5_pt2a0"]
+[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroid.tscn" id="6_e337w"]
+[ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/sun.tscn" id="7_ouygv"]
+[ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_m427m"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
+custom_solver_bias = 0.1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8n8cw"]
+size = Vector2(23040, 12960)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
+radius = 6400.0
+
+[node name="BigWrappingArea" type="Node2D"]
+script = ExtResource("1_80w6u")
+
+[node name="WrappingWalls" type="Node2D" parent="."]
+position = Vector2(1, 1)
+
+[node name="BottomWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(9600, 10800)
+scale = Vector2(6, 6)
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("2_rhngu")
+teleport_translation = Vector2(0, -10750)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/BottomWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_ed0ja")
+
+[node name="TopWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(9600, 0)
+rotation = 3.14159
+scale = Vector2(6, 6)
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("2_rhngu")
+teleport_translation = Vector2(0, 10750)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/TopWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_ed0ja")
+
+[node name="RightWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(19200, 5400)
+rotation = -1.5708
+scale = Vector2(6, 6)
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("2_rhngu")
+teleport_translation = Vector2(-19550, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/RightWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_ed0ja")
+
+[node name="LeftWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(0, 5400)
+rotation = 1.5708
+scale = Vector2(6, 6)
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("2_rhngu")
+teleport_translation = Vector2(19550, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/LeftWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_ed0ja")
+
+[node name="Player" parent="." instance=ExtResource("3_r2sfy")]
+position = Vector2(9600, 2568)
+test_feel = true
+max_speed = 500.0
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+process_callback = 0
+
+[node name="StarfieldBG" type="Area2D" parent="."]
+z_index = -100
+position = Vector2(9600, 5400)
+collision_layer = 0
+collision_mask = 0
+
+[node name="SpawnRandomStarField" type="CollisionShape2D" parent="StarfieldBG"]
+shape = SubResource("RectangleShape2D_8n8cw")
+script = ExtResource("4_e5ljk")
+num_to_spawn = 50000
+proto = ExtResource("5_pt2a0")
+
+[node name="AsteroidBelt" type="Area2D" parent="."]
+position = Vector2(9600, 5400)
+disable_mode = 1
+collision_layer = 0
+collision_mask = 0
+
+[node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidBelt"]
+shape = SubResource("CircleShape2D_xkjbt")
+script = ExtResource("4_e5ljk")
+num_to_spawn = 512
+proto = ExtResource("6_e337w")
+
+[node name="Sun" parent="." instance=ExtResource("7_ouygv")]
+visible = false
+position = Vector2(9600, 5400)
+
+[node name="HUD" parent="." instance=ExtResource("8_m427m")]
+
+[connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/RightWrappingWall" to="WrappingWalls/RightWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/LeftWrappingWall" to="WrappingWalls/LeftWrappingWall" method="on_body_entered"]

@@ -21,6 +21,8 @@ contact_monitor = true
 script = ExtResource("2_7yjal")
 thrust_speed = 750.0
 turn_speed = 30.0
+test_feel = false
+max_speed = 0.0
 
 [node name="ThrustTriangle" type="Polygon2D" parent="." index="0"]
 visible = false
