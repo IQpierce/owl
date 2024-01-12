@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://jymuym62nmct"]
+[gd_scene load_steps=8 format=3 uid="uid://jymuym62nmct"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creature.tscn" id="1_5vrjf"]
 [ext_resource type="Script" path="res://scripts/Player.gd" id="2_7yjal"]
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="3_0fbu5"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="3_ec47f"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]
 [ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="5_iboy3"]
 
@@ -24,12 +25,22 @@ turn_speed = 30.0
 [node name="ThrustTriangle" type="Polygon2D" parent="." index="0"]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
-position = Vector2(0, 10)
+position = Vector2(-1.13687e-12, 10)
 rotation = 3.14159
-scale = Vector2(8.40468, 8.03502)
+scale = Vector2(9.5, 9.5)
+color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(-0.5, 0.5, 0.5, 0.5, 0, -0.857147)
+script = ExtResource("3_ec47f")
+circle_draw_color = Color(0.431373, 0.431373, 0.431373, 1)
+line_draw_color = Color(0.392157, 0.392157, 0.392157, 1)
+
+[node name="HullTriangle" parent="." index="2"]
+color = Color(0, 0, 0, 1)
+antialiased = true
+script = ExtResource("3_ec47f")
 
 [node name="Gun" type="Node2D" parent="." index="3" node_paths=PackedStringArray("inherit_velocity", "shot_parent")]
+position = Vector2(0, -6)
 script = ExtResource("3_r8khv")
 shot_proto = ExtResource("3_0fbu5")
 shot_force = 1200.0
