@@ -6,6 +6,8 @@ class_name Player
 @export var turn_speed:float
 @export var test_feel:bool
 @export var max_speed:float
+@export var fire_turn_factor:float = 1;
+@export var turn_linear_damp_factor: float = 1;
 
 var thrusting:bool
 
@@ -46,13 +48,21 @@ func process_input_refac(delta):
 	# Double tap to get 1.5 max speed for a bit 
 	# Double tap turn to spin 180
 	# Turning causes more drag when not accelerating
+
+	var turn_factor = 1;
+	if Input.is_action_pressed("shoot"):
+		shot_fired.emit()
+		turn_factor = fire_turn_factor;
 	
+	var linear_damp_factor = 1;
 	if Input.is_action_pressed("turn_left"):
 		# Move as long as the key/button is pressed.
-		angular_velocity -= delta * turn_speed	
+		angular_velocity -= delta * turn_speed * turn_factor
+		linear_damp_factor = turn_linear_damp_factor
 	elif Input.is_action_pressed("turn_right"):
 		# Move as long as the key/button is pressed.
-		angular_velocity += delta * turn_speed	
+		angular_velocity += delta * turn_speed * turn_factor
+		linear_damp_factor = turn_linear_damp_factor
 	
 	if Input.is_action_pressed("thrust"):
 		var heading_dir:Vector2 = Vector2.UP.rotated(rotation)
@@ -78,10 +88,10 @@ func process_input_refac(delta):
 		if (!thrusting):
 			thrusting_state_change.emit(true)
 			thrusting = true
-	elif (thrusting):
-		thrusting_state_change.emit(false)	
-		thrusting = false
+	else:
+		linear_velocity *= turn_linear_damp_factor;
+		if thrusting:
+			thrusting_state_change.emit(false)	
+			thrusting = false
 	
-	if Input.is_action_pressed("shoot"):
-		shot_fired.emit()
 
