@@ -32,3 +32,4 @@ func _physics_process(delta):
 	
 	if Input.is_action_pressed("shoot"):
 		shot_fired.emit()
+

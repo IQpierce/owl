@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_w7ll5"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/player.tscn" id="3_e3nbw"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroid.tscn" id="4_fnpcl"]
-[ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/star.tscn" id="6_86odn"]
+[ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="6_86odn"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="6_q82vl"]
 [ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/sun.tscn" id="7_mlajb"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_k1cvn"]
