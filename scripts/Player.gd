@@ -11,6 +11,9 @@ signal thrusting_state_change(enabled:bool)
 signal shot_fired()
 
 func _physics_process(delta):
+	if Input.is_action_pressed("escape"):
+		get_tree().quit()
+
 	if Input.is_action_pressed("turn_left"):
 		# Move as long as the key/button is pressed.
 		angular_velocity -= delta * turn_speed	
