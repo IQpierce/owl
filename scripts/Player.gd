@@ -6,8 +6,14 @@ class_name Player
 @export var turn_speed:float
 @export var test_feel:bool
 @export var max_speed:float
+@export var excessive_speed_linear_damp_factor:float = 1;
+@export var turn_linear_damp_factor:float = 1;
+@export var thrust_turn_factor:float = 1;
 @export var fire_turn_factor:float = 1;
-@export var turn_linear_damp_factor: float = 1;
+@export var thrust_fire_factor:float = 1;
+@export var fire_max_speed_factor:float = 1;
+@export var fire_acceleration_factor:float = 1;
+@export var max_double_tap_timing:float = 1;
 
 var thrusting:bool
 
@@ -50,20 +56,27 @@ func process_input_refac(delta):
 	# Turning causes more drag when not accelerating
 
 	var turn_factor = 1;
+	var linear_damp_factor = 1;
+	var max_speed_factor = 1;
+	var acceleration_factor = 1;
+
 	if Input.is_action_pressed("shoot"):
 		shot_fired.emit()
-		turn_factor = fire_turn_factor;
-	
-	var linear_damp_factor = 1;
+		turn_factor *= fire_turn_factor;
+		max_speed_factor *= fire_max_speed_factor;
+		acceleration_factor *= fire_acceleration_factor;
+
 	if Input.is_action_pressed("turn_left"):
 		# Move as long as the key/button is pressed.
 		angular_velocity -= delta * turn_speed * turn_factor
-		linear_damp_factor = turn_linear_damp_factor
+		linear_damp_factor *= turn_linear_damp_factor
 	elif Input.is_action_pressed("turn_right"):
 		# Move as long as the key/button is pressed.
 		angular_velocity += delta * turn_speed * turn_factor
-		linear_damp_factor = turn_linear_damp_factor
-	
+		linear_damp_factor *= turn_linear_damp_factor
+
+	var cap_speed = max_speed * max_speed_factor;
+
 	if Input.is_action_pressed("thrust"):
 		var heading_dir:Vector2 = Vector2.UP.rotated(rotation)
 		var thrust_delta = thrust_speed * delta;
@@ -76,12 +89,18 @@ func process_input_refac(delta):
 
 			var thrust_para_vel = head_para_vel * thrust_delta
 			var potential_velocity:Vector2 = linear_velocity + thrust_para_vel
-			if potential_velocity.length_squared() > (max_speed * max_speed) && head_para_vel.dot(velocity_dir) > 0:
-				var excess = potential_velocity - (velocity_dir * max_speed)
+			if linear_velocity.length_squared() > (cap_speed * cap_speed):
+				head_para_vel = Vector2.ZERO
+			elif potential_velocity.length_squared() > (cap_speed * cap_speed) && head_para_vel.dot(velocity_dir) > 0:
+				var excess = potential_velocity - (velocity_dir * cap_speed)
 				head_para_vel *= (thrust_para_vel - excess).length() / thrust_para_vel.length()
 				scale *= 0.8 #TESTING make obvious that thrust is capped
 				
 			acceleration = head_para_vel + head_perp_vel
+
+		acceleration *= acceleration_factor
+		#if Input.is_action_just_pressed("thrust"):
+		#	acceleration *= 2;
 
 		apply_central_impulse(acceleration * thrust_delta)
 
@@ -89,9 +108,15 @@ func process_input_refac(delta):
 			thrusting_state_change.emit(true)
 			thrusting = true
 	else:
-		linear_velocity *= turn_linear_damp_factor;
 		if thrusting:
-			thrusting_state_change.emit(false)	
+			thrusting_state_change.emit(false)
 			thrusting = false
-	
+
+	if linear_velocity.length_squared() > (cap_speed * cap_speed):
+		linear_damp_factor *= excessive_speed_linear_damp_factor;
+
+	#print(linear_velocity)
+
+	if linear_damp_factor <= 0.99: # Cannot trust 1 to mean 1 every frame apparantly
+		linear_velocity *= linear_damp_factor;
 
