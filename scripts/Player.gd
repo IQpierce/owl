@@ -55,24 +55,24 @@ func process_input_refac(delta):
 	# Double tap turn to spin 180
 	# Turning causes more drag when not accelerating
 
-	var turn_factor = 1;
+	var turn_damp_factor = 1;
 	var linear_damp_factor = 1;
 	var max_speed_factor = 1;
 	var acceleration_factor = 1;
 
 	if Input.is_action_pressed("shoot"):
 		shot_fired.emit()
-		turn_factor *= fire_turn_factor;
+		turn_damp_factor *= fire_turn_factor;
 		max_speed_factor *= fire_max_speed_factor;
 		acceleration_factor *= fire_acceleration_factor;
 
 	if Input.is_action_pressed("turn_left"):
 		# Move as long as the key/button is pressed.
-		angular_velocity -= delta * turn_speed * turn_factor
+		angular_velocity -= delta * turn_speed
 		linear_damp_factor *= turn_linear_damp_factor
 	elif Input.is_action_pressed("turn_right"):
 		# Move as long as the key/button is pressed.
-		angular_velocity += delta * turn_speed * turn_factor
+		angular_velocity += delta * turn_speed
 		linear_damp_factor *= turn_linear_damp_factor
 
 	var cap_speed = max_speed * max_speed_factor;
@@ -118,5 +118,7 @@ func process_input_refac(delta):
 	#print(linear_velocity)
 
 	if linear_damp_factor <= 0.99: # Cannot trust 1 to mean 1 every frame apparantly
-		linear_velocity *= linear_damp_factor;
+		linear_velocity *= linear_damp_factor
+
+	angular_velocity *= turn_damp_factor
 
