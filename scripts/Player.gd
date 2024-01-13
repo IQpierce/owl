@@ -19,6 +19,7 @@ class_name Player
 #TODO (strapp) not a fan of the quick turnaround... probably just better to make turn faster when thruster is off
 @export var quick_turn_degrees = 0;
 
+var camera:Camera2D
 var thrusting:bool
 var thrust_tap_time:int = 0;
 var left_tap_time:int = 0;

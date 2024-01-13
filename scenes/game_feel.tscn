@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=12 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_80w6u"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_rhngu"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/player.tscn" id="3_r2sfy"]
+[ext_resource type="Script" path="res://scripts/FollowThenLeadCamera2D.gd" id="4_dhtcd"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="5_pt2a0"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroid.tscn" id="6_e337w"]
@@ -84,7 +85,6 @@ excessive_speed_linear_damp_factor = 1.0
 turn_linear_damp_factor = 0.99
 thrust_turn_factor = 1.0
 fire_turn_factor = 0.6
-thrust_fire_factor = 0.0
 fire_max_speed_factor = 0.25
 fire_acceleration_factor = 0.5
 double_tap_msec = 200.0
@@ -92,8 +92,14 @@ turn_around_acceleration_factor = 60.0
 turn_with_velocity_turn_factor = 0.9
 quick_turn_degrees = 0
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
+position = Vector2(9600, 2567)
 process_callback = 0
+script = ExtResource("4_dhtcd")
+target = NodePath("../Player")
+follow_threshold = 300.0
+max_speed_factor = 1.2
+acceleration_factor = 0.5
 
 [node name="StarfieldBG" type="Area2D" parent="."]
 z_index = -100
