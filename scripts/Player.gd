@@ -4,19 +4,33 @@ class_name Player
 
 @export var thrust_speed:float
 @export var turn_speed:float
+## Enables uses of parameters below
 @export var test_feel:bool
+## Cannot accelerate to a higher speed paralell current velocity. Acceleration perpendicular to velocity is still considered. This does not limit the speed caused by outside forces, but velocity will eventually settle back to this.
 @export var max_speed:float
+## Slow down when moving beyond max speed
 @export var excessive_speed_linear_damp_factor:float = 1;
+## Modifies deceleration while turning
 @export var turn_linear_damp_factor:float = 1;
+## Modifies turn speed while thrusters are enganged
 @export var thrust_turn_factor:float = 1;
+## Modifies turn speed while firing
 @export var fire_turn_factor:float = 1;
-#@export var thrust_fire_factor:float = 1;
-@export var fire_max_speed_factor:float = 1;
-@export var fire_acceleration_factor:float = 1;
-@export var double_tap_msec:float = 1;
-@export var turn_around_acceleration_factor:float = 1;
+## Modifies turn speed when turning towards direction of velocity (allows bias in favor of turning around)
 @export var turn_with_velocity_turn_factor:float = 1;
+## Modifies max speed while firing
+@export var fire_max_speed_factor:float = 1;
+## Modifies acceleration while firing
+@export var fire_acceleration_factor:float = 1;
+## Window to input double tap of a key
+@export var double_tap_msec:float = 1;
+## Extra Acceleration immediately after double tapping thrust while heading is anti-velocity
+@export var turn_around_acceleration_factor:float = 1;
+
+#@export var thrust_fire_factor:float = 1;
+
 #TODO (strapp) not a fan of the quick turnaround... probably just better to make turn faster when thruster is off
+## Immediate turn after double tapping a turn ... honestly this doesn't feel good
 @export var quick_turn_degrees = 0;
 
 var camera:Camera2D
@@ -118,7 +132,7 @@ func process_input_refac(delta):
 			elif potential_velocity.length_squared() > (cap_speed * cap_speed) && head_para_vel.dot(velocity_dir) > 0:
 				var excess = potential_velocity - (velocity_dir * cap_speed)
 				head_para_vel *= (thrust_para_vel - excess).length() / thrust_para_vel.length()
-				scale *= 0.8 #TESTING make obvious that thrust is capped
+				scale *= 0.9 #TESTING make obvious that thrust is capped
 				
 			acceleration = head_para_vel + head_perp_vel
 
@@ -149,8 +163,12 @@ func process_input_refac(delta):
 	if thrusting:
 		turn_damp_factor *= thrust_turn_factor
 
-	if linear_damp_factor <= 0.99: # Cannot trust 1 to mean 1 every frame apparantly
+	if linear_damp_factor <= 0.99: # Cannot trust 1 to mean 1 every frame apparantly; maybe it is the rigidbody damping
 		linear_velocity *= linear_damp_factor
 
 	angular_velocity *= turn_damp_factor
+
+	# TODO (sam) need to force velocity to zero if near it, because there are some calculations that behave subtely different 
+	#if linear_velocity.length_squared() < 0.000001:
+	#	linear_velocity = Vector2.ZERO
 
