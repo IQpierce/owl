@@ -10,11 +10,12 @@ class_name Player
 @export var turn_linear_damp_factor:float = 1;
 @export var thrust_turn_factor:float = 1;
 @export var fire_turn_factor:float = 1;
-@export var thrust_fire_factor:float = 1;
+#@export var thrust_fire_factor:float = 1;
 @export var fire_max_speed_factor:float = 1;
 @export var fire_acceleration_factor:float = 1;
 @export var double_tap_msec:float = 1;
 @export var turn_around_acceleration_factor:float = 1;
+@export var turn_with_velocity_turn_factor:float = 1;
 #TODO (strapp) not a fan of the quick turnaround... probably just better to make turn faster when thruster is off
 @export var quick_turn_degrees = 0;
 
@@ -68,11 +69,14 @@ func process_input_refac(delta):
 	var max_speed_factor = 1;
 	var acceleration_factor = 1;
 
+	var heading_dir:Vector2 = Vector2.UP.rotated(rotation)
+
 	if Input.is_action_pressed("shoot"):
 		shot_fired.emit()
 		turn_damp_factor *= fire_turn_factor;
 		max_speed_factor *= fire_max_speed_factor;
 		acceleration_factor *= fire_acceleration_factor;
+
 	if Input.is_action_pressed("turn_left"):
 		if Input.is_action_just_pressed("turn_left"):
 			if time_now - left_tap_time <= double_tap_msec:
@@ -92,10 +96,12 @@ func process_input_refac(delta):
 			angular_velocity += delta * turn_speed
 		linear_damp_factor *= turn_linear_damp_factor
 
+	if heading_dir.rotated(angular_velocity * delta).dot(linear_velocity) >= heading_dir.dot(linear_velocity):
+		turn_damp_factor *= turn_with_velocity_turn_factor;
+
 	var cap_speed = max_speed * max_speed_factor;
 
 	if Input.is_action_pressed("thrust"):
-		var heading_dir:Vector2 = Vector2.UP.rotated(rotation)
 		var thrust_delta = thrust_speed * delta;
 		var acceleration = heading_dir * thrust_delta;
 

@@ -77,11 +77,11 @@ shape = SubResource("WorldBoundaryShape2D_ed0ja")
 [node name="Player" parent="." instance=ExtResource("3_r2sfy")]
 position = Vector2(9600, 2567)
 collision_mask = 0
-turn_speed = 45.0
+turn_speed = 50.0
 test_feel = true
 max_speed = 500.0
 excessive_speed_linear_damp_factor = 1.0
-turn_linear_damp_factor = 0.98
+turn_linear_damp_factor = 0.99
 thrust_turn_factor = 1.0
 fire_turn_factor = 0.6
 thrust_fire_factor = 0.0
@@ -89,7 +89,8 @@ fire_max_speed_factor = 0.25
 fire_acceleration_factor = 0.5
 double_tap_msec = 200.0
 turn_around_acceleration_factor = 60.0
-quick_turn_degrees = 180
+turn_with_velocity_turn_factor = 0.9
+quick_turn_degrees = 0
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 process_callback = 0
