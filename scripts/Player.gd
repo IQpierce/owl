@@ -13,9 +13,15 @@ class_name Player
 @export var thrust_fire_factor:float = 1;
 @export var fire_max_speed_factor:float = 1;
 @export var fire_acceleration_factor:float = 1;
-@export var max_double_tap_timing:float = 1;
+@export var double_tap_msec:float = 1;
+@export var turn_around_acceleration_factor:float = 1;
+#TODO (strapp) not a fan of the quick turnaround... probably just better to make turn faster when thruster is off
+@export var quick_turn_degrees = 0;
 
 var thrusting:bool
+var thrust_tap_time:int = 0;
+var left_tap_time:int = 0;
+var right_tap_time:int = 0;
 
 signal thrusting_state_change(enabled:bool)
 signal shot_fired()
@@ -55,6 +61,8 @@ func process_input_refac(delta):
 	# Double tap turn to spin 180
 	# Turning causes more drag when not accelerating
 
+	var time_now = Time.get_ticks_msec()
+
 	var turn_damp_factor = 1;
 	var linear_damp_factor = 1;
 	var max_speed_factor = 1;
@@ -65,14 +73,23 @@ func process_input_refac(delta):
 		turn_damp_factor *= fire_turn_factor;
 		max_speed_factor *= fire_max_speed_factor;
 		acceleration_factor *= fire_acceleration_factor;
-
 	if Input.is_action_pressed("turn_left"):
-		# Move as long as the key/button is pressed.
-		angular_velocity -= delta * turn_speed
+		if Input.is_action_just_pressed("turn_left"):
+			if time_now - left_tap_time <= double_tap_msec:
+				rotation -= quick_turn_degrees * PI / 180
+				left_tap_time = 0
+			left_tap_time = time_now
+		else:
+			angular_velocity -= delta * turn_speed
 		linear_damp_factor *= turn_linear_damp_factor
 	elif Input.is_action_pressed("turn_right"):
-		# Move as long as the key/button is pressed.
-		angular_velocity += delta * turn_speed
+		if Input.is_action_just_pressed("turn_right"):
+			if time_now - right_tap_time <= double_tap_msec:
+				rotation += quick_turn_degrees * PI / 180
+				right_tap_time = 0
+			right_tap_time = time_now
+		else:
+			angular_velocity += delta * turn_speed
 		linear_damp_factor *= turn_linear_damp_factor
 
 	var cap_speed = max_speed * max_speed_factor;
@@ -99,8 +116,11 @@ func process_input_refac(delta):
 			acceleration = head_para_vel + head_perp_vel
 
 		acceleration *= acceleration_factor
-		#if Input.is_action_just_pressed("thrust"):
-		#	acceleration *= 2;
+		if Input.is_action_just_pressed("thrust"):
+			if time_now - thrust_tap_time <= double_tap_msec && acceleration.dot(linear_velocity) < 0:
+				acceleration *= turn_around_acceleration_factor;
+				thrust_tap_time = 0
+			thrust_tap_time = time_now
 
 		apply_central_impulse(acceleration * thrust_delta)
 
@@ -116,6 +136,11 @@ func process_input_refac(delta):
 		linear_damp_factor *= excessive_speed_linear_damp_factor;
 
 	#print(linear_velocity)
+
+#todo is this not working
+#todo could turning around be faster, like if you are turning against your velocity you turn faster
+	if thrusting:
+		turn_damp_factor *= thrust_turn_factor
 
 	if linear_damp_factor <= 0.99: # Cannot trust 1 to mean 1 every frame apparantly
 		linear_velocity *= linear_damp_factor
