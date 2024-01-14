@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqss13qh6tkja"]
+
+[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="1_n7amt"]
+
+[node name="Asteroid" node_paths=PackedStringArray("spawned_on_death") instance=ExtResource("1_n7amt")]
+spawned_per_damage = {
+NodePath("SpawnEnergyCrystalOnDamage"): 2.0
+}
+spawned_on_death = []
+health = 6.0
+max_health = 6.0
+
+[node name="Polygon2D" parent="." index="0"]
+scale = Vector2(20, 20)
+
+[node name="CollisionPolygon2D" parent="." index="1"]
+scale = Vector2(20, 20)
+
+[node name="SpawnSmallerAsteroidOnDamage" parent="." index="3"]
+num_to_spawn = 0

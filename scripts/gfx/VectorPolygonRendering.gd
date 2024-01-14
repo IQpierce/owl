@@ -21,8 +21,8 @@ func _draw():
 			nextPoint = polygon[0]
 		
 		draw_line(polygon[i], nextPoint, line_draw_color, draw_line_width, draw_line_antialiased)
-		
-	#srpnow
+	
+	# @TODO - it would be nice to not have to repeat this entire loop verbatim!! dupe code!!!	
 	for i in range(vertex_count):
 		var x = polygon[i].x
 		var y = polygon[i].y

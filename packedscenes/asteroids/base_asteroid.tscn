@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3 uid="uid://cgjbstotnfcvd"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://d5h87yh5ctsf" path="res://physics_materials/rock.tres" id="1_hgml5"]
+[ext_resource type="Script" path="res://scripts/Thing.gd" id="2_fuihh"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="3_bl00j"]
+[ext_resource type="Script" path="res://scripts/util/Spawner.gd" id="4_0ys4r"]
+[ext_resource type="PackedScene" uid="uid://dnsafpxfqwwbh" path="res://packedscenes/energy_crystal.tscn" id="5_wm5mc"]
+
+[node name="Asteroid" type="RigidBody2D" node_paths=PackedStringArray("spawned_on_death")]
+collision_layer = 2
+collision_mask = 3
+mass = 4.0
+physics_material_override = ExtResource("1_hgml5")
+freeze_mode = 1
+continuous_cd = 2
+max_contacts_reported = 1
+contact_monitor = true
+angular_damp = 0.03
+script = ExtResource("2_fuihh")
+spawned_per_damage = {
+NodePath("SpawnEnergyCrystalOnDamage"): 1.0
+}
+spawned_on_death = [NodePath("SpawnSmallerAsteroidOnDamage")]
+health = 12.0
+max_health = 12.0
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+scale = Vector2(40, 40)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-0.45, -0.05, -0.33, 0.36, 0, 0.5, 0.345, 0.2, 0.42, -0.1, 0.23, -0.41, 0.01, -0.5, -0.19, -0.19, -0.11, -0.05, -0.2, -0.1)
+script = ExtResource("3_bl00j")
+point_draw_radius = 0.024
+draw_line_width = 0.03
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(40, 40)
+polygon = PackedVector2Array(-0.45, -0.05, -0.33, 0.36, 0, 0.5, 0.345, 0.2, 0.42, -0.1, 0.23, -0.41, 0.01, -0.5, -0.19, -0.19, -0.11, -0.05, -0.2, -0.1)
+
+[node name="SpawnEnergyCrystalOnDamage" type="Node2D" parent="."]
+script = ExtResource("4_0ys4r")
+spawn_protos = Array[PackedScene]([ExtResource("5_wm5mc")])
+spawn_random_angle = 0.0
+
+[node name="SpawnSmallerAsteroidOnDamage" type="Node2D" parent="."]
+script = ExtResource("4_0ys4r")
+spawn_protos = Array[PackedScene]([ExtResource("5_wm5mc")])
+num_to_spawn = 2
+spawn_random_angle = 360.0
+min_spawn_dist = 12.0
+max_spawn_dist = 15.0
+min_initial_velocity = 48.0
+max_initial_velocity = 120.0

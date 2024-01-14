@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://vyncb8ek17e"]
+
+[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="1_xoki8"]
+[ext_resource type="PackedScene" uid="uid://dqss13qh6tkja" path="res://packedscenes/asteroids/small_asteroid.tscn" id="2_agumn"]
+
+[node name="Asteroid" instance=ExtResource("1_xoki8")]
+
+[node name="SpawnSmallerAsteroidOnDamage" parent="." index="3"]
+spawn_protos = Array[PackedScene]([ExtResource("2_agumn")])

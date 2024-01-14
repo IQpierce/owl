@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cv5asni7oqeby"]
+[gd_scene load_steps=5 format=3 uid="uid://cv5asni7oqeby"]
 
 [ext_resource type="Script" path="res://scripts/HUD.gd" id="1_ohgch"]
 [ext_resource type="FontFile" uid="uid://bfc5s6j3cdokw" path="res://fonts/Vectorb.ttf" id="2_ebi6m"]
@@ -10,8 +10,13 @@ font_color = Color(0.588235, 0.588235, 0.588235, 1)
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("debug_fps_label")]
+[sub_resource type="Theme" id="Theme_viact"]
+default_font = ExtResource("2_ebi6m")
+default_font_size = 40
+
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("game_over_layer", "debug_fps_label")]
 script = ExtResource("1_ohgch")
+game_over_layer = NodePath("GameOver")
 debug_fps_label = NodePath("FPS")
 
 [node name="FPS" type="Label" parent="."]
@@ -20,3 +25,21 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "FPS: 88"
 label_settings = SubResource("LabelSettings_pl6hg")
+
+[node name="GameOver" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Label" type="Label" parent="GameOver"]
+offset_top = -25.0
+offset_right = 1920.0
+offset_bottom = 1071.0
+theme = SubResource("Theme_viact")
+theme_type_variation = &"GameOverText"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 40
+theme_override_constants/line_spacing = 150
+theme_override_font_sizes/font_size = 400
+text = "GAME
+OVER"
+horizontal_alignment = 1
+vertical_alignment = 1

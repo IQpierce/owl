@@ -31,7 +31,7 @@ scale = Vector2(9.5, 9.5)
 color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(-0.5, 0.5, 0.5, 0.5, 0, -0.857147)
 script = ExtResource("3_ec47f")
-circle_draw_color = Color(0.431373, 0.431373, 0.431373, 1)
+circle_draw_color = Color(0.392157, 0.392157, 0.392157, 1)
 line_draw_color = Color(0.392157, 0.392157, 0.392157, 1)
 
 [node name="HullTriangle" parent="." index="2"]

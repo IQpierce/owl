@@ -1,7 +1,7 @@
 extends CollisionShape2D
 
 @export var num_to_spawn:int
-@export var proto:PackedScene
+@export var proto:PackedScene	# TODO: Make this an array, pick randomly from it, try to keep the distribution even...?
 
 func _ready():
 	for i in num_to_spawn:

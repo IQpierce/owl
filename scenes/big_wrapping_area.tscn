@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="1_vm4r1"]
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_w7ll5"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/player.tscn" id="3_e3nbw"]
-[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroid.tscn" id="4_fnpcl"]
+[ext_resource type="PackedScene" uid="uid://vyncb8ek17e" path="res://packedscenes/asteroids/medium_asteroid.tscn" id="6_3qruu"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="6_86odn"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="6_q82vl"]
 [ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/sun.tscn" id="7_mlajb"]
@@ -18,8 +18,9 @@ size = Vector2(23040, 12960)
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 6400.0
 
-[node name="BigWrappingArea" type="Node2D"]
+[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player")]
 script = ExtResource("1_w7ll5")
+player = NodePath("Player")
 
 [node name="WrappingWalls" type="Node2D" parent="."]
 position = Vector2(1, 1)
@@ -75,8 +76,9 @@ teleport_translation = Vector2(19550, 0)
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
-[node name="Player" parent="." instance=ExtResource("3_e3nbw")]
+[node name="Player" parent="." node_paths=PackedStringArray("corpse_children") instance=ExtResource("3_e3nbw")]
 position = Vector2(9600, 2568)
+corpse_children = [NodePath("Camera2D")]
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 process_callback = 0
@@ -103,12 +105,13 @@ collision_mask = 0
 shape = SubResource("CircleShape2D_xkjbt")
 script = ExtResource("6_q82vl")
 num_to_spawn = 512
-proto = ExtResource("4_fnpcl")
+proto = ExtResource("6_3qruu")
 
 [node name="Sun" parent="." instance=ExtResource("7_mlajb")]
 position = Vector2(9600, 5400)
 
-[node name="HUD" parent="." instance=ExtResource("8_k1cvn")]
+[node name="HUD" parent="." node_paths=PackedStringArray("game") instance=ExtResource("8_k1cvn")]
+game = NodePath("..")
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
