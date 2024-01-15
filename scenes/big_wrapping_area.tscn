@@ -13,10 +13,10 @@
 custom_solver_bias = 0.1
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8n8cw"]
-size = Vector2(23040, 12960)
+size = Vector2(61440, 34560)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
-radius = 6400.0
+radius = 10000.0
 
 [node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player")]
 script = ExtResource("1_w7ll5")
@@ -26,58 +26,58 @@ player = NodePath("Player")
 position = Vector2(1, 1)
 
 [node name="BottomWrappingWall" type="Area2D" parent="WrappingWalls"]
-position = Vector2(9600, 10800)
+position = Vector2(28800, 32400)
 scale = Vector2(6, 6)
 collision_layer = 4
 collision_mask = 27
 script = ExtResource("1_vm4r1")
-teleport_translation = Vector2(0, -10750)
+teleport_translation = Vector2(0, -28300)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/BottomWrappingWall"]
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="TopWrappingWall" type="Area2D" parent="WrappingWalls"]
-position = Vector2(9600, 0)
+position = Vector2(28800, 0)
 rotation = 3.14159
 scale = Vector2(6, 6)
 collision_layer = 4
 collision_mask = 27
 script = ExtResource("1_vm4r1")
-teleport_translation = Vector2(0, 10750)
+teleport_translation = Vector2(0, 28300)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/TopWrappingWall"]
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="RightWrappingWall" type="Area2D" parent="WrappingWalls"]
-position = Vector2(19200, 5400)
+position = Vector2(57600, 16200)
 rotation = -1.5708
 scale = Vector2(6, 6)
 collision_layer = 4
 collision_mask = 27
 script = ExtResource("1_vm4r1")
-teleport_translation = Vector2(-19550, 0)
+teleport_translation = Vector2(-57100, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/RightWrappingWall"]
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="LeftWrappingWall" type="Area2D" parent="WrappingWalls"]
-position = Vector2(0, 5400)
+position = Vector2(0, 16200)
 rotation = 1.5708
 scale = Vector2(6, 6)
 collision_layer = 4
 collision_mask = 27
 script = ExtResource("1_vm4r1")
-teleport_translation = Vector2(19550, 0)
+teleport_translation = Vector2(57100, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/LeftWrappingWall"]
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="Player" parent="." node_paths=PackedStringArray("corpse_children") instance=ExtResource("3_e3nbw")]
-position = Vector2(9600, 2568)
+position = Vector2(28802, 8775)
 excessive_speed_linear_damp_factor = 1.0
 turn_linear_damp_factor = 1.0
 thrust_turn_factor = 1.0
@@ -100,13 +100,14 @@ collision_layer = 0
 collision_mask = 0
 
 [node name="SpawnRandomStarField" type="CollisionShape2D" parent="StarfieldBG"]
+position = Vector2(19201, 10800)
 shape = SubResource("RectangleShape2D_8n8cw")
 script = ExtResource("6_q82vl")
 num_to_spawn = 50000
 proto = ExtResource("6_86odn")
 
 [node name="AsteroidBelt" type="Area2D" parent="."]
-position = Vector2(9600, 5400)
+position = Vector2(28801, 16200)
 disable_mode = 1
 collision_layer = 0
 collision_mask = 0
@@ -116,9 +117,10 @@ shape = SubResource("CircleShape2D_xkjbt")
 script = ExtResource("6_q82vl")
 num_to_spawn = 512
 proto = ExtResource("6_3qruu")
+exclude_inner_percentage = 0.7
 
 [node name="Sun" parent="." instance=ExtResource("7_mlajb")]
-position = Vector2(9600, 5400)
+position = Vector2(28801, 16200)
 
 [node name="HUD" parent="." node_paths=PackedStringArray("game") instance=ExtResource("8_k1cvn")]
 game = NodePath("..")

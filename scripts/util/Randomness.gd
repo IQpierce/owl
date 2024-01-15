@@ -5,3 +5,6 @@ static func random_inside_unit_circle() -> Vector2:
 	var theta:float = randf() * 2 * PI
 	return Vector2(cos(theta), sin(theta)) * sqrt(randf())
 
+static func random_on_unit_circle() -> Vector2:
+	var theta:float = randf() * 2 * PI
+	return Vector2(cos(theta), sin(theta))
