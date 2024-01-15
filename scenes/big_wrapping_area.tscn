@@ -78,6 +78,16 @@ shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="Player" parent="." node_paths=PackedStringArray("corpse_children") instance=ExtResource("3_e3nbw")]
 position = Vector2(9600, 2568)
+excessive_speed_linear_damp_factor = 1.0
+turn_linear_damp_factor = 1.0
+thrust_turn_factor = 1.0
+fire_turn_factor = 1.0
+turn_with_velocity_turn_factor = 1.0
+fire_max_speed_factor = 1.0
+fire_acceleration_factor = 1.0
+double_tap_msec = 1.0
+turn_around_acceleration_factor = 1.0
+quick_turn_degrees = 0
 corpse_children = [NodePath("Camera2D")]
 
 [node name="Camera2D" type="Camera2D" parent="Player"]

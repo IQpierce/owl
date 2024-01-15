@@ -8,7 +8,7 @@ func on_body_entered(body:Node2D):
 		assert(!teleport_translation.is_zero_approx())
 		physics_body.global_position += teleport_translation
 		var player = physics_body as Player
-		if player:
+		if player && player.camera:
 			player.camera.global_position += teleport_translation
 		
 

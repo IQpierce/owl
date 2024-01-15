@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://scripts/FollowThenLeadCamera2D.gd" id="4_dhtcd"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="5_pt2a0"]
-[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroid.tscn" id="6_e337w"]
+[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="6_e337w"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_m427m"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
@@ -18,8 +18,9 @@ size = Vector2(23040, 12960)
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 6400.0
 
-[node name="BigWrappingArea" type="Node2D"]
+[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player")]
 script = ExtResource("1_80w6u")
+player = NodePath("Player")
 
 [node name="WrappingWalls" type="Node2D" parent="."]
 position = Vector2(1, 1)
@@ -125,7 +126,8 @@ script = ExtResource("4_e5ljk")
 num_to_spawn = 512
 proto = ExtResource("6_e337w")
 
-[node name="HUD" parent="." instance=ExtResource("8_m427m")]
+[node name="HUD" parent="." node_paths=PackedStringArray("game") instance=ExtResource("8_m427m")]
+game = NodePath("..")
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
