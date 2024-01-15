@@ -13,7 +13,7 @@ var velocity:Vector2
 func _ready():
 	target.camera = self
 
-func _process(delta):
+func _physics_process(delta):
 	if target != null:
 		var to_target = target.position - position
 		var target_dist_sqr = to_target.length_squared()
