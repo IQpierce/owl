@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://l0ljwo0hkdoq"]
+[gd_scene load_steps=13 format=3 uid="uid://l0ljwo0hkdoq"]
 
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="1_vm4r1"]
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_w7ll5"]
@@ -6,8 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://vyncb8ek17e" path="res://packedscenes/asteroids/medium_asteroid.tscn" id="6_3qruu"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="6_86odn"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="6_q82vl"]
-[ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/sun.tscn" id="7_mlajb"]
+[ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/cosmic_bodies/sun.tscn" id="7_mlajb"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_k1cvn"]
+[ext_resource type="PackedScene" uid="uid://dkfy8ncjc1gd6" path="res://packedscenes/cosmic_bodies/planetoid.tscn" id="8_ovylj"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
@@ -77,7 +78,7 @@ position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="Player" parent="." node_paths=PackedStringArray("corpse_children") instance=ExtResource("3_e3nbw")]
-position = Vector2(28802, 8775)
+position = Vector2(28802, 4100)
 excessive_speed_linear_damp_factor = 1.0
 turn_linear_damp_factor = 1.0
 thrust_turn_factor = 1.0
@@ -115,12 +116,18 @@ collision_mask = 0
 [node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidBelt"]
 shape = SubResource("CircleShape2D_xkjbt")
 script = ExtResource("6_q82vl")
-num_to_spawn = 512
+num_to_spawn = 1024
 proto = ExtResource("6_3qruu")
 exclude_inner_percentage = 0.7
 
 [node name="Sun" parent="." instance=ExtResource("7_mlajb")]
 position = Vector2(28801, 16200)
+
+[node name="Smudge" parent="." node_paths=PackedStringArray("orbit_target") instance=ExtResource("8_ovylj")]
+position = Vector2(29081, 3671)
+collision_mask = 0
+orbit_target = NodePath("../Sun")
+full_orbit_time_secs = 600.0
 
 [node name="HUD" parent="." node_paths=PackedStringArray("game") instance=ExtResource("8_k1cvn")]
 game = NodePath("..")

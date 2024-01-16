@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://dkfy8ncjc1gd6"]
+
+[ext_resource type="Texture2D" uid="uid://d01krn0pvudlc" path="res://dot.png" id="1_me3mu"]
+[ext_resource type="Script" path="res://scripts/Orbiter.gd" id="1_xk02d"]
+[ext_resource type="PackedScene" uid="uid://leunbw6hhxa0" path="res://packedscenes/gravity_well.tscn" id="3_hejg5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_aiflv"]
+radius = 100.0
+
+[node name="Planetoid" type="Area2D"]
+collision_layer = 3
+collision_mask = 27
+input_pickable = false
+priority = 2
+gravity_space_override = 3
+gravity = 4096.0
+linear_damp_space_override = 2
+linear_damp = 88.235
+angular_damp_space_override = 2
+angular_damp = 87.441
+script = ExtResource("1_xk02d")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+scale = Vector2(5, 5)
+shape = SubResource("CircleShape2D_aiflv")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.352941)
+scale = Vector2(5, 5)
+texture = ExtResource("1_me3mu")
+
+[node name="GravityWell" parent="." instance=ExtResource("3_hejg5")]
+gravity_well_radius = 128.0
