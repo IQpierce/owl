@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_80w6u"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_rhngu"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/player.tscn" id="3_r2sfy"]
-[ext_resource type="Script" path="res://scripts/FollowThenLeadCamera2D.gd" id="4_dhtcd"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
+[ext_resource type="Script" path="res://scripts/LazyTrackingCamera.gd" id="4_wd0xe"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="5_pt2a0"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="6_e337w"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_m427m"]
@@ -79,6 +79,7 @@ shape = SubResource("WorldBoundaryShape2D_ed0ja")
 [node name="Player" parent="." instance=ExtResource("3_r2sfy")]
 position = Vector2(9599, 2567)
 collision_mask = 0
+thrust_speed = 250.0
 turn_speed = 50.0
 test_feel = true
 max_speed = 500.0
@@ -93,14 +94,16 @@ double_tap_msec = 200.0
 turn_around_acceleration_factor = 60.0
 quick_turn_degrees = 0
 
-[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("prey")]
 position = Vector2(9600, 2567)
 process_callback = 0
-script = ExtResource("4_dhtcd")
-target = NodePath("../Player")
-follow_threshold = 300.0
-max_speed_factor = 1.2
-acceleration_factor = 0.5
+script = ExtResource("4_wd0xe")
+prey = NodePath("../Player")
+track_threshold = 300.0
+lock_threshold = 400.0
+max_relative_speed = 1.5
+acceleration_factor = 1.2
+lead_distance = 200
 
 [node name="StarfieldBG" type="Area2D" parent="."]
 z_index = -100
