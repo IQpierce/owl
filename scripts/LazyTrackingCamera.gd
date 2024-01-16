@@ -8,6 +8,7 @@ extends Camera2D
 @export var lead_distance = 0
 
 var velocity:Vector2
+var prey_velocity:Vector2
 
 enum TrackingState { Rest, Follow, Lead }
 var tracking = TrackingState.Rest
@@ -23,15 +24,19 @@ func _physics_process(delta):
 		var prey_dist_sqr = to_prey.length_squared()
 	
 		if tracking == TrackingState.Rest:
-			if prey_dist_sqr > track_threshold * track_threshold:
+			if prey_dist_sqr > track_threshold * track_threshold && prey.linear_velocity.dot(prey.position - position) > 0:
 				#velocity = prey.linear_velocity
 				tracking = TrackingState.Follow
 		elif tracking == TrackingState.Follow:
 			if velocity.dot(prey.position - position) <= 0:
 				tracking = TrackingState.Lead
+			elif prey.linear_velocity.length_squared() < prey_velocity.length_squared() || prey.linear_velocity.dot(prey_velocity) <= 0:
+				tracking = TrackingState.Rest
 		elif tracking == TrackingState.Lead:
 			if prey.linear_velocity.dot(position - prey.position) <= 0:
 				tracking = TrackingState.Rest
+
+		prey_velocity = prey.linear_velocity
 
 		if tracking == TrackingState.Rest:
 			velocity = Vector2.ZERO
