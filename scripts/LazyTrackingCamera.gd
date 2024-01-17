@@ -1,10 +1,8 @@
 extends Camera2D
 
-# TODO REMOVE
-@export var state_label:Label
-
 @export var show_debug = true
-@export var prey:Player #better name?
+@export var state_label:Label
+@export var prey:Player
 @export var track_threshold:float = 0
 @export var lock_threshold:float = 0
 @export var max_relative_speed:float = 1
@@ -18,7 +16,6 @@ extends Camera2D
 var velocity:Vector2
 var prey_velocity:Vector2
 var prey_bearing:Vector2
-#var frames_decelerating = 0 #rename frames_prey_slowing
 var fallback_start:int
 
 var track_rect:Rect2
@@ -36,7 +33,6 @@ func _draw():
 		state_label.visible = true
 		state_label.text = TrackingState.keys()[tracking]
 
-		#draw_arc(Vector2(0, 0), lead_distance, 0, TAU, 60, Color.GRAY)
 		if tracking == TrackingState.Lead:
 			# Screen Center
 			draw_arc(Vector2(0, 0), 10,  0, TAU, 60, Color.WHITE)
@@ -80,9 +76,9 @@ func _physics_process(delta):
 			view_size.y - lock_threshold * 2)
 	
 		if tracking == TrackingState.Rest:
-			#if prey_dist_sqr > track_threshold * track_threshold && prey.linear_velocity.dot(prey.position - position) > 0:
-			if (abs(prey.position.x - position.x) > half_view_size.x - track_threshold || abs(prey.position.y - position.y) > half_view_size.y - track_threshold) && prey.linear_velocity.dot(prey.position - position) > 0:
-				#velocity = prey.linear_velocity
+			var within_tracking_x = abs(prey.position.x - position.x) > half_view_size.x - track_threshold
+			var within_tracking_y = abs(prey.position.y - position.y) > half_view_size.y - track_threshold
+			if (within_tracking_x || within_tracking_y) && prey.linear_velocity.dot(prey.position - position) > 0:
 				tracking = TrackingState.Follow
 		elif tracking == TrackingState.Follow:
 			if prey.linear_velocity.length_squared() < prey_velocity.length_squared():
@@ -97,88 +93,62 @@ func _physics_process(delta):
 		elif tracking == TrackingState.Lead:
 			if prey.linear_velocity.dot(position - prey.position) <= 0:
 				if Time.get_ticks_msec() - fallback_start >= lead_to_follow_ms:
-					#tracking = TrackingState.Rest
 					tracking = TrackingState.Follow
 			else:
-			#if prey.linear_velocity.normalized().dot((position - prey.position).normalized()) <= cos(45):
 				fallback_start = Time.get_ticks_msec()
-				#tracking = TrackingState.Rest
 
 		prey_velocity = prey.linear_velocity
 
 		if tracking == TrackingState.Rest:
 			velocity *= rest_vel_damp
 		else:
-			#var prey_bearing = Vector2.UP.rotated(prey.rotation) #TODO should this just be ZERO so focus is just the still prey?
 			prey_bearing = Vector2.ZERO
 			var prey_speed = prey.linear_velocity.length()
 			if prey_speed > 0:
 				prey_bearing = prey.linear_velocity / prey_speed
 
-			if tracking == TrackingState.Follow:
-				focus = prey.position + (prey_bearing * lead_distance)
-			elif tracking == TrackingState.Lead:
-				focus = prey.position + (prey_bearing * lead_distance)
+			focus = prey.position + (prey_bearing * lead_distance)
 			var to_focus = focus - position
 			var to_focus_length = to_focus.length()
 			if to_focus_length > 0:
 				var to_focus_dir = to_focus / to_focus_length
 
 				if tracking == TrackingState.Follow:
-					# AHHHHH stop following the edge when facing a cardinal direction
-					#velocity += to_focus_dir * (prey.thrust_speed * acceleration_factor * delta)
-					#velocity = to_focus_dir * velocity.length()
-					#velocity = prey_velocity + to_focus_dir * (velocity.length() + prey.thrust_speed * acceleration_factor * delta)
-					#velocity = prey_velocity + to_focus_dir * (prey.thrust_speed * acceleration_factor * delta)
-
+					# When Follow starts accelerate based on how far beyond tracking threshold the prey is.
+					# As we attempt to take the lead though, accelerate regardless of tracking threshold
 					var to_track = Vector2(half_view_size.x - track_threshold, half_view_size.y - track_threshold)
 					var to_lock  = Vector2(half_view_size.x -  lock_threshold, half_view_size.y -  lock_threshold)
 					var threshold_portions = Vector2(
 							clamp((abs(to_prey.x) - to_track.x) / (to_lock.x - to_track.x), 0, 1),
 							clamp((abs(to_prey.y) - to_track.y) / (to_lock.y - to_track.y), 0, 1))
 					var most_portion = max(threshold_portions.x, threshold_portions.y)
-					velocity = to_focus_dir * max(velocity.length() + prey.thrust_speed * acceleration_factor * delta, prey_velocity.length() * max_relative_speed * most_portion)
-					#if to_focus_dir.project(Vector2.RIGHT).dot((focus - (position + velocity * delta)).normalized()) < 0:
-					#	position.x = prey.position.x
-					#	velocity.x = 0
+					var accelerated_speed = velocity.length() + prey.thrust_speed * acceleration_factor * delta
+					var prey_relative_speed = prey_velocity.length() * max_relative_speed * most_portion
+					velocity = to_focus_dir * max(accelerated_speed, prey_relative_speed)
 				elif tracking == TrackingState.Lead:
+					# When leading accelerate normally, but manually narrow center the prey perpendicular to its bearing
 					velocity += to_focus_dir * (prey.thrust_speed * acceleration_factor * delta)
 					var vel_para_to_focus = velocity.project(to_focus_dir)
 					var vel_perp_to_focus = velocity - vel_para_to_focus
-					#vel_para_to_focus += to_focus_dir * (prey.thrust_speed * acceleration_factor * delta)
 					vel_perp_to_focus *= lead_vel_perp_damp
 					velocity = vel_para_to_focus + vel_perp_to_focus
-
-				#var vel_rotation = min(PI / 6 * delta, acos(velocity.normalized().dot(to_focus_dir)))
-				#var rotated_vel = velocity#.rotated(vel_rotation)
-				#velocity = rotated_vel + (rotated_vel.normalized() * (prey.thrust_speed * acceleration_factor * delta))
-				#velocity = to_focus_dir * (velocity.length() + (prey.thrust_speed * acceleration_factor * delta))
-				#velocity = to_focus_dir * (velocity.normalized() + prey_speed * acceleration_factor)
 			else:
 				velocity = prey.linear_velocity
-			var speed = velocity.length()
-			#if speed > 0:
-			#	var bearing = velocity / speed
-			#	if speed < prey_speed:
-			#		velocity = bearing * prey_speed
-			#else:
-			#	velocity = prey.linear_velocity
 
+			var new_speed = velocity.length()
 			var max_speed = prey_speed * max_relative_speed
-			if speed > max_speed:
-				velocity = (velocity / speed) * max_speed
+			if new_speed > max_speed:
+				velocity = (velocity / new_speed) * max_speed
 
 
+	# If very close to focus, just jump to it; otherwise, move at velocity
 	var delta_vel = velocity * delta
 	if (focus - (position + delta_vel)).dot(focus - position) < 0:
 		position = focus
 	else:
 		position += delta_vel
 
-	#if (position - prey.position).length_squared() > lock_threshold * lock_threshold:
-	#	position = prey.position + ((position - prey.position).normalized() * lock_threshold)
-	#if abs(prey.position.x - position.x) > half_view_size.x - lock_threshold:
-
+	# Prevent prey from moving off-screen on X
 	if prey.position.x - position.x < lock_threshold - half_view_size.x:
 		velocity = prey.linear_velocity
 		position.x = prey.position.x - (lock_threshold - half_view_size.x)
@@ -186,6 +156,7 @@ func _physics_process(delta):
 		velocity = prey.linear_velocity
 		position.x = prey.position.x - (half_view_size.x - lock_threshold)
 
+	# Prevent prey from moving off-screen on Y
 	if prey.position.y - position.y < lock_threshold - half_view_size.y:
 		velocity = prey.linear_velocity
 		position.y = prey.position.y - (lock_threshold - half_view_size.y)
@@ -193,5 +164,6 @@ func _physics_process(delta):
 		velocity = prey.linear_velocity
 		position.y = prey.position.y - (half_view_size.y - lock_threshold)
 
+	# Only draw Debug display while in Editor
 	if OS.has_feature("editor"):
 		queue_redraw()

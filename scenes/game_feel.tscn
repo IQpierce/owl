@@ -104,15 +104,15 @@ quick_turn_degrees = 0
 position = Vector2(9600, 2567)
 process_callback = 0
 script = ExtResource("4_wd0xe")
-state_label = NodePath("Camera State")
 show_debug = false
+state_label = NodePath("Camera State")
 prey = NodePath("../Player")
 track_threshold = 200.0
 lock_threshold = 100.0
 max_relative_speed = 2.0
 acceleration_factor = 0.2
 lead_distance = 400
-lead_vel_perp_damp = 0.99
+lead_vel_perp_damp = 0.97
 lead_to_follow_ms = 500
 
 [node name="Camera State" type="Label" parent="Camera2D"]
