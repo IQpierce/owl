@@ -23,7 +23,7 @@ var frames_decelerating = 0 #rename frames_prey_slowing
 var track_rect:Rect2
 var lock_rect:Rect2
 
-enum TrackingState { Rest, Follow, Lead }
+enum TrackingState { Rest, Follow, Lead, Reserve }
 var tracking = TrackingState.Rest
 
 func _ready():
@@ -111,7 +111,10 @@ func _physics_process(delta):
 			if prey_speed > 0:
 				prey_bearing = prey.linear_velocity / prey_speed
 
-			focus = prey.position + (prey_bearing * lead_distance)
+			if tracking == TrackingState.Follow:
+				focus = prey.position + (prey_bearing * lead_distance)
+			elif tracking == TrackingState.Lead:
+				focus = prey.position + (prey_bearing * lead_distance)
 			var to_focus = focus - position
 			var to_focus_length = to_focus.length()
 			if to_focus_length > 0:
@@ -119,9 +122,18 @@ func _physics_process(delta):
 
 				if tracking == TrackingState.Follow:
 					# AHHHHH stop following the edge when facing a cardinal direction
-					velocity += to_focus_dir * (prey.thrust_speed * acceleration_factor * delta)
-					velocity = to_focus_dir * velocity.length()
+					#velocity += to_focus_dir * (prey.thrust_speed * acceleration_factor * delta)
+					#velocity = to_focus_dir * velocity.length()
 					#velocity = prey_velocity + to_focus_dir * (velocity.length() + prey.thrust_speed * acceleration_factor * delta)
+					#velocity = prey_velocity + to_focus_dir * (prey.thrust_speed * acceleration_factor * delta)
+
+					var to_track = Vector2(half_view_size.x - track_threshold, half_view_size.y - track_threshold)
+					var to_lock  = Vector2(half_view_size.x -  lock_threshold, half_view_size.y -  lock_threshold)
+					var threshold_portions = Vector2(
+							clamp((abs(to_prey.x) - to_track.x) / (to_lock.x - to_track.x), 0, 1),
+							clamp((abs(to_prey.y) - to_track.y) / (to_lock.y - to_track.y), 0, 1))
+					var most_portion = max(threshold_portions.x, threshold_portions.y)
+					velocity = to_focus_dir * max(velocity.length() + prey.thrust_speed * acceleration_factor * delta, prey_velocity.length() * max_relative_speed * most_portion)
 					#if to_focus_dir.project(Vector2.RIGHT).dot((focus - (position + velocity * delta)).normalized()) < 0:
 					#	position.x = prey.position.x
 					#	velocity.x = 0

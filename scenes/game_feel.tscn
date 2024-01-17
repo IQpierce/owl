@@ -108,7 +108,7 @@ state_label = NodePath("Camera State")
 prey = NodePath("../Player")
 track_threshold = 200.0
 lock_threshold = 100.0
-max_relative_speed = 1.5
+max_relative_speed = 2.0
 acceleration_factor = 0.2
 lead_distance = 400
 
@@ -143,14 +143,12 @@ num_to_spawn = 50000
 proto = ExtResource("5_pt2a0")
 
 [node name="AsteroidBelt" type="Area2D" parent="."]
-visible = false
 position = Vector2(9600, 5400)
 disable_mode = 1
 collision_layer = 0
 collision_mask = 0
 
 [node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidBelt"]
-visible = false
 shape = SubResource("CircleShape2D_xkjbt")
 script = ExtResource("4_e5ljk")
 num_to_spawn = 512
