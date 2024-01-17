@@ -30,7 +30,6 @@ func _ready():
 	prey.camera = self
 
 func _draw():
-	return
 	state_label.text = TrackingState.keys()[tracking]
 
 	#draw_arc(Vector2(0, 0), lead_distance, 0, TAU, 60, Color.GRAY)
@@ -93,7 +92,7 @@ func _physics_process(delta):
 		elif tracking == TrackingState.Lead:
 			if prey.linear_velocity.dot(position - prey.position) <= 0:
 				frames_decelerating += 1
-				if frames_decelerating > 180: # TODO I'm not conviced this is doing anything
+				if frames_decelerating > 20: # TODO I'm not conviced this is doing anything
 					tracking = TrackingState.Rest
 			else:
 			#if prey.linear_velocity.normalized().dot((position - prey.position).normalized()) <= cos(45):
