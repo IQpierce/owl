@@ -21,6 +21,8 @@ var fallback_start:int
 var track_rect:Rect2
 var lock_rect:Rect2
 
+# TODO should Track Threshold actually be a circle, while lock_threshold stays a rect?
+
 # TODO (sam) We might want a "Reserve" state that make returning to Lead easier for a brief period
 enum TrackingState { Rest, Follow, Lead }
 var tracking = TrackingState.Rest

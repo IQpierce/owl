@@ -24,10 +24,14 @@ class_name Player
 @export var fire_acceleration_factor:float = 1;
 ## Window to input double tap of a key
 @export var double_tap_msec:float = 1;
-## Extra Acceleration immediately after double tapping thrust while heading is anti-velocity
+## Extra Acceleration while slowing down
 @export var turn_around_acceleration_factor:float = 1;
+## Boost immediately after double tapping thrust while heading is anti-velocity
+@export var boost_on_turn_around:float = 1;
 
 #@export var thrust_fire_factor:float = 1;
+
+#TODO should we diminish Acceleration based on Speed, so as you accelerate fast at low speeds, but slower at high speeds (like a car's gears)
 
 #TODO (strapp) not a fan of the quick turnaround... probably just better to make turn faster when thruster is off
 ## Immediate turn after double tapping a turn ... honestly this doesn't feel good
@@ -136,10 +140,13 @@ func process_input_refac(delta):
 				
 			acceleration = head_para_vel + head_perp_vel
 
+		if acceleration.dot(linear_velocity) < 0:
+			acceleration_factor *= turn_around_acceleration_factor
+
 		acceleration *= acceleration_factor
 		if Input.is_action_just_pressed("thrust"):
 			if time_now - thrust_tap_time <= double_tap_msec && acceleration.dot(linear_velocity) < 0:
-				acceleration *= turn_around_acceleration_factor;
+				acceleration *= boost_on_turn_around
 				thrust_tap_time = 0
 			thrust_tap_time = time_now
 

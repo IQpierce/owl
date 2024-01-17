@@ -85,10 +85,10 @@ shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="Player" parent="." instance=ExtResource("3_r2sfy")]
 position = Vector2(9599, 2567)
-collision_mask = 0
+thrust_speed = 400.0
 turn_speed = 50.0
 test_feel = true
-max_speed = 1000.0
+max_speed = 3000.0
 excessive_speed_linear_damp_factor = 0.98
 turn_linear_damp_factor = 0.99
 thrust_turn_factor = 0.7
@@ -97,7 +97,8 @@ turn_with_velocity_turn_factor = 0.9
 fire_max_speed_factor = 0.25
 fire_acceleration_factor = 0.5
 double_tap_msec = 200.0
-turn_around_acceleration_factor = 60.0
+turn_around_acceleration_factor = 1.5
+boost_on_turn_around = 30.0
 quick_turn_degrees = 0
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("state_label", "prey")]
@@ -107,11 +108,11 @@ script = ExtResource("4_wd0xe")
 show_debug = false
 state_label = NodePath("Camera State")
 prey = NodePath("../Player")
-track_threshold = 200.0
-lock_threshold = 100.0
+track_threshold = 600.0
+lock_threshold = 350.0
 max_relative_speed = 2.0
-acceleration_factor = 0.2
 lead_distance = 400
+rest_vel_damp = 0.99
 lead_vel_perp_damp = 0.97
 lead_to_follow_ms = 500
 
