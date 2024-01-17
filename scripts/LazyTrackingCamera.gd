@@ -3,54 +3,60 @@ extends Camera2D
 # TODO REMOVE
 @export var state_label:Label
 
-
+@export var show_debug = true
 @export var prey:Player #better name?
 @export var track_threshold:float = 0
 @export var lock_threshold:float = 0
 @export var max_relative_speed:float = 1
 @export var acceleration_factor:float = 1
 @export var lead_distance = 0
-
-#TODO expose vel_perp correction instead of just dividing by 2
-#TODO expose lead_within_angle (and draw correctly) instead of requiring perpendicular
-#TODO expose how long it takes for Follow to become Rest
+@export_range(.95, 1) var rest_vel_damp = 0.98
+@export_range(0.5, 1) var lead_vel_perp_damp = 0.9
+@export var follow_to_rest_ms = 300
+@export var lead_to_follow_ms = 300
 
 var velocity:Vector2
 var prey_velocity:Vector2
 var prey_bearing:Vector2
-var frames_decelerating = 0 #rename frames_prey_slowing
+#var frames_decelerating = 0 #rename frames_prey_slowing
+var fallback_start:int
 
 var track_rect:Rect2
 var lock_rect:Rect2
 
-enum TrackingState { Rest, Follow, Lead, Reserve }
+# TODO (sam) We might want a "Reserve" state that make returning to Lead easier for a brief period
+enum TrackingState { Rest, Follow, Lead }
 var tracking = TrackingState.Rest
 
 func _ready():
 	prey.camera = self
 
 func _draw():
-	state_label.text = TrackingState.keys()[tracking]
+	if show_debug:
+		state_label.visible = true
+		state_label.text = TrackingState.keys()[tracking]
 
-	#draw_arc(Vector2(0, 0), lead_distance, 0, TAU, 60, Color.GRAY)
-	if tracking == TrackingState.Lead:
-		# Screen Center
-		draw_arc(Vector2(0, 0), 10,  0, TAU, 60, Color.WHITE)
+		#draw_arc(Vector2(0, 0), lead_distance, 0, TAU, 60, Color.GRAY)
+		if tracking == TrackingState.Lead:
+			# Screen Center
+			draw_arc(Vector2(0, 0), 10,  0, TAU, 60, Color.WHITE)
 
-		# Desired Screen Center (focus)
-		var relative_prey_pos = prey.position - position
-		var relative_lead_pos = relative_prey_pos + (prey_bearing * lead_distance)
-		draw_line(relative_lead_pos + Vector2(-10, -10), relative_lead_pos + Vector2(10, 10),  Color.WHITE)
-		draw_line(relative_lead_pos + Vector2(-10, 10),  relative_lead_pos + Vector2(10, -10), Color.WHITE)
+			# Desired Screen Center (focus)
+			var relative_prey_pos = prey.position - position
+			var relative_lead_pos = relative_prey_pos + (prey_bearing * lead_distance)
+			draw_line(relative_lead_pos + Vector2(-10, -10), relative_lead_pos + Vector2(10, 10),  Color.WHITE)
+			draw_line(relative_lead_pos + Vector2(-10, 10),  relative_lead_pos + Vector2(10, -10), Color.WHITE)
 
-		# Maintain Tracking or Rest Threshold
-		var prey_perp = Vector2(relative_prey_pos.y, -relative_prey_pos.x).normalized() * 100
-		draw_dashed_line(relative_prey_pos - prey_perp, relative_prey_pos + prey_perp, Color.WHITE, 1.0, 10.0)
+			# Maintain Tracking or Rest Threshold
+			var prey_perp = Vector2(relative_prey_pos.y, -relative_prey_pos.x).normalized() * 100
+			draw_dashed_line(relative_prey_pos - prey_perp, relative_prey_pos + prey_perp, Color.WHITE, 1.0, 10.0)
 
-	if tracking != TrackingState.Lead:
-		draw_rect(track_rect, Color.GRAY, false, 1.0)
+		if tracking != TrackingState.Lead:
+			draw_rect(track_rect, Color.GRAY, false, 1.0)
 
-	draw_rect(lock_rect, Color.GRAY, false, 3.0 * (tracking + 1))
+		draw_rect(lock_rect, Color.GRAY, false, 3.0 * (tracking + 1))
+	else:
+		state_label.visible = false
 
 func _physics_process(delta):
 	var focus = position
@@ -80,30 +86,28 @@ func _physics_process(delta):
 				tracking = TrackingState.Follow
 		elif tracking == TrackingState.Follow:
 			if prey.linear_velocity.length_squared() < prey_velocity.length_squared():
-				frames_decelerating += 1
-				if frames_decelerating > 20:
+				if Time.get_ticks_msec() - fallback_start >= follow_to_rest_ms:
 					tracking = TrackingState.Rest
 			else:
-				frames_decelerating = 0
+				fallback_start = Time.get_ticks_msec()
 				if velocity.dot(prey.position - position) <= 0:
 					tracking = TrackingState.Lead
 				elif prey.linear_velocity.dot(prey_velocity) <= 0:
 					tracking = TrackingState.Rest
 		elif tracking == TrackingState.Lead:
 			if prey.linear_velocity.dot(position - prey.position) <= 0:
-				frames_decelerating += 1
-				if frames_decelerating > 20: # TODO I'm not conviced this is doing anything
-					tracking = TrackingState.Rest
+				if Time.get_ticks_msec() - fallback_start >= lead_to_follow_ms:
+					#tracking = TrackingState.Rest
+					tracking = TrackingState.Follow
 			else:
 			#if prey.linear_velocity.normalized().dot((position - prey.position).normalized()) <= cos(45):
-				frames_decelerating = 0
+				fallback_start = Time.get_ticks_msec()
 				#tracking = TrackingState.Rest
 
 		prey_velocity = prey.linear_velocity
 
 		if tracking == TrackingState.Rest:
-			#velocity = Vector2.ZERO
-			velocity *= .99 #expose this
+			velocity *= rest_vel_damp
 		else:
 			#var prey_bearing = Vector2.UP.rotated(prey.rotation) #TODO should this just be ZERO so focus is just the still prey?
 			prey_bearing = Vector2.ZERO
@@ -142,7 +146,7 @@ func _physics_process(delta):
 					var vel_para_to_focus = velocity.project(to_focus_dir)
 					var vel_perp_to_focus = velocity - vel_para_to_focus
 					#vel_para_to_focus += to_focus_dir * (prey.thrust_speed * acceleration_factor * delta)
-					vel_perp_to_focus *= 0.9
+					vel_perp_to_focus *= lead_vel_perp_damp
 					velocity = vel_para_to_focus + vel_perp_to_focus
 
 				#var vel_rotation = min(PI / 6 * delta, acos(velocity.normalized().dot(to_focus_dir)))
