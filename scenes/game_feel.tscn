@@ -131,34 +131,6 @@ position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="Player" parent="SubViewportContainer/SubViewport" instance=ExtResource("3_r2sfy")]
-position = Vector2(9599, 2567)
-collision_mask = 0
-thrust_speed = 400.0
-turn_speed = 50.0
-test_feel = true
-max_speed = 250.0
-excessive_speed_linear_damp_factor = 0.98
-turn_linear_damp_factor = 0.99
-thrust_turn_factor = 0.7
-fire_turn_factor = 0.6
-turn_with_velocity_turn_factor = 0.9
-fire_max_speed_factor = 0.25
-fire_acceleration_factor = 0.5
-double_tap_msec = 200.0
-turn_around_acceleration_factor = 1.5
-
-[node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport"]
-
-[node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport/CanvasLayer"]
-material = ExtResource("10_yvffj")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color(0, 0, 0, 1)
 
 [node name="Camera2D" type="Camera2D" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("state_label", "prey")]
 position = Vector2(9600, 2567)
@@ -219,6 +191,19 @@ proto = ExtResource("6_e337w")
 
 [node name="HUD" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("game") instance=ExtResource("8_m427m")]
 game = NodePath("../../..")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport"]
+
+[node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport/CanvasLayer"]
+material = ExtResource("10_yvffj")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0, 0, 0, 1)
 
 [connection signal="body_entered" from="SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall" to="SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall" to="SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall" method="on_body_entered"]

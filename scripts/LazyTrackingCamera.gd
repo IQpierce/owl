@@ -21,8 +21,6 @@ var fallback_start:int
 var track_rect:Rect2
 var lock_rect:Rect2
 
-# TODO should Track Threshold actually be a circle, while lock_threshold stays a rect?
-
 # TODO (sam) We might want a "Reserve" state that make returning to Lead easier for a brief period
 enum TrackingState { Rest, Follow, Lead }
 var tracking = TrackingState.Rest
@@ -32,8 +30,8 @@ func _ready():
 
 func _draw():
 	if show_debug:
-		state_label.visible = true
-		state_label.text = TrackingState.keys()[tracking]
+		#state_label.visible = true
+		#state_label.text = TrackingState.keys()[tracking]
 
 		if tracking == TrackingState.Lead:
 			# Screen Center
@@ -53,8 +51,8 @@ func _draw():
 			draw_rect(track_rect, Color.GRAY, false, 1.0)
 
 		draw_rect(lock_rect, Color.GRAY, false, 3.0 * (tracking + 1))
-	else:
-		state_label.visible = false
+	#else:
+		#state_label.visible = false
 
 func _physics_process(delta):
 	var focus = position

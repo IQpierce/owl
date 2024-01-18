@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/GravityWell.gd" id="1_pptxy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0jcqu"]
-radius = 128.0
+radius = 256.0
 
 [node name="GravityWell" type="Area2D"]
 position = Vector2(0, 1)

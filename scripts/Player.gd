@@ -116,7 +116,7 @@ func process_input_refac(delta):
 
 	var cap_speed = max_speed * max_speed_factor;
 
-	if true:#Input.is_action_pressed("thrust"):
+	if Input.is_action_pressed("thrust"):
 		var thrust_delta = thrust_speed * delta;
 		var acceleration = heading_dir * thrust_delta;
 

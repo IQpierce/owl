@@ -29,7 +29,7 @@ scale = Vector2(20, -19.96)
 
 [node name="Line2D" type="Line2D" parent="Visuals/Visuals2"]
 points = PackedVector2Array(0, 0, 12, 7, -7, -12, 0, 0, 12, -12, -11, 13, 6, -3, 0, 0, -6, 0)
-width = 2.0
+width = 0.15
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
@@ -46,7 +46,7 @@ scale = Vector2(20, -20)
 
 [node name="Line2D" type="Line2D" parent="Visuals/Visuals3"]
 points = PackedVector2Array(0, 0, 12, 7, -7, -12, 0, 0, 12, -12, -11, 13, 6, -3, 0, 0, -6, 0)
-width = 2.0
+width = 0.15
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
@@ -63,7 +63,7 @@ scale = Vector2(20, 19.96)
 
 [node name="Line2D" type="Line2D" parent="Visuals/Visuals"]
 points = PackedVector2Array(0, 0, 12, 7, -7, -12, 0, 0, 12, -12, -11, 13, 6, -3, 0, 0, -6, 0)
-width = 2.0
+width = 0.15
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
@@ -80,7 +80,7 @@ scale = Vector2(20, 20)
 
 [node name="Line2D" type="Line2D" parent="Visuals/Visuals4"]
 points = PackedVector2Array(0, 0, 12, 7, -7, -12, 0, 0, 12, -12, -11, 13, 6, -3, 0, 0, -6, 0)
-width = 2.0
+width = 0.15
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
@@ -97,7 +97,7 @@ scale = Vector2(20, 19.96)
 
 [node name="Line2D" type="Line2D" parent="Visuals/Visuals5"]
 points = PackedVector2Array(0, 0, 12, 7, -7, -12, 0, 0, 12, -12, -11, 13, 6, -3, 0, 0, -6, 0)
-width = 2.0
+width = 0.15
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2

@@ -29,14 +29,17 @@ label_settings = SubResource("LabelSettings_pl6hg")
 [node name="GameOver" type="CanvasLayer" parent="."]
 visible = false
 
+[node name="ColorRect" type="ColorRect" parent="GameOver"]
+offset_right = 1920.0
+offset_bottom = 1071.0
+color = Color(0, 0, 0, 0.470588)
+
 [node name="Label" type="Label" parent="GameOver"]
 offset_top = -25.0
 offset_right = 1920.0
 offset_bottom = 1071.0
 theme = SubResource("Theme_viact")
 theme_type_variation = &"GameOverText"
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 40
 theme_override_constants/line_spacing = 150
 theme_override_font_sizes/font_size = 400
 text = "GAME

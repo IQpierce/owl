@@ -11,27 +11,27 @@
 radius = 64.0
 
 [node name="Player" instance=ExtResource("1_5vrjf")]
-position = Vector2(0, 0)
+position = Vector2(9599, 2567)
 disable_mode = 2
-collision_mask = 2
+collision_mask = 0
 freeze_mode = 1
 continuous_cd = 2
 max_contacts_reported = 1
 contact_monitor = true
 script = ExtResource("2_7yjal")
-thrust_speed = 750.0
-turn_speed = 30.0
-test_feel = false
-max_speed = 0.0
-excessive_speed_linear_damp_factor = 1.0
-turn_linear_damp_factor = 1.0
-thrust_turn_factor = 1.0
-fire_turn_factor = 1.0
-turn_with_velocity_turn_factor = 1.0
-fire_max_speed_factor = 1.0
-fire_acceleration_factor = 1.0
-double_tap_msec = 1.0
-turn_around_acceleration_factor = 1.0
+thrust_speed = 400.0
+turn_speed = 50.0
+test_feel = true
+max_speed = 3000.0
+excessive_speed_linear_damp_factor = 0.98
+turn_linear_damp_factor = 0.99
+thrust_turn_factor = 0.7
+fire_turn_factor = 0.6
+turn_with_velocity_turn_factor = 0.9
+fire_max_speed_factor = 0.25
+fire_acceleration_factor = 0.5
+double_tap_msec = 200.0
+turn_around_acceleration_factor = 1.5
 quick_turn_degrees = 0
 
 [node name="ThrustTriangle" type="Polygon2D" parent="." index="0"]
