@@ -43,9 +43,10 @@ size = Vector2(61440, 34560)
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 10000.0
 
-[node name="BigWrappingArea2" type="Node2D" node_paths=PackedStringArray("player")]
+[node name="BigWrappingArea2" type="Node2D" node_paths=PackedStringArray("player", "smearing_view")]
 script = ExtResource("1_w7ll5")
 player = NodePath("SubViewportContainer/SubViewport/Player")
+smearing_view = NodePath("SubViewportContainer")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_4qsp5")
@@ -154,6 +155,7 @@ position = Vector2(28801, 17200)
 corpse_children = [null]
 
 [node name="LazyTrackingCamera" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("prey") instance=ExtResource("8_rcdx7")]
+position = Vector2(28801, 17200)
 prey = NodePath("../Player")
 
 [node name="Sun" parent="SubViewportContainer/SubViewport" instance=ExtResource("7_mlajb")]

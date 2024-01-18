@@ -1,7 +1,6 @@
-[gd_scene load_steps=17 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=12 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_80w6u"]
-[ext_resource type="Texture2D" uid="uid://jsmihjjtiejl" path="res://white-dust-scratches-black-background_279525-2.png" id="2_2dpyt"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_rhngu"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/player.tscn" id="3_r2sfy"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
@@ -9,53 +8,29 @@
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="5_pt2a0"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="6_e337w"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_m427m"]
-[ext_resource type="Material" uid="uid://dsinhtn0k3jry" path="res://scenes/post.tres" id="10_yvffj"]
-
-[sub_resource type="Gradient" id="Gradient_r5345"]
-offsets = PackedFloat32Array(0, 0.641975, 0.938272)
-colors = PackedColorArray(0, 0, 0, 1, 0.0512, 0.532053, 0.64, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_eox5c"]
-gradient = SubResource("Gradient_r5345")
-
-[sub_resource type="Environment" id="Environment_rbddx"]
-background_mode = 3
-glow_enabled = true
-glow_intensity = 1.68
-glow_strength = 0.72
-glow_mix = 0.138
-glow_bloom = 0.73
-glow_blend_mode = 1
-glow_hdr_threshold = 0.0
-glow_hdr_scale = 1.15
-glow_hdr_luminance_cap = 3.25
-glow_map_strength = 0.82
-glow_map = ExtResource("2_2dpyt")
-adjustment_color_correction = SubResource("GradientTexture1D_eox5c")
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8n8cw"]
-size = Vector2(23040, 12960)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_psnnu"]
+size = Vector2(61440, 34560)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 6400.0
 
-[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player")]
+[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "smearing_view")]
 position = Vector2(-1, -13)
 script = ExtResource("1_80w6u")
 player = NodePath("SubViewportContainer/SubViewport/Player")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_rbddx")
+smearing_view = NodePath("SubViewportContainer")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 custom_minimum_size = Vector2(1920, 1080)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 1980.0
+offset_left = 3000.0
+offset_right = 4920.0
 offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -65,8 +40,7 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(1980, 1080)
-render_target_clear_mode = 1
+size = Vector2i(1920, 1080)
 render_target_update_mode = 4
 
 [node name="WrappingWalls" type="Node2D" parent="SubViewportContainer/SubViewport"]
@@ -126,17 +100,18 @@ shape = SubResource("WorldBoundaryShape2D_ed0ja")
 [node name="Player" parent="SubViewportContainer/SubViewport" instance=ExtResource("3_r2sfy")]
 
 [node name="LazyTrackingCamera" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("prey") instance=ExtResource("5_05koq")]
+position = Vector2(9599, 2567)
 prey = NodePath("../Player")
 
 [node name="StarfieldBG" type="Area2D" parent="SubViewportContainer/SubViewport"]
+visible = false
 z_index = -100
-position = Vector2(9600, 5400)
 collision_layer = 0
 collision_mask = 0
 
 [node name="SpawnRandomStarField" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/StarfieldBG"]
-position = Vector2(287, 95)
-shape = SubResource("RectangleShape2D_8n8cw")
+position = Vector2(19201, 10800)
+shape = SubResource("RectangleShape2D_psnnu")
 script = ExtResource("4_e5ljk")
 num_to_spawn = 50000
 proto = ExtResource("5_pt2a0")
@@ -155,19 +130,6 @@ proto = ExtResource("6_e337w")
 
 [node name="HUD" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("game") instance=ExtResource("8_m427m")]
 game = NodePath("../../..")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport"]
-
-[node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport/CanvasLayer"]
-material = ExtResource("10_yvffj")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color(0, 0, 0, 1)
 
 [connection signal="body_entered" from="SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall" to="SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall" to="SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall" method="on_body_entered"]
