@@ -149,18 +149,17 @@ num_to_spawn = 1024
 proto = ExtResource("6_3qruu")
 exclude_inner_percentage = 0.7
 
-[node name="Player" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("corpse_children") instance=ExtResource("3_e3nbw")]
+[node name="Player" parent="SubViewportContainer/SubViewport" instance=ExtResource("3_e3nbw")]
 position = Vector2(28801, 17200)
-corpse_children = [null]
 
 [node name="LazyTrackingCamera" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("prey") instance=ExtResource("8_rcdx7")]
+position = Vector2(28801, 17200)
 prey = NodePath("../Player")
 
 [node name="Sun" parent="SubViewportContainer/SubViewport" instance=ExtResource("7_mlajb")]
 position = Vector2(28801, 16200)
 
 [node name="HUD" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("game") instance=ExtResource("8_k1cvn")]
-visible = false
 game = NodePath("../../..")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport"]

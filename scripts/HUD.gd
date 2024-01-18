@@ -12,7 +12,6 @@ func _ready():
 
 func _process(delta):
 	
-	
 	if debug_fps_label.visible:
 		debug_fps_label.text = "FPS: %.02f" % (Engine.get_frames_per_second())
 		

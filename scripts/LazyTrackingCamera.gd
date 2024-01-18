@@ -3,6 +3,7 @@ extends Camera2D
 @export var show_debug = true
 @export var state_label:Label
 @export var prey:Player
+@export var center_on_initialize:bool = true
 @export var track_threshold:float = 0
 @export var lock_threshold:float = 0
 @export var max_relative_speed:float = 1
@@ -12,6 +13,7 @@ extends Camera2D
 @export_range(0.5, 1) var lead_vel_perp_damp = 0.9
 @export var follow_to_rest_ms = 300
 @export var lead_to_follow_ms = 300
+
 
 var velocity:Vector2
 var prey_velocity:Vector2
@@ -28,6 +30,9 @@ var tracking = TrackingState.Rest
 func _ready():
 	if prey:
 		prey.camera = self
+		
+		if center_on_initialize:
+			global_position = prey.global_position
 
 func _draw():
 	if show_debug && prey:

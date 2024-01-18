@@ -22,7 +22,7 @@ func shoot():
 	initial_velocity *= shot_force
 	initial_velocity += inherit_velocity.get_linear_velocity()
 	shot_instance.set_linear_velocity(initial_velocity)
-	shot_parent.owner.add_child(shot_instance)
+	shot_parent.get_parent().add_child(shot_instance)
 	cooldown_timestamp = Time.get_ticks_msec() + (cooldown_duration_secs * 1000);
 	
 	

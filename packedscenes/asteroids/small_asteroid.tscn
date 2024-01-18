@@ -12,6 +12,7 @@ max_health = 6.0
 
 [node name="Polygon2D" parent="." index="0"]
 scale = Vector2(20, 20)
+draw_line_width = 0.04
 
 [node name="CollisionPolygon2D" parent="." index="1"]
 scale = Vector2(20, 20)

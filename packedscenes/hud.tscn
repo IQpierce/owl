@@ -6,9 +6,10 @@
 [sub_resource type="LabelSettings" id="LabelSettings_pl6hg"]
 font = ExtResource("2_ebi6m")
 font_size = 48
-font_color = Color(0.588235, 0.588235, 0.588235, 1)
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
+shadow_size = 0
+shadow_offset = Vector2(0, 0)
 
 [sub_resource type="Theme" id="Theme_viact"]
 default_font = ExtResource("2_ebi6m")
@@ -32,7 +33,7 @@ visible = false
 [node name="ColorRect" type="ColorRect" parent="GameOver"]
 offset_right = 1920.0
 offset_bottom = 1071.0
-color = Color(0, 0, 0, 0.470588)
+color = Color(0, 0, 0, 0.156863)
 
 [node name="Label" type="Label" parent="GameOver"]
 offset_top = -25.0

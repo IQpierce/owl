@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dvs73k0tkjij4"]
+[gd_scene load_steps=3 format=3 uid="uid://dvs73k0tkjij4"]
 
 [ext_resource type="Script" path="res://scripts/Creature.gd" id="1_7fvrv"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_lckca"]
 
 [node name="Creature" type="RigidBody2D"]
 position = Vector2(976, 547)
@@ -11,12 +12,14 @@ linear_damp = 0.1
 angular_damp = 3.0
 script = ExtResource("1_7fvrv")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+[node name="TrunkCollision" type="CollisionPolygon2D" parent="."]
 editor_description = "collision/physics aspect"
-scale = Vector2(12, 12)
-polygon = PackedVector2Array(-0.5, 0.5, 0.5, 0.5, 0, -0.5)
+polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
 
-[node name="HullTriangle" type="Polygon2D" parent="."]
+[node name="TrunkPolygon" type="Polygon2D" parent="."]
 editor_description = "visual aspect"
-scale = Vector2(12, 12)
-polygon = PackedVector2Array(-0.5, 0.5, 0.5, 0.5, 0, -0.5)
+color = Color(0, 0, 0, 0)
+polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
+script = ExtResource("2_lckca")
+point_draw_radius = 1.08
+draw_line_width = 1.2
