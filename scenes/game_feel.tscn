@@ -10,7 +10,7 @@
 [ext_resource type="FontFile" uid="uid://bfc5s6j3cdokw" path="res://fonts/Vectorb.ttf" id="5_qlo1y"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="6_e337w"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_m427m"]
-[ext_resource type="Material" uid="uid://b178necrtntu3" path="res://scenes/post.tres" id="10_yvffj"]
+[ext_resource type="Material" uid="uid://dsinhtn0k3jry" path="res://scenes/post.tres" id="10_yvffj"]
 
 [sub_resource type="Gradient" id="Gradient_r5345"]
 offsets = PackedFloat32Array(0, 0.641975, 0.938272)
@@ -22,15 +22,15 @@ gradient = SubResource("Gradient_r5345")
 [sub_resource type="Environment" id="Environment_rbddx"]
 background_mode = 3
 glow_enabled = true
-glow_intensity = 0.77
-glow_strength = 0.98
+glow_intensity = 1.68
+glow_strength = 0.72
 glow_mix = 0.138
-glow_bloom = 0.69
+glow_bloom = 0.73
 glow_blend_mode = 1
 glow_hdr_threshold = 0.0
 glow_hdr_scale = 1.15
 glow_hdr_luminance_cap = 3.25
-glow_map_strength = 1.0
+glow_map_strength = 0.82
 glow_map = ExtResource("2_2dpyt")
 adjustment_color_correction = SubResource("GradientTexture1D_eox5c")
 
@@ -50,6 +50,7 @@ size = Vector2(23040, 12960)
 radius = 6400.0
 
 [node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player")]
+position = Vector2(-1, -13)
 script = ExtResource("1_80w6u")
 player = NodePath("SubViewportContainer/SubViewport/Player")
 
@@ -135,7 +136,7 @@ collision_mask = 0
 thrust_speed = 400.0
 turn_speed = 50.0
 test_feel = true
-max_speed = 3000.0
+max_speed = 250.0
 excessive_speed_linear_damp_factor = 0.98
 turn_linear_damp_factor = 0.99
 thrust_turn_factor = 0.7
@@ -145,7 +146,6 @@ fire_max_speed_factor = 0.25
 fire_acceleration_factor = 0.5
 double_tap_msec = 200.0
 turn_around_acceleration_factor = 1.5
-boost_on_turn_around = 30.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport"]
 

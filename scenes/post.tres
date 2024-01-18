@@ -1,7 +1,8 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b178necrtntu3"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dsinhtn0k3jry"]
 
-[ext_resource type="Shader" uid="uid://b273dxpt1p6kx" path="res://scenes/phosphor.tres" id="1_ol8rj"]
+[ext_resource type="Shader" uid="uid://dljfibrx8y7eu" path="res://scenes/phosphor.tres" id="1_ol8rj"]
 
 [resource]
 shader = ExtResource("1_ol8rj")
-shader_parameter/Trails = 0.18
+shader_parameter/Trails = 0.129
+shader_parameter/ColorParameter = Color(0.827451, 0.909804, 1, 1)

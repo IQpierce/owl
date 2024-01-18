@@ -19,7 +19,7 @@ size = Vector2(61440, 34560)
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 10000.0
 
-[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player")]
+[node name="BigWrappingArea2" type="Node2D" node_paths=PackedStringArray("player")]
 script = ExtResource("1_w7ll5")
 player = NodePath("Player")
 
@@ -79,17 +79,6 @@ shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="Player" parent="." node_paths=PackedStringArray("corpse_children") instance=ExtResource("3_e3nbw")]
 position = Vector2(28802, 4100)
-excessive_speed_linear_damp_factor = 1.0
-turn_linear_damp_factor = 1.0
-thrust_turn_factor = 1.0
-fire_turn_factor = 1.0
-turn_with_velocity_turn_factor = 1.0
-fire_max_speed_factor = 1.0
-fire_acceleration_factor = 1.0
-double_tap_msec = 1.0
-turn_around_acceleration_factor = 1.0
-boost_on_turn_around = 1.0
-quick_turn_degrees = 0
 corpse_children = [NodePath("Camera2D")]
 
 [node name="Camera2D" type="Camera2D" parent="Player"]

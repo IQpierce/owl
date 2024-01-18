@@ -32,7 +32,6 @@ fire_max_speed_factor = 1.0
 fire_acceleration_factor = 1.0
 double_tap_msec = 1.0
 turn_around_acceleration_factor = 1.0
-boost_on_turn_around = 1.0
 quick_turn_degrees = 0
 
 [node name="ThrustTriangle" type="Polygon2D" parent="." index="0"]
@@ -48,7 +47,7 @@ circle_draw_color = Color(0.392157, 0.392157, 0.392157, 1)
 line_draw_color = Color(0.392157, 0.392157, 0.392157, 1)
 
 [node name="HullTriangle" parent="." index="2"]
-color = Color(0, 0, 0, 1)
+color = Color(0, 0, 0, 0)
 antialiased = true
 script = ExtResource("3_ec47f")
 circle_draw_color = Color(1, 1, 1, 1)
