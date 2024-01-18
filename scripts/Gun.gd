@@ -12,14 +12,10 @@ func is_waiting_on_cooldown():
 	return Time.get_ticks_msec() < cooldown_timestamp
 
 func shoot():
-	print("try shoot")
 	if (is_waiting_on_cooldown()):
 		return
 
 
-
-	print("shoot")
-	
 	var shot_instance:RigidBody2D = shot_proto.instantiate()
 	shot_instance.global_position = global_position
 	var initial_velocity:Vector2 = Vector2(0, -1).rotated(global_transform.get_rotation())
