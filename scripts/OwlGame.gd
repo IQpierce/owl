@@ -9,7 +9,7 @@ signal on_game_ended(won:bool)
 var game_over:bool
 
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	#Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	Engine.max_fps = 60
 	
 	player.died.connect(self.on_player_died)

@@ -23,6 +23,17 @@ thrust_speed = 750.0
 turn_speed = 30.0
 test_feel = false
 max_speed = 0.0
+excessive_speed_linear_damp_factor = 1.0
+turn_linear_damp_factor = 1.0
+thrust_turn_factor = 1.0
+fire_turn_factor = 1.0
+turn_with_velocity_turn_factor = 1.0
+fire_max_speed_factor = 1.0
+fire_acceleration_factor = 1.0
+double_tap_msec = 1.0
+turn_around_acceleration_factor = 1.0
+boost_on_turn_around = 1.0
+quick_turn_degrees = 0
 
 [node name="ThrustTriangle" type="Polygon2D" parent="." index="0"]
 visible = false
@@ -40,6 +51,7 @@ line_draw_color = Color(0.392157, 0.392157, 0.392157, 1)
 color = Color(0, 0, 0, 1)
 antialiased = true
 script = ExtResource("3_ec47f")
+circle_draw_color = Color(1, 1, 1, 1)
 
 [node name="Gun" type="Node2D" parent="." index="3" node_paths=PackedStringArray("inherit_velocity", "shot_parent")]
 position = Vector2(0, -6)

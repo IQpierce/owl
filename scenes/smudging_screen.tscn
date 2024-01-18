@@ -30,3 +30,14 @@ position_smoothing_speed = 2.0
 
 [node name="Player" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_b6fq2")]
 position = Vector2(200, 200)
+excessive_speed_linear_damp_factor = 1.0
+turn_linear_damp_factor = 1.0
+thrust_turn_factor = 1.0
+fire_turn_factor = 1.0
+turn_with_velocity_turn_factor = 1.0
+fire_max_speed_factor = 1.0
+fire_acceleration_factor = 1.0
+double_tap_msec = 1.0
+turn_around_acceleration_factor = 1.0
+boost_on_turn_around = 1.0
+quick_turn_degrees = 0
