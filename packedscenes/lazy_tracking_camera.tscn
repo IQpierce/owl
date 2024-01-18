@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://c36qcdqbeep7j"]
+
+[ext_resource type="Script" path="res://scripts/LazyTrackingCamera.gd" id="1_pg46r"]
+[ext_resource type="FontFile" uid="uid://bfc5s6j3cdokw" path="res://fonts/Vectorb.ttf" id="2_gny5w"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_rs3gb"]
+font = ExtResource("2_gny5w")
+font_size = 48
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="LazyTrackingCamera" type="Camera2D" node_paths=PackedStringArray("state_label")]
+position = Vector2(9600, 2567)
+process_callback = 0
+script = ExtResource("1_pg46r")
+show_debug = false
+state_label = NodePath("Camera State")
+track_threshold = 250.0
+lock_threshold = 100.0
+max_relative_speed = 2.0
+lead_distance = 400
+rest_vel_damp = 0.99
+lead_vel_perp_damp = 0.97
+lead_to_follow_ms = 0
+
+[node name="Camera State" type="Label" parent="."]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -129.5
+offset_top = 455.0
+offset_right = 129.5
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Rest"
+label_settings = SubResource("LabelSettings_rs3gb")
+horizontal_alignment = 1
+vertical_alignment = 2

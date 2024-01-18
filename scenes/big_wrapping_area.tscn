@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://l0ljwo0hkdoq"]
+[gd_scene load_steps=18 format=3 uid="uid://l0ljwo0hkdoq"]
 
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="1_vm4r1"]
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_w7ll5"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="6_q82vl"]
 [ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/cosmic_bodies/sun.tscn" id="7_mlajb"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_k1cvn"]
+[ext_resource type="PackedScene" uid="uid://c36qcdqbeep7j" path="res://packedscenes/lazy_tracking_camera.tscn" id="8_rcdx7"]
 [ext_resource type="Material" uid="uid://dsinhtn0k3jry" path="res://scenes/post.tres" id="12_cqmsd"]
 
 [sub_resource type="Gradient" id="Gradient_xl0lp"]
@@ -150,10 +151,10 @@ exclude_inner_percentage = 0.7
 
 [node name="Player" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("corpse_children") instance=ExtResource("3_e3nbw")]
 position = Vector2(28801, 17200)
-corpse_children = [NodePath("Camera2D")]
+corpse_children = [null]
 
-[node name="Camera2D" type="Camera2D" parent="SubViewportContainer/SubViewport/Player"]
-process_callback = 0
+[node name="LazyTrackingCamera" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("prey") instance=ExtResource("8_rcdx7")]
+prey = NodePath("../Player")
 
 [node name="Sun" parent="SubViewportContainer/SubViewport" instance=ExtResource("7_mlajb")]
 position = Vector2(28801, 16200)

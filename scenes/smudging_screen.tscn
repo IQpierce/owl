@@ -39,5 +39,3 @@ fire_max_speed_factor = 1.0
 fire_acceleration_factor = 1.0
 double_tap_msec = 1.0
 turn_around_acceleration_factor = 1.0
-boost_on_turn_around = 1.0
-quick_turn_degrees = 0

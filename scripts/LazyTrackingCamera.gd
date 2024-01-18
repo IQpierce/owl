@@ -26,12 +26,14 @@ enum TrackingState { Rest, Follow, Lead }
 var tracking = TrackingState.Rest
 
 func _ready():
-	prey.camera = self
+	if prey:
+		prey.camera = self
 
 func _draw():
-	if show_debug:
-		#state_label.visible = true
-		#state_label.text = TrackingState.keys()[tracking]
+	if show_debug && prey:
+		if state_label:
+			state_label.visible = true
+			state_label.text = TrackingState.keys()[tracking]
 
 		if tracking == TrackingState.Lead:
 			# Screen Center
@@ -51,10 +53,14 @@ func _draw():
 			draw_rect(track_rect, Color.GRAY, false, 1.0)
 
 		draw_rect(lock_rect, Color.GRAY, false, 3.0 * (tracking + 1))
-	#else:
-		#state_label.visible = false
+	else:
+		if state_label:
+			state_label.visible = false
 
 func _physics_process(delta):
+	if not prey:
+		return
+
 	var focus = position
 
 	var view_size = get_viewport().size # TODO Is this bad to call every frame?
