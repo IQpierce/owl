@@ -1,18 +1,17 @@
-[gd_scene load_steps=9 format=3 uid="uid://jymuym62nmct"]
+[gd_scene load_steps=8 format=3 uid="uid://jymuym62nmct"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_5vrjf"]
 [ext_resource type="Script" path="res://scripts/Player.gd" id="2_7yjal"]
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="3_0fbu5"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="3_ec47f"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]
-[ext_resource type="Script" path="res://scripts/InBoundsCollisionPolygon2D.gd" id="4_e0ijw"]
 [ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="5_iboy3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntkiv"]
 radius = 64.0
 
 [node name="Player" instance=ExtResource("1_5vrjf")]
-position = Vector2(9599, 2567)
+position = Vector2(0, 0)
 disable_mode = 2
 collision_mask = 2
 freeze_mode = 1
@@ -49,15 +48,6 @@ polygon = PackedVector2Array(-0.5, 0.5, 0.5, 0.5, 0, -0.857147)
 script = ExtResource("3_ec47f")
 circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
-
-[node name="CollisionPolygon2D" parent="." index="1"]
-script = ExtResource("4_e0ijw")
-
-[node name="HullTriangle" parent="." index="2"]
-color = Color(0, 0, 0, 0)
-antialiased = true
-script = ExtResource("3_ec47f")
-circle_draw_color = Color(1, 1, 1, 1)
 
 [node name="Gun" type="Node2D" parent="." index="3" node_paths=PackedStringArray("inherit_velocity", "shot_parent")]
 position = Vector2(0, -6)
