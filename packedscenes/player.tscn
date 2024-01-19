@@ -1,0 +1,85 @@
+[gd_scene load_steps=8 format=3 uid="uid://bs4ffq5j6xndu"]
+
+[ext_resource type="Script" path="res://scripts/Player.gd" id="2_7yjal"]
+[ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="3_0fbu5"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="3_ec47f"]
+[ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]
+[ext_resource type="Script" path="res://scripts/InBoundsCollisionPolygon2D.gd" id="4_e0ijw"]
+[ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="5_iboy3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ntkiv"]
+radius = 64.0
+
+[node name="Player"]
+position = Vector2(9599, 2567)
+disable_mode = 2
+collision_mask = 2
+freeze_mode = 1
+continuous_cd = 2
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("2_7yjal")
+thrust_speed = 800.0
+turn_speed = 70.0
+test_feel = true
+max_speed = 3000.0
+hard_speed_limit = 7000.0
+ignore_speed_limit = false
+thrust_at_max_speed = 1.0
+excessive_speed_linear_damp_factor = 0.98
+turn_linear_damp_factor = 0.99
+thrust_turn_factor = 0.8
+fire_turn_factor = 0.7
+turn_with_velocity_turn_factor = 0.85
+fire_max_speed_factor = 0.9
+fire_acceleration_factor = 0.8
+double_tap_msec = 200.0
+turn_around_acceleration_factor = 1.5
+quick_turn_degrees = 0
+
+[node name="ThrustTriangle" type="Polygon2D" parent="." index="0"]
+visible = false
+modulate = Color(0.670588, 0.670588, 0.670588, 1)
+position = Vector2(-1.13687e-12, 10)
+rotation = 3.14159
+scale = Vector2(9.5, 9.5)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-0.5, 0.5, 0.5, 0.5, 0, -0.857147)
+script = ExtResource("3_ec47f")
+circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
+line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
+
+[node name="CollisionPolygon2D" parent="." index="1"]
+script = ExtResource("4_e0ijw")
+
+[node name="HullTriangle" parent="." index="2"]
+color = Color(0, 0, 0, 0)
+antialiased = true
+script = ExtResource("3_ec47f")
+circle_draw_color = Color(1, 1, 1, 1)
+
+[node name="Gun" type="Node2D" parent="." index="3" node_paths=PackedStringArray("inherit_velocity", "shot_parent")]
+position = Vector2(0, -6)
+script = ExtResource("3_r8khv")
+shot_proto = ExtResource("3_0fbu5")
+shot_force = 1200.0
+cooldown_duration_secs = 0.23
+inherit_velocity = NodePath("..")
+shot_parent = NodePath("..")
+
+[node name="PickupVacuum" type="Area2D" parent="." index="4"]
+collision_mask = 16
+gravity_space_override = 4
+gravity_point = true
+gravity_point_unit_distance = 128.0
+gravity_point_center = Vector2(0, 0)
+gravity_direction = Vector2(0, 0)
+gravity = 512.0
+script = ExtResource("5_iboy3")
+
+[node name="VacuumCollisionShape" type="CollisionShape2D" parent="PickupVacuum" index="0"]
+shape = SubResource("CircleShape2D_ntkiv")
+
+[connection signal="shot_fired" from="." to="Gun" method="shoot"]
+[connection signal="thrusting_state_change" from="." to="ThrustTriangle" method="set_visible"]
+[connection signal="body_entered" from="PickupVacuum" to="PickupVacuum" method="_on_body_entered"]
