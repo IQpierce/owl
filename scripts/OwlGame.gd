@@ -7,6 +7,11 @@ class_name OwlGame
 @export var smearing_view:SubViewportContainer
 @export var world_camera:Camera2D
 
+@export var left_wall  :Node2D
+@export var right_wall :Node2D
+@export var top_wall   :Node2D
+@export var bottom_wall:Node2D
+
 signal on_game_ended(won:bool)
 
 var game_over:bool

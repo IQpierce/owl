@@ -2,13 +2,19 @@ extends Creature
 
 class_name Player
 
+@export var world:OwlGame
 @export var thrust_speed:float
 @export var turn_speed:float
 ## Enables uses of parameters below
 @export var test_feel:bool
 ## Cannot accelerate to a higher speed paralell current velocity. Acceleration perpendicular to velocity is still considered. This does not limit the speed caused by outside forces, but velocity will eventually settle back to this.
-@export var max_speed:float
+@export var max_speed:float = 3000
+## NOTHING in the world can make you go faster
+@export var hard_speed_limit:float = 7000 # TODO should this be world property that all things follow? Maybe a property on a parent?
+## Ignore the hard_speed_limit so forces in the worldcan move you faster
+@export var ignore_speed_limit:bool = false
 ## Slow down when moving beyond max speed
+@export_range(0.25, 1) var thrust_at_max_speed:float = 0.5
 @export var excessive_speed_linear_damp_factor:float = 1;
 ## Modifies deceleration while turning
 @export var turn_linear_damp_factor:float = 1;
@@ -39,10 +45,38 @@ var thrust_tap_time:int = 0;
 var left_tap_time:int = 0;
 var right_tap_time:int = 0;
 
+# TODO do we need the hard_speed_limit if we force you to stay in the bounds?
+var last_inbounds_pos:Vector2
+var out_of_bounds:bool
+
 signal thrusting_state_change(enabled:bool)
 signal shot_fired()
 
 func _physics_process(delta):
+	# TODO (sam) is this actually keeping us inbounds when we making a wonking collision
+	#TODO I DON'T THINK THIS IS DOING ANYTHING CURRENTLY
+	var pending_reposition = out_of_bounds
+	out_of_bounds = false
+	if world:
+		if world.left_wall && position.x < world.left_wall.position.x:
+			out_of_bounds = true
+		if world.right_wall && position.x > world.right_wall.position.x:
+			out_of_bounds = true
+		if world.top_wall && position.y < world.top_wall.position.y:
+			out_of_bounds = true
+		if world.bottom_wall && position.y > world.bottom_wall.position.y:
+			out_of_bounds = true
+
+	if pending_reposition && out_of_bounds:
+		if OS.has_feature("editor"):
+			print("Out of Bounds at ", position, " - Moving back to ", last_inbounds_pos)
+			get_tree().paused = true
+		position = last_inbounds_pos
+		out_of_bounds = false
+	else:
+		last_inbounds_pos = position
+		out_of_bounds = false
+
 	if test_feel:
 		process_input_refac(delta)
 	else:
@@ -100,7 +134,8 @@ func process_input_refac(delta):
 			left_tap_time = time_now
 		else:
 			angular_velocity -= delta * turn_speed
-		linear_damp_factor *= turn_linear_damp_factor
+		if not thrusting:
+			linear_damp_factor *= turn_linear_damp_factor
 	elif Input.is_action_pressed("turn_right"):
 		if Input.is_action_just_pressed("turn_right"):
 			if time_now - right_tap_time <= double_tap_msec:
@@ -109,7 +144,8 @@ func process_input_refac(delta):
 			right_tap_time = time_now
 		else:
 			angular_velocity += delta * turn_speed
-		linear_damp_factor *= turn_linear_damp_factor
+		if not thrusting:
+			linear_damp_factor *= turn_linear_damp_factor
 
 	if heading_dir.rotated(angular_velocity * delta).dot(linear_velocity) >= heading_dir.dot(linear_velocity):
 		turn_damp_factor *= turn_with_velocity_turn_factor;
@@ -117,7 +153,9 @@ func process_input_refac(delta):
 	var cap_speed = max_speed * max_speed_factor;
 
 	if Input.is_action_pressed("thrust"):
-		var thrust_delta = thrust_speed * delta;
+		var speed_portion = clamp((linear_velocity.length() / max_speed) * heading_dir.dot(linear_velocity.normalized()), 0, 1)
+		var thrust_lerp = (1 - speed_portion) + (speed_portion * thrust_at_max_speed)
+		var thrust_delta = thrust_speed * thrust_lerp * delta;
 		var acceleration = heading_dir * thrust_delta;
 
 		if linear_velocity.length_squared() > 0:
@@ -145,6 +183,9 @@ func process_input_refac(delta):
 
 		apply_central_impulse(acceleration * thrust_delta)
 
+		if !ignore_speed_limit && linear_velocity.length_squared() > hard_speed_limit * hard_speed_limit:
+			linear_velocity = linear_velocity * hard_speed_limit
+
 		if (!thrusting):
 			thrusting_state_change.emit(true)
 			thrusting = true
@@ -155,8 +196,6 @@ func process_input_refac(delta):
 
 	if linear_velocity.length_squared() > (cap_speed * cap_speed):
 		linear_damp_factor *= excessive_speed_linear_damp_factor;
-
-	#print(linear_velocity)
 
 #todo is this not working
 #todo could turning around be faster, like if you are turning against your velocity you turn faster

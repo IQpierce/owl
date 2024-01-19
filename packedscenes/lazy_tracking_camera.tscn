@@ -9,18 +9,17 @@ font_size = 48
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
-[node name="LazyTrackingCamera" type="Camera2D" node_paths=PackedStringArray("state_label")]
-position = Vector2(9600, 2567)
+[node name="LazyTrackingCamera" type="Camera2D"]
+position = Vector2(9599, 2567)
 process_callback = 0
 script = ExtResource("1_pg46r")
 show_debug = false
-state_label = NodePath("Camera State")
-lock_threshold = 100.0
-max_relative_speed = 2.0
-lead_distance = 400
-rest_vel_damp = 0.99
-lead_vel_perp_damp = 0.97
-lead_to_follow_ms = 0
+track_threshold = 450.0
+max_relative_speed = 3.0
+acceleration_factor = 1.5
+lead_distance = 500
+rest_vel_damp = 0.8
+lead_vel_perp_damp = 0.8
 
 [node name="Camera State" type="Label" parent="."]
 visible = false
