@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://l0ljwo0hkdoq"]
+[gd_scene load_steps=19 format=3 uid="uid://l0ljwo0hkdoq"]
 
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="1_vm4r1"]
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_w7ll5"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="6_q82vl"]
 [ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/cosmic_bodies/sun.tscn" id="7_mlajb"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_k1cvn"]
+[ext_resource type="PackedScene" uid="uid://dkfy8ncjc1gd6" path="res://packedscenes/cosmic_bodies/planetoid.tscn" id="8_r0sug"]
 [ext_resource type="PackedScene" uid="uid://c36qcdqbeep7j" path="res://packedscenes/lazy_tracking_camera.tscn" id="8_rcdx7"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="11_11kq6"]
 [ext_resource type="Material" uid="uid://dsinhtn0k3jry" path="res://scenes/post.tres" id="12_cqmsd"]
@@ -158,6 +159,14 @@ exclude_inner_percentage = 0.7
 [node name="LazyTrackingCamera" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("prey") instance=ExtResource("8_rcdx7")]
 position = Vector2(28801, 17200)
 prey = NodePath("../Player")
+
+[node name="WaterPlanetoid" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("orbit_target") instance=ExtResource("8_r0sug")]
+position = Vector2(28449, 29178)
+gravity_space_override = 0
+linear_damp = 10.0
+angular_damp = 10.0
+orbit_target = NodePath("../Sun")
+full_orbit_time_secs = 800.0
 
 [node name="Sun" parent="SubViewportContainer/SubViewport" instance=ExtResource("7_mlajb")]
 position = Vector2(28801, 16200)
