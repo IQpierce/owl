@@ -112,7 +112,7 @@ func _physics_process(delta):
 			else:
 				fallback_start = Time.get_ticks_msec()
 				if velocity.dot(prey.position - position) <= 0:
-					if to_prey.dot(to_prey_soon) <= 0:
+					if to_prey.project(prey_heading).dot(to_prey_soon.project(prey_heading)) <= 0:
 						tracking = TrackingState.Lead
 					else:
 						tracking = TrackingState.Rest
@@ -148,8 +148,11 @@ func _physics_process(delta):
 							clamp((abs(to_prey.x) - to_track.x) / (to_lock.x - to_track.x), 0, 1),
 							clamp((abs(to_prey.y) - to_track.y) / (to_lock.y - to_track.y), 0, 1))
 					var most_portion = max(threshold_portions.x, threshold_portions.y)
-					var accelerated_speed = velocity.length() + prey.thrust_speed * acceleration_factor * delta
-					var prey_relative_speed = prey_velocity.length() * max_relative_speed * most_portion
+					var accelerated_speed = velocity.length()# + prey.thrust_speed * acceleration_factor * delta
+					var prey_relative_speed = prey_velocity.length() * most_portion
+					if prey.thrusting && prey_heading.dot(to_prey) > 0:
+						accelerated_speed += prey.thrust_speed * acceleration_factor * delta
+						prey_relative_speed *= max_relative_speed
 					velocity = to_focus_dir * max(accelerated_speed, prey_relative_speed)
 					if velocity.dot(prey_heading) < 0:
 						velocity = velocity.normalized() * prey_velocity.length()
@@ -167,7 +170,6 @@ func _physics_process(delta):
 			var max_speed = prey_speed * max_relative_speed
 			if new_speed > max_speed:
 				velocity = (velocity / new_speed) * max_speed
-
 
 	# If very close to focus, just jump to it; otherwise, move at velocity
 	var delta_vel = velocity * delta

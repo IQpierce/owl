@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://jymuym62nmct"]
+[gd_scene load_steps=9 format=3 uid="uid://jymuym62nmct"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_5vrjf"]
 [ext_resource type="Script" path="res://scripts/Player.gd" id="2_7yjal"]
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="3_0fbu5"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="3_ec47f"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]
+[ext_resource type="Script" path="res://scripts/InBoundsCollisionPolygon2D.gd" id="4_e0ijw"]
 [ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="5_iboy3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntkiv"]
@@ -13,23 +14,26 @@ radius = 64.0
 [node name="Player" instance=ExtResource("1_5vrjf")]
 position = Vector2(9599, 2567)
 disable_mode = 2
-collision_mask = 0
+collision_mask = 2
 freeze_mode = 1
 continuous_cd = 2
 max_contacts_reported = 1
 contact_monitor = true
 script = ExtResource("2_7yjal")
-thrust_speed = 400.0
-turn_speed = 50.0
+thrust_speed = 800.0
+turn_speed = 70.0
 test_feel = true
 max_speed = 3000.0
+hard_speed_limit = 7000.0
+ignore_speed_limit = false
+thrust_at_max_speed = 1.0
 excessive_speed_linear_damp_factor = 0.98
 turn_linear_damp_factor = 0.99
-thrust_turn_factor = 0.7
-fire_turn_factor = 0.6
-turn_with_velocity_turn_factor = 0.9
-fire_max_speed_factor = 0.25
-fire_acceleration_factor = 0.5
+thrust_turn_factor = 0.8
+fire_turn_factor = 0.7
+turn_with_velocity_turn_factor = 0.85
+fire_max_speed_factor = 0.9
+fire_acceleration_factor = 0.8
 double_tap_msec = 200.0
 turn_around_acceleration_factor = 1.5
 quick_turn_degrees = 0
@@ -45,6 +49,15 @@ polygon = PackedVector2Array(-0.5, 0.5, 0.5, 0.5, 0, -0.857147)
 script = ExtResource("3_ec47f")
 circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
+
+[node name="CollisionPolygon2D" parent="." index="1"]
+script = ExtResource("4_e0ijw")
+
+[node name="HullTriangle" parent="." index="2"]
+color = Color(0, 0, 0, 0)
+antialiased = true
+script = ExtResource("3_ec47f")
+circle_draw_color = Color(1, 1, 1, 1)
 
 [node name="Gun" type="Node2D" parent="." index="3" node_paths=PackedStringArray("inherit_velocity", "shot_parent")]
 position = Vector2(0, -6)

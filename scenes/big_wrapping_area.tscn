@@ -43,10 +43,15 @@ size = Vector2(61440, 34560)
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 10000.0
 
-[node name="BigWrappingArea2" type="Node2D" node_paths=PackedStringArray("player", "smearing_view")]
+[node name="BigWrappingArea2" type="Node2D" node_paths=PackedStringArray("player", "smearing_view", "world_camera", "left_wall", "right_wall", "top_wall", "bottom_wall")]
 script = ExtResource("1_w7ll5")
 player = NodePath("SubViewportContainer/SubViewport/Player")
 smearing_view = NodePath("SubViewportContainer")
+world_camera = NodePath("SubViewportContainer/SubViewport/LazyTrackingCamera")
+left_wall = NodePath("SubViewportContainer/SubViewport/WrappingWalls/LeftWrappingWall")
+right_wall = NodePath("SubViewportContainer/SubViewport/WrappingWalls/RightWrappingWall")
+top_wall = NodePath("SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall")
+bottom_wall = NodePath("SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_4qsp5")
