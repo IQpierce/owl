@@ -18,19 +18,19 @@ size = Vector2(61440, 34560)
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 6400.0
 
-[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "smearing_view")]
+[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "smearing_view", "world_camera")]
 position = Vector2(-1, -13)
 script = ExtResource("1_80w6u")
 player = NodePath("SubViewportContainer/SubViewport/Player")
 smearing_view = NodePath("SubViewportContainer")
+world_camera = NodePath("SubViewportContainer/SubViewport/LazyTrackingCamera")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 custom_minimum_size = Vector2(1920, 1080)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 3000.0
-offset_right = 4920.0
+offset_right = 1920.0
 offset_bottom = 1080.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -102,6 +102,8 @@ shape = SubResource("WorldBoundaryShape2D_ed0ja")
 [node name="LazyTrackingCamera" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("prey") instance=ExtResource("5_05koq")]
 position = Vector2(9599, 2567)
 prey = NodePath("../Player")
+lead_distance = 300
+rest_vel_damp = 0.8
 
 [node name="StarfieldBG" type="Area2D" parent="SubViewportContainer/SubViewport"]
 visible = false

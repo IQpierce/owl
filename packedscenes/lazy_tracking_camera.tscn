@@ -15,7 +15,6 @@ process_callback = 0
 script = ExtResource("1_pg46r")
 show_debug = false
 state_label = NodePath("Camera State")
-track_threshold = 250.0
 lock_threshold = 100.0
 max_relative_speed = 2.0
 lead_distance = 400

@@ -151,7 +151,7 @@ proto = ExtResource("6_3qruu")
 exclude_inner_percentage = 0.7
 
 [node name="Player" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("corpse_children") instance=ExtResource("3_e3nbw")]
-position = Vector2(28801, 17200)
+position = Vector2(8801, 6200)
 corpse_children = [null]
 
 [node name="LazyTrackingCamera" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("prey") instance=ExtResource("8_rcdx7")]
