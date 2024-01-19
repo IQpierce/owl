@@ -5,6 +5,8 @@ extends CollisionShape2D
 @export var exclude_inner_percentage:float = 0.0
 
 func _ready():
+	if not is_visible_in_tree():
+		return
 	
 	assert(exclude_inner_percentage >= 0.0 && exclude_inner_percentage < 1.0)
 	
