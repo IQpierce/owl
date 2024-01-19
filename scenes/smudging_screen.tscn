@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://mwhtisqstiya"]
 
-[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/player.tscn" id="1_b6fq2"]
+[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="1_b6fq2"]
 
 [node name="SmudgingScreen" type="Node2D"]
 

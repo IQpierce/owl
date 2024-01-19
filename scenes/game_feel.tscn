@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_80w6u"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_rhngu"]
-[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/player.tscn" id="3_r2sfy"]
+[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="3_r2sfy"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
 [ext_resource type="PackedScene" uid="uid://c36qcdqbeep7j" path="res://packedscenes/lazy_tracking_camera.tscn" id="5_05koq"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="5_pt2a0"]

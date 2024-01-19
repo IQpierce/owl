@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="1_vm4r1"]
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_w7ll5"]
 [ext_resource type="Texture2D" uid="uid://jsmihjjtiejl" path="res://white-dust-scratches-black-background_279525-2.png" id="2_suh85"]
-[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/player.tscn" id="3_e3nbw"]
+[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="3_e3nbw"]
 [ext_resource type="PackedScene" uid="uid://vyncb8ek17e" path="res://packedscenes/asteroids/medium_asteroid.tscn" id="6_3qruu"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="6_86odn"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="6_q82vl"]

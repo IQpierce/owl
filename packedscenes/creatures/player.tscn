@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://jymuym62nmct"]
 
-[ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creature.tscn" id="1_5vrjf"]
+[ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_5vrjf"]
 [ext_resource type="Script" path="res://scripts/Player.gd" id="2_7yjal"]
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="3_0fbu5"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="3_ec47f"]
