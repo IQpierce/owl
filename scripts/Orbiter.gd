@@ -2,6 +2,7 @@ extends Area2D
 
 @export var orbit_target:Node2D
 @export var full_orbit_time_secs:float = 60
+@export var clockwise:bool = true
 
 var orbit_start_time:float = NAN
 var initial_orbit_distance:float = NAN
@@ -21,6 +22,8 @@ func _process(delta):
 	var orbit_time:float = current_time - orbit_start_time
 	
 	var orbit_angle_per_sec:float = (2*PI) / full_orbit_time_secs
+	if !clockwise:
+		orbit_angle_per_sec *= -1
 	global_position = orbit_target.global_position + Vector2.RIGHT.rotated(initial_orbit_angle + orbit_time * orbit_angle_per_sec) * initial_orbit_distance
 	
 	
