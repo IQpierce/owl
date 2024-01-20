@@ -47,6 +47,7 @@ var right_tap_time:int = 0;
 
 # TODO do we need the hard_speed_limit if we force you to stay in the bounds?
 var last_inbounds_pos:Vector2
+var camera_last_inbounds_pos:Vector2
 var out_of_bounds:bool
 
 signal thrusting_state_change(enabled:bool)
@@ -67,15 +68,18 @@ func _physics_process(delta):
 		if world.bottom_wall && position.y > world.bottom_wall.position.y:
 			out_of_bounds = true
 
-	if pending_reposition && out_of_bounds:
-		if OS.has_feature("editor"):
-			print("Out of Bounds at ", position, " - Moving back to ", last_inbounds_pos)
-			get_tree().paused = true
-		position = last_inbounds_pos
-		out_of_bounds = false
+	if out_of_bounds:
+		if pending_reposition:
+			if OS.has_feature("editor"):
+				print("Out of Bounds at ", position, " - Moving back to ", last_inbounds_pos)
+				#get_tree().paused = true
+			position = last_inbounds_pos
+			if camera:
+				camera.position = camera_last_inbounds_pos
 	else:
 		last_inbounds_pos = position
-		out_of_bounds = false
+		if camera:
+			camera_last_inbounds_pos = camera.position
 
 	if test_feel:
 		process_input_refac(delta)

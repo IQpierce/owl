@@ -9,11 +9,12 @@ font_size = 48
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
-[node name="LazyTrackingCamera" type="Camera2D"]
+[node name="LazyTrackingCamera" type="Camera2D" node_paths=PackedStringArray("state_label")]
 position = Vector2(9599, 2567)
 process_callback = 0
 script = ExtResource("1_pg46r")
 show_debug = false
+state_label = NodePath("Camera State")
 track_threshold = 450.0
 max_relative_speed = 3.0
 acceleration_factor = 1.5

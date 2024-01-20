@@ -1,13 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=12 format=3 uid="uid://c3upn7yytt8rp"]
 
-[ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_80w6u"]
-[ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_rhngu"]
-[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="3_r2sfy"]
-[ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
-[ext_resource type="PackedScene" uid="uid://c36qcdqbeep7j" path="res://packedscenes/lazy_tracking_camera.tscn" id="5_05koq"]
-[ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="5_pt2a0"]
-[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="6_e337w"]
-[ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_m427m"]
+[ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_x8n6v"]
+[ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_vfuc5"]
+[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="3_1dul7"]
+[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="4_mwf7v"]
+[ext_resource type="PackedScene" uid="uid://c36qcdqbeep7j" path="res://packedscenes/lazy_tracking_camera.tscn" id="5_bb2td"]
+[ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="6_mc78h"]
+[ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="7_3fjc0"]
+[ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_n07t2"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
@@ -20,7 +20,7 @@ radius = 6400.0
 
 [node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "smearing_view", "world_camera", "left_wall", "right_wall", "top_wall", "bottom_wall")]
 position = Vector2(-1, -13)
-script = ExtResource("1_80w6u")
+script = ExtResource("1_x8n6v")
 player = NodePath("SubViewportContainer/SubViewport/Player")
 smearing_view = NodePath("SubViewportContainer")
 world_camera = NodePath("SubViewportContainer/SubViewport/LazyTrackingCamera")
@@ -55,7 +55,7 @@ position = Vector2(9600, 10800)
 scale = Vector2(6, 6)
 collision_layer = 4
 collision_mask = 27
-script = ExtResource("2_rhngu")
+script = ExtResource("2_vfuc5")
 teleport_translation = Vector2(0, -10750)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall"]
@@ -68,7 +68,7 @@ rotation = 3.14159
 scale = Vector2(6, 6)
 collision_layer = 4
 collision_mask = 27
-script = ExtResource("2_rhngu")
+script = ExtResource("2_vfuc5")
 teleport_translation = Vector2(0, 10750)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall"]
@@ -81,8 +81,8 @@ rotation = -1.5708
 scale = Vector2(6, 6)
 collision_layer = 4
 collision_mask = 27
-script = ExtResource("2_rhngu")
-teleport_translation = Vector2(-19150, 0)
+script = ExtResource("2_vfuc5")
+teleport_translation = Vector2(-19550, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/WrappingWalls/RightWrappingWall"]
 position = Vector2(0.166667, 0)
@@ -94,21 +94,25 @@ rotation = 1.5708
 scale = Vector2(6, 6)
 collision_layer = 4
 collision_mask = 27
-script = ExtResource("2_rhngu")
-teleport_translation = Vector2(19150, 0)
+script = ExtResource("2_vfuc5")
+teleport_translation = Vector2(19550, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/WrappingWalls/LeftWrappingWall"]
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
-[node name="Player" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("world") instance=ExtResource("3_r2sfy")]
-position = Vector2(9600, 8400)
+[node name="Crashteroid" parent="SubViewportContainer/SubViewport" instance=ExtResource("3_1dul7")]
+position = Vector2(2000, 900)
+
+[node name="Player" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("world") instance=ExtResource("4_mwf7v")]
+position = Vector2(2000, 8900)
 world = NodePath("../../..")
 
-[node name="LazyTrackingCamera" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("prey") instance=ExtResource("5_05koq")]
+[node name="LazyTrackingCamera" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("prey") instance=ExtResource("5_bb2td")]
 prey = NodePath("../Player")
 
 [node name="StarfieldBG" type="Area2D" parent="SubViewportContainer/SubViewport"]
+visible = false
 z_index = -100
 collision_layer = 0
 collision_mask = 0
@@ -116,11 +120,12 @@ collision_mask = 0
 [node name="SpawnRandomStarField" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/StarfieldBG"]
 position = Vector2(19201, 10800)
 shape = SubResource("RectangleShape2D_psnnu")
-script = ExtResource("4_e5ljk")
+script = ExtResource("6_mc78h")
 num_to_spawn = 50000
-proto = ExtResource("5_pt2a0")
+proto = ExtResource("7_3fjc0")
 
 [node name="AsteroidBelt" type="Area2D" parent="SubViewportContainer/SubViewport"]
+visible = false
 position = Vector2(9600, 5400)
 disable_mode = 1
 collision_layer = 0
@@ -128,11 +133,11 @@ collision_mask = 0
 
 [node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/AsteroidBelt"]
 shape = SubResource("CircleShape2D_xkjbt")
-script = ExtResource("4_e5ljk")
+script = ExtResource("6_mc78h")
 num_to_spawn = 512
-proto = ExtResource("6_e337w")
+proto = ExtResource("3_1dul7")
 
-[node name="HUD" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("game") instance=ExtResource("8_m427m")]
+[node name="HUD" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("game") instance=ExtResource("8_n07t2")]
 game = NodePath("../../..")
 
 [connection signal="body_entered" from="SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall" to="SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall" method="on_body_entered"]
