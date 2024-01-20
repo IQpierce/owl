@@ -1,14 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://dkfy8ncjc1gd6"]
+[gd_scene load_steps=8 format=3 uid="uid://dkfy8ncjc1gd6"]
 
 [ext_resource type="Texture2D" uid="uid://d01krn0pvudlc" path="res://dot.png" id="1_me3mu"]
 [ext_resource type="Script" path="res://scripts/Orbiter.gd" id="1_xk02d"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_ku8k5"]
+[ext_resource type="Material" uid="uid://cewktdf0bh7mh" path="res://particles/planetoid_inner.tres" id="3_8115p"]
 [ext_resource type="PackedScene" uid="uid://leunbw6hhxa0" path="res://packedscenes/gravity_well.tscn" id="3_hejg5"]
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nam2q"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_aiflv"]
-radius = 100.0
+radius = 500.0
 
 [node name="Planetoid" type="Area2D"]
-collision_layer = 3
+collision_layer = 2
 collision_mask = 27
 input_pickable = false
 priority = 2
@@ -20,11 +24,59 @@ angular_damp_space_override = 2
 angular_damp = 87.441
 script = ExtResource("1_xk02d")
 
+[node name="Polygon" type="Polygon2D" parent="."]
+color = Color(0, 0, 0, 0)
+polygon = PackedVector2Array(500, 0, 493.844, 78.2172, 475.528, 154.508, 445.503, 226.995, 404.508, 293.893, 353.553, 353.553, 293.893, 404.508, 226.995, 445.503, 154.508, 475.528, 78.2172, 493.844, 3.06152e-14, 500, -78.2172, 493.844, -154.508, 475.528, -226.995, 445.503, -293.893, 404.508, -353.553, 353.553, -404.508, 293.893, -445.503, 226.995, -475.528, 154.508, -493.844, 78.2172, -500, 6.12303e-14, -493.844, -78.2172, -475.528, -154.508, -445.503, -226.995, -404.508, -293.893, -353.553, -353.553, -293.893, -404.508, -226.995, -445.503, -154.508, -475.528, -78.2172, -493.844, -9.18455e-14, -500, 78.2172, -493.844, 154.508, -475.528, 226.995, -445.503, 293.893, -404.508, 353.553, -353.553, 404.508, -293.893, 445.503, -226.995, 475.528, -154.508, 493.844, -78.2172, 500, 0)
+script = ExtResource("2_ku8k5")
+point_draw_radius = 1.08
+circle_draw_color = Color(1, 1, 1, 1)
+line_draw_color = Color(1, 1, 1, 1)
+draw_line_width = 1.2
+
+[node name="InnerParticlesCPU" type="CPUParticles2D" parent="Polygon"]
+process_mode = 3
+visible = false
+modulate = Color(0.639216, 0.639216, 0.639216, 0.815686)
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_nam2q")
+scale = Vector2(3.8, 3.8)
+amount = 1000
+fixed_fps = 60
+local_coords = true
+texture = ExtResource("1_me3mu")
+emission_shape = 1
+emission_sphere_radius = 128.0
+gravity = Vector2(0, 0)
+scale_amount_min = 0.01
+scale_amount_max = 0.01
+
+[node name="InnerParticles2" type="GPUParticles2D" parent="Polygon"]
+process_mode = 3
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_nam2q")
+amount = 1000
+process_material = ExtResource("3_8115p")
+texture = ExtResource("1_me3mu")
+fixed_fps = 60
+visibility_rect = Rect2(-500, -500, 1000, 1000)
+local_coords = true
+
+[node name="InnerParticles3" type="GPUParticles2D" parent="Polygon"]
+process_mode = 3
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_nam2q")
+amount = 1000
+process_material = ExtResource("3_8115p")
+texture = ExtResource("1_me3mu")
+fixed_fps = 60
+visibility_rect = Rect2(-500, -500, 1000, 1000)
+local_coords = true
+
 [node name="Collision" type="CollisionShape2D" parent="."]
-scale = Vector2(5, 5)
 shape = SubResource("CircleShape2D_aiflv")
 
 [node name="Sprite" type="Sprite2D" parent="."]
+visible = false
 modulate = Color(1, 1, 1, 0.352941)
 scale = Vector2(5, 5)
 texture = ExtResource("1_me3mu")

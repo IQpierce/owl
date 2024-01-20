@@ -21,7 +21,7 @@ size = Vector2(61440, 34560)
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 10000.0
 
-[node name="BigWrappingArea2" type="Node2D" node_paths=PackedStringArray("player", "world_camera", "left_wall", "right_wall", "top_wall", "bottom_wall")]
+[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera", "left_wall", "right_wall", "top_wall", "bottom_wall")]
 script = ExtResource("1_w7ll5")
 player = NodePath("Player")
 world_camera = NodePath("LazyTrackingCamera")
@@ -86,7 +86,7 @@ position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="Player" parent="." instance=ExtResource("11_11kq6")]
-position = Vector2(28596, 26995)
+position = Vector2(28919, 28775)
 
 [node name="LazyTrackingCamera" parent="." node_paths=PackedStringArray("prey") instance=ExtResource("8_rcdx7")]
 position = Vector2(28801, 17200)
@@ -108,8 +108,8 @@ proto = ExtResource("6_86odn")
 [node name="AsteroidBelt" type="Area2D" parent="."]
 position = Vector2(28801, 16200)
 disable_mode = 1
-collision_layer = 0
-collision_mask = 0
+collision_layer = 2
+collision_mask = 27
 
 [node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidBelt"]
 shape = SubResource("CircleShape2D_xkjbt")
@@ -119,7 +119,7 @@ proto = ExtResource("6_3qruu")
 exclude_inner_percentage = 0.7
 
 [node name="WaterPlanetoid" parent="." node_paths=PackedStringArray("orbit_target") instance=ExtResource("8_r0sug")]
-position = Vector2(28449, 29178)
+position = Vector2(28853, 29850)
 gravity_space_override = 0
 linear_damp = 9.0
 angular_damp = 9.0
