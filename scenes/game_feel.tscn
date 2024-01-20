@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=13 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_80w6u"]
+[ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_rhngu"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="3_r2sfy"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
@@ -18,39 +19,22 @@ size = Vector2(61440, 34560)
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 6400.0
 
-[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "smearing_view", "world_camera", "left_wall", "right_wall", "top_wall", "bottom_wall")]
+[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera", "left_wall", "right_wall", "top_wall", "bottom_wall")]
 position = Vector2(-1, -13)
 script = ExtResource("1_80w6u")
-player = NodePath("SubViewportContainer/SubViewport/Player")
-smearing_view = NodePath("SubViewportContainer")
-world_camera = NodePath("SubViewportContainer/SubViewport/LazyTrackingCamera")
-left_wall = NodePath("SubViewportContainer/SubViewport/WrappingWalls/LeftWrappingWall")
-right_wall = NodePath("SubViewportContainer/SubViewport/WrappingWalls/RightWrappingWall")
-top_wall = NodePath("SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall")
-bottom_wall = NodePath("SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall")
+player = NodePath("Player")
+world_camera = NodePath("LazyTrackingCamera")
+left_wall = NodePath("WrappingWalls/LeftWrappingWall")
+right_wall = NodePath("WrappingWalls/RightWrappingWall")
+top_wall = NodePath("WrappingWalls/TopWrappingWall")
+bottom_wall = NodePath("WrappingWalls/BottomWrappingWall")
+emulate_phosphor_monitor = false
+phosphor_emulation_proto = ExtResource("2_eojni")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
-custom_minimum_size = Vector2(1920, 1080)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 1920.0
-offset_bottom = 1080.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-stretch = true
+[node name="WrappingWalls" type="Node2D" parent="."]
+position = Vector2(2, 14)
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
-handle_input_locally = false
-size = Vector2i(1920, 1080)
-render_target_update_mode = 4
-
-[node name="WrappingWalls" type="Node2D" parent="SubViewportContainer/SubViewport"]
-position = Vector2(1, 1)
-
-[node name="BottomWrappingWall" type="Area2D" parent="SubViewportContainer/SubViewport/WrappingWalls"]
+[node name="BottomWrappingWall" type="Area2D" parent="WrappingWalls"]
 position = Vector2(9600, 10800)
 scale = Vector2(6, 6)
 collision_layer = 4
@@ -58,11 +42,11 @@ collision_mask = 27
 script = ExtResource("2_rhngu")
 teleport_translation = Vector2(0, -10750)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/BottomWrappingWall"]
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
-[node name="TopWrappingWall" type="Area2D" parent="SubViewportContainer/SubViewport/WrappingWalls"]
+[node name="TopWrappingWall" type="Area2D" parent="WrappingWalls"]
 position = Vector2(9600, 0)
 rotation = 3.14159
 scale = Vector2(6, 6)
@@ -71,11 +55,11 @@ collision_mask = 27
 script = ExtResource("2_rhngu")
 teleport_translation = Vector2(0, 10750)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/TopWrappingWall"]
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
-[node name="RightWrappingWall" type="Area2D" parent="SubViewportContainer/SubViewport/WrappingWalls"]
+[node name="RightWrappingWall" type="Area2D" parent="WrappingWalls"]
 position = Vector2(19200, 5400)
 rotation = -1.5708
 scale = Vector2(6, 6)
@@ -84,11 +68,11 @@ collision_mask = 27
 script = ExtResource("2_rhngu")
 teleport_translation = Vector2(-19150, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/WrappingWalls/RightWrappingWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/RightWrappingWall"]
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
-[node name="LeftWrappingWall" type="Area2D" parent="SubViewportContainer/SubViewport/WrappingWalls"]
+[node name="LeftWrappingWall" type="Area2D" parent="WrappingWalls"]
 position = Vector2(0, 5400)
 rotation = 1.5708
 scale = Vector2(6, 6)
@@ -97,45 +81,48 @@ collision_mask = 27
 script = ExtResource("2_rhngu")
 teleport_translation = Vector2(19150, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/WrappingWalls/LeftWrappingWall"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/LeftWrappingWall"]
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
-[node name="Player" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("world") instance=ExtResource("3_r2sfy")]
-position = Vector2(9600, 8400)
-world = NodePath("../../..")
+[node name="Player" parent="." node_paths=PackedStringArray("world") instance=ExtResource("3_r2sfy")]
+position = Vector2(9601, 8413)
+world = NodePath("..")
 
-[node name="LazyTrackingCamera" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("prey") instance=ExtResource("5_05koq")]
+[node name="LazyTrackingCamera" parent="." node_paths=PackedStringArray("prey") instance=ExtResource("5_05koq")]
+position = Vector2(9600, 2580)
 prey = NodePath("../Player")
 
-[node name="StarfieldBG" type="Area2D" parent="SubViewportContainer/SubViewport"]
+[node name="StarfieldBG" type="Area2D" parent="."]
+visible = false
 z_index = -100
+position = Vector2(1, 13)
 collision_layer = 0
 collision_mask = 0
 
-[node name="SpawnRandomStarField" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/StarfieldBG"]
+[node name="SpawnRandomStarField" type="CollisionShape2D" parent="StarfieldBG"]
 position = Vector2(19201, 10800)
 shape = SubResource("RectangleShape2D_psnnu")
 script = ExtResource("4_e5ljk")
 num_to_spawn = 50000
 proto = ExtResource("5_pt2a0")
 
-[node name="AsteroidBelt" type="Area2D" parent="SubViewportContainer/SubViewport"]
-position = Vector2(9600, 5400)
+[node name="AsteroidBelt" type="Area2D" parent="."]
+position = Vector2(9601, 5413)
 disable_mode = 1
 collision_layer = 0
 collision_mask = 0
 
-[node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/AsteroidBelt"]
+[node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidBelt"]
 shape = SubResource("CircleShape2D_xkjbt")
 script = ExtResource("4_e5ljk")
 num_to_spawn = 512
 proto = ExtResource("6_e337w")
 
-[node name="HUD" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("game") instance=ExtResource("8_m427m")]
-game = NodePath("../../..")
+[node name="HUD" parent="." node_paths=PackedStringArray("game") instance=ExtResource("8_m427m")]
+game = NodePath("..")
 
-[connection signal="body_entered" from="SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall" to="SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall" method="on_body_entered"]
-[connection signal="body_entered" from="SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall" to="SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall" method="on_body_entered"]
-[connection signal="body_entered" from="SubViewportContainer/SubViewport/WrappingWalls/RightWrappingWall" to="SubViewportContainer/SubViewport/WrappingWalls/RightWrappingWall" method="on_body_entered"]
-[connection signal="body_entered" from="SubViewportContainer/SubViewport/WrappingWalls/LeftWrappingWall" to="SubViewportContainer/SubViewport/WrappingWalls/LeftWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/RightWrappingWall" to="WrappingWalls/RightWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/LeftWrappingWall" to="WrappingWalls/LeftWrappingWall" method="on_body_entered"]

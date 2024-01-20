@@ -4,13 +4,16 @@ class_name OwlGame
 
 @export var hide_mouse:bool = true
 @export var player:Player
-@export var smearing_view:SubViewportContainer
 @export var world_camera:Camera2D
 
 @export var left_wall  :Node2D
 @export var right_wall :Node2D
 @export var top_wall   :Node2D
 @export var bottom_wall:Node2D
+
+@export var emulate_phosphor_monitor:bool = true
+## PhosphorEmulation we need to render everything under to pretend the game is rendered in suspended phospor.
+@export var phosphor_emulation_proto:PackedScene
 
 signal on_game_ended(won:bool)
 
@@ -28,14 +31,21 @@ func _ready():
 	var view_size = get_viewport().size
 	print("Zoom ", view_size.x, "x",view_size.y, " to show ", default_view_size.x, "x", default_view_size.y, "(ish)")
 
-	if smearing_view:
-		smearing_view.stretch = true
-		smearing_view.custom_minimum_size = view_size
-		smearing_view.set_anchors_preset(Control.LayoutPreset.PRESET_FULL_RECT)
-		smearing_view.size = view_size
-		smearing_view.position = Vector2.ZERO
-		smearing_view.size_flags_horizontal = Control.SizeFlags.SIZE_EXPAND_FILL
-		smearing_view.size_flags_vertical   = Control.SizeFlags.SIZE_EXPAND_FILL
+	if emulate_phosphor_monitor && phosphor_emulation_proto:
+		var scene_children = get_children();
+		var phoshor_emu:PhosphorEmulation = phosphor_emulation_proto.instantiate()
+		add_child(phoshor_emu)
+		phoshor_emu.viewport_container.stretch = true
+		phoshor_emu.viewport_container.custom_minimum_size = view_size
+		phoshor_emu.viewport_container.set_anchors_preset(Control.LayoutPreset.PRESET_FULL_RECT)
+		phoshor_emu.viewport_container.size = view_size
+		phoshor_emu.viewport_container.position = Vector2.ZERO
+		phoshor_emu.viewport_container.size_flags_horizontal = Control.SizeFlags.SIZE_EXPAND_FILL
+		phoshor_emu.viewport_container.size_flags_vertical   = Control.SizeFlags.SIZE_EXPAND_FILL
+		print(scene_children)
+		for child in scene_children:
+			remove_child(child)
+			phoshor_emu.viewport.add_child(child)
 
 	if world_camera:
 		var default_view_diagonal = default_view_size.length()
