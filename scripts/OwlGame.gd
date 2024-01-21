@@ -11,6 +11,11 @@ class_name OwlGame
 @export var top_wall   :Node2D
 @export var bottom_wall:Node2D
 
+@export var muted:bool = false:
+	set(v):
+		muted = v
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), muted)
+
 @export var emulate_phosphor_monitor:bool = true
 ## PhosphorEmulation we need to render everything under to pretend the game is rendered in suspended phospor.
 @export var phosphor_emulation_proto:PackedScene
@@ -51,6 +56,11 @@ func _ready():
 		var default_view_diagonal = default_view_size.length()
 		var view_diagonal = view_size.length()
 		world_camera.zoom *= view_diagonal / default_view_diagonal
+
+func _process(delta):
+	if Input.is_action_just_pressed("toggle_mute"):
+		muted = !muted
+
 
 func on_player_died(utterly:bool):
 	game_over = true

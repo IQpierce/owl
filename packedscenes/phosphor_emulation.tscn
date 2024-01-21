@@ -70,3 +70,4 @@ color = Color(0, 0, 0, 1)
 
 [node name="Hum" type="AudioStreamPlayer" parent="SubViewportContainer/SubViewport/CanvasLayer/ColorRect"]
 stream = ExtResource("4_u788m")
+volume_db = -20.0
