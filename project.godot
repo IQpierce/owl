@@ -13,6 +13,7 @@ config_version=5
 config/name="Owl"
 run/main_scene="res://scenes/big_wrapping_area.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [audio]
