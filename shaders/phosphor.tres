@@ -1,0 +1,63 @@
+[gd_resource type="VisualShader" load_steps=5 format=3 uid="uid://bsu4uvba4tdpt"]
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_22sdg"]
+parameter_name = "Trails"
+hint = 1
+max = 6.0
+default_value_enabled = true
+default_value = 0.92
+
+[sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_ooprb"]
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_tbojg"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_t31vy"]
+source = 1
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix, unshaded;
+
+uniform sampler2D screen_tex_frg_5 : hint_screen_texture;
+uniform float Trails : hint_range(0, 6) = 0.9200000166893;
+
+
+
+void fragment() {
+	vec4 n_out5p0;
+// Texture2D:5
+	n_out5p0 = texture(screen_tex_frg_5, SCREEN_UV);
+
+
+// FloatParameter:2
+	float n_out2p0 = Trails;
+
+
+// VectorCompose:3
+	vec3 n_out3p0 = vec3(n_out2p0, n_out2p0, n_out2p0);
+
+
+// VectorOp:4
+	vec3 n_out4p0 = vec3(n_out5p0.xyz) * n_out3p0;
+
+
+// Output:0
+	COLOR.rgb = n_out4p0;
+
+
+}
+"
+mode = 1
+flags/unshaded = true
+flags/light_only = false
+nodes/fragment/0/position = Vector2(140, 180)
+nodes/fragment/2/node = SubResource("VisualShaderNodeFloatParameter_22sdg")
+nodes/fragment/2/position = Vector2(-720, 440)
+nodes/fragment/3/node = SubResource("VisualShaderNodeVectorCompose_ooprb")
+nodes/fragment/3/position = Vector2(-375.668, 366.81)
+nodes/fragment/4/node = SubResource("VisualShaderNodeVectorOp_tbojg")
+nodes/fragment/4/position = Vector2(-200, 220)
+nodes/fragment/5/node = SubResource("VisualShaderNodeTexture_t31vy")
+nodes/fragment/5/position = Vector2(-480, 180)
+nodes/fragment/connections = PackedInt32Array(2, 0, 3, 0, 2, 0, 3, 1, 2, 0, 3, 2, 3, 0, 4, 1, 5, 0, 4, 0, 4, 0, 0, 0)

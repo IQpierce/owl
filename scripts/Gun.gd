@@ -6,6 +6,10 @@ extends Node2D
 @export var inherit_velocity:RigidBody2D
 @export var shot_parent:Node2D
 
+@onready var lazer = $Lazer
+
+
+
 var cooldown_timestamp:int
 
 func is_waiting_on_cooldown():
@@ -14,7 +18,6 @@ func is_waiting_on_cooldown():
 func shoot():
 	if (is_waiting_on_cooldown()):
 		return
-
 
 	var shot_instance:RigidBody2D = shot_proto.instantiate()
 	shot_instance.global_position = global_position
@@ -25,4 +28,6 @@ func shoot():
 	shot_parent.get_parent().add_child(shot_instance)
 	cooldown_timestamp = Time.get_ticks_msec() + (cooldown_duration_secs * 1000);
 	
+	# lazer audio
+	lazer.play()
 	
