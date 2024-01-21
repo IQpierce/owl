@@ -13,7 +13,6 @@ extends Camera2D
 @export_range(0, 1) var rest_vel_damp = 0.98
 @export_range(0.5, 1) var lead_vel_perp_damp = 0.9
 @export var follow_slow_to_rest_ms = 300
-@export var lead_slow_to_rest_ms = 300
 @export var lead_turn_to_rest_ms = 300
 
 var velocity:Vector2
@@ -122,9 +121,6 @@ func _physics_process(delta):
 		elif tracking == TrackingState.Lead:
 			if prey_heading.dot(position - prey.position) <= 0:
 				if Time.get_ticks_msec() - fallback_start >= lead_turn_to_rest_ms:
-					tracking = TrackingState.Rest
-			elif not prey.thrusting:
-				if Time.get_ticks_msec() - fallback_start >= lead_slow_to_rest_ms:
 					tracking = TrackingState.Rest
 			else:
 				fallback_start = Time.get_ticks_msec()
