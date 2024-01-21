@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bbnjjkemfetim"]
+[gd_scene load_steps=8 format=3 uid="uid://bbnjjkemfetim"]
 
 [ext_resource type="Script" path="res://scripts/PhosphorEmulation.gd" id="1_txn4c"]
 [ext_resource type="Texture2D" uid="uid://jsmihjjtiejl" path="res://white-dust-scratches-black-background_279525-2.png" id="2_3s4k2"]
 [ext_resource type="Material" uid="uid://dsinhtn0k3jry" path="res://scenes/post.tres" id="3_gg1dj"]
+[ext_resource type="AudioStream" uid="uid://c1wbl4jv0yl57" path="res://audio/buzz.wav" id="4_u788m"]
 
 [sub_resource type="Gradient" id="Gradient_xl0lp"]
 offsets = PackedFloat32Array(0, 0.641975, 0.938272)
@@ -66,3 +67,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
+
+[node name="Hum" type="AudioStreamPlayer" parent="SubViewportContainer/SubViewport/CanvasLayer/ColorRect"]
+stream = ExtResource("4_u788m")
