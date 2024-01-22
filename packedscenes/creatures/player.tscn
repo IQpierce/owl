@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://jymuym62nmct"]
+[gd_scene load_steps=10 format=3 uid="uid://jymuym62nmct"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_5vrjf"]
 [ext_resource type="Script" path="res://scripts/Player.gd" id="2_7yjal"]
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="3_0fbu5"]
-[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="3_ec47f"]
+[ext_resource type="Script" path="res://scripts/ThrustTriangle.gd" id="3_8xe6l"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="4_ienpe"]
 [ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="5_iboy3"]
 [ext_resource type="AudioStream" uid="uid://cgl6rx2i236us" path="res://audio/lazer.wav" id="6_hkftt"]
 
@@ -22,15 +23,14 @@ contact_monitor = true
 script = ExtResource("2_7yjal")
 thrust_speed = 800.0
 turn_speed = 70.0
-test_feel = true
-max_speed = 3000.0
+max_speed = 2000.0
 hard_speed_limit = 7000.0
 ignore_speed_limit = false
 thrust_at_max_speed = 1.0
 excessive_speed_linear_damp_factor = 0.98
 turn_linear_damp_factor = 0.99
 thrust_turn_factor = 0.8
-fire_turn_factor = 0.7
+fire_turn_factor = 0.95
 turn_with_velocity_turn_factor = 0.85
 fire_max_speed_factor = 0.9
 fire_acceleration_factor = 0.8
@@ -38,19 +38,46 @@ double_tap_msec = 200.0
 turn_around_acceleration_factor = 1.5
 quick_turn_degrees = 0
 
-[node name="ThrustTriangle" type="Polygon2D" parent="." index="0"]
+[node name="ThrustTriangle" type="Polygon2D" parent="." index="0" node_paths=PackedStringArray("boss")]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
 position = Vector2(-1.13687e-12, 10)
 rotation = 3.14159
 scale = Vector2(9.5, 9.5)
 color = Color(0, 0, 0, 0)
-polygon = PackedVector2Array(-0.5, 0.5, 0.5, 0.5, 0, -0.857147)
-script = ExtResource("3_ec47f")
+polygon = PackedVector2Array(-0.3, 0.5, 0.3, 0.5, 0, -0.857147)
+script = ExtResource("3_8xe6l")
+boss = NodePath("..")
+min_size_factor = 0.25
+flicker_range = 0.4
 circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
-[node name="Gun" type="Node2D" parent="." index="3" node_paths=PackedStringArray("inherit_velocity", "shot_parent")]
+[node name="TurnLeftTriangle" type="Polygon2D" parent="." index="1"]
+visible = false
+modulate = Color(0.670588, 0.670588, 0.670588, 1)
+position = Vector2(4, 7)
+rotation = 3.14159
+scale = Vector2(9.5, 9.5)
+color = Color(0, 0, 0, 0)
+polygon = PackedVector2Array(-0.2, 0.1, 0.2, 0.1, 0, -0.4)
+script = ExtResource("4_ienpe")
+circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
+line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
+
+[node name="TurnRightTriangle" type="Polygon2D" parent="." index="2"]
+visible = false
+modulate = Color(0.670588, 0.670588, 0.670588, 1)
+position = Vector2(-4, 7)
+rotation = 3.14159
+scale = Vector2(9.5, 9.5)
+color = Color(0, 0, 0, 0)
+polygon = PackedVector2Array(-0.2, 0.1, 0.2, 0.1, 0, -0.4)
+script = ExtResource("4_ienpe")
+circle_draw_color = Color(1, 1, 1, 1)
+line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
+
+[node name="Gun" type="Node2D" parent="." index="5" node_paths=PackedStringArray("inherit_velocity", "shot_parent")]
 position = Vector2(0, -6)
 script = ExtResource("3_r8khv")
 shot_proto = ExtResource("3_0fbu5")
@@ -63,7 +90,7 @@ shot_parent = NodePath("..")
 stream = ExtResource("6_hkftt")
 volume_db = 7.903
 
-[node name="PickupVacuum" type="Area2D" parent="." index="4"]
+[node name="PickupVacuum" type="Area2D" parent="." index="6"]
 collision_mask = 16
 gravity_space_override = 4
 gravity_point = true
@@ -78,4 +105,6 @@ shape = SubResource("CircleShape2D_ntkiv")
 
 [connection signal="shot_fired" from="." to="Gun" method="shoot"]
 [connection signal="thrusting_state_change" from="." to="ThrustTriangle" method="set_visible"]
+[connection signal="turning_left_state_change" from="." to="TurnLeftTriangle" method="set_visible"]
+[connection signal="turning_right_state_change" from="." to="TurnRightTriangle" method="set_visible"]
 [connection signal="body_entered" from="PickupVacuum" to="PickupVacuum" method="_on_body_entered"]

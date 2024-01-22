@@ -5,8 +5,6 @@ class_name Player
 @export var world:OwlGame
 @export var thrust_speed:float
 @export var turn_speed:float
-## Enables uses of parameters below
-@export var test_feel:bool
 ## Cannot accelerate to a higher speed paralell current velocity. Acceleration perpendicular to velocity is still considered. This does not limit the speed caused by outside forces, but velocity will eventually settle back to this.
 @export var max_speed:float = 3000
 ## NOTHING in the world can make you go faster
@@ -41,6 +39,8 @@ class_name Player
 
 var camera:Camera2D
 var thrusting:bool
+var turning_left:bool
+var turning_right:bool
 var thrust_tap_time:int = 0;
 var left_tap_time:int = 0;
 var right_tap_time:int = 0;
@@ -49,72 +49,44 @@ var right_tap_time:int = 0;
 var last_inbounds_pos:Vector2
 var camera_last_inbounds_pos:Vector2
 var out_of_bounds:bool
+var at_max_speed:bool
 
 signal thrusting_state_change(enabled:bool)
+signal turning_left_state_change(enabled:bool)
+signal turning_right_state_change(enabled:bool)
 signal shot_fired()
 
 func _physics_process(delta):
 	# TODO (sam) is this actually keeping us inbounds when we making a wonking collision
-	#TODO I DON'T THINK THIS IS DOING ANYTHING CURRENTLY
-	var pending_reposition = out_of_bounds
-	out_of_bounds = false
-	if world:
-		if world.left_wall && position.x < world.left_wall.position.x:
-			out_of_bounds = true
-		if world.right_wall && position.x > world.right_wall.position.x:
-			out_of_bounds = true
-		if world.top_wall && position.y < world.top_wall.position.y:
-			out_of_bounds = true
-		if world.bottom_wall && position.y > world.bottom_wall.position.y:
-			out_of_bounds = true
+	#TODO Getting knocked out of bounds might have been a consequence of physics material on asteroids... removing that might fix
+	#var pending_reposition = out_of_bounds
+	#out_of_bounds = false
+	#if world:
+	#	if world.left_wall && position.x < world.left_wall.position.x:
+	#		out_of_bounds = true
+	#	if world.right_wall && position.x > world.right_wall.position.x:
+	#		out_of_bounds = true
+	#	if world.top_wall && position.y < world.top_wall.position.y:
+	#		out_of_bounds = true
+	#	if world.bottom_wall && position.y > world.bottom_wall.position.y:
+	#		out_of_bounds = true
 
-	if out_of_bounds:
-		if pending_reposition:
-			if OS.has_feature("editor"):
-				print("Out of Bounds at ", position, " - Moving back to ", last_inbounds_pos)
-				#get_tree().paused = true
-			position = last_inbounds_pos
-			if camera:
-				camera.position = camera_last_inbounds_pos
-	else:
-		last_inbounds_pos = position
-		if camera:
-			camera_last_inbounds_pos = camera.position
+	#if out_of_bounds:
+	#	if pending_reposition:
+	#		if OS.has_feature("editor"):
+	#			print("Out of Bounds at ", position, " - Moving back to ", last_inbounds_pos)
+	#			#get_tree().paused = true
+	#		position = last_inbounds_pos
+	#		if camera:
+	#			camera.position = camera_last_inbounds_pos
+	#else:
+	#	last_inbounds_pos = position
+	#	if camera:
+	#		camera_last_inbounds_pos = camera.position
 
-	if test_feel:
-		process_input_refac(delta)
-	else:
-		process_input(delta)
-
-func process_input(delta):
-	if Input.is_action_pressed("turn_left"):
-		# Move as long as the key/button is pressed.
-		angular_velocity -= delta * turn_speed	
-	elif Input.is_action_pressed("turn_right"):
-		# Move as long as the key/button is pressed.
-		angular_velocity += delta * turn_speed	
-	
-	if Input.is_action_pressed("thrust"):
-		var facing_dir:Vector2 = Vector2.UP.rotated(rotation)
-		#linear_velocity -= (facing_dir * delta * thrust_speed)
-		apply_central_impulse(facing_dir * delta * thrust_speed)
-		
-		if (!thrusting):
-			thrusting_state_change.emit(true)
-			thrusting = true
-	elif (thrusting):
-		thrusting_state_change.emit(false)	
-		thrusting = false
-	
-	if Input.is_action_pressed("shoot"):
-		shot_fired.emit()
+	process_input_refac(delta)
 
 func process_input_refac(delta):
-	# TODO (sam) Max Speed, alter turn speed when firing, figure out feel
-	# Double tap to get 1.5 max speed for a bit 
-	# Double tap turn to spin 180
-	# Turning causes more drag when not accelerating
-
 	var time_now = Time.get_ticks_msec()
 
 	var turn_damp_factor = 1;
@@ -131,6 +103,22 @@ func process_input_refac(delta):
 		acceleration_factor *= fire_acceleration_factor;
 
 	if Input.is_action_pressed("turn_left"):
+		if !turning_left:
+			turning_left_state_change.emit(true)
+			turning_left = true
+	elif turning_left:
+			turning_left_state_change.emit(false)
+			turning_left = false
+
+	if Input.is_action_pressed("turn_right"):
+		if !turning_right:
+			turning_right_state_change.emit(true)
+			turning_right = true
+	elif turning_right:
+			turning_right_state_change.emit(false)
+			turning_right = false
+
+	if turning_left && !turning_right:
 		if Input.is_action_just_pressed("turn_left"):
 			if time_now - left_tap_time <= double_tap_msec:
 				rotation -= quick_turn_degrees * PI / 180
@@ -140,7 +128,7 @@ func process_input_refac(delta):
 			angular_velocity -= delta * turn_speed
 		if not thrusting:
 			linear_damp_factor *= turn_linear_damp_factor
-	elif Input.is_action_pressed("turn_right"):
+	if turning_right && !turning_left:
 		if Input.is_action_just_pressed("turn_right"):
 			if time_now - right_tap_time <= double_tap_msec:
 				rotation += quick_turn_degrees * PI / 180
@@ -155,6 +143,7 @@ func process_input_refac(delta):
 		turn_damp_factor *= turn_with_velocity_turn_factor;
 
 	var cap_speed = max_speed * max_speed_factor;
+	at_max_speed = false
 
 	if Input.is_action_pressed("thrust"):
 		var speed_portion = clamp((linear_velocity.length() / max_speed) * heading_dir.dot(linear_velocity.normalized()), 0, 1)
@@ -174,7 +163,7 @@ func process_input_refac(delta):
 			elif potential_velocity.length_squared() > (cap_speed * cap_speed) && head_para_vel.dot(velocity_dir) > 0:
 				var excess = potential_velocity - (velocity_dir * cap_speed)
 				head_para_vel *= (thrust_para_vel - excess).length() / thrust_para_vel.length()
-				scale *= 0.9 #TESTING make obvious that thrust is capped
+				at_max_speed = true
 				
 			acceleration = head_para_vel + head_perp_vel
 

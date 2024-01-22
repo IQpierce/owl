@@ -146,10 +146,23 @@ func _physics_process(delta):
 					var most_portion = max(threshold_portions.x, threshold_portions.y)
 					var accelerated_speed = velocity.length()# + prey.thrust_speed * acceleration_factor * delta
 					var prey_relative_speed = prey_velocity.length() * most_portion
+
 					if prey.thrusting && prey_heading.dot(to_prey) > 0:
 						accelerated_speed += prey.thrust_speed * acceleration_factor * delta
 						prey_relative_speed *= max_relative_speed
 					velocity = to_focus_dir * max(accelerated_speed, prey_relative_speed)
+
+					#TODO (sam) I would like the Follow to be reduces/eliminated if you are not traveling towards the near end of the screen
+					#var to_prey_dir = to_prey.normalized()
+					#if to_prey_dir.x < 0:
+					#	velocity.x *= clamp(prey_bearing.dot(Vector2.LEFT), 0, 1)
+					#elif to_prey_dir.x > 0:
+					#	velocity.x *= clamp(prey_bearing.dot(Vector2.RIGHT), 0, 1)
+					#if to_prey_dir.y < 0:
+					#	velocity.y *= clamp(prey_bearing.dot(Vector2.UP), 0, 1)
+					#elif to_prey_dir.y > 0:
+					#	velocity.y *= clamp(prey_bearing.dot(Vector2.DOWN), 0, 1)
+
 					if velocity.dot(prey_heading) < 0:
 						velocity = velocity.normalized() * prey_velocity.length()
 				elif tracking == TrackingState.Lead:

@@ -32,6 +32,7 @@ emulate_phosphor_monitor = false
 phosphor_emulation_proto = ExtResource("2_eojni")
 
 [node name="WrappingWalls" type="Node2D" parent="."]
+visible = false
 position = Vector2(2, 14)
 
 [node name="BottomWrappingWall" type="Area2D" parent="WrappingWalls"]
@@ -91,6 +92,7 @@ world = NodePath("..")
 
 [node name="LazyTrackingCamera" parent="." node_paths=PackedStringArray("prey") instance=ExtResource("5_05koq")]
 position = Vector2(9600, 2580)
+show_debug = true
 prey = NodePath("../Player")
 
 [node name="StarfieldBG" type="Area2D" parent="."]
