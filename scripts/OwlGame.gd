@@ -34,7 +34,8 @@ func _ready():
 
 	var default_view_size = Vector2(1920, 1080)
 	var view_size = get_viewport().size
-	print("Zoom ", view_size.x, "x",view_size.y, " to show ", default_view_size.x, "x", default_view_size.y, "(ish)")
+	if OS.has_feature("editor"):
+		print("Zoom ", view_size.x, "x",view_size.y, " to show ", default_view_size.x, "x", default_view_size.y, "(ish)")
 
 	if emulate_phosphor_monitor && phosphor_emulation_proto:
 		var scene_children = get_children();
@@ -47,7 +48,6 @@ func _ready():
 		phoshor_emu.viewport_container.position = Vector2.ZERO
 		phoshor_emu.viewport_container.size_flags_horizontal = Control.SizeFlags.SIZE_EXPAND_FILL
 		phoshor_emu.viewport_container.size_flags_vertical   = Control.SizeFlags.SIZE_EXPAND_FILL
-		print(scene_children)
 		for child in scene_children:
 			remove_child(child)
 			phoshor_emu.viewport.add_child(child)

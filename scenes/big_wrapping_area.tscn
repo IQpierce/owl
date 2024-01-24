@@ -102,7 +102,6 @@ collision_mask = 27
 [node name="LazyTrackingCamera" parent="." node_paths=PackedStringArray("prey") instance=ExtResource("8_rcdx7")]
 position = Vector2(28801, 17200)
 prey = NodePath("../Player")
-lead_slow_to_rest_ms = 1000000
 
 [node name="StarfieldBG" type="Area2D" parent="."]
 z_index = -100
