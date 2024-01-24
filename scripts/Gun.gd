@@ -4,6 +4,7 @@ extends Node2D
 @export var shot_force:float
 @export var cooldown_duration_secs:float
 @export var inherit_velocity:RigidBody2D
+@export var immune_to_shots:Array[RigidBody2D]
 @export var shot_parent:Node2D
 
 @onready var lazer = $Lazer
@@ -19,12 +20,15 @@ func shoot():
 	if (is_waiting_on_cooldown()):
 		return
 
-	var shot_instance:RigidBody2D = shot_proto.instantiate()
+	var shot_instance:Bullet = shot_proto.instantiate()
 	shot_instance.global_position = global_position
 	var initial_velocity:Vector2 = Vector2(0, -1).rotated(global_transform.get_rotation())
 	initial_velocity *= shot_force
 	initial_velocity += inherit_velocity.get_linear_velocity()
 	shot_instance.set_linear_velocity(initial_velocity)
+	
+	shot_instance.ignore_bodies.append_array(immune_to_shots)
+	
 	shot_parent.get_parent().add_child(shot_instance)
 	cooldown_timestamp = Time.get_ticks_msec() + (cooldown_duration_secs * 1000);
 	
