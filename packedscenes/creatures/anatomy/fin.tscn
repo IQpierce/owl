@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjc17lobeg23k"]
+
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="1_c1gj3"]
+[ext_resource type="Script" path="res://scripts/ThrustEngine.gd" id="1_cpc7r"]
+
+[node name="Fin" type="RigidBody2D"]
+script = ExtResource("1_cpc7r")
+power = 9001.0
+
+[node name="FinCollision" type="CollisionPolygon2D" parent="."]
+editor_description = "collision/physics aspect"
+position = Vector2(0, -2)
+polygon = PackedVector2Array(0, 0, 12, 12, 0, 3)
+
+[node name="FinPolygon" type="Polygon2D" parent="."]
+editor_description = "visual aspect"
+position = Vector2(0, -2)
+color = Color(0, 0, 0, 0)
+polygon = PackedVector2Array(0, 0, 12, 12, 0, 3)
+script = ExtResource("1_c1gj3")
+point_draw_radius = 1.08
+draw_line_width = 1.2

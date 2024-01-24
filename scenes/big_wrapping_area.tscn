@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://l0ljwo0hkdoq"]
+[gd_scene load_steps=17 format=3 uid="uid://l0ljwo0hkdoq"]
 
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="1_vm4r1"]
 [ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_w7ll5"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_sywk8"]
+[ext_resource type="PackedScene" uid="uid://dnsafpxfqwwbh" path="res://packedscenes/energy_crystal.tscn" id="5_exid1"]
 [ext_resource type="PackedScene" uid="uid://vyncb8ek17e" path="res://packedscenes/asteroids/medium_asteroid.tscn" id="6_3qruu"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="6_86odn"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="6_q82vl"]
@@ -11,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dkfy8ncjc1gd6" path="res://packedscenes/cosmic_bodies/planetoid.tscn" id="8_r0sug"]
 [ext_resource type="PackedScene" uid="uid://c36qcdqbeep7j" path="res://packedscenes/lazy_tracking_camera.tscn" id="8_rcdx7"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="11_11kq6"]
+[ext_resource type="PackedScene" uid="uid://df8xel7mmjlk2" path="res://packedscenes/creatures/sheep.tscn" id="12_ot63i"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
@@ -86,7 +88,16 @@ position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="Player" parent="." instance=ExtResource("11_11kq6")]
-position = Vector2(28919, 28775)
+position = Vector2(28560, 26816)
+collision_mask = 27
+physics_material_override = null
+
+[node name="energy_crystal" parent="." instance=ExtResource("5_exid1")]
+position = Vector2(28844, 26368)
+
+[node name="Louie" parent="." instance=ExtResource("12_ot63i")]
+position = Vector2(28847, 26749)
+collision_mask = 27
 
 [node name="LazyTrackingCamera" parent="." node_paths=PackedStringArray("prey") instance=ExtResource("8_rcdx7")]
 position = Vector2(28801, 17200)

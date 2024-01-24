@@ -1,0 +1,82 @@
+[gd_scene load_steps=6 format=3 uid="uid://df8xel7mmjlk2"]
+
+[ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_aoyla"]
+[ext_resource type="Script" path="res://scripts/brains/ResourceSeekerBrain.gd" id="2_1owoh"]
+[ext_resource type="PackedScene" uid="uid://cjc17lobeg23k" path="res://packedscenes/creatures/anatomy/fin.tscn" id="2_8eax6"]
+[ext_resource type="PhysicsMaterial" uid="uid://bk8d6toxvi2yb" path="res://physics_materials/creature.tres" id="3_53bfc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ibxja"]
+radius = 400.0
+
+[node name="Sheep" instance=ExtResource("1_aoyla")]
+mass = 12.0
+inertia = 0.0
+can_sleep = true
+freeze_mode = 1
+linear_damp = 0.0
+angular_damp = 0.0
+health = 12.0
+max_health = 12.0
+
+[node name="SeekEnergyCrystalsBrain" type="Node2D" parent="." index="0" node_paths=PackedStringArray("controlled_creature")]
+script = ExtResource("2_1owoh")
+target_resource_type = 1
+controlled_creature = NodePath("..")
+
+[node name="Area2D" type="Area2D" parent="SeekEnergyCrystalsBrain" index="0"]
+position = Vector2(0, -47.0902)
+disable_mode = 1
+collision_layer = 0
+collision_mask = 32
+
+[node name="Vision" type="CollisionShape2D" parent="SeekEnergyCrystalsBrain/Area2D" index="0"]
+position = Vector2(0, 45.4084)
+shape = SubResource("CircleShape2D_ibxja")
+
+[node name="TrunkCollision" parent="." index="1"]
+polygon = PackedVector2Array(50.4, 0, 46.564, 27.553, 35.638, 50.912, 19.287, 66.52, 0, 72, -19.287, 66.52, -35.638, 50.912, -46.564, 27.553, -50.4, 0, -46.564, -27.553, -35.638, -50.912, -19.287, -66.52, 0, -72, 19.287, -66.52, 35.638, -50.912, 46.564, -27.553, 50.4, 0)
+
+[node name="TrunkPolygon" parent="." index="2"]
+polygon = PackedVector2Array(50.4, 0, 46.564, 27.553, 35.638, 50.912, 19.287, 66.52, 0, 72, -19.287, 66.52, -35.638, 50.912, -46.564, 27.553, -50.4, 0, -46.564, -27.553, -35.638, -50.912, -19.287, -66.52, 0, -72, 19.287, -66.52, 35.638, -50.912, 46.564, -27.553, 50.4, 0)
+
+[node name="RightFin" parent="." index="3" node_paths=PackedStringArray("target_body") instance=ExtResource("2_8eax6")]
+position = Vector2(46, 30)
+collision_mask = 3
+mass = 0.5
+physics_material_override = ExtResource("3_53bfc")
+gravity_scale = 0.0
+inertia = 100.0
+target_body = NodePath(".")
+
+[node name="RightFinJoint" type="PinJoint2D" parent="." index="4"]
+position = Vector2(46, 30)
+node_a = NodePath("..")
+node_b = NodePath("../RightFin")
+bias = 0.9
+disable_collision = false
+softness = 16.0
+motor_enabled = true
+
+[node name="LeftFin" parent="." index="5" node_paths=PackedStringArray("target_body") instance=ExtResource("2_8eax6")]
+position = Vector2(-46, 30)
+rotation = 1.5708
+collision_mask = 3
+mass = 0.5
+physics_material_override = ExtResource("3_53bfc")
+gravity_scale = 0.0
+inertia = 100.0
+target_body = NodePath(".")
+
+[node name="LeftFinJoint" type="PinJoint2D" parent="." index="6"]
+position = Vector2(-46, 30)
+node_a = NodePath("..")
+node_b = NodePath("../LeftFin")
+bias = 0.9
+disable_collision = false
+softness = 16.0
+motor_enabled = true
+
+[connection signal="on_new_target_velocity_chosen" from="SeekEnergyCrystalsBrain" to="RightFin" method="set_target_velocity"]
+[connection signal="on_new_target_velocity_chosen" from="SeekEnergyCrystalsBrain" to="LeftFin" method="set_target_velocity"]
+[connection signal="body_entered" from="SeekEnergyCrystalsBrain/Area2D" to="SeekEnergyCrystalsBrain" method="on_body_enters_awareness"]
+[connection signal="body_exited" from="SeekEnergyCrystalsBrain/Area2D" to="SeekEnergyCrystalsBrain" method="on_body_exits_awareness"]

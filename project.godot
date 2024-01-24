@@ -94,11 +94,11 @@ pointing/emulate_mouse_from_touch=false
 
 [layer_names]
 
-2d_physics/layer_1="Player"
+2d_physics/layer_1="Creature"
 2d_physics/layer_2="Environment"
 2d_physics/layer_3="WorldEdge"
 2d_physics/layer_4="Projectiles"
-2d_physics/layer_5="Pickups"
+2d_physics/layer_6="Pickups"
 
 [physics]
 

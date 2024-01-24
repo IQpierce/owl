@@ -5,8 +5,8 @@ class_name Thing
 @export var spawned_per_damage:Dictionary	# keys are NodePath's which represent Spawners which will be triggered whenever an amount of damage is dealt. The damage threshold (a float) is the key value.
 @export var spawned_on_death:Array[Spawner]
 
-@export var health:float
-@export var max_health:float
+@export var health:float = 1
+@export var max_health:float = 1
 
 @export var corpse_children:Array[Node2D]	# Which of our child Node2D's persist beyond our death
 

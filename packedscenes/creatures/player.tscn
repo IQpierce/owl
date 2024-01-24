@@ -12,13 +12,7 @@
 radius = 64.0
 
 [node name="Player" instance=ExtResource("1_5vrjf")]
-position = Vector2(0, 0)
-disable_mode = 2
-collision_mask = 2
 freeze_mode = 1
-continuous_cd = 2
-max_contacts_reported = 1
-contact_monitor = true
 script = ExtResource("2_7yjal")
 thrust_speed = 800.0
 turn_speed = 70.0
@@ -50,13 +44,18 @@ script = ExtResource("3_ec47f")
 circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
-[node name="Gun" type="Node2D" parent="." index="3" node_paths=PackedStringArray("inherit_velocity", "shot_parent")]
-position = Vector2(0, -6)
+[node name="Brain" parent="." index="1"]
+process_mode = 4
+visible = false
+
+[node name="Gun" type="Node2D" parent="." index="3" node_paths=PackedStringArray("inherit_velocity", "immune_to_shots", "shot_parent")]
+position = Vector2(0, -13.175)
 script = ExtResource("3_r8khv")
 shot_proto = ExtResource("3_0fbu5")
 shot_force = 1200.0
 cooldown_duration_secs = 0.23
 inherit_velocity = NodePath("..")
+immune_to_shots = [NodePath("..")]
 shot_parent = NodePath("..")
 
 [node name="Lazer" type="AudioStreamPlayer2D" parent="Gun" index="0"]
@@ -64,7 +63,9 @@ stream = ExtResource("6_hkftt")
 volume_db = 7.903
 
 [node name="PickupVacuum" type="Area2D" parent="." index="4"]
-collision_mask = 16
+disable_mode = 2
+collision_layer = 0
+collision_mask = 32
 gravity_space_override = 4
 gravity_point = true
 gravity_point_unit_distance = 128.0

@@ -1,13 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://dvs73k0tkjij4"]
+[gd_scene load_steps=4 format=3 uid="uid://dvs73k0tkjij4"]
 
 [ext_resource type="Script" path="res://scripts/Creature.gd" id="1_7fvrv"]
+[ext_resource type="PhysicsMaterial" uid="uid://bk8d6toxvi2yb" path="res://physics_materials/creature.tres" id="1_8m65c"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_lckca"]
 
 [node name="Creature" type="RigidBody2D"]
-position = Vector2(976, 547)
-collision_mask = 4
+disable_mode = 2
+collision_mask = 3
+physics_material_override = ExtResource("1_8m65c")
 inertia = 1.0
 can_sleep = false
+continuous_cd = 2
+max_contacts_reported = 1
+contact_monitor = true
 linear_damp = 0.1
 angular_damp = 3.0
 script = ExtResource("1_7fvrv")
