@@ -1,15 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://bmfosedjl2egk"]
+[gd_scene load_steps=6 format=3 uid="uid://bmfosedjl2egk"]
 
 [ext_resource type="Script" path="res://scripts/Pickup.gd" id="1_qsy5d"]
+[ext_resource type="PhysicsMaterial" uid="uid://bdxuey7k5ll43" path="res://physics_materials/pickup.tres" id="1_tef8i"]
 [ext_resource type="Script" path="res://scripts/util/ToggleBoolSignal.gd" id="2_altes"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_n6hll"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2sk8c"]
 
 [node name="pickup" type="RigidBody2D"]
 disable_mode = 2
-collision_layer = 16
-collision_mask = 18
-mass = 0.1
+collision_layer = 32
+collision_mask = 34
+mass = 0.01
+physics_material_override = ExtResource("1_tef8i")
 lock_rotation = true
 freeze_mode = 1
 continuous_cd = 2
@@ -17,9 +20,10 @@ linear_damp = 5.0
 script = ExtResource("1_qsy5d")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
-modulate = Color(0.482353, 0.482353, 0.482353, 1)
-scale = Vector2(5, 5)
-polygon = PackedVector2Array(-1, 0, 0, -1.25, 1, 0, 0, 1.25)
+polygon = PackedVector2Array(-5, 0, 0, -6.25, 5, 0, 0, 6.25)
+script = ExtResource("2_n6hll")
+point_draw_radius = 1.0
+draw_line_width = 1.0
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 scale = Vector2(5, 5)

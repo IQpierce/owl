@@ -1,12 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dnsafpxfqwwbh"]
+[gd_scene load_steps=2 format=3 uid="uid://dnsafpxfqwwbh"]
 
 [ext_resource type="PackedScene" uid="uid://bmfosedjl2egk" path="res://packedscenes/pickup.tscn" id="1_w7arm"]
-[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_wyjb2"]
 
 [node name="energy_crystal" instance=ExtResource("1_w7arm")]
+resource_type = 1
+resource_units = 1.0
 
 [node name="Polygon2D" parent="." index="0"]
-scale = Vector2(1, 1)
 color = Color(0, 0, 0, 0)
-polygon = PackedVector2Array(-5, 0, 0, -6.25, 5, 0, 0, 6.25)
-script = ExtResource("2_wyjb2")
