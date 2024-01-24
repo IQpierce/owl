@@ -20,7 +20,7 @@ script = ExtResource("2_fuihh")
 spawned_per_damage = {
 NodePath("SpawnEnergyCrystalOnDamage"): 1.0
 }
-spawned_on_death = [NodePath("SpawnSmallerAsteroidOnDamage")]
+spawned_on_death = [NodePath("SpawnSmallerAsteroidOnDeath")]
 health = 12.0
 max_health = 12.0
 
@@ -43,7 +43,7 @@ script = ExtResource("4_0ys4r")
 spawn_protos = Array[PackedScene]([ExtResource("5_wm5mc")])
 spawn_random_angle = 0.0
 
-[node name="SpawnSmallerAsteroidOnDamage" type="Node2D" parent="."]
+[node name="SpawnSmallerAsteroidOnDeath" type="Node2D" parent="."]
 script = ExtResource("4_0ys4r")
 spawn_protos = Array[PackedScene]([ExtResource("5_wm5mc")])
 num_to_spawn = 2
