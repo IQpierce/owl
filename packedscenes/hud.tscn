@@ -15,10 +15,11 @@ shadow_offset = Vector2(0, 0)
 default_font = ExtResource("2_ebi6m")
 default_font_size = 40
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("game_over_layer", "debug_fps_label")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("game_over_layer", "debug_fps_label", "debug_time_speed_up_label")]
 script = ExtResource("1_ohgch")
 game_over_layer = NodePath("GameOver")
 debug_fps_label = NodePath("FPS")
+debug_time_speed_up_label = NodePath("TimeSpedUp")
 
 [node name="FPS" type="Label" parent="."]
 visible = false
@@ -26,6 +27,15 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "FPS: 88"
 label_settings = SubResource("LabelSettings_pl6hg")
+
+[node name="TimeSpedUp" type="Label" parent="."]
+visible = false
+offset_left = 266.0
+offset_right = 525.0
+offset_bottom = 57.0
+text = ">>>>>"
+label_settings = SubResource("LabelSettings_pl6hg")
+horizontal_alignment = 1
 
 [node name="GameOver" type="CanvasLayer" parent="."]
 visible = false
