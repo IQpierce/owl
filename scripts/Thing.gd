@@ -62,8 +62,9 @@ func deal_damage(dmg_amt:float, global_position:Vector2):
 		die(false)
 
 func die(utterly:bool = false):
-	# todo: play cool vfx / sfx
-	#shatter.play()  #this isn't work..Sam thought it might be because this object is destroyed
+	if shatter != null:
+		shatter.reparent(get_parent())
+		shatter.play()
 	
 	# pieces of our anatomy stay around
 	
@@ -80,4 +81,3 @@ func die(utterly:bool = false):
 	died.emit(utterly)
 	
 	queue_free()
-	

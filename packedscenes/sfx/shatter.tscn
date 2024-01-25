@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://8d2kfleny0cy"]
+
+[ext_resource type="AudioStream" uid="uid://lmjqv5t63gja" path="res://audio/shatter.wav" id="1_cy4vm"]
+
+[node name="Shatter" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_cy4vm")
+volume_db = -0.363
+bus = &"Effects"
+
+[connection signal="finished" from="." to="." method="queue_free"]
