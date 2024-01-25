@@ -1,17 +1,30 @@
-[gd_scene load_steps=13 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=17 format=3 uid="uid://crtw2xecbto8j"]
 
-[ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_80w6u"]
-[ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
-[ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_rhngu"]
-[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="3_r2sfy"]
-[ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
-[ext_resource type="PackedScene" uid="uid://c36qcdqbeep7j" path="res://packedscenes/lazy_tracking_camera.tscn" id="5_05koq"]
-[ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="5_pt2a0"]
-[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="6_e337w"]
-[ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_m427m"]
+[ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_l0k5w"]
+[ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_sfhc7"]
+[ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="3_sdx7j"]
+[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="4_4pf7e"]
+[ext_resource type="Texture2D" uid="uid://cu7lnwao3710b" path="res://textures/chevron.svg" id="5_1f7hk"]
+[ext_resource type="PackedScene" uid="uid://c36qcdqbeep7j" path="res://packedscenes/lazy_tracking_camera.tscn" id="5_a1hb0"]
+[ext_resource type="Script" path="res://scripts/RotatedCPUParticles2D.gd" id="6_dgrbh"]
+[ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="6_tdgsu"]
+[ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="7_2nbgb"]
+[ext_resource type="Texture2D" uid="uid://2qf5gfst1p1s" path="res://textures/thruster_exhaust.svg" id="7_lu7cg"]
+[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="8_ad8s0"]
+[ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="9_w2ywo"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2yqec"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 10.0
+angle_max = 360.0
+gravity = Vector3(0, 0, 0)
+attractor_interaction_enabled = false
+scale_min = 0.03
+scale_max = 0.05
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_psnnu"]
 size = Vector2(61440, 34560)
@@ -21,7 +34,7 @@ radius = 6400.0
 
 [node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera", "left_wall", "right_wall", "top_wall", "bottom_wall")]
 position = Vector2(-1, -13)
-script = ExtResource("1_80w6u")
+script = ExtResource("1_l0k5w")
 player = NodePath("Player")
 world_camera = NodePath("LazyTrackingCamera")
 left_wall = NodePath("WrappingWalls/LeftWrappingWall")
@@ -30,7 +43,7 @@ top_wall = NodePath("WrappingWalls/TopWrappingWall")
 bottom_wall = NodePath("WrappingWalls/BottomWrappingWall")
 muted = true
 emulate_phosphor_monitor = false
-phosphor_emulation_proto = ExtResource("2_eojni")
+phosphor_emulation_proto = ExtResource("2_sfhc7")
 
 [node name="WrappingWalls" type="Node2D" parent="."]
 visible = false
@@ -41,7 +54,7 @@ position = Vector2(9600, 10800)
 scale = Vector2(6, 6)
 collision_layer = 4
 collision_mask = 27
-script = ExtResource("2_rhngu")
+script = ExtResource("3_sdx7j")
 teleport_translation = Vector2(0, -10750)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/BottomWrappingWall"]
@@ -54,7 +67,7 @@ rotation = 3.14159
 scale = Vector2(6, 6)
 collision_layer = 4
 collision_mask = 27
-script = ExtResource("2_rhngu")
+script = ExtResource("3_sdx7j")
 teleport_translation = Vector2(0, 10750)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/TopWrappingWall"]
@@ -67,7 +80,7 @@ rotation = -1.5708
 scale = Vector2(6, 6)
 collision_layer = 4
 collision_mask = 27
-script = ExtResource("2_rhngu")
+script = ExtResource("3_sdx7j")
 teleport_translation = Vector2(-19150, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/RightWrappingWall"]
@@ -80,18 +93,48 @@ rotation = 1.5708
 scale = Vector2(6, 6)
 collision_layer = 4
 collision_mask = 27
-script = ExtResource("2_rhngu")
+script = ExtResource("3_sdx7j")
 teleport_translation = Vector2(19150, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/LeftWrappingWall"]
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
-[node name="Player" parent="." node_paths=PackedStringArray("world") instance=ExtResource("3_r2sfy")]
+[node name="Player" parent="." node_paths=PackedStringArray("world") instance=ExtResource("4_4pf7e")]
 position = Vector2(9601, 8413)
 world = NodePath("..")
 
-[node name="LazyTrackingCamera" parent="." node_paths=PackedStringArray("prey") instance=ExtResource("5_05koq")]
+[node name="SnakeTrails" type="CPUParticles2D" parent="Player"]
+modulate = Color(0.333333, 0.333333, 0.333333, 1)
+amount = 100
+fixed_fps = 60
+fract_delta = false
+texture = ExtResource("5_1f7hk")
+spread = 0.0
+gravity = Vector2(0, 0)
+script = ExtResource("6_dgrbh")
+emit_degrees = 180
+
+[node name="Exhaust" type="GPUParticles2D" parent="Player"]
+modulate = Color(0.666667, 0.666667, 0.666667, 1)
+emitting = false
+amount = 500
+process_material = SubResource("ParticleProcessMaterial_2yqec")
+texture = ExtResource("7_lu7cg")
+lifetime = 5.0
+visibility_rect = Rect2(-1000, -1000, 2000, 2000)
+
+[node name="SparseExhaust" type="GPUParticles2D" parent="Player"]
+visible = false
+modulate = Color(0.666667, 0.666667, 0.666667, 1)
+emitting = false
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_2yqec")
+texture = ExtResource("7_lu7cg")
+lifetime = 5.0
+visibility_rect = Rect2(-1000, -1000, 2000, 2000)
+
+[node name="LazyTrackingCamera" parent="." node_paths=PackedStringArray("prey") instance=ExtResource("5_a1hb0")]
 position = Vector2(9600, 2580)
 prey = NodePath("../Player")
 
@@ -105,9 +148,9 @@ collision_mask = 0
 [node name="SpawnRandomStarField" type="CollisionShape2D" parent="StarfieldBG"]
 position = Vector2(19201, 10800)
 shape = SubResource("RectangleShape2D_psnnu")
-script = ExtResource("4_e5ljk")
+script = ExtResource("6_tdgsu")
 num_to_spawn = 50000
-proto = ExtResource("5_pt2a0")
+proto = ExtResource("7_2nbgb")
 
 [node name="AsteroidBelt" type="Area2D" parent="."]
 position = Vector2(9601, 5413)
@@ -117,14 +160,16 @@ collision_mask = 0
 
 [node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidBelt"]
 shape = SubResource("CircleShape2D_xkjbt")
-script = ExtResource("4_e5ljk")
+script = ExtResource("6_tdgsu")
 num_to_spawn = 512
-proto = ExtResource("6_e337w")
+proto = ExtResource("8_ad8s0")
 
-[node name="HUD" parent="." node_paths=PackedStringArray("game") instance=ExtResource("8_m427m")]
+[node name="HUD" parent="." node_paths=PackedStringArray("game") instance=ExtResource("9_w2ywo")]
 game = NodePath("..")
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/RightWrappingWall" to="WrappingWalls/RightWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/LeftWrappingWall" to="WrappingWalls/LeftWrappingWall" method="on_body_entered"]
+[connection signal="thrusting_state_change" from="Player" to="Player/Exhaust" method="set_emitting"]
+[connection signal="thrusting_state_change" from="Player" to="Player/SparseExhaust" method="set_emitting"]

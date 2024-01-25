@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://jymuym62nmct"]
+[gd_scene load_steps=9 format=3 uid="uid://jymuym62nmct"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_5vrjf"]
 [ext_resource type="Script" path="res://scripts/Player.gd" id="2_7yjal"]
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="3_0fbu5"]
-[ext_resource type="Script" path="res://scripts/ThrustTriangle.gd" id="3_8xe6l"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="4_ienpe"]
 [ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="5_iboy3"]
@@ -32,7 +31,7 @@ double_tap_msec = 200.0
 turn_around_acceleration_factor = 1.5
 quick_turn_degrees = 0
 
-[node name="ThrustTriangle" type="Polygon2D" parent="." index="0" node_paths=PackedStringArray("boss")]
+[node name="ThrustTriangle" type="Polygon2D" parent="." index="0"]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
 position = Vector2(-1.13687e-12, 10)
@@ -40,10 +39,7 @@ rotation = 3.14159
 scale = Vector2(9.5, 9.5)
 color = Color(0, 0, 0, 0)
 polygon = PackedVector2Array(-0.3, 0.5, 0.3, 0.5, 0, -0.857147)
-script = ExtResource("3_8xe6l")
-boss = NodePath("..")
-min_size_factor = 0.25
-flicker_range = 0.4
+script = ExtResource("4_ienpe")
 circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
