@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://mym88qteigwb"]
 
-[ext_resource type="Script" path="res://scripts/Sun.gd" id="1_me80d"]
+[ext_resource type="Script" path="res://scripts/DestructionZone.gd" id="1_me80d"]
 [ext_resource type="Script" path="res://scripts/util/ToggleBoolSignal.gd" id="1_o1d3a"]
 [ext_resource type="Script" path="res://scripts/util/ConstantRotation.gd" id="2_h2as5"]
 [ext_resource type="PackedScene" uid="uid://leunbw6hhxa0" path="res://packedscenes/gravity_well.tscn" id="2_jkrf2"]
