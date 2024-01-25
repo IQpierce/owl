@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cgjbstotnfcvd"]
+[gd_scene load_steps=7 format=3 uid="uid://cgjbstotnfcvd"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://d5h87yh5ctsf" path="res://physics_materials/rock.tres" id="1_hgml5"]
 [ext_resource type="Script" path="res://scripts/Thing.gd" id="2_fuihh"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="3_bl00j"]
 [ext_resource type="Script" path="res://scripts/util/Spawner.gd" id="4_0ys4r"]
 [ext_resource type="PackedScene" uid="uid://dnsafpxfqwwbh" path="res://packedscenes/energy_crystal.tscn" id="5_wm5mc"]
+[ext_resource type="PackedScene" uid="uid://8d2kfleny0cy" path="res://packedscenes/sfx/shatter.tscn" id="6_1wbsw"]
 
 [node name="Asteroid" type="RigidBody2D" node_paths=PackedStringArray("spawned_on_death")]
 collision_layer = 2
@@ -52,3 +53,5 @@ min_spawn_dist = 12.0
 max_spawn_dist = 15.0
 min_initial_velocity = 48.0
 max_initial_velocity = 120.0
+
+[node name="Shatter" parent="." instance=ExtResource("6_1wbsw")]

@@ -3,11 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_5vrjf"]
 [ext_resource type="Script" path="res://scripts/Player.gd" id="2_7yjal"]
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="3_0fbu5"]
-[ext_resource type="Script" path="res://scripts/ThrustTriangle.gd" id="3_8xe6l"]
+[ext_resource type="AudioStream" uid="uid://mkfbd0r5o8ke" path="res://audio/thrust.wav" id="3_7eqxd"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="4_ienpe"]
 [ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="5_iboy3"]
-[ext_resource type="AudioStream" uid="uid://cgl6rx2i236us" path="res://audio/lazer.wav" id="6_hkftt"]
+[ext_resource type="AudioStream" uid="uid://gwmuuh2c41u4" path="res://audio/lazerLofi.wav" id="6_0an66"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntkiv"]
 radius = 64.0
@@ -32,7 +32,12 @@ double_tap_msec = 200.0
 turn_around_acceleration_factor = 1.5
 quick_turn_degrees = 0
 
-[node name="ThrustTriangle" type="Polygon2D" parent="." index="0" node_paths=PackedStringArray("boss")]
+[node name="Thrust" type="AudioStreamPlayer2D" parent="." index="0"]
+stream = ExtResource("3_7eqxd")
+volume_db = 7.61
+bus = &"Effects"
+
+[node name="ThrustTriangle" type="Polygon2D" parent="." index="1"]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
 position = Vector2(-1.13687e-12, 10)
@@ -40,14 +45,11 @@ rotation = 3.14159
 scale = Vector2(9.5, 9.5)
 color = Color(0, 0, 0, 0)
 polygon = PackedVector2Array(-0.3, 0.5, 0.3, 0.5, 0, -0.857147)
-script = ExtResource("3_8xe6l")
-boss = NodePath("..")
-min_size_factor = 0.25
-flicker_range = 0.4
+script = ExtResource("4_ienpe")
 circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
-[node name="TurnLeftTriangle" type="Polygon2D" parent="." index="2"]
+[node name="TurnLeftTriangle" type="Polygon2D" parent="." index="3"]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
 position = Vector2(4, 7)
@@ -59,7 +61,7 @@ script = ExtResource("4_ienpe")
 circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
-[node name="Gun" type="Node2D" parent="." index="3" node_paths=PackedStringArray("inherit_velocity", "immune_to_shots", "shot_parent")]
+[node name="Gun" type="Node2D" parent="." index="4" node_paths=PackedStringArray("inherit_velocity", "immune_to_shots", "shot_parent")]
 position = Vector2(0, -13.175)
 script = ExtResource("3_r8khv")
 shot_proto = ExtResource("3_0fbu5")
@@ -70,10 +72,11 @@ immune_to_shots = [NodePath("..")]
 shot_parent = NodePath("..")
 
 [node name="Lazer" type="AudioStreamPlayer2D" parent="Gun" index="0"]
-stream = ExtResource("6_hkftt")
+stream = ExtResource("6_0an66")
 volume_db = 7.903
+bus = &"Effects"
 
-[node name="PickupVacuum" type="Area2D" parent="." index="4"]
+[node name="PickupVacuum" type="Area2D" parent="." index="5"]
 disable_mode = 2
 collision_layer = 0
 collision_mask = 32
@@ -88,7 +91,7 @@ script = ExtResource("5_iboy3")
 [node name="VacuumCollisionShape" type="CollisionShape2D" parent="PickupVacuum" index="0"]
 shape = SubResource("CircleShape2D_ntkiv")
 
-[node name="TurnRightTriangle" type="Polygon2D" parent="." index="5"]
+[node name="TurnRightTriangle" type="Polygon2D" parent="." index="6"]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
 position = Vector2(-4, 7)

@@ -33,6 +33,9 @@ class_name Player
 
 #@export var thrust_fire_factor:float = 1;
 
+@onready var thrust = $Thrust
+
+
 #TODO (strapp) not a fan of the quick turnaround... probably just better to make turn faster when thruster is off
 ## Immediate turn after double tapping a turn ... honestly this doesn't feel good
 @export var quick_turn_degrees = 0;
@@ -181,10 +184,12 @@ func process_input_refac(delta):
 
 		if (!thrusting):
 			thrusting_state_change.emit(true)
+			thrust.play()
 			thrusting = true
 	else:
 		if thrusting:
 			thrusting_state_change.emit(false)
+			thrust.stop()
 			thrusting = false
 
 	if linear_velocity.length_squared() > (cap_speed * cap_speed):
