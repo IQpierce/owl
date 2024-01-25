@@ -10,6 +10,8 @@ class_name Thing
 
 @export var corpse_children:Array[Node2D]	# Which of our child Node2D's persist beyond our death
 
+@onready var shatter = $Shatter
+
 signal damaged(dmg_amt, global_position)
 signal died()
 
@@ -61,7 +63,8 @@ func deal_damage(dmg_amt:float, global_position:Vector2):
 
 func die(utterly:bool = false):
 	# todo: play cool vfx / sfx
-
+	#shatter.play()  #this isn't work..Sam thought it might be because this object is destroyed
+	
 	# pieces of our anatomy stay around
 	
 	for corpse_child in corpse_children:

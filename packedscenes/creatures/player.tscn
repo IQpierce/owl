@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="4_ienpe"]
 [ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="5_iboy3"]
-[ext_resource type="AudioStream" uid="uid://cgl6rx2i236us" path="res://audio/lazer.wav" id="6_hkftt"]
+[ext_resource type="AudioStream" uid="uid://gwmuuh2c41u4" path="res://audio/lazerLofi.wav" id="6_0an66"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntkiv"]
 radius = 64.0
@@ -66,8 +66,9 @@ immune_to_shots = [NodePath("..")]
 shot_parent = NodePath("..")
 
 [node name="Lazer" type="AudioStreamPlayer2D" parent="Gun" index="0"]
-stream = ExtResource("6_hkftt")
+stream = ExtResource("6_0an66")
 volume_db = 7.903
+bus = &"Effects"
 
 [node name="PickupVacuum" type="Area2D" parent="." index="4"]
 disable_mode = 2
