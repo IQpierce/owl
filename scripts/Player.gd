@@ -153,11 +153,6 @@ func process_input_refac(delta):
 		var thrust_lerp = (1 - speed_portion) + (speed_portion * thrust_at_max_speed)
 		var thrust_delta = thrust_speed * thrust_lerp * delta;
 		var acceleration = heading_dir * thrust_delta;
-		
-		#Ben's hacky code
-		if (!thrusting):
-			thrust.play()
-		
 
 		if linear_velocity.length_squared() > 0:
 			var velocity_dir = linear_velocity.normalized()
@@ -189,10 +184,12 @@ func process_input_refac(delta):
 
 		if (!thrusting):
 			thrusting_state_change.emit(true)
+			thrust.play()
 			thrusting = true
 	else:
 		if thrusting:
 			thrusting_state_change.emit(false)
+			thrust.stop()
 			thrusting = false
 
 	if linear_velocity.length_squared() > (cap_speed * cap_speed):
