@@ -39,18 +39,18 @@ func _ready():
 
 	if emulate_phosphor_monitor && phosphor_emulation_proto:
 		var scene_children = get_children();
-		var phoshor_emu:PhosphorEmulation = phosphor_emulation_proto.instantiate()
-		add_child(phoshor_emu)
-		phoshor_emu.viewport_container.stretch = true
-		phoshor_emu.viewport_container.custom_minimum_size = view_size
-		phoshor_emu.viewport_container.set_anchors_preset(Control.LayoutPreset.PRESET_FULL_RECT)
-		phoshor_emu.viewport_container.size = view_size
-		phoshor_emu.viewport_container.position = Vector2.ZERO
-		phoshor_emu.viewport_container.size_flags_horizontal = Control.SizeFlags.SIZE_EXPAND_FILL
-		phoshor_emu.viewport_container.size_flags_vertical   = Control.SizeFlags.SIZE_EXPAND_FILL
+		var phosphor_emu:PhosphorEmulation = phosphor_emulation_proto.instantiate()
+		add_child(phosphor_emu)
+		for viewport_container in phosphor_emu.viewport_containers:
+			viewport_container.stretch = true
+			viewport_container.custom_minimum_size = view_size
+			viewport_container.set_anchors_preset(Control.LayoutPreset.PRESET_FULL_RECT)
+			viewport_container.size = view_size
+			viewport_container.position = Vector2.ZERO
+			viewport_container.size_flags_horizontal = Control.SizeFlags.SIZE_EXPAND_FILL
+			viewport_container.size_flags_vertical   = Control.SizeFlags.SIZE_EXPAND_FILL
 		for child in scene_children:
-			remove_child(child)
-			phoshor_emu.viewport.add_child(child)
+			child.reparent(phosphor_emu.injection_viewport)
 
 	if world_camera:
 		var default_view_diagonal = default_view_size.length()

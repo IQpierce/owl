@@ -42,7 +42,6 @@ right_wall = NodePath("WrappingWalls/RightWrappingWall")
 top_wall = NodePath("WrappingWalls/TopWrappingWall")
 bottom_wall = NodePath("WrappingWalls/BottomWrappingWall")
 muted = true
-emulate_phosphor_monitor = false
 phosphor_emulation_proto = ExtResource("2_sfhc7")
 
 [node name="WrappingWalls" type="Node2D" parent="."]
@@ -103,9 +102,9 @@ shape = SubResource("WorldBoundaryShape2D_ed0ja")
 [node name="Player" parent="." node_paths=PackedStringArray("world") instance=ExtResource("4_4pf7e")]
 position = Vector2(9601, 8413)
 world = NodePath("..")
+max_speed = 400.0
 
 [node name="SnakeTrails" type="CPUParticles2D" parent="Player"]
-modulate = Color(0.333333, 0.333333, 0.333333, 1)
 amount = 100
 fixed_fps = 60
 fract_delta = false

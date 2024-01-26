@@ -29,7 +29,6 @@ right_wall = NodePath("WrappingWalls/RightWrappingWall")
 top_wall = NodePath("WrappingWalls/TopWrappingWall")
 bottom_wall = NodePath("WrappingWalls/BottomWrappingWall")
 muted = true
-emulate_phosphor_monitor = false
 phosphor_emulation_proto = ExtResource("2_eojni")
 
 [node name="WrappingWalls" type="Node2D" parent="."]
@@ -88,11 +87,10 @@ position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="Player" parent="." node_paths=PackedStringArray("world") instance=ExtResource("3_r2sfy")]
-position = Vector2(9601, 8413)
 world = NodePath("..")
 
 [node name="LazyTrackingCamera" parent="." node_paths=PackedStringArray("prey") instance=ExtResource("5_05koq")]
-position = Vector2(9600, 2580)
+position = Vector2(0, 0)
 prey = NodePath("../Player")
 
 [node name="StarfieldBG" type="Area2D" parent="."]
@@ -110,7 +108,6 @@ num_to_spawn = 50000
 proto = ExtResource("5_pt2a0")
 
 [node name="AsteroidBelt" type="Area2D" parent="."]
-position = Vector2(9601, 5413)
 disable_mode = 1
 collision_layer = 0
 collision_mask = 0
