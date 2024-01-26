@@ -3,6 +3,7 @@ extends Polygon2D
 @export var point_draw_radius:float = .09
 @export var circle_draw_color:Color = Color(0.86274510622025, 0.86274510622025, 0.86274510622025)
 @export var line_draw_color:Color = Color(0.70588237047195, 0.70588237047195, 0.70588237047195)
+#@export var line_draw_color:Color = Color(1, 1, 1)
 @export var draw_line_width:float = .1
 @export var draw_line_antialiased:bool = true
 

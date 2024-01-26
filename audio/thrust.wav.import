@@ -13,7 +13,7 @@ dest_files=["res://.godot/imported/thrust.wav-9f88f1c99b6e6ba9276dca4ef449cd7a.s
 [params]
 
 force/8_bit=false
-force/mono=false
+force/mono=true
 force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
