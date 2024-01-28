@@ -1,6 +1,6 @@
 extends Node2D
 
-class_name OwlGame
+class_name OwlScene
 
 @export var hide_mouse:bool = true
 @export var player:Player
