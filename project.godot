@@ -23,6 +23,7 @@ driver/driver=""
 [autoload]
 
 Editor="*res://scripts/Editor.gd"
+Owl_Game="*res://scripts/OwlGame.gd"
 
 [display]
 

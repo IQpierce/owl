@@ -6,10 +6,10 @@ class_name OwlScene
 @export var player:Player
 @export var world_camera:Camera2D
 
-@export var left_wall  :Node2D
-@export var right_wall :Node2D
-@export var top_wall   :Node2D
-@export var bottom_wall:Node2D
+#@export var left_wall  :Node2D
+#@export var right_wall :Node2D
+#@export var top_wall   :Node2D
+#@export var bottom_wall:Node2D
 
 @export var muted:bool = false:
 	set(v):

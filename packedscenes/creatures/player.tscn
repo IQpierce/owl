@@ -30,6 +30,7 @@ fire_max_speed_factor = 0.9
 fire_acceleration_factor = 0.8
 double_tap_msec = 200.0
 turn_around_acceleration_factor = 1.5
+side_boost = 0.0
 quick_turn_degrees = 0
 
 [node name="Thrust" type="AudioStreamPlayer2D" parent="." index="0"]

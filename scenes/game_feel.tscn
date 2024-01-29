@@ -22,15 +22,11 @@ size = Vector2(61440, 34560)
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 6400.0
 
-[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera", "left_wall", "right_wall", "top_wall", "bottom_wall")]
+[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera")]
 position = Vector2(-1, -13)
 script = ExtResource("1_80w6u")
 player = NodePath("Player")
 world_camera = NodePath("LazyTrackingCamera")
-left_wall = NodePath("WrappingWalls/LeftWrappingWall")
-right_wall = NodePath("WrappingWalls/RightWrappingWall")
-top_wall = NodePath("WrappingWalls/TopWrappingWall")
-bottom_wall = NodePath("WrappingWalls/BottomWrappingWall")
 muted = true
 emulate_phosphor_monitor = false
 phosphor_emulation_proto = ExtResource("2_eojni")

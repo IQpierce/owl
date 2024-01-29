@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://l0ljwo0hkdoq"]
 
+[ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_lu7r6"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="1_vm4r1"]
-[ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_w7ll5"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_sywk8"]
 [ext_resource type="PackedScene" uid="uid://dnsafpxfqwwbh" path="res://packedscenes/energy_crystal.tscn" id="5_exid1"]
 [ext_resource type="PackedScene" uid="uid://vyncb8ek17e" path="res://packedscenes/asteroids/medium_asteroid.tscn" id="6_3qruu"]
@@ -23,14 +23,10 @@ size = Vector2(61440, 34560)
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 10000.0
 
-[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera", "left_wall", "right_wall", "top_wall", "bottom_wall")]
-script = ExtResource("1_w7ll5")
+[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera")]
+script = ExtResource("1_lu7r6")
 player = NodePath("Player")
 world_camera = NodePath("LazyTrackingCamera")
-left_wall = NodePath("WrappingWalls/LeftWrappingWall")
-right_wall = NodePath("WrappingWalls/RightWrappingWall")
-top_wall = NodePath("WrappingWalls/TopWrappingWall")
-bottom_wall = NodePath("WrappingWalls/BottomWrappingWall")
 phosphor_emulation_proto = ExtResource("2_sywk8")
 
 [node name="WrappingWalls" type="Node2D" parent="."]
@@ -141,8 +137,7 @@ clockwise = false
 [node name="Sun" parent="." instance=ExtResource("7_mlajb")]
 position = Vector2(28801, 16200)
 
-[node name="HUD" parent="." node_paths=PackedStringArray("game") instance=ExtResource("8_k1cvn")]
-game = NodePath("..")
+[node name="HUD" parent="." instance=ExtResource("8_k1cvn")]
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
