@@ -2,7 +2,7 @@ extends Creature
 
 class_name Player
 
-@export var world:OwlGame
+@export var world:OwlScene
 @export var thrust_speed:float
 @export var turn_speed:float
 ## Cannot accelerate to a higher speed paralell current velocity. Acceleration perpendicular to velocity is still considered. This does not limit the speed caused by outside forces, but velocity will eventually settle back to this.
@@ -30,6 +30,15 @@ class_name Player
 @export var double_tap_msec:float = 1;
 ## Extra Acceleration immediately after double tapping thrust while heading is anti-velocity
 @export var turn_around_acceleration_factor:float = 1;
+# TODO BEN had an idea for strafing... could be double OR use right-stick as boosts (in any direction)
+# might want to look into the  _integrate_forces() callback
+@export var side_boost:float
+
+#TODO (sam) maybe camera follow depends on thrust/boost state
+#- Normal Thrusters (flame) moves player slowly and precisely, particulary good for combat and interacting
+#	- Camera will stay still, but if player enters Follow Threshold, the camera will start to follow, but never try to lead, the camera will continue a bit get player near center?
+#- Boost Thrusters (cheverons) moves player very fast (uses fuel?), essentially the Boost from Armored Core, primarily for traversal but has some use in combat
+#	- Camera behaves the way it does now
 
 #@export var thrust_fire_factor:float = 1;
 
@@ -124,7 +133,8 @@ func process_input_refac(delta):
 	if turning_left && !turning_right:
 		if Input.is_action_just_pressed("turn_left"):
 			if time_now - left_tap_time <= double_tap_msec:
-				rotation -= quick_turn_degrees * PI / 180
+				#rotation -= quick_turn_degrees * PI / 180
+				linear_velocity -= Vector2.RIGHT.rotated(rotation) * side_boost
 				left_tap_time = 0
 			left_tap_time = time_now
 		else:
@@ -134,7 +144,8 @@ func process_input_refac(delta):
 	if turning_right && !turning_left:
 		if Input.is_action_just_pressed("turn_right"):
 			if time_now - right_tap_time <= double_tap_msec:
-				rotation += quick_turn_degrees * PI / 180
+				#rotation += quick_turn_degrees * PI / 180
+				linear_velocity += Vector2.RIGHT.rotated(rotation) * side_boost
 				right_tap_time = 0
 			right_tap_time = time_now
 		else:
