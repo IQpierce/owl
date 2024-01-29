@@ -1,14 +1,17 @@
-[gd_scene load_steps=13 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=16 format=3 uid="uid://db8x1abnnwv3d"]
 
-[ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_80w6u"]
+[ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_80w6u"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_rhngu"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="3_r2sfy"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
 [ext_resource type="PackedScene" uid="uid://c36qcdqbeep7j" path="res://packedscenes/lazy_tracking_camera.tscn" id="5_05koq"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="5_pt2a0"]
+[ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/cosmic_bodies/sun.tscn" id="6_4kfgg"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="6_e337w"]
+[ext_resource type="Script" path="res://scripts/Centerpiece.gd" id="6_kek22"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_m427m"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="10_foqed"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
@@ -29,6 +32,7 @@ right_wall = NodePath("WrappingWalls/RightWrappingWall")
 top_wall = NodePath("WrappingWalls/TopWrappingWall")
 bottom_wall = NodePath("WrappingWalls/BottomWrappingWall")
 muted = true
+emulate_phosphor_monitor = false
 phosphor_emulation_proto = ExtResource("2_eojni")
 
 [node name="WrappingWalls" type="Node2D" parent="."]
@@ -86,12 +90,40 @@ teleport_translation = Vector2(19150, 0)
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
+[node name="Sun" parent="." instance=ExtResource("6_4kfgg")]
+position = Vector2(1200, 1000)
+
+[node name="Centerpiece" type="Node2D" parent="Sun"]
+script = ExtResource("6_kek22")
+
+[node name="FAKE_ASTEROID" type="Polygon2D" parent="."]
+process_mode = 4
+visible = false
+position = Vector2(1200, 1000)
+scale = Vector2(600, 600)
+color = Color(0, 0, 0, 0)
+polygon = PackedVector2Array(-0.45, -0.05, -0.33, 0.36, 0, 0.5, 0.345, 0.2, 0.42, -0.1, 0.23, -0.41, 0.1, -0.5, -0.19, -0.19, -0.11, -0.05, -0.2, -0.1)
+script = ExtResource("10_foqed")
+point_draw_radius = 0.024
+circle_draw_color = Color(1, 1, 1, 1)
+line_draw_color = Color(0.921569, 0.921569, 0.921569, 1)
+draw_line_width = 0.01
+
+[node name="Centerpiece" type="Node2D" parent="FAKE_ASTEROID"]
+script = ExtResource("6_kek22")
+notice_radius = 1500
+peripheral_radius = 100
+
 [node name="Player" parent="." node_paths=PackedStringArray("world") instance=ExtResource("3_r2sfy")]
+position = Vector2(2000, 4000)
 world = NodePath("..")
+max_speed = 500.0
+side_boost = 1000.0
 
 [node name="LazyTrackingCamera" parent="." node_paths=PackedStringArray("prey") instance=ExtResource("5_05koq")]
-position = Vector2(0, 0)
 prey = NodePath("../Player")
+lock_threshold = 250.0
+leash_length = 400.0
 
 [node name="StarfieldBG" type="Area2D" parent="."]
 visible = false
@@ -115,11 +147,10 @@ collision_mask = 0
 [node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidBelt"]
 shape = SubResource("CircleShape2D_xkjbt")
 script = ExtResource("4_e5ljk")
-num_to_spawn = 512
+num_to_spawn = 100
 proto = ExtResource("6_e337w")
 
-[node name="HUD" parent="." node_paths=PackedStringArray("game") instance=ExtResource("8_m427m")]
-game = NodePath("..")
+[node name="HUD" parent="." instance=ExtResource("8_m427m")]
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
