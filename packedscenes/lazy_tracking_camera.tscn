@@ -21,6 +21,7 @@ acceleration_factor = 1.5
 lead_distance = 500
 rest_vel_damp = 0.8
 lead_vel_perp_damp = 0.8
+leash_length = 0.0
 
 [node name="Camera State" type="Label" parent="."]
 visible = false

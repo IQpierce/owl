@@ -1,7 +1,10 @@
 extends Camera2D
+class_name LazyTrackingCamera
 
+@export_group("Debug")
 @export var show_debug = true
 @export var state_label:Label
+@export_group("Tracking")
 @export var prey:Player
 @export var center_on_initialize:bool = true
 #@export var track_radius = 400
@@ -14,11 +17,17 @@ extends Camera2D
 @export_range(0.5, 1) var lead_vel_perp_damp = 0.9
 @export var follow_slow_to_rest_ms = 300
 @export var lead_turn_to_rest_ms = 300
+@export_group("Curiosity")
+@export var leash_length:float = 400
+@export var wonder_speed:float = 250
+
 
 var velocity:Vector2
 var prey_velocity:Vector2
 var prey_bearing:Vector2
 var fallback_start:int
+var attention_center:Vector2
+var center_priority:int
 
 var track_rect:Rect2
 var lock_rect:Rect2
@@ -64,7 +73,7 @@ func _draw():
 			state_label.visible = false
 
 func _physics_process(delta):
-	if not prey:
+	if !visible || prey == null:
 		return
 
 	var focus = position
@@ -127,6 +136,14 @@ func _physics_process(delta):
 
 		prey_velocity = prey.linear_velocity
 
+		var to_track = Vector2(half_view_size.x - track_threshold, half_view_size.y - track_threshold)
+		#var to_track = Vector2(track_radius, track_radius)#Vector2(half_view_size.x - track_threshold, half_view_size.y - track_threshold)
+		var to_lock  = Vector2(half_view_size.x -  lock_threshold, half_view_size.y -  lock_threshold)
+		var threshold_portions = Vector2(
+				clamp((abs(to_prey.x) - to_track.x) / (to_lock.x - to_track.x), 0, 1),
+				clamp((abs(to_prey.y) - to_track.y) / (to_lock.y - to_track.y), 0, 1))
+		var tracking_importance = max(threshold_portions.x, threshold_portions.y)
+
 		if tracking == TrackingState.Rest:
 			velocity *= rest_vel_damp
 		else:
@@ -137,15 +154,8 @@ func _physics_process(delta):
 				if tracking == TrackingState.Follow:
 					# When Follow starts accelerate based on how far beyond tracking threshold the prey is.
 					# As we attempt to take the lead though, accelerate regardless of tracking threshold
-					var to_track = Vector2(half_view_size.x - track_threshold, half_view_size.y - track_threshold)
-					#var to_track = Vector2(track_radius, track_radius)#Vector2(half_view_size.x - track_threshold, half_view_size.y - track_threshold)
-					var to_lock  = Vector2(half_view_size.x -  lock_threshold, half_view_size.y -  lock_threshold)
-					var threshold_portions = Vector2(
-							clamp((abs(to_prey.x) - to_track.x) / (to_lock.x - to_track.x), 0, 1),
-							clamp((abs(to_prey.y) - to_track.y) / (to_lock.y - to_track.y), 0, 1))
-					var most_portion = max(threshold_portions.x, threshold_portions.y)
 					var accelerated_speed = velocity.length()# + prey.thrust_speed * acceleration_factor * delta
-					var prey_relative_speed = prey_velocity.length() * most_portion
+					var prey_relative_speed = prey_velocity.length() * tracking_importance
 
 					if prey.thrusting && prey_heading.dot(to_prey) > 0:
 						accelerated_speed += prey.thrust_speed * acceleration_factor * delta
@@ -180,12 +190,32 @@ func _physics_process(delta):
 			if new_speed > max_speed:
 				velocity = (velocity / new_speed) * max_speed
 
-	# If very close to focus, just jump to it; otherwise, move at velocity
-	var delta_vel = velocity * delta
-	if (focus - (position + delta_vel)).dot(focus - position) < 0:
-		position = focus
-	else:
-		position += delta_vel
+		# If very close to focus, just jump to it; otherwise, move at velocity
+		var hunt_pos = global_position
+		var delta_vel = velocity * delta
+		if (focus - (hunt_pos + delta_vel)).dot(focus - position) < 0:
+			hunt_pos = focus
+		else:
+			hunt_pos += delta_vel
+
+		var wonder_pos = hunt_pos
+		if center_priority > 0:
+			wonder_pos = global_position
+			var wonder_destination = attention_center
+
+			var prey_to_destination = wonder_destination - prey.global_position
+			if prey_to_destination.length_squared() > leash_length * leash_length:
+				prey_to_destination = prey_to_destination.normalized() * leash_length
+
+			wonder_destination = prey.global_position + prey_to_destination
+			var to_wonder = wonder_destination - global_position
+			if to_wonder.length_squared() > wonder_speed * wonder_speed:
+				to_wonder = to_wonder.normalized() * wonder_speed
+
+			wonder_pos += (to_wonder + velocity) * delta
+
+		global_position = ((1 - tracking_importance) * wonder_pos) + (tracking_importance * hunt_pos)
+		center_priority = 0
 
 	# Prevent prey from moving off-screen on X
 	if prey.position.x - position.x < lock_threshold - half_view_size.x:
@@ -206,3 +236,12 @@ func _physics_process(delta):
 	# Only draw Debug display while in Editor
 	if OS.has_feature("editor"):
 		queue_redraw()
+
+func pique_curiousity(focus_global:Vector2, priority:int):
+	var take_priority = priority > center_priority
+	if !take_priority && priority == center_priority:
+		take_priority = (focus_global - global_position).length_squared() < (attention_center - global_position).length_squared()
+
+	if take_priority:
+		attention_center = focus_global
+		center_priority = priority

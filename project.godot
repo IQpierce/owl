@@ -23,13 +23,12 @@ driver/driver=""
 [autoload]
 
 Editor="*res://scripts/Editor.gd"
+Owl_Game="*res://scripts/OwlGame.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=3
-window/size/borderless=true
 window/dpi/allow_hidpi=false
 
 [dotnet]

@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-@export var game:OwlGame
+var game:OwlScene
 @export var game_over_layer:CanvasLayer
 @export var debug_fps_label:Label
 @export var debug_time_speed_up_label:Label
@@ -9,6 +9,7 @@ extends CanvasLayer
 var accept_input_timeout:float
 
 func _ready():
+	game = OwlGame.scene
 	game.on_game_ended.connect(self.on_game_over)
 
 func _process(delta):

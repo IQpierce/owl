@@ -1,6 +1,6 @@
 [gd_scene load_steps=17 format=3 uid="uid://crtw2xecbto8j"]
 
-[ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_l0k5w"]
+[ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_bnlwx"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_sfhc7"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="3_sdx7j"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="4_4pf7e"]
@@ -32,16 +32,11 @@ size = Vector2(61440, 34560)
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 6400.0
 
-[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera", "left_wall", "right_wall", "top_wall", "bottom_wall")]
+[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera")]
 position = Vector2(-1, -13)
-script = ExtResource("1_l0k5w")
+script = ExtResource("1_bnlwx")
 player = NodePath("Player")
 world_camera = NodePath("LazyTrackingCamera")
-left_wall = NodePath("WrappingWalls/LeftWrappingWall")
-right_wall = NodePath("WrappingWalls/RightWrappingWall")
-top_wall = NodePath("WrappingWalls/TopWrappingWall")
-bottom_wall = NodePath("WrappingWalls/BottomWrappingWall")
-muted = true
 phosphor_emulation_proto = ExtResource("2_sfhc7")
 
 [node name="WrappingWalls" type="Node2D" parent="."]
@@ -163,8 +158,7 @@ script = ExtResource("6_tdgsu")
 num_to_spawn = 512
 proto = ExtResource("8_ad8s0")
 
-[node name="HUD" parent="." node_paths=PackedStringArray("game") instance=ExtResource("9_w2ywo")]
-game = NodePath("..")
+[node name="HUD" parent="." instance=ExtResource("9_w2ywo")]
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]

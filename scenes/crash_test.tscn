@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://c3upn7yytt8rp"]
+[gd_scene load_steps=13 format=3 uid="uid://c3upn7yytt8rp"]
 
-[ext_resource type="Script" path="res://scripts/OwlGame.gd" id="1_x8n6v"]
+[ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_wk2wj"]
+[ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_5jnxy"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_vfuc5"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="3_1dul7"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="4_mwf7v"]
@@ -18,15 +19,12 @@ size = Vector2(61440, 34560)
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 6400.0
 
-[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera", "left_wall", "right_wall", "top_wall", "bottom_wall")]
+[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera")]
 position = Vector2(-1, -13)
-script = ExtResource("1_x8n6v")
+script = ExtResource("1_wk2wj")
 player = NodePath("SubViewportContainer/SubViewport/Player")
 world_camera = NodePath("SubViewportContainer/SubViewport/LazyTrackingCamera")
-left_wall = NodePath("SubViewportContainer/SubViewport/WrappingWalls/LeftWrappingWall")
-right_wall = NodePath("SubViewportContainer/SubViewport/WrappingWalls/RightWrappingWall")
-top_wall = NodePath("SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall")
-bottom_wall = NodePath("SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall")
+phosphor_emulation_proto = ExtResource("2_5jnxy")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 custom_minimum_size = Vector2(1920, 1080)
@@ -136,8 +134,7 @@ script = ExtResource("6_mc78h")
 num_to_spawn = 512
 proto = ExtResource("3_1dul7")
 
-[node name="HUD" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("game") instance=ExtResource("8_n07t2")]
-game = NodePath("../../..")
+[node name="HUD" parent="SubViewportContainer/SubViewport" instance=ExtResource("8_n07t2")]
 
 [connection signal="body_entered" from="SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall" to="SubViewportContainer/SubViewport/WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall" to="SubViewportContainer/SubViewport/WrappingWalls/TopWrappingWall" method="on_body_entered"]
