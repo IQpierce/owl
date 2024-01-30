@@ -1,15 +1,19 @@
-[gd_scene load_steps=8 format=3 uid="uid://dkfy8ncjc1gd6"]
+[gd_scene load_steps=10 format=3 uid="uid://dkfy8ncjc1gd6"]
 
 [ext_resource type="Texture2D" uid="uid://d01krn0pvudlc" path="res://dot.png" id="1_me3mu"]
 [ext_resource type="Script" path="res://scripts/Orbiter.gd" id="1_xk02d"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_ku8k5"]
 [ext_resource type="Material" uid="uid://cewktdf0bh7mh" path="res://particles/planetoid_inner.tres" id="3_8115p"]
 [ext_resource type="PackedScene" uid="uid://leunbw6hhxa0" path="res://packedscenes/gravity_well.tscn" id="3_hejg5"]
+[ext_resource type="Script" path="res://scripts/DamageZone.gd" id="6_5jlue"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nam2q"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aiflv"]
 radius = 500.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6o0l6"]
+radius = 125.0
 
 [node name="Planetoid" type="Area2D"]
 collision_layer = 2
@@ -19,9 +23,9 @@ priority = 2
 gravity_space_override = 3
 gravity = 4096.0
 linear_damp_space_override = 2
-linear_damp = 88.235
+linear_damp = 9.0
 angular_damp_space_override = 2
-angular_damp = 87.441
+angular_damp = 9.0
 script = ExtResource("1_xk02d")
 
 [node name="Polygon" type="Polygon2D" parent="."]
@@ -33,35 +37,7 @@ circle_draw_color = Color(1, 1, 1, 1)
 line_draw_color = Color(1, 1, 1, 1)
 draw_line_width = 1.2
 
-[node name="InnerParticlesCPU" type="CPUParticles2D" parent="Polygon"]
-process_mode = 3
-visible = false
-modulate = Color(0.639216, 0.639216, 0.639216, 0.815686)
-show_behind_parent = true
-material = SubResource("CanvasItemMaterial_nam2q")
-scale = Vector2(3.8, 3.8)
-amount = 1000
-fixed_fps = 60
-local_coords = true
-texture = ExtResource("1_me3mu")
-emission_shape = 1
-emission_sphere_radius = 128.0
-gravity = Vector2(0, 0)
-scale_amount_min = 0.01
-scale_amount_max = 0.01
-
-[node name="InnerParticles2" type="GPUParticles2D" parent="Polygon"]
-process_mode = 3
-show_behind_parent = true
-material = SubResource("CanvasItemMaterial_nam2q")
-amount = 1000
-process_material = ExtResource("3_8115p")
-texture = ExtResource("1_me3mu")
-fixed_fps = 60
-visibility_rect = Rect2(-500, -500, 1000, 1000)
-local_coords = true
-
-[node name="InnerParticles3" type="GPUParticles2D" parent="Polygon"]
+[node name="InnerParticles" type="GPUParticles2D" parent="Polygon"]
 process_mode = 3
 show_behind_parent = true
 material = SubResource("CanvasItemMaterial_nam2q")
@@ -85,3 +61,18 @@ texture = ExtResource("1_me3mu")
 gravity_point_unit_distance = 100.0
 gravity = 500.0
 gravity_well_radius = 128.0
+
+[node name="DamageZone" type="Area2D" parent="."]
+disable_mode = 1
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("6_5jlue")
+
+[node name="Node2D" type="Area2D" parent="."]
+script = ExtResource("6_5jlue")
+
+[node name="Collision" type="CollisionShape2D" parent="Node2D"]
+shape = SubResource("CircleShape2D_6o0l6")
+
+[connection signal="body_entered" from="DamageZone" to="DamageZone" method="_on_body_entered"]
+[connection signal="body_exited" from="DamageZone" to="DamageZone" method="_on_body_exited"]
