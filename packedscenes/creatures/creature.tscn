@@ -23,7 +23,7 @@ polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
 
 [node name="TrunkPolygon" type="Polygon2D" parent="."]
 editor_description = "visual aspect"
-color = Color(0, 0, 0, 0)
+color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
 script = ExtResource("2_lckca")
 point_draw_radius = 1.08
