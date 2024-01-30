@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://cgjbstotnfcvd"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://d5h87yh5ctsf" path="res://physics_materials/rock.tres" id="1_hgml5"]
-[ext_resource type="Script" path="res://scripts/Thing.gd" id="2_fuihh"]
+[ext_resource type="Script" path="res://scripts/Asteroid.gd" id="2_xnywi"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="3_bl00j"]
 [ext_resource type="Script" path="res://scripts/util/Spawner.gd" id="4_0ys4r"]
 [ext_resource type="PackedScene" uid="uid://dnsafpxfqwwbh" path="res://packedscenes/energy_crystal.tscn" id="5_wm5mc"]
@@ -10,14 +10,17 @@
 [node name="Asteroid" type="RigidBody2D" node_paths=PackedStringArray("spawned_on_death")]
 collision_layer = 2
 collision_mask = 3
-mass = 4.0
+mass = 48.0
 physics_material_override = ExtResource("1_hgml5")
 freeze_mode = 1
 continuous_cd = 2
 max_contacts_reported = 1
 contact_monitor = true
 angular_damp = 0.03
-script = ExtResource("2_fuihh")
+script = ExtResource("2_xnywi")
+resource_container_nibbleable_relevance = {
+1: 1.0
+}
 spawned_per_damage = {
 NodePath("SpawnEnergyCrystalOnDamage"): 1.0
 }
