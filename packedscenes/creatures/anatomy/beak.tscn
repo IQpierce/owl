@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://bq4yi2hqjoxm5"]
+
+[ext_resource type="Script" path="res://scripts/Mouth.gd" id="1_e3wha"]
+[ext_resource type="PhysicsMaterial" uid="uid://bk8d6toxvi2yb" path="res://physics_materials/creature.tres" id="1_p5h4y"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="1_uob70"]
+[ext_resource type="Script" path="res://scripts/DamageZone.gd" id="3_kcptr"]
+
+[node name="Beak" type="Node2D" node_paths=PackedStringArray("left_half", "right_half")]
+script = ExtResource("1_e3wha")
+left_half = NodePath("BeakLeft")
+right_half = NodePath("BeakRight")
+rotate_factor = 0.21
+
+[node name="NibbleZone" type="Area2D" parent="."]
+disable_mode = 1
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_kcptr")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="NibbleZone"]
+polygon = PackedVector2Array(-5, 0, -9, -18, 9, -18, 5, 0)
+
+[node name="BeakLeft" type="StaticBody2D" parent="."]
+rotation = -0.383972
+scale = Vector2(0.8, 0.8)
+disable_mode = 2
+collision_layer = 8388608
+collision_mask = 8388609
+physics_material_override = ExtResource("1_p5h4y")
+
+[node name="Polygon" type="Polygon2D" parent="BeakLeft"]
+color = Color(0.462745, 0.462745, 0.462745, 0)
+polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)
+script = ExtResource("1_uob70")
+point_draw_radius = 1.0
+draw_line_width = 1.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BeakLeft"]
+polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)
+
+[node name="BeakRight" type="StaticBody2D" parent="."]
+rotation = 0.383972
+scale = Vector2(-0.8, 0.8)
+disable_mode = 2
+collision_layer = 8388608
+collision_mask = 8388609
+physics_material_override = ExtResource("1_p5h4y")
+
+[node name="Polygon" type="Polygon2D" parent="BeakRight"]
+scale = Vector2(1, 0.987)
+color = Color(0.462745, 0.462745, 0.462745, 0)
+offset = Vector2(0.00910282, -0.0398865)
+polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)
+script = ExtResource("1_uob70")
+point_draw_radius = 1.0
+draw_line_width = 1.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BeakRight"]
+polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)

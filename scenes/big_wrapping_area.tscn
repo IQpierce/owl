@@ -87,13 +87,13 @@ teleport_translation = Vector2(57100, 0)
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
-[node name="Player" parent="." instance=ExtResource("11_11kq6")]
-position = Vector2(28560, 26816)
-collision_mask = 27
-physics_material_override = null
-
 [node name="energy_crystal" parent="." instance=ExtResource("5_exid1")]
 position = Vector2(28844, 26368)
+
+[node name="Player" parent="." instance=ExtResource("11_11kq6")]
+position = Vector2(28843.9, 26879.6)
+collision_mask = 27
+physics_material_override = null
 
 [node name="Louie" parent="." instance=ExtResource("12_ot63i")]
 position = Vector2(28847, 26749)
@@ -132,8 +132,6 @@ exclude_inner_percentage = 0.7
 [node name="WaterPlanetoid" parent="." node_paths=PackedStringArray("orbit_target") instance=ExtResource("8_r0sug")]
 position = Vector2(28853, 29850)
 gravity_space_override = 0
-linear_damp = 9.0
-angular_damp = 9.0
 orbit_target = NodePath("../Sun")
 full_orbit_time_secs = 800.0
 clockwise = false
