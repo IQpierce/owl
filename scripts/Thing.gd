@@ -10,19 +10,17 @@ class_name Thing
 
 @export var corpse_children:Array[Node2D]	# Which of our child Node2D's persist beyond our death
 
-@onready var shatter = $Shatter
 
 signal damaged(dmg_amt, global_position)
 signal died()
 
-
 var accumulated_damage_by_spawner:Dictionary	# whose keys align exactly with those of spawn_per_damage, and whose values represent the accumulated damage taken - reset and modulo'ed by the maximum represented by the float val of the emit_per_damage row
-
+var shatter:AudioStreamPlayer2D = null
 
 
 func _ready():
+	shatter = get_node_or_null("Shatter")
 	reset_accumulated_damage()
-	
 
 func reset_health():
 	health = max_health
@@ -80,4 +78,8 @@ func die(utterly:bool = false):
 	
 	died.emit(utterly)
 	
+	# Give signals and such a frame to process. Some of them, like spawning, need to await until we are not in "collision" codepath
+	# TODO (sam) does this cause any weirdness from things sticking around an extra frame
+	await get_tree().process_frame
+
 	queue_free()

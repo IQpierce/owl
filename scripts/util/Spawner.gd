@@ -19,6 +19,9 @@ class_name Spawner
 func spawn(spawn_owner:Node2D):
 	assert(spawn_owner != null)	
 	
+	# Wait until we know we are done with collision, otherwise we get warnings on every spawn
+	await get_tree().process_frame
+
 	for i in num_to_spawn:
 		var spawn_proto:PackedScene = spawn_protos[randi() % spawn_protos.size()]
 		var spawned_instance:CollisionObject2D = spawn_proto.instantiate()
