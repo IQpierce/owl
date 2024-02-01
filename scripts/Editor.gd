@@ -7,7 +7,7 @@ var was_editor_paused: bool
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
-func _process(delta):
+func _process(_delta:float):
 	if not Engine.is_editor_hint():
 		if Input.is_action_just_pressed("escape"):
 			get_tree().quit()
