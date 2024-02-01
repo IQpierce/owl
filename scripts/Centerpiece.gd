@@ -8,8 +8,9 @@ class_name Centerpiece
 var camera:LazyTrackingCamera
 
 func _ready():
-	if OwlGame.scene != null:
-		camera = OwlGame.scene.world_camera as LazyTrackingCamera
+	var game = OwlGame.instance.scene
+	if game != null:
+		camera = game.world_camera as LazyTrackingCamera
 
 func _physics_process(float):
 	if camera != null:
