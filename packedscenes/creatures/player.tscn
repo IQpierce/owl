@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://jymuym62nmct"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_5vrjf"]
-[ext_resource type="Script" path="res://scripts/Player.gd" id="2_7yjal"]
+[ext_resource type="Script" path="res://scripts/Player_Deprecated.gd" id="2_7yjal"]
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="3_0fbu5"]
 [ext_resource type="AudioStream" uid="uid://mkfbd0r5o8ke" path="res://audio/thrust.wav" id="3_7eqxd"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]

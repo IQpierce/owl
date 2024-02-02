@@ -1,4 +1,4 @@
-extends Camera2D
+extends Camera_Deprecated
 class_name LazyTrackingCamera
 
 @export_group("Debug")
@@ -26,8 +26,6 @@ var velocity:Vector2
 var prey_velocity:Vector2
 var prey_bearing:Vector2
 var fallback_start:int
-var attention_center:Vector2
-var center_priority:int
 
 var track_rect:Rect2
 var lock_rect:Rect2
@@ -38,7 +36,7 @@ var tracking = TrackingState.Rest
 
 func _ready():
 	if prey:
-		prey.camera = self
+		prey.set_camera(self)
 		
 		if center_on_initialize:
 			global_position = prey.global_position
@@ -154,11 +152,11 @@ func _physics_process(delta):
 				if tracking == TrackingState.Follow:
 					# When Follow starts accelerate based on how far beyond tracking threshold the prey is.
 					# As we attempt to take the lead though, accelerate regardless of tracking threshold
-					var accelerated_speed = velocity.length()# + prey.thrust_speed * acceleration_factor * delta
+					var accelerated_speed = velocity.length()# + prey.get_thrust_speed() * acceleration_factor * delta
 					var prey_relative_speed = prey_velocity.length() * tracking_importance
 
-					if prey.thrusting && prey_heading.dot(to_prey) > 0:
-						accelerated_speed += prey.thrust_speed * acceleration_factor * delta
+					if prey.get_thrusting() && prey_heading.dot(to_prey) > 0:
+						accelerated_speed += prey.get_thrust_speed() * acceleration_factor * delta
 						prey_relative_speed *= max_relative_speed
 					velocity = to_focus_dir * max(accelerated_speed, prey_relative_speed)
 
@@ -177,7 +175,7 @@ func _physics_process(delta):
 						velocity = velocity.normalized() * prey_velocity.length()
 				elif tracking == TrackingState.Lead:
 					# When leading accelerate normally, but manually narrow center the prey perpendicular to its bearing
-					velocity += to_focus_dir * (prey.thrust_speed * acceleration_factor * delta)
+					velocity += to_focus_dir * (prey.get_thrust_speed() * acceleration_factor * delta)
 					var vel_para_to_focus = velocity.project(to_focus_dir)
 					var vel_perp_to_focus = velocity - vel_para_to_focus
 					vel_perp_to_focus *= lead_vel_perp_damp
@@ -236,12 +234,3 @@ func _physics_process(delta):
 	# Only draw Debug display while in Editor
 	if OS.has_feature("editor"):
 		queue_redraw()
-
-func pique_curiousity(focus_global:Vector2, priority:int):
-	var take_priority = priority > center_priority
-	if !take_priority && priority == center_priority:
-		take_priority = (focus_global - global_position).length_squared() < (attention_center - global_position).length_squared()
-
-	if take_priority:
-		attention_center = focus_global
-		center_priority = priority

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=20 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_80w6u"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
@@ -10,23 +10,32 @@
 [ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/cosmic_bodies/sun.tscn" id="6_4kfgg"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="6_e337w"]
 [ext_resource type="Script" path="res://scripts/Centerpiece.gd" id="6_kek22"]
+[ext_resource type="PackedScene" uid="uid://msq6w1qgh7c6" path="res://packedscenes/creatures/player_refactor.tscn" id="8_ifucg"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_m427m"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="10_foqed"]
+[ext_resource type="Script" path="res://scripts/CameraRig.gd" id="10_g4401"]
+[ext_resource type="FontFile" uid="uid://bfc5s6j3cdokw" path="res://fonts/Vectorb.ttf" id="11_7y4md"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_psnnu"]
-size = Vector2(61440, 34560)
+[sub_resource type="LabelSettings" id="LabelSettings_rs3gb"]
+font = ExtResource("11_7y4md")
+font_size = 48
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 6400.0
 
-[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera")]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_psnnu"]
+size = Vector2(61440, 34560)
+
+[node name="GameFeel" type="Node2D" node_paths=PackedStringArray("player", "world_camera")]
 position = Vector2(-1, -13)
 script = ExtResource("1_80w6u")
-player = NodePath("Player")
-world_camera = NodePath("LazyTrackingCamera")
+player = NodePath("PlayerRefactor")
+world_camera = NodePath("Camera_Refactor")
 muted = true
 emulate_phosphor_monitor = false
 phosphor_emulation_proto = ExtResource("2_eojni")
@@ -87,15 +96,14 @@ position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="Sun" parent="." instance=ExtResource("6_4kfgg")]
-position = Vector2(1200, 1000)
+position = Vector2(4000, 1000)
 
 [node name="Centerpiece" type="Node2D" parent="Sun"]
 script = ExtResource("6_kek22")
 
 [node name="FAKE_ASTEROID" type="Polygon2D" parent="."]
-process_mode = 4
 visible = false
-position = Vector2(1200, 1000)
+position = Vector2(5500, 1000)
 scale = Vector2(600, 600)
 color = Color(0, 0, 0, 0)
 polygon = PackedVector2Array(-0.45, -0.05, -0.33, 0.36, 0, 0.5, 0.345, 0.2, 0.42, -0.1, 0.23, -0.41, 0.1, -0.5, -0.19, -0.19, -0.11, -0.05, -0.2, -0.1)
@@ -106,23 +114,62 @@ line_draw_color = Color(0.921569, 0.921569, 0.921569, 1)
 draw_line_width = 0.01
 
 [node name="Centerpiece" type="Node2D" parent="FAKE_ASTEROID"]
+process_mode = 4
+visible = false
 script = ExtResource("6_kek22")
 notice_radius = 1500
 peripheral_radius = 100
 
 [node name="Player" parent="." node_paths=PackedStringArray("world") instance=ExtResource("3_r2sfy")]
-position = Vector2(2000, 4000)
+process_mode = 4
+visible = false
+position = Vector2(6000, 4000)
 world = NodePath("..")
-max_speed = 500.0
+thrust_speed = 400.0
+turn_speed = 50.0
+max_speed = 1000.0
 side_boost = 1000.0
 
-[node name="LazyTrackingCamera" parent="." node_paths=PackedStringArray("prey") instance=ExtResource("5_05koq")]
-prey = NodePath("../Player")
-lock_threshold = 250.0
+[node name="PlayerRefactor" parent="." instance=ExtResource("8_ifucg")]
+position = Vector2(6000, 4000)
+
+[node name="Camera_Refactor" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("5_05koq")]
+script = ExtResource("10_g4401")
+cartridge = NodePath("../PlayerRefactor/CameraCartridge")
+ready_center = true
 leash_length = 400.0
 
-[node name="StarfieldBG" type="Area2D" parent="."]
+[node name="CameraState" type="Label" parent="Camera_Refactor"]
 visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -129.5
+offset_top = 455.0
+offset_right = 129.5
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Rest"
+label_settings = SubResource("LabelSettings_rs3gb")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="AsteroidBelt" type="Area2D" parent="."]
+position = Vector2(6000, 8000)
+disable_mode = 1
+collision_layer = 0
+collision_mask = 0
+
+[node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidBelt"]
+shape = SubResource("CircleShape2D_xkjbt")
+script = ExtResource("4_e5ljk")
+num_to_spawn = 500
+proto = ExtResource("6_e337w")
+
+[node name="StarfieldBG" type="Area2D" parent="."]
 z_index = -100
 position = Vector2(1, 13)
 collision_layer = 0
@@ -135,20 +182,11 @@ script = ExtResource("4_e5ljk")
 num_to_spawn = 50000
 proto = ExtResource("5_pt2a0")
 
-[node name="AsteroidBelt" type="Area2D" parent="."]
-disable_mode = 1
-collision_layer = 0
-collision_mask = 0
-
-[node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidBelt"]
-shape = SubResource("CircleShape2D_xkjbt")
-script = ExtResource("4_e5ljk")
-num_to_spawn = 100
-proto = ExtResource("6_e337w")
-
 [node name="HUD" parent="." instance=ExtResource("8_m427m")]
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/RightWrappingWall" to="WrappingWalls/RightWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/LeftWrappingWall" to="WrappingWalls/LeftWrappingWall" method="on_body_entered"]
+
+[editable path="PlayerRefactor"]
