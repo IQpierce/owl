@@ -9,7 +9,7 @@ var game:OwlScene
 var accept_input_timeout:float
 
 func _ready():
-	game = OwlGame.scene
+	game = OwlGame.instance.scene
 	game.on_game_ended.connect(self.on_game_over)
 
 func _process(delta):
