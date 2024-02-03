@@ -1,6 +1,6 @@
 class_name GameEnums
 
-enum ResourceType {
+enum ConsumableType {
 	None,
 	Energy,
 	Meat

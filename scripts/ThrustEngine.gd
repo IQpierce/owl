@@ -1,4 +1,4 @@
-extends RigidBody2D
+extends Node2D
 
 class_name ThrustEngine
 
@@ -6,6 +6,9 @@ class_name ThrustEngine
 @export var target_velocity:Vector2: set = set_target_velocity
 @export var force_position:Vector2
 @export var power:float = 1
+
+func _ready():
+	assert(target_body != null)
 
 func _process(delta:float):
 	

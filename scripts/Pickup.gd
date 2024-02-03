@@ -2,14 +2,19 @@ extends RigidBody2D
 
 class_name Pickup
 
-@export var resource_type:GameEnums.ResourceType
-@export var resource_units:float = 0
+@export var consumable_type:GameEnums.ConsumableType
+@export var consumable_units:float = 0
 
 func on_picked_up(picker_upper:Node) -> void:
-	queue_free()
+	var picker_upper_creature:Creature = picker_upper as Creature
+	if picker_upper_creature != null:
+		if picker_upper_creature.consume_pickup(self):
+			queue_free()
+		else:
+			return
 
-func get_resource_units_contained(check_type:GameEnums.ResourceType) -> float:
-	if resource_type == check_type:
-		return resource_units
+func get_consumable_units_contained(check_type:GameEnums.ConsumableType) -> float:
+	if consumable_type == check_type:
+		return consumable_units
 	else:
 		return 0

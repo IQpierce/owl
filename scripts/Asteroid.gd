@@ -2,8 +2,8 @@ extends Thing
 
 class_name Asteroid
 
-# Keys are ResourceType's, values are relevance for seeker brains.
-@export var resource_container_nibbleable_relevance:Dictionary
+# Keys are ConsumablefType's, values are relevance for seeker brains.
+@export var consumable_reservoir_nibbleable_relevance:Dictionary
 
 func _ready():
 	super()
@@ -16,8 +16,8 @@ func _ready():
 	await get_tree().physics_frame
 	collision_mask = real_collision_mask
 
-func spawns_resource_containers_when_nibbled(resource_type:GameEnums.ResourceType) -> float:
-	if resource_container_nibbleable_relevance.has(resource_type):
-		return resource_container_nibbleable_relevance[resource_type]
+func spawns_consumable_pickups_when_nibbled(consumable_type:GameEnums.ConsumableType) -> float:
+	if consumable_reservoir_nibbleable_relevance.has(consumable_type):
+		return consumable_reservoir_nibbleable_relevance[consumable_type]
 	
 	return 0

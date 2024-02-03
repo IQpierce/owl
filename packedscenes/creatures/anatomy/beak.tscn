@@ -18,11 +18,12 @@ collision_mask = 2
 script = ExtResource("3_kcptr")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="NibbleZone"]
-polygon = PackedVector2Array(-5, 0, -9, -18, 9, -18, 5, 0)
+polygon = PackedVector2Array(-6, 0, -10, -11, 10, -11, 6, 0)
 
 [node name="BeakLeft" type="StaticBody2D" parent="."]
+position = Vector2(1, 0)
 rotation = -0.383972
-scale = Vector2(0.8, 0.8)
+scale = Vector2(0.5, 0.5)
 disable_mode = 2
 collision_layer = 8388608
 collision_mask = 8388609
@@ -39,8 +40,9 @@ draw_line_width = 1.0
 polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)
 
 [node name="BeakRight" type="StaticBody2D" parent="."]
+position = Vector2(-1, 0)
 rotation = 0.383972
-scale = Vector2(-0.8, 0.8)
+scale = Vector2(-0.5, 0.5)
 disable_mode = 2
 collision_layer = 8388608
 collision_mask = 8388609

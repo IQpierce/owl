@@ -3,14 +3,17 @@ extends Polygon2D
 @export var point_draw_radius:float = .09
 @export var circle_draw_color:Color = Color(0.86274510622025, 0.86274510622025, 0.86274510622025)
 @export var line_draw_color:Color = Color(0.70588237047195, 0.70588237047195, 0.70588237047195)
-#@export var line_draw_color:Color = Color(1, 1, 1)
 @export var draw_line_width:float = .1
 @export var draw_line_antialiased:bool = true
+@export var skip_line_indeces:Array[int]	# Each line that begins with a vert index that's in this list, will be skipped
 
 func _draw():
 	var vertex_count = polygon.size()  
 	
 	for i in range(vertex_count):
+		if skip_line_indeces.has(i):
+			continue
+		
 		var x = polygon[i].x
 		var y = polygon[i].y
 		

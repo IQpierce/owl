@@ -10,7 +10,7 @@
 [node name="pickup" type="RigidBody2D"]
 disable_mode = 2
 collision_layer = 32
-collision_mask = 34
+collision_mask = 35
 mass = 0.01
 physics_material_override = ExtResource("1_tef8i")
 lock_rotation = true

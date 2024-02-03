@@ -1,12 +1,12 @@
 [gd_scene load_steps=10 format=3 uid="uid://df8xel7mmjlk2"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_aoyla"]
-[ext_resource type="Script" path="res://scripts/brains/ResourceSeekerBrain.gd" id="2_1owoh"]
-[ext_resource type="PackedScene" uid="uid://cjc17lobeg23k" path="res://packedscenes/creatures/anatomy/fin.tscn" id="2_8eax6"]
 [ext_resource type="Script" path="res://scripts/brains/SeekerFallbackBrain.gd" id="2_etigy"]
-[ext_resource type="PhysicsMaterial" uid="uid://bk8d6toxvi2yb" path="res://physics_materials/creature.tres" id="3_53bfc"]
+[ext_resource type="Script" path="res://scripts/brains/ConsumableSeekerBrain.gd" id="3_sb8nx"]
 [ext_resource type="Script" path="res://scripts/brains/SeekByFunction.gd" id="4_fa6f3"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="5_jatoi"]
 [ext_resource type="PackedScene" uid="uid://bq4yi2hqjoxm5" path="res://packedscenes/creatures/anatomy/beak.tscn" id="5_mgc12"]
+[ext_resource type="Script" path="res://scripts/ThrustEngine.gd" id="6_v2jqy"]
 [ext_resource type="Script" path="res://scripts/util/RotateTowards.gd" id="8_0ygyx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ibxja"]
@@ -30,8 +30,8 @@ auto_think_delta_secs = 8.0
 
 [node name="SeekEnergyCrystalsBrain" type="Node2D" parent="MetaBrain" index="0" node_paths=PackedStringArray("controlled_creature")]
 position = Vector2(0, -60)
-script = ExtResource("2_1owoh")
-target_resource_type = 1
+script = ExtResource("3_sb8nx")
+target_consumable_type = 1
 controlled_creature = NodePath("../..")
 auto_think_delta_secs = 0.0
 
@@ -48,7 +48,7 @@ shape = SubResource("CircleShape2D_ibxja")
 [node name="SeekAsteroids" type="Node2D" parent="MetaBrain" index="1" node_paths=PackedStringArray("controlled_creature")]
 position = Vector2(0, -60)
 script = ExtResource("4_fa6f3")
-func_name = "spawns_resource_containers_when_nibbled"
+func_name = "spawns_consumable_pickups_when_nibbled"
 func_params = [1]
 controlled_creature = NodePath("../..")
 auto_think_delta_secs = 0.0
@@ -60,68 +60,59 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="Vision" type="CollisionShape2D" parent="MetaBrain/SeekAsteroids/Area2D" index="0"]
-position = Vector2(0, 45.4084)
+position = Vector2(-9.44942, -205.001)
 shape = SubResource("CircleShape2D_ibxja")
 
-[node name="Beak" parent="." index="1" instance=ExtResource("5_mgc12")]
-position = Vector2(0.0229187, -62.563)
-speed_factor = 2.0
-rotate_factor = 0.6
-
-[node name="TrunkCollision" parent="." index="2"]
-polygon = PackedVector2Array(50.4, 0, 46.564, 27.553, 35.638, 50.912, 19.287, 66.52, 0, 72, -19.287, 66.52, -35.638, 50.912, -46.564, 27.553, -50.4, 0, -46.564, -27.553, -35.638, -50.912, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 35.638, -50.912, 46.564, -27.553, 50.4, 0)
-
-[node name="TrunkPolygon" parent="." index="3"]
-polygon = PackedVector2Array(50.4, 0, 46.564, 27.553, 35.638, 50.912, 19.287, 66.52, 0, 72, -19.287, 66.52, -35.638, 50.912, -46.564, 27.553, -50.4, 0, -46.564, -27.553, -35.638, -50.912, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 35.638, -50.912, 46.564, -27.553, 50.4, 0)
-
-[node name="RightFin" parent="." index="4" node_paths=PackedStringArray("target_body") instance=ExtResource("2_8eax6")]
-position = Vector2(50.373, 1.004)
-collision_mask = 3
-mass = 0.5
-physics_material_override = ExtResource("3_53bfc")
-gravity_scale = 0.0
-inertia = 100.0
-target_body = NodePath(".")
-
-[node name="RightFinJoint" type="PinJoint2D" parent="." index="5"]
-position = Vector2(50.373, 1.004)
-node_a = NodePath("..")
-node_b = NodePath("../RightFin")
-bias = 0.9
-disable_collision = false
-softness = 16.0
-angular_limit_lower = -1.5708
-angular_limit_upper = 1.5708
-
-[node name="LeftFin" parent="." index="6" node_paths=PackedStringArray("target_body") instance=ExtResource("2_8eax6")]
-position = Vector2(-50.373, 1.00449)
-rotation = 1.5708
-collision_mask = 3
-mass = 0.5
-physics_material_override = ExtResource("3_53bfc")
-gravity_scale = 0.0
-inertia = 100.0
-target_body = NodePath(".")
-
-[node name="LeftFinJoint" type="PinJoint2D" parent="." index="7"]
-position = Vector2(-50.373, 1.00449)
-node_a = NodePath("..")
-node_b = NodePath("../LeftFin")
-bias = 0.9
-disable_collision = false
-softness = 16.0
-angular_limit_lower = -1.5708
-angular_limit_upper = 1.5708
-
-[node name="DorsalFin" type="Node2D" parent="." index="8" node_paths=PackedStringArray("controlled_body")]
+[node name="DorsalFin" type="Node2D" parent="." index="1" node_paths=PackedStringArray("controlled_body")]
 rotation = -1.5708
 script = ExtResource("8_0ygyx")
 controlled_body = NodePath("..")
 torque_power = 900100.0
 
+[node name="ThrustEngine" type="Node2D" parent="." index="2" node_paths=PackedStringArray("target_body")]
+script = ExtResource("6_v2jqy")
+target_body = NodePath("..")
+power = 9001.0
+
+[node name="TrunkCollision" parent="." index="3"]
+position = Vector2(0, 8.28248)
+polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.538, 25, -58.538, 35.638, -44.803, 46.564, -24.247)
+
+[node name="TrunkPolygon" parent="." index="4"]
+position = Vector2(0, 8.28248)
+polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.538, 25, -58.538, 35.638, -44.803, 46.564, -24.247)
+skip_line_indeces = Array[int]([11])
+
+[node name="Stomach" parent="." index="5" node_paths=PackedStringArray("nodes_to_scale")]
+nodes_to_scale = [NodePath("../TrunkPolygon")]
+min_x_scale = 0.75
+max_x_scale = 1.4
+
+[node name="EnergyReservoir" parent="Stomach" index="0"]
+consumable_type = 1
+
+[node name="Beak" parent="." index="6" instance=ExtResource("5_mgc12")]
+position = Vector2(-0.014, -67.514)
+speed_factor = 2.0
+rotate_factor = 0.6
+
+[node name="HeadCollision" type="CollisionPolygon2D" parent="." index="7"]
+position = Vector2(0, 0.53)
+polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
+
+[node name="HeadRenderer" type="Polygon2D" parent="." index="8"]
+editor_description = "visual aspect"
+position = Vector2(0, 0.53)
+scale = Vector2(0.99, 1)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
+script = ExtResource("5_jatoi")
+point_draw_radius = 1.08
+draw_line_width = 1.2
+skip_line_indeces = Array[int]([7])
+
 [connection signal="on_new_target_location_chosen" from="MetaBrain" to="DorsalFin" method="set_target_world_position"]
-[connection signal="on_new_target_velocity_chosen" from="MetaBrain" to="RightFin" method="set_target_velocity"]
-[connection signal="on_new_target_velocity_chosen" from="MetaBrain" to="LeftFin" method="set_target_velocity"]
+[connection signal="on_new_target_velocity_chosen" from="MetaBrain" to="ThrustEngine" method="set_target_velocity"]
 [connection signal="body_entered" from="MetaBrain/SeekEnergyCrystalsBrain/Area2D" to="MetaBrain/SeekEnergyCrystalsBrain" method="on_body_enters_awareness"]
 [connection signal="body_exited" from="MetaBrain/SeekEnergyCrystalsBrain/Area2D" to="MetaBrain/SeekEnergyCrystalsBrain" method="on_body_exits_awareness"]
 [connection signal="body_entered" from="MetaBrain/SeekAsteroids/Area2D" to="MetaBrain/SeekAsteroids" method="on_body_enters_awareness"]

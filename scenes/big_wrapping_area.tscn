@@ -92,10 +92,6 @@ position = Vector2(28843.9, 26879.6)
 collision_mask = 27
 physics_material_override = null
 
-[node name="Louie" parent="." instance=ExtResource("12_ot63i")]
-position = Vector2(28847, 26749)
-collision_mask = 27
-
 [node name="LazyTrackingCamera" parent="." node_paths=PackedStringArray("prey") instance=ExtResource("8_rcdx7")]
 position = Vector2(28801, 17200)
 prey = NodePath("../Player")
@@ -147,7 +143,7 @@ position = Vector2(28801, 16200)
 
 [node name="JankFighter" type="Node2D" parent="." node_paths=PackedStringArray("bodies_in_motion")]
 script = ExtResource("14_wb8y2")
-bodies_in_motion = [NodePath("../Player"), NodePath("../Louie")]
+bodies_in_motion = [NodePath("../Player"), null]
 max_move_dist_sqr = 1e+06
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]

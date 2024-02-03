@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bmfosedjl2egk" path="res://packedscenes/pickup.tscn" id="1_w7arm"]
 
 [node name="energy_crystal" instance=ExtResource("1_w7arm")]
-resource_type = 1
-resource_units = 1.0
+consumable_type = 1
+consumable_units = 1.0
 
 [node name="Polygon2D" parent="." index="0"]
 color = Color(0, 0, 0, 0)

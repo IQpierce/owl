@@ -1,12 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://dvs73k0tkjij4"]
+[gd_scene load_steps=6 format=3 uid="uid://dvs73k0tkjij4"]
 
 [ext_resource type="Script" path="res://scripts/Creature.gd" id="1_7fvrv"]
 [ext_resource type="PhysicsMaterial" uid="uid://bk8d6toxvi2yb" path="res://physics_materials/creature.tres" id="1_8m65c"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_lckca"]
+[ext_resource type="Script" path="res://scripts/Stomach.gd" id="4_fwo6w"]
+[ext_resource type="Script" path="res://scripts/ConsumableContainer.gd" id="5_7rk73"]
 
 [node name="Creature" type="RigidBody2D"]
 disable_mode = 2
-collision_mask = 3
+collision_mask = 35
 physics_material_override = ExtResource("1_8m65c")
 inertia = 1.0
 can_sleep = false
@@ -28,3 +30,15 @@ polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
 script = ExtResource("2_lckca")
 point_draw_radius = 1.08
 draw_line_width = 1.2
+
+[node name="Stomach" type="Node2D" parent="." node_paths=PackedStringArray("consumable_reservoir")]
+script = ExtResource("4_fwo6w")
+consumable_reservoir = NodePath("EnergyReservoir")
+
+[node name="EnergyReservoir" type="Node2D" parent="Stomach"]
+script = ExtResource("5_7rk73")
+amount_contained = 3.9
+maximum_amount = 12.0
+decay_rate_per_sec = 0.05
+
+[connection signal="on_consumed_pickup" from="." to="Stomach" method="on_pickup_consumed"]
