@@ -5,7 +5,9 @@ var game:OwlScene
 @export var debug_fps_label:Label
 @export var debug_time_speed_up_label:Label
 @export var post_game_over_input_cooldown_secs:float = 2
+@export var fishbowl_label_blink_rate_secs:float = 1
 
+@onready var fishbowl_mode_label = $"Fishbowl Mode label"
 var accept_input_timeout:float
 
 func _ready():
@@ -16,7 +18,10 @@ func _process(delta):
 	
 	if debug_fps_label.visible:
 		debug_fps_label.text = "FPS: %.02f" % (Engine.get_frames_per_second())
-		
+	
+	if fishbowl_mode_label:
+		fishbowl_mode_label.visible = game.fishbowl_mode && (int(Time.get_ticks_msec() / (1000 * fishbowl_label_blink_rate_secs) ) % 2)
+	
 	if accept_input_timeout <= 0 || accept_input_timeout < Time.get_unix_time_from_system():
 		# special input code for HUD states, etc.
 		

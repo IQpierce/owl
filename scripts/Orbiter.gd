@@ -1,4 +1,4 @@
-extends Area2D
+extends Node2D
 
 @export var orbit_target:Node2D
 @export var full_orbit_time_secs:float = 60
