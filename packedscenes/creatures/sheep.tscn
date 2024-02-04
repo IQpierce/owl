@@ -26,7 +26,7 @@ max_health = 12.0
 script = ExtResource("2_etigy")
 seeker_brains = [NodePath("SeekEnergyCrystalsBrain"), NodePath("SeekAsteroids")]
 controlled_creature = NodePath("..")
-auto_think_delta_secs = 8.0
+auto_think_delta_secs = 3.0
 
 [node name="SeekEnergyCrystalsBrain" type="Node2D" parent="MetaBrain" index="0" node_paths=PackedStringArray("controlled_creature")]
 position = Vector2(0, -60)

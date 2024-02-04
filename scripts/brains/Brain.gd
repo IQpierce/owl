@@ -10,12 +10,16 @@ class_name Brain
 # @TODO - This is weirdly specific and should probably not be the language all brains speak
 signal on_target_velocity_changed(new_target:Vector2)
 
-var last_think_time:float = NAN
+var last_auto_think_time:float = NAN
 
 
 func _process(delta):
-	if auto_think_delta_secs > 0 && is_nan(last_think_time) || Time.get_unix_time_from_system() >= last_think_time + auto_think_delta_secs:
+	if auto_think_delta_secs > 0 && \
+		(	is_nan(last_auto_think_time) || \
+			Time.get_unix_time_from_system() >= last_auto_think_time + auto_think_delta_secs
+		):
 		think()
+		last_auto_think_time = Time.get_unix_time_from_system()
 
 func think():
 	assert(false, "pure virtual, this should be overridden!!")
