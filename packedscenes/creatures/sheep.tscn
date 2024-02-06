@@ -76,7 +76,6 @@ shape = SubResource("CircleShape2D_ibxja")
 position = Vector2(2, 0)
 script = ExtResource("8_31eyc")
 urgency = 0.5
-srpnow_max_velocity = 18000.0
 controlled_creature = NodePath("../../..")
 
 [node name="HandleThreatMetaBrain" type="Node2D" parent="MetaBrain" index="1" node_paths=PackedStringArray("threat_response_brains")]
@@ -90,9 +89,10 @@ controlled_creature = NodePath("../../..")
 
 [node name="RunAwayBrain" type="Node2D" parent="MetaBrain/HandleThreatMetaBrain/FlightResponseBrain" index="0" node_paths=PackedStringArray("controlled_creature")]
 script = ExtResource("8_31eyc")
+min_dist_to_pick = 2000.0
+max_dist_to_pick = 2100.0
 urgency = 1.0
-avoidance_threshhold = 0.5
-srpnow_max_velocity = 18000.0
+avoidance_threshhold = -0.1
 controlled_creature = NodePath("../../../..")
 
 [node name="DorsalFin" type="Node2D" parent="." index="1" node_paths=PackedStringArray("controlled_body")]
@@ -150,5 +150,7 @@ skip_line_indeces = Array[int]([7])
 [connection signal="body_exited" from="MetaBrain/SeekEnergyMetaBrain/SeekEnergyCrystalsBrain/Area2D" to="MetaBrain/SeekEnergyMetaBrain/SeekEnergyCrystalsBrain" method="on_body_exits_awareness"]
 [connection signal="body_entered" from="MetaBrain/SeekEnergyMetaBrain/SeekAsteroids/Area2D" to="MetaBrain/SeekEnergyMetaBrain/SeekAsteroids" method="on_body_enters_awareness"]
 [connection signal="body_exited" from="MetaBrain/SeekEnergyMetaBrain/SeekAsteroids/Area2D" to="MetaBrain/SeekEnergyMetaBrain/SeekAsteroids" method="on_body_exits_awareness"]
+[connection signal="on_target_location_changed" from="MetaBrain/SeekEnergyMetaBrain/WanderBrain" to="DorsalFin" method="set_target_world_position"]
+[connection signal="on_target_velocity_changed" from="MetaBrain/SeekEnergyMetaBrain/WanderBrain" to="ThrustEngine" method="set_target_velocity"]
 [connection signal="on_target_location_changed" from="MetaBrain/HandleThreatMetaBrain/FlightResponseBrain/RunAwayBrain" to="DorsalFin" method="set_target_world_position"]
 [connection signal="on_target_velocity_changed" from="MetaBrain/HandleThreatMetaBrain/FlightResponseBrain/RunAwayBrain" to="ThrustEngine" method="set_target_velocity"]

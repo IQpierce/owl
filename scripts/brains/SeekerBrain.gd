@@ -3,9 +3,7 @@ extends Brain
 class_name SeekerBrain
 
 
-signal on_new_target_body_chosen(body:CollisionObject2D)
-signal on_new_target_location_chosen(world_location:Vector2)
-signal on_new_target_velocity_chosen(relative_velocity:Vector2)
+signal on_target_body_changed(body:CollisionObject2D)
 
 signal on_seek_failure()
 
@@ -22,18 +20,18 @@ func think():
 	
 func process_seek_result(most_relevant_target:CollisionObject2D):
 	if most_relevant_target != null:
-		on_new_target_body_chosen.emit(most_relevant_target)
-		on_new_target_location_chosen.emit(most_relevant_target.global_position)
+		on_target_body_changed.emit(most_relevant_target)
+		on_target_location_changed.emit(most_relevant_target.global_position)
 		
 		var relative_velocity_to_target:Vector2 = most_relevant_target.global_position - controlled_creature.global_position
-		on_new_target_velocity_chosen.emit(relative_velocity_to_target)
+		on_target_velocity_changed.emit(relative_velocity_to_target)
 	else:
 		on_seek_failure.emit()
 		
 		# @TODO: Should these lines still exist? They should really be consequences of failure
-		on_new_target_body_chosen.emit(null)
-		on_new_target_location_chosen.emit(controlled_creature.global_position)
-		on_new_target_velocity_chosen.emit(Vector2.ZERO)
+		on_target_body_changed.emit(null)
+		on_target_location_changed.emit(controlled_creature.global_position)
+		on_target_velocity_changed.emit(Vector2.ZERO)
 
 # @returns the most relevant target, if any relevant targets exist at all.
 func seek() -> CollisionObject2D:
