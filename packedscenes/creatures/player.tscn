@@ -74,7 +74,9 @@ shot_parent = NodePath("..")
 
 [node name="Lazer" type="AudioStreamPlayer2D" parent="Gun" index="0"]
 stream = ExtResource("6_0an66")
-volume_db = 7.903
+volume_db = -10.0
+attenuation = 2.0
+panning_strength = 1.8
 bus = &"Effects"
 
 [node name="PickupVacuum" type="Area2D" parent="." index="5"]

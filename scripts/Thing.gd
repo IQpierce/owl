@@ -10,16 +10,16 @@ class_name Thing
 
 @export var corpse_children:Array[Node2D]	# Which of our child Node2D's persist beyond our death
 
+@onready var damaged_sfx:AudioStreamPlayer2D = $DamagedSFX
+@onready var died_sfx:AudioStreamPlayer2D = $DiedSFX
 
 signal damaged(dmg_amt, global_position)
 signal died()
 
 var accumulated_damage_by_spawner:Dictionary	# whose keys align exactly with those of spawn_per_damage, and whose values represent the accumulated damage taken - reset and modulo'ed by the maximum represented by the float val of the emit_per_damage row
-var shatter:AudioStreamPlayer2D = null
 
 
 func _ready():
-	shatter = get_node_or_null("Shatter")
 	reset_accumulated_damage()
 
 func reset_health():
@@ -53,6 +53,9 @@ func deal_damage(dmg_amt:float, global_position:Vector2):
 		# Save the remaining "leftover" accumulated damage
 		accumulated_damage_by_spawner[spawner_key] = accumulated_dmg
 	
+	if damaged_sfx:
+		damaged_sfx.play()
+	
 	damaged.emit(dmg_amt, global_position)
 	
 	if (health <= 0):
@@ -60,9 +63,9 @@ func deal_damage(dmg_amt:float, global_position:Vector2):
 		die(false)
 
 func die(utterly:bool = false):
-	if shatter != null:
-		shatter.reparent(get_parent())
-		shatter.play()
+	if died_sfx != null:
+		died_sfx.reparent(get_parent())
+		died_sfx.play()
 	
 	# pieces of our anatomy stay around
 	

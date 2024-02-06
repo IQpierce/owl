@@ -7,7 +7,7 @@ extends Node2D
 @export var immune_to_shots:Array[RigidBody2D]
 @export var shot_parent:Node2D
 
-@onready var lazer = $Lazer
+@onready var lazer:AudioStreamPlayer2D = $Lazer
 
 
 

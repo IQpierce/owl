@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dvs73k0tkjij4"]
+[gd_scene load_steps=7 format=3 uid="uid://dvs73k0tkjij4"]
 
 [ext_resource type="Script" path="res://scripts/Creature.gd" id="1_7fvrv"]
 [ext_resource type="PhysicsMaterial" uid="uid://bk8d6toxvi2yb" path="res://physics_materials/creature.tres" id="1_8m65c"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_lckca"]
 [ext_resource type="Script" path="res://scripts/Stomach.gd" id="4_fwo6w"]
 [ext_resource type="Script" path="res://scripts/ConsumableContainer.gd" id="5_7rk73"]
+[ext_resource type="AudioStream" uid="uid://bb1c4e4ljwmtd" path="res://audio/asteroid_damaged.wav" id="6_fmx7a"]
 
 [node name="Creature" type="RigidBody2D"]
 disable_mode = 2
@@ -41,4 +42,8 @@ amount_contained = 3.9
 maximum_amount = 12.0
 decay_rate_per_sec = 0.05
 
+[node name="DamagedSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_fmx7a")
+
+[connection signal="damaged" from="." to="DamagedSFX" method="play"]
 [connection signal="on_consumed_pickup" from="." to="Stomach" method="on_pickup_consumed"]

@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bmfosedjl2egk"]
+[gd_scene load_steps=7 format=3 uid="uid://bmfosedjl2egk"]
 
 [ext_resource type="Script" path="res://scripts/Pickup.gd" id="1_qsy5d"]
 [ext_resource type="PhysicsMaterial" uid="uid://bdxuey7k5ll43" path="res://physics_materials/pickup.tres" id="1_tef8i"]
 [ext_resource type="Script" path="res://scripts/util/ToggleBoolSignal.gd" id="2_altes"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_n6hll"]
+[ext_resource type="AudioStream" uid="uid://d0nao1fqsxskr" path="res://audio/pickup_collected.wav" id="5_qngoy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2sk8c"]
 
@@ -41,6 +42,11 @@ autostart = true
 
 [node name="ToggleVisibility" type="Node" parent="BlinkTimer"]
 script = ExtResource("2_altes")
+
+[node name="CollectedSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_qngoy")
+volume_db = -10.0
+pitch_scale = 0.9
 
 [connection signal="body_entered" from="." to="." method="on_picked_up"]
 [connection signal="body_entered" from="PickupHitboxArea" to="." method="on_picked_up"]
