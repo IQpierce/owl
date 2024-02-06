@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d4m1t88007x4m"]
 
-[ext_resource type="Texture2D" uid="uid://d01krn0pvudlc" path="res://dot.png" id="1_2cyda"]
+[ext_resource type="Texture2D" uid="uid://d01krn0pvudlc" path="res://textures/dot.png" id="1_2cyda"]
 
 [node name="star" type="Sprite2D"]
 modulate = Color(0.643137, 0.643137, 0.643137, 1)

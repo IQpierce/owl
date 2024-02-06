@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://dkfy8ncjc1gd6"]
 
-[ext_resource type="Texture2D" uid="uid://d01krn0pvudlc" path="res://dot.png" id="1_me3mu"]
+[ext_resource type="Texture2D" uid="uid://d01krn0pvudlc" path="res://textures/dot.png" id="1_me3mu"]
 [ext_resource type="Script" path="res://scripts/Orbiter.gd" id="1_xk02d"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_ku8k5"]
 [ext_resource type="Material" uid="uid://cewktdf0bh7mh" path="res://particles/planetoid_inner.tres" id="3_8115p"]
