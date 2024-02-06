@@ -58,9 +58,10 @@ max_spawn_dist = 15.0
 min_initial_velocity = 48.0
 max_initial_velocity = 120.0
 
-[node name="Shatter" parent="." instance=ExtResource("6_1wbsw")]
+[node name="DiedSFX" parent="." instance=ExtResource("6_1wbsw")]
 volume_db = -0.2
 pitch_scale = 0.6
 
 [node name="DamagedSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_64cl5")
+volume_db = -8.0
