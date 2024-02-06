@@ -35,7 +35,7 @@ offset_left = -2.0
 offset_top = 1009.0
 offset_right = 1920.0
 offset_bottom = 1066.0
-text = "ENJOY FISHBOWL MODE!"
+text = "E N J O Y   F I S H B O W L   M O D E !"
 label_settings = SubResource("LabelSettings_pl6hg")
 horizontal_alignment = 1
 
