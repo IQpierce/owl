@@ -129,7 +129,7 @@ exclude_inner_percentage = 0.7
 [node name="SpawnSheep" type="CollisionShape2D" parent="AsteroidBelt"]
 shape = SubResource("CircleShape2D_xkjbt")
 script = ExtResource("6_q82vl")
-num_to_spawn = 64
+num_to_spawn = 48
 proto = ExtResource("12_ot63i")
 exclude_inner_percentage = 0.7
 
