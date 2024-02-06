@@ -62,6 +62,3 @@ max_initial_velocity = 120.0
 volume_db = -0.2
 pitch_scale = 0.6
 
-[node name="DamagedSFX" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("6_64cl5")
-volume_db = -8.0

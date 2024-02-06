@@ -10,6 +10,8 @@ class_name Thing
 
 @export var corpse_children:Array[Node2D]	# Which of our child Node2D's persist beyond our death
 
+@export var damage_sfx_cooldown_secs:float = .5
+
 @onready var damaged_sfx:AudioStreamPlayer2D = $DamagedSFX
 @onready var died_sfx:AudioStreamPlayer2D = $DiedSFX
 
@@ -17,6 +19,7 @@ signal damaged(dmg_amt, global_position)
 signal died()
 
 var accumulated_damage_by_spawner:Dictionary	# whose keys align exactly with those of spawn_per_damage, and whose values represent the accumulated damage taken - reset and modulo'ed by the maximum represented by the float val of the emit_per_damage row
+var last_damaged_sfx_playtime:float = NAN
 
 
 func _ready():
@@ -52,9 +55,11 @@ func deal_damage(dmg_amt:float, global_position:Vector2):
 		
 		# Save the remaining "leftover" accumulated damage
 		accumulated_damage_by_spawner[spawner_key] = accumulated_dmg
-	
-	if damaged_sfx:
+
+	if damaged_sfx && \
+		(damage_sfx_cooldown_secs <= 0 || (is_nan(last_damaged_sfx_playtime) || Time.get_unix_time_from_system() > last_damaged_sfx_playtime + damage_sfx_cooldown_secs)):
 		damaged_sfx.play()
+		last_damaged_sfx_playtime = Time.get_unix_time_from_system()
 	
 	damaged.emit(dmg_amt, global_position)
 	
