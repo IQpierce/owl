@@ -2,6 +2,7 @@ extends Node2D
 
 class_name OwlScene
 
+@export var jank_fighter:JankFighter
 @export var hide_mouse:bool = true
 @export var fishbowl_mode:bool = false
 @export var player:Player

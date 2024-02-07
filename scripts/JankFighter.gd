@@ -1,4 +1,5 @@
 extends Node2D
+class_name JankFighter
 
 # Tries to fix physics jank bugs that break the game.
 
@@ -12,8 +13,6 @@ var frame_moduloed_index:int = 0
 # Keys are RigidBody2D's
 # Values are Array[Dictionary]. Each Dictionary contains a bunch of body motion data.
 var saved_body_data:Dictionary
-
-
 
 func _ready():
 	for body_in_motion in bodies_in_motion:
@@ -53,3 +52,8 @@ func _process(delta:float):
 			"linear_velocity"		:	body_in_motion.linear_velocity,
 			"angular_velocity"		:	body_in_motion.angular_velocity
 		}
+
+func wipe_body_data(body:RigidBody2D):
+	if saved_body_data.has(body):
+		for datum in saved_body_data[body]:
+			datum.clear()

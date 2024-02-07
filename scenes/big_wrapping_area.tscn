@@ -23,8 +23,9 @@ custom_solver_bias = 0.1
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 10000.0
 
-[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("player", "world_camera", "fishbowl_camera")]
+[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("jank_fighter", "player", "world_camera", "fishbowl_camera")]
 script = ExtResource("1_lu7r6")
+jank_fighter = NodePath("JankFighter")
 player = NodePath("Player")
 world_camera = NodePath("LazyTrackingCamera")
 fishbowl_camera = NodePath("FishbowlCamera")
