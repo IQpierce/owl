@@ -12,8 +12,8 @@ class_name Thing
 
 @export var damage_sfx_cooldown_secs:float = .5
 
-@onready var damaged_sfx:AudioStreamPlayer2D = $DamagedSFX
-@onready var died_sfx:AudioStreamPlayer2D = $DiedSFX
+@onready var damaged_sfx:AudioStreamPlayer2D = get_node_or_null("DamagedSFX")
+@onready var died_sfx:AudioStreamPlayer2D = get_node_or_null("DiedSFX")
 
 signal damaged(dmg_amt, global_position)
 signal died()
