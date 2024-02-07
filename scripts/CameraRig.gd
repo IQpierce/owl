@@ -2,19 +2,22 @@
 extends Camera_Deprecated
 class_name CameraRig
 
-#@export_group("Debug")
+@export_group("Debug")
 @export var show_debug = true
 @export var state_label:Label
-#@export_group("Tracking")
+@export_group("Tracking")
 @export var cartridge:CameraCartridge
-@export var prey:Player
 @export var ready_center:bool = true
-#@export_group("Curiosity")
+@export_group("Curiosity")
 @export var leash_length:float = 400
-@export var wonder_speed:float = 250
+@export var curious_speed:float = 250
 
 var velocity:Vector2
 var idle_plan:Plan
+var prey:Node2D
+
+func get_prey() -> Node2D:
+	return prey
 
 func _ready():
 	if ready_center && cartridge != null:
@@ -26,13 +29,12 @@ func _ready():
 func _draw():
 	# Only draw Debug display while in Editor
 	show_debug = show_debug && OS.has_feature("editor")
-
-	if cartridge != null:
-		cartridge.draw_for_camera(global_position, show_debug)
-		if state_label != null:
-			if show_debug:
+	if show_debug:
+		if cartridge != null:
+			var debug_msg = cartridge.request_debug(global_position)
+			if state_label != null:
 				state_label.visible = true
-				state_label.text = cartridge.request_debug_message()
+				state_label.text = debug_msg
 			else:
 				state_label.visible = false
 
@@ -51,33 +53,42 @@ func apply_plans(delta:float):
 	var hunt_pos = global_position
 	var tracking_importance = 0
 
+	prey = self
 	if cartridge != null:
 		cartridge_plan = cartridge.build_plan(delta, idle_plan)
 		hunt_pos = cartridge_plan.position
 		tracking_importance = cartridge_plan.exclusivity
+		prey = cartridge_plan.prey
 
-	var wonder_pos = hunt_pos
+	#TODO (sam) should this also be handled in cartridge
+	var curious_pos = hunt_pos
 	if center_priority > 0:
-		wonder_pos = global_position
-		var wonder_destination = attention_center
+		curious_pos = global_position
+		var curious_destination = attention_center
 
-		var prey_to_destination = wonder_destination - prey.global_position
+		#TODO(sam) cartridge should return the position of the prey/vip not itself
+		var prey_to_destination = curious_destination - prey.global_position
 		if prey_to_destination.length_squared() > leash_length * leash_length:
 			prey_to_destination = prey_to_destination.normalized() * leash_length
 
-		wonder_destination = prey.global_position + prey_to_destination
-		var to_wonder = wonder_destination - global_position
-		if to_wonder.length_squared() > wonder_speed * wonder_speed:
-			to_wonder = to_wonder.normalized() * wonder_speed
+		curious_destination = cartridge.global_position + prey_to_destination
+		var to_curious = curious_destination - global_position
+		if to_curious.length_squared() > curious_speed * curious_speed:
+			to_curious = to_curious.normalized() * curious_speed
 
-		wonder_pos += (to_wonder + velocity) * delta
+		# TODO shouldn't wander velocity care about the plan's weight
+		curious_pos += (to_curious + velocity) * delta
 
-	global_position = ((1 - tracking_importance) * wonder_pos) + (tracking_importance * hunt_pos)
+	global_position = ((1 - tracking_importance) * curious_pos) + (tracking_importance * hunt_pos)
 	center_priority = 0
+
+	#TODO (sam) how should I be combining velocities?
+	velocity = cartridge_plan.velocity
 
 	queue_redraw()
 
 
+# Maybe just remove these and pass down the rig
 class Plan:
 	var position:Vector2 = Vector2.ZERO
 	var velocity:Vector2 = Vector2.ZERO
@@ -99,4 +110,5 @@ class CommonPlan extends Plan:
 	var zoom_weight:float = 0
 
 class ExclusivePlan extends Plan:
+	var prey:Node2D
 	var exclusivity:float = 0

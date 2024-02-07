@@ -37,7 +37,14 @@ turn_around_acceleration_factor = 1.5
 side_boost = 1000.0
 
 [node name="CameraCartridge" type="Node2D" parent="." index="1"]
+position = Vector2(1, 0)
 script = ExtResource("4_84jdn")
+max_relative_speed = 2.0
+acceleration_factor = 1.5
+lead_distance = 450
+rest_vel_damp = 0.9
+lead_vel_perp_damp = 0.8
+lead_turn_to_rest_ms = 100
 
 [node name="Thrust" type="AudioStreamPlayer2D" parent="." index="2"]
 stream = ExtResource("3_wencu")

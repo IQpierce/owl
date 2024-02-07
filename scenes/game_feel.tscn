@@ -34,7 +34,7 @@ size = Vector2(61440, 34560)
 [node name="GameFeel" type="Node2D" node_paths=PackedStringArray("player", "world_camera")]
 position = Vector2(-1, -13)
 script = ExtResource("1_80w6u")
-player = NodePath("PlayerRefactor")
+player = NodePath("Player_Refactor")
 world_camera = NodePath("Camera_Refactor")
 muted = true
 emulate_phosphor_monitor = false
@@ -96,10 +96,15 @@ position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_ed0ja")
 
 [node name="Sun" parent="." instance=ExtResource("6_4kfgg")]
-position = Vector2(4000, 1000)
+position = Vector2(500, 1000)
+collision_layer = 0
+collision_mask = 0
+monitoring = false
 
 [node name="Centerpiece" type="Node2D" parent="Sun"]
 script = ExtResource("6_kek22")
+priority = 0
+notice_radius = 2501
 
 [node name="FAKE_ASTEROID" type="Polygon2D" parent="."]
 visible = false
@@ -130,14 +135,16 @@ turn_speed = 50.0
 max_speed = 1000.0
 side_boost = 1000.0
 
-[node name="PlayerRefactor" parent="." instance=ExtResource("8_ifucg")]
-position = Vector2(6000, 4000)
+[node name="Player_Refactor" parent="." instance=ExtResource("8_ifucg")]
+position = Vector2(4000, 4000)
 
 [node name="Camera_Refactor" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("5_05koq")]
 script = ExtResource("10_g4401")
-cartridge = NodePath("../PlayerRefactor/CameraCartridge")
+show_debug = true
+cartridge = NodePath("../Player_Refactor/CameraCartridge")
 ready_center = true
 leash_length = 400.0
+curious_speed = 250.0
 
 [node name="CameraState" type="Label" parent="Camera_Refactor"]
 visible = false
@@ -158,6 +165,7 @@ horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="AsteroidBelt" type="Area2D" parent="."]
+visible = false
 position = Vector2(6000, 8000)
 disable_mode = 1
 collision_layer = 0
@@ -166,7 +174,7 @@ collision_mask = 0
 [node name="SpawnRandomAsteroidBelt" type="CollisionShape2D" parent="AsteroidBelt"]
 shape = SubResource("CircleShape2D_xkjbt")
 script = ExtResource("4_e5ljk")
-num_to_spawn = 500
+num_to_spawn = 100
 proto = ExtResource("6_e337w")
 
 [node name="StarfieldBG" type="Area2D" parent="."]
@@ -188,5 +196,3 @@ proto = ExtResource("5_pt2a0")
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/RightWrappingWall" to="WrappingWalls/RightWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/LeftWrappingWall" to="WrappingWalls/LeftWrappingWall" method="on_body_entered"]
-
-[editable path="PlayerRefactor"]

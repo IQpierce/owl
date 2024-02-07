@@ -14,6 +14,6 @@ func _ready():
 
 func _physics_process(float):
 	if camera != null:
-		if (camera.global_position - global_position).length_squared() < notice_radius * notice_radius:
+		if priority > 0 && (camera.global_position - global_position).length_squared() < notice_radius * notice_radius:
 			var to_periphery = (camera.global_position - global_position).normalized() * peripheral_radius
 			camera.pique_curiousity(global_position + to_periphery, priority)

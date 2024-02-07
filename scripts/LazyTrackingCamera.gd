@@ -34,6 +34,9 @@ var lock_rect:Rect2
 enum TrackingState { Rest, Follow, Lead }
 var tracking = TrackingState.Rest
 
+func get_prey() -> Node2D:
+	return prey
+
 func _ready():
 	if prey:
 		prey.set_camera(self)

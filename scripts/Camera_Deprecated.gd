@@ -5,6 +5,9 @@ class_name Camera_Deprecated
 var attention_center:Vector2
 var center_priority:int
 
+func get_prey() -> Node2D:
+	return null
+
 func pique_curiousity(focus_global:Vector2, priority:int):
 	var take_priority = priority > center_priority
 	if !take_priority && priority == center_priority:
