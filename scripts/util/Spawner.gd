@@ -4,6 +4,7 @@ class_name Spawner
 
 # Always spawns in the "positive y" (down) direction.
 
+@export var free_after_spawn:bool = false
 @export var spawn_protos:Array[PackedScene]	# Each spawn, one of these is chosen randomly. TODO: Avoid repeats
 
 @export var num_to_spawn:int = 1	
@@ -42,5 +43,8 @@ func spawn(spawn_owner:Node2D):
 		if spawned_instance_as_rigidbody:
 			var spawn_velocity_power:float = randf_range(min_initial_velocity, max_initial_velocity)
 			spawned_instance_as_rigidbody.set_axis_velocity(spawn_velocity_direction * spawn_velocity_power)
+
+		if free_after_spawn:
+			queue_free
 
 	

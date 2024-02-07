@@ -82,12 +82,10 @@ func die(utterly:bool = false):
 	
 	if !utterly:
 		for spawner:Spawner in spawned_on_death:
+			spawner.reparent(get_parent())
+			spawner.free_after_spawn = true
 			spawner.spawn(get_parent())
 	
 	died.emit(utterly)
 	
-	# Give signals and such a frame to process. Some of them, like spawning, need to await until we are not in "collision" codepath
-	# TODO (sam) does this cause any weirdness from things sticking around an extra frame
-	await get_tree().process_frame
-
 	queue_free()
