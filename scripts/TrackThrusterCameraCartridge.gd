@@ -22,12 +22,11 @@ var lock_rect:Rect2
 enum TrackingState { Rest, Follow, Lead }
 var tracking = TrackingState.Rest
 
-#TODO (sam) can we pass in a const CameraRig instead of the plan?
-func build_plan(delta:float, idle_plan:CameraRig.Plan) -> CameraRig.ExclusivePlan:
+func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 	#TODO (sam) instead of using prey we probably want to find the parent Thing or Node
 	var prey = get_parent() as Thing
 
-	plan.copy(idle_plan)
+	plan.copy_rig(data_rig)
 
 	#TODO (sam) use the body that Locomotor is tracking
 	plan.prey = prey
@@ -162,27 +161,25 @@ func build_plan(delta:float, idle_plan:CameraRig.Plan) -> CameraRig.ExclusivePla
 
 	return plan
 
-func request_debug(camera_position:Vector2) -> String:
-	super(camera_position)
+func request_debug(drawee_rig:CameraRig) -> String:
+	if drawee_rig != null:
+		# Screen Center
+		drawee_rig.draw_arc(Vector2.ZERO, 10, 0, TAU, 60, Color.WHITE)
+
+		if tracking == TrackingState.Lead:
+			# Desired Screen Center (focus)
+			var prey = get_parent() as Thing
+			var relative_prey_pos = prey.global_position - drawee_rig.global_position
+			var relative_lead_pos = relative_prey_pos + (prey_bearing * lead_distance)
+			drawee_rig.draw_line(relative_lead_pos + Vector2(-10, -10), relative_lead_pos + Vector2(10, 10),  Color.WHITE)
+			drawee_rig.draw_line(relative_lead_pos + Vector2(-10, 10),  relative_lead_pos + Vector2(10, -10), Color.WHITE)
+
+			# Maintain Tracking or Rest Threshold
+			var prey_perp = Vector2(relative_prey_pos.y, -relative_prey_pos.x).normalized() * 100
+			drawee_rig.draw_dashed_line(relative_prey_pos - prey_perp, relative_prey_pos + prey_perp, Color.WHITE, 1.0, 10.0)
+
+		if tracking != TrackingState.Lead:
+			drawee_rig.draw_rect(track_rect, Color.GRAY, false, 2.0)
+
+		drawee_rig.draw_rect(lock_rect, Color.GRAY, false, 4.0 * (tracking + 1))
 	return TrackingState.keys()[tracking]
-
-func _draw():
-	# Screen Center
-	draw_arc(Vector2.ZERO, 10, 0, TAU, 60, Color.WHITE)
-
-	if tracking == TrackingState.Lead:
-		# Desired Screen Center (focus)
-		var prey = get_parent() as Thing
-		var relative_prey_pos = prey.global_position - global_position
-		var relative_lead_pos = relative_prey_pos + (prey_bearing * lead_distance)
-		draw_line(relative_lead_pos + Vector2(-10, -10), relative_lead_pos + Vector2(10, 10),  Color.WHITE)
-		draw_line(relative_lead_pos + Vector2(-10, 10),  relative_lead_pos + Vector2(10, -10), Color.WHITE)
-
-		# Maintain Tracking or Rest Threshold
-		var prey_perp = Vector2(relative_prey_pos.y, -relative_prey_pos.x).normalized() * 100
-		draw_dashed_line(relative_prey_pos - prey_perp, relative_prey_pos + prey_perp, Color.WHITE, 1.0, 10.0)
-
-	if tracking != TrackingState.Lead:
-		draw_rect(track_rect, Color.GRAY, false, 2.0)
-
-	draw_rect(lock_rect, Color.GRAY, false, 4.0 * (tracking + 1))

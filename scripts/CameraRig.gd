@@ -13,7 +13,6 @@ class_name CameraRig
 @export var curious_speed:float = 250
 
 var velocity:Vector2
-var idle_plan:Plan
 var prey:Node2D
 
 func get_prey() -> Node2D:
@@ -23,15 +22,12 @@ func _ready():
 	if ready_center && cartridge != null:
 		global_position = cartridge.global_position
 
-	idle_plan = Plan.new()
-	idle_plan.copy_rig(self)
-
 func _draw():
 	# Only draw Debug display while in Editor
 	show_debug = show_debug && OS.has_feature("editor")
 	if show_debug:
 		if cartridge != null:
-			var debug_msg = cartridge.request_debug(global_position)
+			var debug_msg = cartridge.request_debug(self)
 			if state_label != null:
 				state_label.visible = true
 				state_label.text = debug_msg
@@ -47,18 +43,17 @@ func _physics_process(delta:float):
 		apply_plans(delta)
 
 func apply_plans(delta:float):
-	idle_plan.copy_rig(self)
-
 	var cartridge_plan:ExclusivePlan = null
 	var hunt_pos = global_position
 	var tracking_importance = 0
 
 	prey = self
 	if cartridge != null:
-		cartridge_plan = cartridge.build_plan(delta, idle_plan)
-		hunt_pos = cartridge_plan.position
-		tracking_importance = cartridge_plan.exclusivity
-		prey = cartridge_plan.prey
+		cartridge_plan = cartridge.build_plan(delta, self)
+		if cartridge_plan != null:
+			hunt_pos = cartridge_plan.position
+			tracking_importance = cartridge_plan.exclusivity
+			prey = cartridge_plan.prey
 
 	#TODO (sam) should this also be handled in cartridge
 	var curious_pos = hunt_pos

@@ -11,13 +11,8 @@ var plan:CameraRig.ExclusivePlan
 func _ready():
 	plan = CameraRig.ExclusivePlan.new()
 
-func build_plan(delta:float, idle_plan:CameraRig.Plan) -> CameraRig.ExclusivePlan:
-	plan.copy(idle_plan)
-	plan.prey = self
-	return plan
+func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
+	return null
 
-func request_debug(camera_position:Vector2) -> String:
-	global_position = camera_position
-	global_rotation = 0
-	queue_redraw()
+func request_debug(draw_rig:CameraRig) -> String:
 	return ""
