@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cgjbstotnfcvd"]
+[gd_scene load_steps=8 format=3 uid="uid://cgjbstotnfcvd"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://d5h87yh5ctsf" path="res://physics_materials/rock.tres" id="1_hgml5"]
 [ext_resource type="Script" path="res://scripts/Asteroid.gd" id="2_xnywi"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/util/Spawner.gd" id="4_0ys4r"]
 [ext_resource type="PackedScene" uid="uid://dnsafpxfqwwbh" path="res://packedscenes/energy_crystal.tscn" id="5_wm5mc"]
 [ext_resource type="PackedScene" uid="uid://dwld2v4cgdhq6" path="res://packedscenes/sfx/shatter.tscn" id="6_1wbsw"]
+[ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="7_raf4m"]
 
 [node name="Asteroid" type="RigidBody2D" node_paths=PackedStringArray("spawned_on_death")]
 collision_layer = 2
@@ -60,3 +61,4 @@ max_initial_velocity = 120.0
 [node name="DiedSFX" parent="." instance=ExtResource("6_1wbsw")]
 volume_db = -0.2
 pitch_scale = 0.6
+script = ExtResource("7_raf4m")

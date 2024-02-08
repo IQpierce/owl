@@ -13,7 +13,7 @@ class_name Thing
 @export var damage_sfx_cooldown_secs:float = .5
 
 @onready var damaged_sfx:AudioStreamPlayer2D = get_node_or_null("DamagedSFX")
-@onready var died_sfx:AudioStreamPlayer2D = get_node_or_null("DiedSFX")
+@onready var died_sfx:AttentiveAudio2D = get_node_or_null("DiedSFX")
 
 signal damaged(dmg_amt, global_position)
 signal died()
@@ -70,7 +70,7 @@ func deal_damage(dmg_amt:float, global_position:Vector2):
 func die(utterly:bool = false):
 	if died_sfx != null:
 		died_sfx.reparent(get_parent())
-		died_sfx.play()
+		died_sfx.play_then_free()
 	
 	# pieces of our anatomy stay around
 	
