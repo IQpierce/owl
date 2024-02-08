@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://msq6w1qgh7c6"]
+[gd_scene load_steps=13 format=3 uid="uid://msq6w1qgh7c6"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_4xi5x"]
 [ext_resource type="Script" path="res://scripts/Player_Refactor.gd" id="2_f7rlf"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="4_jt1iv"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="5_agsoh"]
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="6_qhuna"]
+[ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="6_wtu8y"]
 [ext_resource type="AudioStream" uid="uid://gwmuuh2c41u4" path="res://audio/lazerLofi.wav" id="7_2rpq8"]
 [ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="8_kg1ke"]
 
@@ -18,30 +19,27 @@ radius = 64.0
 freeze_mode = 1
 script = ExtResource("2_f7rlf")
 locomotor = NodePath("Locomotor")
+control_mode = 0
 
 [node name="Locomotor" type="Node2D" parent="." index="0"]
 script = ExtResource("3_7v3rj")
-thrust_speed = 400.0
-turn_speed = 50.0
+drive_force = 400.0
+turn_force = 50.0
 max_speed = 1000.0
-thrust_at_max_speed = 1.0
 excessive_speed_linear_damp_factor = 0.98
 turn_linear_damp_factor = 0.99
-thrust_turn_factor = 0.8
 fire_turn_factor = 0.95
 turn_with_velocity_turn_factor = 0.85
 fire_max_speed_factor = 0.9
 fire_acceleration_factor = 0.8
-double_tap_msec = 200.0
-turn_around_acceleration_factor = 1.5
 side_boost = 1000.0
 
-[node name="CameraCartridge" type="Node2D" parent="." index="1"]
-position = Vector2(1, 0)
+[node name="CameraCartridge" type="Node2D" parent="." index="1" node_paths=PackedStringArray("locomotor")]
 script = ExtResource("4_84jdn")
+locomotor = NodePath("../Locomotor")
 max_relative_speed = 2.0
 acceleration_factor = 1.5
-lead_distance = 450
+lead_distance = 400
 rest_vel_damp = 0.9
 lead_vel_perp_damp = 0.8
 lead_turn_to_rest_ms = 100
@@ -50,6 +48,7 @@ lead_turn_to_rest_ms = 100
 stream = ExtResource("3_wencu")
 volume_db = 7.61
 bus = &"Effects"
+script = ExtResource("6_wtu8y")
 
 [node name="ThrustTriangle" type="Polygon2D" parent="." index="3"]
 visible = false
@@ -117,7 +116,9 @@ script = ExtResource("4_jt1iv")
 circle_draw_color = Color(1, 1, 1, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
-[connection signal="thrusting_state_change" from="Locomotor" to="ThrustTriangle" method="set_visible"]
+[connection signal="shot_fired" from="." to="Gun" method="shoot"]
+[connection signal="driving_state_change" from="Locomotor" to="Thrust" method="signal_play_or_stop"]
+[connection signal="driving_state_change" from="Locomotor" to="ThrustTriangle" method="set_visible"]
 [connection signal="turning_left_state_change" from="Locomotor" to="TurnLeftTriangle" method="set_visible"]
 [connection signal="turning_right_state_change" from="Locomotor" to="TurnRightTriangle" method="set_visible"]
 [connection signal="body_entered" from="PickupVacuum" to="PickupVacuum" method="_on_body_entered"]

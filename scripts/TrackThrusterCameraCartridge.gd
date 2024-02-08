@@ -1,6 +1,7 @@
 extends CameraCartridge
 class_name TrackThrusterCameraCartridge
 
+@export var locomotor:Locomotor = null
 @export var track_threshold:float = 300
 @export var lock_threshold:float = 100
 @export var max_relative_speed:float = 1
@@ -11,6 +12,7 @@ class_name TrackThrusterCameraCartridge
 @export var follow_slow_to_rest_ms = 300
 @export var lead_turn_to_rest_ms = 300
 
+var prey:Thing
 var prey_velocity:Vector2
 var prey_bearing:Vector2
 var fallback_start:int
@@ -24,7 +26,9 @@ var tracking = TrackingState.Rest
 
 func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 	#TODO (sam) instead of using prey we probably want to find the parent Thing or Node
-	var prey = get_parent() as Thing
+	var prey = null
+	if locomotor != null:
+		prey = locomotor.body as Thing
 
 	plan.copy_rig(data_rig)
 
@@ -40,7 +44,7 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 	view_size = Vector2(view_size.x / plan.zoom.x, view_size.y / plan.zoom.y)
 	var half_view_size = view_size / 2
 
-	if prey != null:
+	if locomotor != null && prey != null:
 		var to_prey = prey.global_position - plan.position
 		var prey_dist_sqr = to_prey.length_squared()
 		var prey_heading = Vector2.UP.rotated(prey.rotation)
@@ -114,8 +118,8 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 					var accelerated_speed = plan.velocity.length()# + prey.get_thrust_speed() * acceleration_factor * delta
 					var prey_relative_speed = prey_velocity.length() * tracking_importance
 
-					if prey.get_thrusting() && prey_heading.dot(to_prey) > 0:
-						accelerated_speed += prey.get_thrust_speed() * acceleration_factor * delta
+					if locomotor.driving && prey_heading.dot(to_prey) > 0:
+						accelerated_speed += locomotor.drive_force * acceleration_factor * delta
 						prey_relative_speed *= max_relative_speed
 					plan.velocity = to_focus_dir * max(accelerated_speed, prey_relative_speed)
 
@@ -123,7 +127,7 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 						plan.velocity = plan.velocity.normalized() * prey_velocity.length()
 				elif tracking == TrackingState.Lead:
 					# When leading accelerate normally, but manually narrow center the prey perpendicular to its bearing
-					plan.velocity += to_focus_dir * (prey.get_thrust_speed() * acceleration_factor * delta)
+					plan.velocity += to_focus_dir * (locomotor.drive_force * acceleration_factor * delta)
 					var vel_para_to_focus = plan.velocity.project(to_focus_dir)
 					var vel_perp_to_focus = plan.velocity - vel_para_to_focus
 					vel_perp_to_focus *= lead_vel_perp_damp

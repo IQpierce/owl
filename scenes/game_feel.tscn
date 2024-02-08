@@ -32,7 +32,6 @@ radius = 6400.0
 size = Vector2(61440, 34560)
 
 [node name="GameFeel" type="Node2D" node_paths=PackedStringArray("player", "world_camera")]
-position = Vector2(-1, -13)
 script = ExtResource("1_80w6u")
 player = NodePath("Player_Refactor")
 world_camera = NodePath("Camera_Refactor")
@@ -140,7 +139,6 @@ position = Vector2(4000, 4000)
 
 [node name="Camera_Refactor" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("5_05koq")]
 script = ExtResource("10_g4401")
-show_debug = true
 cartridge = NodePath("../Player_Refactor/CameraCartridge")
 ready_center = true
 leash_length = 400.0
@@ -165,7 +163,6 @@ horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="AsteroidBelt" type="Area2D" parent="."]
-visible = false
 position = Vector2(6000, 8000)
 disable_mode = 1
 collision_layer = 0
