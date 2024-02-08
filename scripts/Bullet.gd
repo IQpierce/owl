@@ -20,7 +20,7 @@ func on_body_entered(other_body:Node):
 		if (other_body_thing):
 			other_body_thing.deal_damage(damage_on_impact, global_position)
 	
-	queue_free()
+		queue_free()
 
 func self_destruct():
 	queue_free()
