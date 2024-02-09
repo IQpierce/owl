@@ -20,11 +20,12 @@ freeze_mode = 1
 script = ExtResource("2_f7rlf")
 locomotor = NodePath("Locomotor")
 control_mode = 0
+allow_mouse = true
+mouse_sensitivity = 1.0
+mouse_gravity = 60.0
 
 [node name="Locomotor" type="Node2D" parent="." index="0"]
 script = ExtResource("3_7v3rj")
-drive_force = 400.0
-turn_force = 50.0
 max_speed = 1000.0
 excessive_speed_linear_damp_factor = 0.98
 turn_linear_damp_factor = 0.99

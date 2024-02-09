@@ -124,11 +124,10 @@ script = ExtResource("6_kek22")
 notice_radius = 1500
 peripheral_radius = 100
 
-[node name="Player" parent="." node_paths=PackedStringArray("world") instance=ExtResource("3_r2sfy")]
+[node name="Player" parent="." instance=ExtResource("3_r2sfy")]
 process_mode = 4
 visible = false
 position = Vector2(6000, 4000)
-world = NodePath("..")
 thrust_speed = 400.0
 turn_speed = 50.0
 max_speed = 1000.0
@@ -136,6 +135,7 @@ side_boost = 1000.0
 
 [node name="Player_Refactor" parent="." instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
+mouse_sensitivity = 0.0
 
 [node name="Camera_Refactor" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("5_05koq")]
 script = ExtResource("10_g4401")

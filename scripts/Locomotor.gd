@@ -3,8 +3,8 @@ class_name Locomotor
 
 static var stop_below_speed: = 15
 
-@export var drive_force:float
-@export var turn_force:float
+@export var drive_force:float = 400
+@export var turn_force:float = 50
 ## Cannot accelerate to a higher speed paralell current velocity. Acceleration perpendicular to velocity is still considered. This does not limit the speed caused by outside forces, but velocity will eventually settle back to this.
 @export var max_speed:float = 3000
 ## NOTHING in the world can make you go faster
@@ -46,6 +46,26 @@ func _ready():
 	if body == null:
 		push_warning("Locomotor expects Thing node to be direct parent")
 
+func locomote_towards(drive_factor:float, turn_towards_global:Vector2, turn_fraction:float, delta:float):
+	if body == null:
+		return
+
+	var turn_factor = 0
+	turn_fraction = max(turn_fraction, 0)
+	var to_turn_towards = (turn_towards_global - body.global_position)
+	if to_turn_towards.length_squared() > 0:
+		to_turn_towards = to_turn_towards.normalized()
+		var up = Vector2.UP.rotated(body.global_rotation)
+		var right = Vector2.RIGHT.rotated(body.global_rotation)
+		var axis = 1
+		if right.dot(to_turn_towards) < 0:
+			axis = -1
+		var angle = acos(up.dot(to_turn_towards)) * axis
+		var max_angular_speed = turn_force * delta
+		turn_factor = clamp(angle / max_angular_speed, -1, 1)
+
+	locomote(drive_factor, turn_factor * turn_fraction, delta)
+
 func locomote(drive_factor:float, turn_factor:float, delta:float):
 	if body == null:
 		return
@@ -57,7 +77,7 @@ func locomote(drive_factor:float, turn_factor:float, delta:float):
 	var max_speed_factor = 1.0
 	var acceleration_factor = drive_factor
 
-	var heading_dir:Vector2 = Vector2.UP.rotated(body.rotation)
+	var heading_dir:Vector2 = Vector2.UP.rotated(body.global_rotation)
 
 	if turn_factor < 0:
 		if !turning_left:

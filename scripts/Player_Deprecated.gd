@@ -122,7 +122,7 @@ func process_input_refac(delta):
 		max_speed_factor *= fire_max_speed_factor;
 		acceleration_factor *= fire_acceleration_factor;
 
-	if Input.is_action_pressed("turn_left"):
+	if Input.is_action_pressed("left_primary"):
 		if !turning_left:
 			turning_left_state_change.emit(true)
 			turning_left = true
@@ -130,7 +130,7 @@ func process_input_refac(delta):
 			turning_left_state_change.emit(false)
 			turning_left = false
 
-	if Input.is_action_pressed("turn_right"):
+	if Input.is_action_pressed("right_primary"):
 		if !turning_right:
 			turning_right_state_change.emit(true)
 			turning_right = true
@@ -139,7 +139,7 @@ func process_input_refac(delta):
 			turning_right = false
 
 	if turning_left && !turning_right:
-		if Input.is_action_just_pressed("turn_left"):
+		if Input.is_action_just_pressed("left_primary"):
 			if time_now - left_tap_time <= double_tap_msec:
 				#rotation -= quick_turn_degrees * PI / 180
 				linear_velocity -= Vector2.RIGHT.rotated(rotation) * side_boost
@@ -150,7 +150,7 @@ func process_input_refac(delta):
 		if not thrusting:
 			linear_damp_factor *= turn_linear_damp_factor
 	if turning_right && !turning_left:
-		if Input.is_action_just_pressed("turn_right"):
+		if Input.is_action_just_pressed("right_primary"):
 			if time_now - right_tap_time <= double_tap_msec:
 				#rotation += quick_turn_degrees * PI / 180
 				linear_velocity += Vector2.RIGHT.rotated(rotation) * side_boost
@@ -167,7 +167,7 @@ func process_input_refac(delta):
 	var cap_speed = max_speed * max_speed_factor;
 	at_max_speed = false
 
-	if Input.is_action_pressed("thrust"):
+	if Input.is_action_pressed("up_primary"):
 		var speed_portion = clamp((linear_velocity.length() / max_speed) * heading_dir.dot(linear_velocity.normalized()), 0, 1)
 		var thrust_lerp = (1 - speed_portion) + (speed_portion * thrust_at_max_speed)
 		var thrust_delta = thrust_speed * thrust_lerp * delta;
@@ -190,7 +190,7 @@ func process_input_refac(delta):
 			acceleration = head_para_vel + head_perp_vel
 
 		acceleration *= acceleration_factor
-		if Input.is_action_just_pressed("thrust"):
+		if Input.is_action_just_pressed("up_primary"):
 			if time_now - thrust_tap_time <= double_tap_msec && acceleration.dot(linear_velocity) < 0:
 				acceleration *= turn_around_acceleration_factor;
 				thrust_tap_time = 0

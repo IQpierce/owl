@@ -40,14 +40,13 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 
 	var focus = prey.global_position
 
-	var view_size = get_viewport().size # TODO Is this bad to call every frame? could we just get this from the camera?
-	view_size = Vector2(view_size.x / plan.zoom.x, view_size.y / plan.zoom.y)
+	var view_size = data_rig.view_size()
 	var half_view_size = view_size / 2
 
 	if locomotor != null && prey != null:
 		var to_prey = prey.global_position - plan.position
 		var prey_dist_sqr = to_prey.length_squared()
-		var prey_heading = Vector2.UP.rotated(prey.rotation)
+		var prey_heading = Vector2.UP.rotated(prey.global_rotation)
 		prey_bearing = Vector2.ZERO
 		var prey_speed = prey.linear_velocity.length()
 		if prey_speed > 0:
