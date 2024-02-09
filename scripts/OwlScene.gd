@@ -29,7 +29,7 @@ func _ready():
 	Engine.max_fps = 60
 	
 	if hide_mouse:
-		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	player.died.connect(self.on_player_died)
 

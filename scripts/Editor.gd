@@ -18,7 +18,7 @@ func _process(_delta:float):
 			if get_tree().paused:
 				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			else:
-				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 		was_editor_paused = get_tree().paused
 
