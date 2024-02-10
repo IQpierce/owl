@@ -135,7 +135,6 @@ side_boost = 1000.0
 
 [node name="Player_Refactor" parent="." instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
-mouse_sensitivity = 0.0
 
 [node name="Camera_Refactor" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("5_05koq")]
 script = ExtResource("10_g4401")

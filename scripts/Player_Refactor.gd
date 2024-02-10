@@ -88,7 +88,7 @@ func process_keyboard_mouse(delta:float):
 		if camera_rig != null:
 			var view_size = camera_rig.view_size()
 			var slowest_view = min(view_size.x, view_size.y)
-			var fastest_view = slowest_view / 64;
+			var fastest_view = slowest_view / 1024;
 			view_speed = (mouse_sensitivity * slowest_view) + ((1 - mouse_sensitivity) * fastest_view)
 
 	if control_mode == ControlMode.Roam:
@@ -119,7 +119,7 @@ func process_keyboard_mouse(delta:float):
 		if allow_mouse:
 			want_dir = get_global_mouse_position() - global_position
 			var pos_on_canvas = get_global_transform_with_canvas().get_origin()
-			Input.warp_mouse(pos_on_canvas + (mouse_position - pos_on_canvas).normalized() * 100)
+			Input.warp_mouse(pos_on_canvas + (mouse_position - pos_on_canvas).normalized() * view_speed)
 
 		if locomotor != null:
 			locomotor.locomote_towards(drive_factor, global_position + want_dir, turn_fraction, delta)
@@ -139,13 +139,13 @@ func process_keyboard_mouse(delta:float):
 		if Input.is_action_pressed("right_primary"):
 			turn_factor += 1
 
-		if mouse_moved:
+		if allow_mouse:
 			#var self_right = Vector2.RIGHT.rotated(global_rotation)
 			#var mouse_strength = mouse_motion.project(self_right).length()
 			#if mouse_motion.dot(self_right) < 0:
 			#	mouse_strength *= -1;
-			#turn_factor = clamp(mouse_strength / view_speed, -1, 1)
-			turn_factor = clamp(mouse_motion.x / view_speed, -1, 1)
+			#turn_factor += clamp(mouse_strength / view_speed, -1, 1)
+			turn_factor += clamp(mouse_motion.x * TAU, -1, 1)
 
 		if locomotor != null:
 			locomotor.locomote(drive_factor, turn_factor, delta)
