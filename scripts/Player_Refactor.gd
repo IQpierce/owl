@@ -22,6 +22,7 @@ enum ControlMode { Dynamic, Roam, Tank }
 #var right_tap_time:int = 0;
 
 var camera_rig:CameraRig
+var mouse_position:Vector2 = Vector2.ZERO
 var mouse_motion:Vector2 = Vector2.ZERO
 
 signal shot_fired()
@@ -33,6 +34,7 @@ func _ready():
 
 func _input(event:InputEvent):
 	if event is InputEventMouseMotion:
+		mouse_position = event.position
 		mouse_motion = event.relative
 
 func _physics_process(delta:float):
@@ -110,11 +112,20 @@ func process_keyboard_mouse(delta:float):
 			want_dir.x += 1
 
 		if mouse_moved:
-			var mouse_turn = clamp(mouse_motion.x * PI / view_speed, -1, 1)
-			want_dir = Vector2.UP.rotated(global_rotation).rotated(mouse_turn)
+			Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+		#	var mouse_turn = clamp(mouse_motion.x * PI / view_speed, -1, 1)
+		#	want_dir = Vector2.UP.rotated(global_rotation).rotated(mouse_turn)
+
+		if allow_mouse:
+			want_dir = get_global_mouse_position() - global_position
+			var pos_on_canvas = get_global_transform_with_canvas().get_origin()
+			Input.warp_mouse(pos_on_canvas + (mouse_position - pos_on_canvas).normalized() * 100)
 
 		if locomotor != null:
 			locomotor.locomote_towards(drive_factor, global_position + want_dir, turn_fraction, delta)
+
+		#Input.warp_mouse(pos_on_canvas + Vector2.UP.rotated(global_rotation) * 100)
+
 	elif control_mode == ControlMode.Tank || control_mode == ControlMode.Dynamic:
 		var drive_factor = 0.0
 		var turn_factor = 0.0
