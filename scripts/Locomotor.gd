@@ -41,11 +41,6 @@ signal driving_state_change(enabled:bool)
 signal turning_left_state_change(enabled:bool)
 signal turning_right_state_change(enabled:bool)
 
-func _ready():
-	body = get_parent() as Thing
-	if body == null:
-		push_warning("Locomotor expects Thing node to be direct parent")
-
 func locomote_towards(drive_factor:float, turn_towards_global:Vector2, turn_fraction:float, delta:float):
 	if body == null:
 		return

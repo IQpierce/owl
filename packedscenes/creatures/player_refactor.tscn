@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://msq6w1qgh7c6"]
+[gd_scene load_steps=14 format=3 uid="uid://msq6w1qgh7c6"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_4xi5x"]
 [ext_resource type="Script" path="res://scripts/Player_Refactor.gd" id="2_f7rlf"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://mkfbd0r5o8ke" path="res://audio/thrust.wav" id="3_wencu"]
 [ext_resource type="Script" path="res://scripts/TrackThrusterCameraCartridge.gd" id="4_84jdn"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="4_jt1iv"]
+[ext_resource type="Script" path="res://scripts/Hopdart.gd" id="5_71gg3"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="5_agsoh"]
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="6_qhuna"]
 [ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="6_wtu8y"]
@@ -15,10 +16,11 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntkiv"]
 radius = 64.0
 
-[node name="Player" node_paths=PackedStringArray("locomotor") instance=ExtResource("1_4xi5x")]
+[node name="Player" node_paths=PackedStringArray("locomotor", "hopdart") instance=ExtResource("1_4xi5x")]
 freeze_mode = 1
 script = ExtResource("2_f7rlf")
 locomotor = NodePath("Locomotor")
+hopdart = NodePath("HopDart")
 control_mode = 0
 allow_mouse = true
 mouse_sensitivity = 1.0
@@ -46,13 +48,16 @@ rest_vel_damp = 0.9
 lead_vel_perp_damp = 0.8
 lead_turn_to_rest_ms = 100
 
-[node name="Thrust" type="AudioStreamPlayer2D" parent="." index="2"]
+[node name="HopDart" type="Node2D" parent="." index="2"]
+script = ExtResource("5_71gg3")
+
+[node name="Thrust" type="AudioStreamPlayer2D" parent="." index="3"]
 stream = ExtResource("3_wencu")
 volume_db = 7.61
 bus = &"Effects"
 script = ExtResource("6_wtu8y")
 
-[node name="ThrustTriangle" type="Polygon2D" parent="." index="3"]
+[node name="ThrustTriangle" type="Polygon2D" parent="." index="4"]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
 position = Vector2(-1.13687e-12, 10)
@@ -64,7 +69,7 @@ script = ExtResource("4_jt1iv")
 circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
-[node name="TurnLeftTriangle" type="Polygon2D" parent="." index="5"]
+[node name="TurnLeftTriangle" type="Polygon2D" parent="." index="6"]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
 position = Vector2(4, 7)
@@ -76,7 +81,7 @@ script = ExtResource("4_jt1iv")
 circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
-[node name="Gun" type="Node2D" parent="." index="6" node_paths=PackedStringArray("inherit_velocity", "immune_to_shots", "shot_parent")]
+[node name="Gun" type="Node2D" parent="." index="7" node_paths=PackedStringArray("inherit_velocity", "immune_to_shots", "shot_parent")]
 position = Vector2(0, -13.175)
 script = ExtResource("5_agsoh")
 shot_proto = ExtResource("6_qhuna")
@@ -91,7 +96,7 @@ stream = ExtResource("7_2rpq8")
 volume_db = 7.903
 bus = &"Effects"
 
-[node name="PickupVacuum" type="Area2D" parent="." index="7"]
+[node name="PickupVacuum" type="Area2D" parent="." index="8"]
 disable_mode = 2
 collision_layer = 0
 collision_mask = 32
@@ -106,7 +111,7 @@ script = ExtResource("8_kg1ke")
 [node name="VacuumCollisionShape" type="CollisionShape2D" parent="PickupVacuum" index="0"]
 shape = SubResource("CircleShape2D_ntkiv")
 
-[node name="TurnRightTriangle" type="Polygon2D" parent="." index="8"]
+[node name="TurnRightTriangle" type="Polygon2D" parent="." index="9"]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
 position = Vector2(-4, 7)

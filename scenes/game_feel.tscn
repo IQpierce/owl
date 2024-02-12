@@ -135,9 +135,15 @@ side_boost = 1000.0
 
 [node name="Player_Refactor" parent="." instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
+allow_mouse = true
+spawned_per_damage = {}
+health = 1.0
+max_health = 1.0
+damage_sfx_cooldown_secs = 0.5
 
 [node name="Camera_Refactor" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("5_05koq")]
 script = ExtResource("10_g4401")
+show_debug = true
 cartridge = NodePath("../Player_Refactor/CameraCartridge")
 ready_center = true
 leash_length = 400.0

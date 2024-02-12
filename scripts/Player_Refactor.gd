@@ -3,10 +3,8 @@ class_name Player_Refactor
 
 enum ControlMode { Dynamic, Roam, Tank }
 
-# TODO (sam) This can be removed once locomotor does everything it needs, and camera follows it
 @export var locomotor:Locomotor
-# TODO if world_camera does not have a socket, take it as default ... make just make a script for that
-
+@export var hopdart:Hopdart
 @export var control_mode:ControlMode = ControlMode.Roam
 @export var allow_mouse:bool = true
 @export_range(0, 1) var mouse_sensitivity:float = 0
@@ -31,6 +29,12 @@ func _ready():
 	var scene = OwlGame.instance.scene
 	if scene != null:
 		camera_rig = scene.world_camera as CameraRig
+	
+	if locomotor != null:
+		locomotor.body = self
+
+	if hopdart != null:
+		hopdart.body = self
 
 func _input(event:InputEvent):
 	if event is InputEventMouseMotion:
@@ -71,6 +75,15 @@ func process_gamepad(delta:float) -> bool:
 	if Input.is_action_pressed("shoot_gamepad"):
 		gamepad_acting = true
 		shot_fired.emit()
+
+	if hopdart != null:
+		var hopdart_dir = Vector2.ZERO
+		hopdart_dir.x = Input.get_axis("left_gamepad_secondary", "right_gamepad_secondary")
+		hopdart_dir.y = Input.get_axis("up_gamepad_secondary", "down_gamepad_secondary")
+
+		if hopdart_dir.length_squared() > 0:
+			gamepad_acting = true
+			hopdart.engage(hopdart_dir)
 
 	return gamepad_acting
 
@@ -152,6 +165,21 @@ func process_keyboard_mouse(delta:float):
 
 	if Input.is_action_pressed("shoot"):
 		shot_fired.emit()
+	
+	if hopdart != null:
+		var hopdart_dir = Vector2.ZERO
+
+		if Input.is_action_pressed("up_secondary"):
+			hopdart_dir += Vector2.UP
+		if Input.is_action_pressed("down_secondary"):
+			hopdart_dir += Vector2.DOWN
+		if Input.is_action_pressed("left_secondary"):
+			hopdart_dir += Vector2.LEFT
+		if Input.is_action_pressed("right_secondary"):
+			hopdart_dir += Vector2.RIGHT
+
+		if hopdart_dir.length_squared() > 0:
+			hopdart.engage(hopdart_dir)
 
 
 
