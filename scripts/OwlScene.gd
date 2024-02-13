@@ -58,6 +58,7 @@ func _ready():
 	
 	if world_camera:
 		world_camera.zoom *= view_diagonal / default_view_diagonal
+		world_camera.initial_zoom = world_camera.zoom
 	
 	if fishbowl_camera:
 		fishbowl_camera.zoom *= view_diagonal / default_view_diagonal

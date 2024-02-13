@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://msq6w1qgh7c6"]
+[gd_scene load_steps=15 format=3 uid="uid://msq6w1qgh7c6"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_4xi5x"]
 [ext_resource type="Script" path="res://scripts/Player_Refactor.gd" id="2_f7rlf"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="5_agsoh"]
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="6_qhuna"]
 [ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="6_wtu8y"]
+[ext_resource type="Script" path="res://scripts/Anatomy2D.gd" id="6_xawiv"]
 [ext_resource type="AudioStream" uid="uid://gwmuuh2c41u4" path="res://audio/lazerLofi.wav" id="7_2rpq8"]
 [ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="8_kg1ke"]
 
@@ -52,25 +53,21 @@ lead_turn_to_rest_ms = 100
 [node name="HopDart" type="Node2D" parent="." index="2"]
 script = ExtResource("5_71gg3")
 
-[node name="Thrust" type="AudioStreamPlayer2D" parent="." index="3"]
-stream = ExtResource("3_wencu")
-volume_db = 7.61
-bus = &"Effects"
-script = ExtResource("6_wtu8y")
+[node name="Anatomy" type="Node2D" parent="." index="3" node_paths=PackedStringArray("collider", "line_geometry")]
+script = ExtResource("6_xawiv")
+scale_mode = 1
+collider = NodePath("../TrunkCollision")
+line_geometry = [NodePath("NEW_TrunkPolygon")]
 
-[node name="ThrustTriangle" type="Polygon2D" parent="." index="4"]
-visible = false
-modulate = Color(0.670588, 0.670588, 0.670588, 1)
-position = Vector2(-1.13687e-12, 10)
-rotation = 3.14159
-scale = Vector2(9.5, 9.5)
-color = Color(0, 0, 0, 0)
-polygon = PackedVector2Array(-0.3, 0.5, 0.3, 0.5, 0, -0.857147)
+[node name="NEW_TrunkPolygon" type="Polygon2D" parent="Anatomy" index="0"]
+editor_description = "visual aspect"
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
 script = ExtResource("4_jt1iv")
-circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
-line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
+point_draw_radius = 1.08
+draw_line_width = 1.2
 
-[node name="TurnLeftTriangle" type="Polygon2D" parent="." index="6"]
+[node name="TurnLeftTriangle" type="Polygon2D" parent="Anatomy" index="1"]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
 position = Vector2(4, 7)
@@ -82,22 +79,52 @@ script = ExtResource("4_jt1iv")
 circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
-[node name="Gun" type="Node2D" parent="." index="7" node_paths=PackedStringArray("inherit_velocity", "immune_to_shots", "shot_parent")]
+[node name="ThrustTriangle" type="Polygon2D" parent="Anatomy" index="2"]
+visible = false
+modulate = Color(0.670588, 0.670588, 0.670588, 1)
+position = Vector2(-1.13687e-12, 10)
+rotation = 3.14159
+scale = Vector2(9.5, 9.5)
+color = Color(0, 0, 0, 0)
+polygon = PackedVector2Array(-0.3, 0.5, 0.3, 0.5, 0, -0.857147)
+script = ExtResource("4_jt1iv")
+circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
+line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
+
+[node name="TurnRightTriangle" type="Polygon2D" parent="Anatomy" index="3"]
+visible = false
+modulate = Color(0.670588, 0.670588, 0.670588, 1)
+position = Vector2(-4, 7)
+rotation = 3.14159
+scale = Vector2(9.5, 9.5)
+color = Color(0, 0, 0, 0)
+polygon = PackedVector2Array(-0.2, 0.1, 0.2, 0.1, 0, -0.4)
+script = ExtResource("4_jt1iv")
+circle_draw_color = Color(1, 1, 1, 1)
+line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
+
+[node name="Gun" type="Node2D" parent="Anatomy" index="4" node_paths=PackedStringArray("inherit_velocity", "immune_to_shots", "shot_parent")]
 position = Vector2(0, -13.175)
 script = ExtResource("5_agsoh")
 shot_proto = ExtResource("6_qhuna")
 shot_force = 1200.0
 cooldown_duration_secs = 0.23
-inherit_velocity = NodePath("..")
-immune_to_shots = [NodePath("..")]
-shot_parent = NodePath("..")
+inherit_velocity = NodePath("../..")
+immune_to_shots = [NodePath("../..")]
+shot_parent = NodePath("../..")
 
-[node name="Lazer" type="AudioStreamPlayer2D" parent="Gun" index="0"]
+[node name="Lazer" type="AudioStreamPlayer2D" parent="Anatomy/Gun" index="0"]
 stream = ExtResource("7_2rpq8")
 volume_db = 7.903
 bus = &"Effects"
 
-[node name="PickupVacuum" type="Area2D" parent="." index="8"]
+[node name="Thrust" type="AudioStreamPlayer2D" parent="." index="4"]
+stream = ExtResource("3_wencu")
+volume_db = 7.61
+bus = &"Effects"
+script = ExtResource("6_wtu8y")
+
+[node name="PickupVacuum" type="Area2D" parent="." index="5"]
 disable_mode = 2
 collision_layer = 0
 collision_mask = 32
@@ -112,21 +139,12 @@ script = ExtResource("8_kg1ke")
 [node name="VacuumCollisionShape" type="CollisionShape2D" parent="PickupVacuum" index="0"]
 shape = SubResource("CircleShape2D_ntkiv")
 
-[node name="TurnRightTriangle" type="Polygon2D" parent="." index="9"]
+[node name="TrunkPolygon" parent="." index="7"]
 visible = false
-modulate = Color(0.670588, 0.670588, 0.670588, 1)
-position = Vector2(-4, 7)
-rotation = 3.14159
-scale = Vector2(9.5, 9.5)
-color = Color(0, 0, 0, 0)
-polygon = PackedVector2Array(-0.2, 0.1, 0.2, 0.1, 0, -0.4)
-script = ExtResource("4_jt1iv")
-circle_draw_color = Color(1, 1, 1, 1)
-line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
-[connection signal="shot_fired" from="." to="Gun" method="shoot"]
+[connection signal="shot_fired" from="." to="Anatomy/Gun" method="shoot"]
+[connection signal="driving_state_change" from="Locomotor" to="Anatomy/ThrustTriangle" method="set_visible"]
 [connection signal="driving_state_change" from="Locomotor" to="Thrust" method="signal_play_or_stop"]
-[connection signal="driving_state_change" from="Locomotor" to="ThrustTriangle" method="set_visible"]
-[connection signal="turning_left_state_change" from="Locomotor" to="TurnLeftTriangle" method="set_visible"]
-[connection signal="turning_right_state_change" from="Locomotor" to="TurnRightTriangle" method="set_visible"]
+[connection signal="turning_left_state_change" from="Locomotor" to="Anatomy/TurnLeftTriangle" method="set_visible"]
+[connection signal="turning_right_state_change" from="Locomotor" to="Anatomy/TurnRightTriangle" method="set_visible"]
 [connection signal="body_entered" from="PickupVacuum" to="PickupVacuum" method="_on_body_entered"]

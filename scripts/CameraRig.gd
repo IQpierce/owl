@@ -51,6 +51,25 @@ func _physics_process(delta:float):
 		apply_plans(delta)
 
 func apply_plans(delta:float):
+	var old_zoom = zoom
+
+	#TODO REMOVE
+	var zoom_speed = 1.05
+	if Input.is_action_pressed("hyperspace") || Input.is_action_pressed("hyperspace_gamepad"):
+		if Input.is_action_pressed("ignore_input"):
+			zoom /= Vector2(zoom_speed, zoom_speed)
+		else:
+			zoom *= Vector2(zoom_speed, zoom_speed)
+		zoom.x = clamp(zoom.x, initial_zoom.x, 100)
+		zoom.y = clamp(zoom.y, initial_zoom.y, 100)
+		if cartridge != null:
+			global_position = cartridge.global_position + ((global_position - cartridge.global_position) * (old_zoom / zoom))
+
+	OwlGame.instance.zooming = old_zoom != zoom
+	if zoom != initial_zoom:
+		return
+	# END REMOVE
+
 	var cartridge_plan:ExclusivePlan = null
 	var hunt_pos = global_position
 	var tracking_importance = 0
@@ -87,6 +106,8 @@ func apply_plans(delta:float):
 
 	#TODO (sam) how should I be combining velocities?
 	velocity = cartridge_plan.velocity
+
+	OwlGame.instance.zooming = old_zoom != zoom
 
 	queue_redraw()
 

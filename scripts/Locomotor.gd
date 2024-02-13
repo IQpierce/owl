@@ -66,6 +66,7 @@ func locomote(drive_factor:float, turn_factor:float, delta:float):
 		return
 
 	var time_now = Time.get_ticks_msec()
+	var anti_zoom = OwlGame.instance.anti_zoom()
 
 	var turn_damp_factor = 1.0
 	var linear_damp_factor = 1.0
@@ -93,7 +94,7 @@ func locomote(drive_factor:float, turn_factor:float, delta:float):
 	if heading_dir.rotated(body.angular_velocity * delta).dot(body.linear_velocity) >= heading_dir.dot(body.linear_velocity):
 		turn_damp_factor *= turn_with_velocity_turn_factor;
 
-	var cap_speed = max_speed * max_speed_factor;
+	var cap_speed = max_speed * max_speed_factor * anti_zoom
 	at_max_speed = false
 
 	if drive_factor > 0:
@@ -120,10 +121,11 @@ func locomote(drive_factor:float, turn_factor:float, delta:float):
 
 		acceleration *= acceleration_factor
 
-		body.apply_central_impulse(acceleration * drive_delta)
+		body.apply_central_impulse(acceleration * drive_delta * anti_zoom)
 
-		if !ignore_speed_limit && body.linear_velocity.length_squared() > hard_speed_limit * hard_speed_limit:
-			body.linear_velocity = body.linear_velocity * hard_speed_limit
+		var hard_speed_cap = hard_speed_limit * anti_zoom
+		if !ignore_speed_limit && body.linear_velocity.length_squared() > hard_speed_cap * hard_speed_cap:
+			body.linear_velocity = body.linear_velocity * hard_speed_cap
 
 		if (!driving):
 			driving = true
@@ -150,6 +152,7 @@ func locomote(drive_factor:float, turn_factor:float, delta:float):
 	
 
 	# TODO (sam) need to force velocity to zero if near it, because there are some calculations that behave subtely different 
-	if !driving && body.linear_velocity.length_squared() < stop_below_speed * stop_below_speed:
+	var min_speed = stop_below_speed * anti_zoom
+	if !driving && body.linear_velocity.length_squared() < min_speed * min_speed:
 		body.linear_velocity = Vector2.ZERO
 

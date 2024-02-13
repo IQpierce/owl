@@ -4,6 +4,7 @@ class_name Camera_Deprecated
 
 var attention_center:Vector2
 var center_priority:int
+var initial_zoom:Vector2 = Vector2.ONE
 
 func get_prey() -> Node2D:
 	return null
