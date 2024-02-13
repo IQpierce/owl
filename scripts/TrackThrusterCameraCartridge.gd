@@ -2,6 +2,7 @@ extends CameraCartridge
 class_name TrackThrusterCameraCartridge
 
 @export var locomotor:Locomotor = null
+@export var hopdart:Hopdart = null
 @export var track_threshold:float = 300
 @export var lock_threshold:float = 100
 @export var max_relative_speed:float = 1
@@ -88,7 +89,7 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 					if prey.linear_velocity.dot(prey_velocity) <= 0:
 						tracking = TrackingState.Rest
 		elif tracking == TrackingState.Lead:
-			if prey_heading.dot(plan.position - prey.global_position) <= 0:
+			if prey_heading.dot((plan.position - prey.global_position).project(prey.linear_velocity.normalized())) <= 0:
 				if Time.get_ticks_msec() - fallback_start >= lead_turn_to_rest_ms:
 					tracking = TrackingState.Rest
 			else:
@@ -126,11 +127,19 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 						plan.velocity = plan.velocity.normalized() * prey_velocity.length()
 				elif tracking == TrackingState.Lead:
 					# When leading accelerate normally, but manually narrow center the prey perpendicular to its bearing
-					plan.velocity += to_focus_dir * (locomotor.drive_force * acceleration_factor * delta)
-					var vel_para_to_focus = plan.velocity.project(to_focus_dir)
-					var vel_perp_to_focus = plan.velocity - vel_para_to_focus
-					vel_perp_to_focus *= lead_vel_perp_damp
-					plan.velocity = vel_para_to_focus + vel_perp_to_focus
+					var to_fuzzy_focus = to_focus#to_focus.project(prey.linear_velocity)
+					if hopdart != null && hopdart.engaged:
+						# TODO (sam) I'd like to delay the camera following after a hopdart, but can't get it quite right
+						var fuzzy_focus = (prey.global_position - hopdart.sum_move) + (prey_bearing * lead_distance)
+						to_fuzzy_focus = fuzzy_focus - global_position
+					var to_fuzzy_focus_dir = to_fuzzy_focus.normalized()
+					plan.velocity += to_fuzzy_focus_dir * (locomotor.drive_force * acceleration_factor * delta)
+					var vel_para_to_fuzzy_focus = plan.velocity.project(to_fuzzy_focus_dir)
+					var vel_perp_to_fuzzy_focus = plan.velocity - vel_para_to_fuzzy_focus
+					vel_perp_to_fuzzy_focus *= lead_vel_perp_damp
+					#vel_para_to_fuzzy_focus = vel_para_to_fuzzy_focus.normalized() * max(vel_para_to_fuzzy_focus.length(), prey.linear_velocity.length())
+					plan.velocity = vel_para_to_fuzzy_focus + vel_perp_to_fuzzy_focus
+					print(plan.velocity)
 			else:
 				plan.velocity = prey.linear_velocity
 
@@ -170,6 +179,9 @@ func request_debug(drawee_rig:CameraRig) -> String:
 		drawee_rig.draw_arc(Vector2.ZERO, 10, 0, TAU, 60, Color.WHITE)
 
 		if tracking == TrackingState.Lead:
+			#Lead Target
+			#if prey_heading.dot((plan.position - prey.global_position).project(prey.linear_velocity.normalized())) <= 0:
+
 			# Desired Screen Center (focus)
 			var prey = get_parent() as Thing
 			var relative_prey_pos = prey.global_position - drawee_rig.global_position

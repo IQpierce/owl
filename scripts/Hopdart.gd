@@ -15,9 +15,9 @@ var body:Thing = null
 var state:State = State.Ready
 var engaged:bool = false
 var sum_distance:float = 0
+var sum_move:Vector2 = Vector2.ZERO
 var usage_timestamp:int = 0
 var direction = Vector2.ZERO
-var initial_position:Vector2 = Vector2.ZERO
 
 #TODO (sam) There might wanna be two stages to this (hop and dart?)
 #  The first stage is totally rigid; you got the direction you initially input for strict duration
@@ -53,6 +53,7 @@ func _physics_process(delta:float):
 			
 			body.global_position += move
 			sum_distance += move.length()
+			sum_move += move
 		else:
 			state = State.Cooldown
 			usage_timestamp = Time.get_ticks_msec()
@@ -69,6 +70,5 @@ func engage(want_direction:Vector2):
 		state= State.Active
 		usage_timestamp = Time.get_ticks_msec()
 		sum_distance = 0
-		if body != null:
-			initial_position = body.global_position
+		sum_move = Vector2.ZERO
 

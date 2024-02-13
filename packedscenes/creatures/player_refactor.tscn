@@ -38,9 +38,10 @@ fire_max_speed_factor = 0.9
 fire_acceleration_factor = 0.8
 side_boost = 1000.0
 
-[node name="CameraCartridge" type="Node2D" parent="." index="1" node_paths=PackedStringArray("locomotor")]
+[node name="CameraCartridge" type="Node2D" parent="." index="1" node_paths=PackedStringArray("locomotor", "hopdart")]
 script = ExtResource("4_84jdn")
 locomotor = NodePath("../Locomotor")
+hopdart = NodePath("../HopDart")
 max_relative_speed = 2.0
 acceleration_factor = 1.5
 lead_distance = 400
