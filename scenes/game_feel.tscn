@@ -1,11 +1,10 @@
-[gd_scene load_steps=22 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=19 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_80w6u"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_rhngu"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="3_r2sfy"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
-[ext_resource type="PackedScene" uid="uid://c36qcdqbeep7j" path="res://packedscenes/lazy_tracking_camera.tscn" id="5_05koq"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="5_pt2a0"]
 [ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/cosmic_bodies/sun.tscn" id="6_4kfgg"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="6_e337w"]
@@ -15,17 +14,10 @@
 [ext_resource type="PackedScene" uid="uid://msq6w1qgh7c6" path="res://packedscenes/creatures/player_refactor.tscn" id="8_ifucg"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_m427m"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="10_foqed"]
-[ext_resource type="Script" path="res://scripts/CameraRig.gd" id="10_g4401"]
-[ext_resource type="FontFile" uid="uid://bfc5s6j3cdokw" path="res://fonts/Vectorb.ttf" id="11_7y4md"]
+[ext_resource type="PackedScene" uid="uid://bs64p7ff3fvw2" path="res://packedscenes/camera_refactor.tscn" id="11_llngb"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
-
-[sub_resource type="LabelSettings" id="LabelSettings_rs3gb"]
-font = ExtResource("11_7y4md")
-font_size = 48
-outline_size = 2
-outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 6400.0
@@ -146,30 +138,8 @@ side_boost = 1000.0
 [node name="Player_Refactor" parent="." instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
 
-[node name="Camera_Refactor" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("5_05koq")]
-script = ExtResource("10_g4401")
+[node name="Camera_Refactor" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("11_llngb")]
 cartridge = NodePath("../Player_Refactor/CameraCartridge")
-ready_center = true
-leash_length = 400.0
-curious_speed = 250.0
-
-[node name="CameraState" type="Label" parent="Camera_Refactor"]
-visible = false
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -129.5
-offset_top = 455.0
-offset_right = 129.5
-offset_bottom = 512.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "Rest"
-label_settings = SubResource("LabelSettings_rs3gb")
-horizontal_alignment = 1
-vertical_alignment = 2
 
 [node name="AsteroidBelt" type="Area2D" parent="."]
 position = Vector2(6000, 8000)

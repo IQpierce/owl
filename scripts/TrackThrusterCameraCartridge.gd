@@ -139,7 +139,7 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 					vel_perp_to_fuzzy_focus *= lead_vel_perp_damp
 					#vel_para_to_fuzzy_focus = vel_para_to_fuzzy_focus.normalized() * max(vel_para_to_fuzzy_focus.length(), prey.linear_velocity.length())
 					plan.velocity = vel_para_to_fuzzy_focus + vel_perp_to_fuzzy_focus
-					print(plan.velocity)
+					#print(plan.velocity)
 			else:
 				plan.velocity = prey.linear_velocity
 
