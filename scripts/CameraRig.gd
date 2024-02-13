@@ -13,16 +13,16 @@ class_name CameraRig
 @export var curious_speed:float = 250
 
 var velocity:Vector2
-var window:Window
+var viewport:Viewport
 var prey:Node2D
 
 func get_prey() -> Node2D:
 	return prey
 
 func view_size() -> Vector2:
-	if window == null:
-		window = get_viewport()
-	var view_size = window.size
+	if viewport == null:
+		viewport = get_viewport()
+	var view_size = viewport.size
 	view_size = Vector2(view_size.x / zoom.x, view_size.y / zoom.y)
 	return view_size
 
