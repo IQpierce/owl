@@ -3,6 +3,7 @@ class_name Player_Refactor
 
 enum ControlMode { Dynamic, Roam, Tank }
 
+@export var camera_cartridge:CameraCartridge
 @export var locomotor:Locomotor
 @export var hopdart:Hopdart
 @export var control_mode:ControlMode = ControlMode.Roam

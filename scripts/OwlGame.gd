@@ -24,3 +24,9 @@ func anti_zoom() -> float:
 			return (scene.world_camera.initial_zoom / scene.world_camera.zoom).x
 	return 1
 
+func get_default_camera_cartridge() -> CameraCartridge:
+	if scene != null:
+		var player = scene.player as Player_Refactor
+		if player != null:
+			return player.camera_cartridge
+	return null

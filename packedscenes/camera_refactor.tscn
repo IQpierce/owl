@@ -9,13 +9,12 @@ font_size = 48
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
-[node name="Camera_Refactor" type="Camera2D" node_paths=PackedStringArray("state_label", "cartridge")]
+[node name="Camera_Refactor" type="Camera2D" node_paths=PackedStringArray("state_label")]
 position = Vector2(9599, 2567)
 process_callback = 0
 script = ExtResource("1_5fqcy")
 show_debug = false
-state_label = NodePath("")
-cartridge = NodePath("")
+state_label = NodePath("Camera State")
 
 [node name="Camera State" type="Label" parent="."]
 visible = false
