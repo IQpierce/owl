@@ -2,8 +2,8 @@
 extends EditorScript
 
 # @TODO: Figure out a good way (popup input??) to make these not be magic numbers!	
-var num_poly_sides = 80
-var poly_radius = 500
+var num_poly_sides = 30
+var poly_radius = 60
 
 func _run():
 	var selection:EditorSelection = get_editor_interface().get_selection()

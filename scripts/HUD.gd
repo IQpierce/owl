@@ -1,31 +1,35 @@
 extends CanvasLayer
 
 var game:OwlScene
-@export var game_over_layer:CanvasLayer
-@export var debug_fps_label:Label
-@export var debug_time_speed_up_label:Label
 @export var post_game_over_input_cooldown_secs:float = 2
 @export var fishbowl_label_blink_rate_secs:float = 1
 
+@onready var game_over_layer:CanvasLayer = $GameOver
+@onready var debug_fps_label:Label = $FPS
+@onready var debug_time_speed_up_label:Label = $TimeSpedUp
+
 @onready var fishbowl_mode_label = $"Fishbowl Mode label"
+
 var accept_input_timeout:float
 
 func _ready():
 	game = OwlGame.instance.scene
-	game.on_game_ended.connect(self.on_game_over)
+	if game:
+		game.on_game_ended.connect(self.on_game_over)
+	else:
+		push_error("No OwlGame instance!!")
 
 func _process(delta):
-	
 	if debug_fps_label.visible:
 		debug_fps_label.text = "FPS: %.02f" % (Engine.get_frames_per_second())
 	
-	if fishbowl_mode_label:
+	if game && fishbowl_mode_label:
 		fishbowl_mode_label.visible = game.fishbowl_mode && (int(Time.get_ticks_msec() / (1000 * fishbowl_label_blink_rate_secs) ) % 2)
 	
 	if accept_input_timeout <= 0 || accept_input_timeout < Time.get_unix_time_from_system():
 		# special input code for HUD states, etc.
 		
-		if game.game_over && Input.is_anything_pressed():
+		if game && game.game_over && Input.is_anything_pressed():
 			get_tree().reload_current_scene()
 		
 		# @TODO - From here on is debug/cheat functionality...

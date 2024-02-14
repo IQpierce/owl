@@ -50,8 +50,12 @@ func _ready():
 			viewport_container.position = Vector2.ZERO
 			viewport_container.size_flags_horizontal = Control.SizeFlags.SIZE_EXPAND_FILL
 			viewport_container.size_flags_vertical   = Control.SizeFlags.SIZE_EXPAND_FILL
+		
+		var intermediary:Node2D = Node2D.new()
+		phosphor_emu.injection_viewport.add_child(intermediary)
+		intermediary.name = "WorldContainer"
 		for child in scene_children:
-			child.reparent(phosphor_emu.injection_viewport)
+			child.reparent(intermediary)
 
 	var default_view_diagonal = default_view_size.length()
 	var view_diagonal = view_size.length()

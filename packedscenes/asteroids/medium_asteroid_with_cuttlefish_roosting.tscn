@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://22brxer3r2yy"]
+
+[ext_resource type="PackedScene" uid="uid://vyncb8ek17e" path="res://packedscenes/asteroids/medium_asteroid.tscn" id="1_yvegu"]
+[ext_resource type="PackedScene" uid="uid://1eu167rid5gi" path="res://packedscenes/creatures/cuttlefish.tscn" id="2_bcoka"]
+
+[node name="Asteroid" node_paths=PackedStringArray("creature_roosting_inside") instance=ExtResource("1_yvegu")]
+collision_mask = 2
+consumable_reservoir_nibbleable_relevance = {
+1: 1.1
+}
+creature_roosting_inside = NodePath("Cuttlefish")
+
+[node name="Cuttlefish" parent="." index="0" instance=ExtResource("2_bcoka")]
+position = Vector2(0, 3.38604)
+
+[node name="Polygon2D" parent="." index="1"]
+rotation = 0.907571
+color = Color(0, 0, 0, 1)
+
+[node name="CollisionPolygon2D" parent="." index="2"]
+rotation = 0.907571
+
+[node name="SpawnEnergyCrystalOnDamage" parent="." index="3"]
+num_to_spawn = 0

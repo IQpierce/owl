@@ -1,0 +1,121 @@
+[gd_scene load_steps=9 format=3 uid="uid://1eu167rid5gi"]
+
+[ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_u0a1w"]
+[ext_resource type="Script" path="res://scripts/creatures/brains/CreatureMetaBrain.gd" id="2_nthbq"]
+[ext_resource type="Script" path="res://scripts/creatures/anatomy/ThrustEngine.gd" id="3_bsp5l"]
+[ext_resource type="Script" path="res://scripts/creatures/brains/VisionConeValidator.gd" id="3_jgjpx"]
+[ext_resource type="Script" path="res://scripts/DamageZone.gd" id="6_gskqu"]
+[ext_resource type="PackedScene" uid="uid://dclbqd5q45c40" path="res://packedscenes/creatures/anatomy/spear.tscn" id="6_hgf5q"]
+[ext_resource type="Script" path="res://scripts/util/RotateTowards.gd" id="9_e5krn"]
+[ext_resource type="PackedScene" uid="uid://bq4yi2hqjoxm5" path="res://packedscenes/creatures/anatomy/beak.tscn" id="11_ffupc"]
+
+[node name="Cuttlefish" instance=ExtResource("1_u0a1w")]
+mass = 0.17
+inertia = 0.0
+can_sleep = true
+freeze_mode = 1
+linear_damp = 0.0
+angular_damp = 0.0
+health = 3.0
+max_health = 3.0
+
+[node name="CreatureMetaBrain" type="Node2D" parent="." index="0" node_paths=PackedStringArray("controlled_creature")]
+script = ExtResource("2_nthbq")
+controlled_creature = NodePath("..")
+
+[node name="VisionValidator" type="Area2D" parent="CreatureMetaBrain" index="0"]
+collision_layer = 0
+script = ExtResource("3_jgjpx")
+
+[node name="VisionCone" type="CollisionPolygon2D" parent="CreatureMetaBrain/VisionValidator" index="0"]
+polygon = PackedVector2Array(0, 0, -20, -570, 20, -570)
+
+[node name="DorsalFin" type="Node2D" parent="." index="1" node_paths=PackedStringArray("controlled_body")]
+rotation = -1.5708
+script = ExtResource("9_e5krn")
+controlled_body = NodePath("..")
+torque_power = 9001.0
+
+[node name="ThrustEngine" type="Node2D" parent="." index="2" node_paths=PackedStringArray("target_body")]
+script = ExtResource("3_bsp5l")
+target_body = NodePath("..")
+power = 9001.0
+
+[node name="Spear" parent="." index="3" instance=ExtResource("6_hgf5q")]
+position = Vector2(0.00952911, 6.11715)
+scale = Vector2(3.6, 3.6)
+extension_enabled = true
+extension_retracting_rate_per_sec = 0.5
+extension_extending_rate_per_sec = 12.0
+extension_shaft_scale_max = 48.0
+extension_head_collision_active = 1
+extension_shaft_collision_active = 1
+
+[node name="Head" parent="Spear" index="1" node_paths=PackedStringArray("ignore_things")]
+disable_mode = 2
+collision_layer = 3
+gravity_point_center = Vector2(1, 0)
+gravity_direction = Vector2(1, 0)
+gravity = 7200.0
+linear_damp = 28.0
+angular_damp = 28.0
+ignore_things = [NodePath("../..")]
+
+[node name="HeadCollision" parent="Spear/Head" index="0"]
+scale = Vector2(2, 2)
+
+[node name="TrunkCollision" parent="." index="4"]
+scale = Vector2(0.8, 0.8)
+polygon = PackedVector2Array(10.5, 0, 10.271, 2.184, 9.592, 4.27, 8.495, 6.172, 7.026, 7.803, 5.25, 9.093, 3.245, 9.986, 1.962, 10.85, 0.005, 11.982, -1.962, 10.85, -3.244, 9.986, -5.25, 9.093, -7.026, 7.803, -8.494, 6.172, -9.592, 4.27, -10.271, 2.184, -10.5, 0, -10.271, -2.182, -9.592, -4.27, -8.494, -6.172, -7.026, -7.803, -5.25, -9.093, 5.25, -9.093, 7.026, -7.803, 8.495, -6.172, 9.592, -4.27, 10.271, -2.182, 10.5, 0)
+
+[node name="TrunkPolygon" parent="." index="5"]
+scale = Vector2(0.8, 0.8)
+polygon = PackedVector2Array(10.5, 0, 10.271, 2.184, 9.592, 4.27, 8.495, 6.172, 7.026, 7.803, 5.25, 9.093, 3.245, 9.986, 1.962, 10.85, 0.005, 11.982, -1.962, 10.85, -3.244, 9.986, -5.25, 9.093, -7.026, 7.803, -8.494, 6.172, -9.592, 4.27, -10.271, 2.184, -10.5, 0, -10.271, -2.182, -9.592, -4.27, -8.494, -6.172, -7.026, -7.803, -5.25, -9.093, 5.25, -9.093, 7.026, -7.803, 8.495, -6.172, 9.592, -4.27, 10.271, -2.182, 10.5, 0)
+point_draw_radius = 1.0
+skip_line_indeces = Array[int]([11])
+
+[node name="Stomach" parent="." index="6" node_paths=PackedStringArray("nodes_to_scale")]
+nodes_to_scale = [NodePath("../TrunkPolygon")]
+min_x_scale = 0.5
+max_x_scale = 1.0
+
+[node name="Reservoir" parent="Stomach" index="0"]
+consumable_type = 2
+amount_contained = 8.0
+
+[node name="Beak" parent="." index="7" instance=ExtResource("11_ffupc")]
+position = Vector2(0, -7.44842)
+scale = Vector2(0.14, 0.14)
+speed_factor = 2.0
+rotate_factor = 0.6
+
+[node name="WarpNibbleZone" type="Area2D" parent="Beak" index="0" node_paths=PackedStringArray("things_to_ignore")]
+disable_mode = 1
+collision_layer = 0
+script = ExtResource("6_gskqu")
+things_to_ignore = [NodePath("../..")]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Beak/WarpNibbleZone" index="0"]
+polygon = PackedVector2Array(-21.5006, 1.40118, -24.5286, -11.0845, 26.5084, -11.0845, 23.0306, 1.32305)
+
+[node name="NibbleZone" parent="Beak" index="1" node_paths=PackedStringArray("things_to_ignore")]
+process_mode = 4
+visible = false
+collision_mask = 1
+things_to_ignore = [NodePath("../..")]
+
+[node name="CollisionPolygon2D" parent="Beak/NibbleZone" index="0"]
+polygon = PackedVector2Array(-21.5006, 1.40118, -24.5286, -11.0845, 26.5084, -11.0845, 23.0306, 1.32305)
+
+[node name="BeakRight" parent="Beak" index="2"]
+position = Vector2(24.4575, -1.00227)
+
+[node name="BeakLeft" parent="Beak" index="3"]
+position = Vector2(-22.5759, -1.21084)
+
+[connection signal="on_any_valid_body_seen" from="CreatureMetaBrain/VisionValidator" to="Spear" method="start_extension"]
+[connection signal="on_valid_bodies_no_longer_seen" from="CreatureMetaBrain/VisionValidator" to="Spear" method="start_retraction"]
+[connection signal="on_body_speared" from="Spear" to="Spear" method="start_retraction" unbinds=1]
+
+[editable path="Spear"]
+[editable path="Beak"]

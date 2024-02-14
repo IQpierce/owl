@@ -32,6 +32,8 @@ double_tap_msec = 200.0
 turn_around_acceleration_factor = 1.5
 side_boost = 0.0
 quick_turn_degrees = 0
+health = 3.0
+max_health = 3.0
 
 [node name="Thrust" type="AudioStreamPlayer2D" parent="." index="0"]
 stream = ExtResource("3_7eqxd")
@@ -49,6 +51,9 @@ polygon = PackedVector2Array(-0.3, 0.5, 0.3, 0.5, 0, -0.857147)
 script = ExtResource("4_ienpe")
 circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
+
+[node name="TrunkCollision" parent="." index="2"]
+polygon = PackedVector2Array(6, -3, 0, -12, -6, -3, -8.5, 7.5, -3.5, 5, 3.5, 5, 8.5, 7.5)
 
 [node name="TurnLeftTriangle" type="Polygon2D" parent="." index="3"]
 visible = false
@@ -105,6 +110,9 @@ polygon = PackedVector2Array(-0.2, 0.1, 0.2, 0.1, 0, -0.4)
 script = ExtResource("4_ienpe")
 circle_draw_color = Color(1, 1, 1, 1)
 line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
+
+[node name="TrunkPolygon" parent="." index="7"]
+polygon = PackedVector2Array(6, -3, 0, -12, -6, -3, -8.5, 7.5, -3.5, 5, 3.5, 5, 8.5, 7.5)
 
 [connection signal="shot_fired" from="." to="Gun" method="shoot"]
 [connection signal="thrusting_state_change" from="." to="ThrustTriangle" method="set_visible"]

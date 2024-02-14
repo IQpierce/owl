@@ -14,7 +14,6 @@ func _ready():
 
 
 
-#srpnow document the inputs/outputs here
 func respond_to_threats(known_threats:Array[Dictionary]) -> Array[Dictionary]:
 	for threat_response_brain in threat_response_brains:
 		assert(threat_response_brain != null)

@@ -13,7 +13,7 @@
 radius = 500.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6o0l6"]
-radius = 125.0
+radius = 50.0
 
 [node name="Planetoid" type="Area2D"]
 collision_layer = 2
@@ -68,11 +68,11 @@ collision_layer = 2
 collision_mask = 3
 script = ExtResource("6_5jlue")
 
+[node name="Collision2" type="CollisionShape2D" parent="DamageZone"]
+shape = SubResource("CircleShape2D_6o0l6")
+
 [node name="Node2D" type="Area2D" parent="."]
 script = ExtResource("6_5jlue")
 
 [node name="Collision" type="CollisionShape2D" parent="Node2D"]
 shape = SubResource("CircleShape2D_6o0l6")
-
-[connection signal="body_entered" from="DamageZone" to="DamageZone" method="_on_body_entered"]
-[connection signal="body_exited" from="DamageZone" to="DamageZone" method="_on_body_exited"]

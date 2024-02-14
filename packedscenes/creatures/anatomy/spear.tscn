@@ -1,0 +1,51 @@
+[gd_scene load_steps=4 format=3 uid="uid://dclbqd5q45c40"]
+
+[ext_resource type="Script" path="res://scripts/creatures/anatomy/Spear.gd" id="1_b1rd5"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_42nd2"]
+[ext_resource type="Script" path="res://scripts/hacks/StickyZone.gd" id="3_o6m53"]
+
+[node name="Spear" type="Node2D" node_paths=PackedStringArray("hook_connection_point")]
+script = ExtResource("1_b1rd5")
+hook_connection_point = NodePath("Head")
+
+[node name="Shaft" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("3_o6m53")
+
+[node name="ShaftCollision" type="CollisionPolygon2D" parent="Shaft"]
+polygon = PackedVector2Array(-0.01, -3, -0.01, 0, 0.01, 0, 0.01, -3)
+
+[node name="ShaftPolygon" type="Polygon2D" parent="Shaft"]
+polygon = PackedVector2Array(0, -0.33, 0, -2.85)
+script = ExtResource("2_42nd2")
+point_draw_radius = 0.18
+draw_line_width = 0.216
+
+[node name="Head" type="Area2D" parent="."]
+position = Vector2(0, -3)
+disable_mode = 1
+collision_layer = 0
+collision_mask = 0
+linear_damp = 32.935
+angular_damp = 36.67
+script = ExtResource("3_o6m53")
+
+[node name="HeadCollision" type="CollisionPolygon2D" parent="Head"]
+position = Vector2(0, -0.2)
+scale = Vector2(5, 5)
+polygon = PackedVector2Array(-1.75, 0.2, 0, -2.75, 1.75, 0.2)
+
+[node name="HeadPolygonLeft" type="Polygon2D" parent="Head"]
+position = Vector2(0, -4.721)
+polygon = PackedVector2Array(-0.031, 5, -0.00474358, 1.73671, -1.76563, 4.721, -0.00474358, 1.68415)
+script = ExtResource("2_42nd2")
+point_draw_radius = 0.18
+draw_line_width = 0.216
+
+[node name="HeadPolygonRight" type="Polygon2D" parent="Head/HeadPolygonLeft"]
+scale = Vector2(-1, 1)
+polygon = PackedVector2Array(-0.031, 5, -0.00474358, 1.73671, -1.76563, 4.721, -0.00474358, 1.68415)
+script = ExtResource("2_42nd2")
+point_draw_radius = 0.18
+draw_line_width = 0.216

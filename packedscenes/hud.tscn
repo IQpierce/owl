@@ -15,11 +15,8 @@ shadow_offset = Vector2(0, 0)
 default_font = ExtResource("2_ebi6m")
 default_font_size = 40
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("game_over_layer", "debug_fps_label", "debug_time_speed_up_label")]
+[node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_ohgch")
-game_over_layer = NodePath("GameOver")
-debug_fps_label = NodePath("FPS")
-debug_time_speed_up_label = NodePath("TimeSpedUp")
 fishbowl_label_blink_rate_secs = 2.5
 
 [node name="FPS" type="Label" parent="."]
