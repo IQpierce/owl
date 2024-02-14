@@ -39,4 +39,5 @@ func counter_zoom():
 					geom.queue_redraw()
 	elif scale_mode == ScaleMode.Transform:
 		scale = initial_scale * anti_zoom
-		collider.scale = scale * collider_scale_relative
+		if collider != null:
+			collider.scale = scale * collider_scale_relative

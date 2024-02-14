@@ -6,6 +6,7 @@ enum ControlMode { Dynamic, Roam, Tank }
 @export var camera_cartridge:CameraCartridge
 @export var locomotor:Locomotor
 @export var hopdart:Hopdart
+@export var warp_beam:WarpBeam
 @export var control_mode:ControlMode = ControlMode.Roam
 @export var allow_mouse:bool = true
 @export_range(0, 1) var mouse_sensitivity:float = 0
@@ -45,6 +46,10 @@ func _input(event:InputEvent):
 func _physics_process(delta:float):
 	if !process_gamepad(delta):
 		process_keyboard_mouse(delta)
+
+	# TODO (sam) REMOVE ... figure out a better way to stop motion while doing this
+	#if warp_beam != null && warp_beam.target != null:
+	#	linear_velocity = Vector2.ZERO
 
 func process_gamepad(delta:float) -> bool:
 	var gamepad_acting = false

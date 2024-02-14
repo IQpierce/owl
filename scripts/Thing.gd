@@ -2,6 +2,7 @@ extends RigidBody2D
 
 class_name Thing
 
+@export var anatomy:Anatomy2D
 @export var spawned_per_damage:Dictionary	# keys are NodePath's which represent Spawners which will be triggered whenever an amount of damage is dealt. The damage threshold (a float) is the key value.
 @export var spawned_on_death:Array[Spawner]
 

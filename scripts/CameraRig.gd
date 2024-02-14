@@ -63,8 +63,11 @@ func apply_plans(delta:float):
 			zoom /= Vector2(zoom_speed, zoom_speed)
 		else:
 			zoom *= Vector2(zoom_speed, zoom_speed)
-		zoom.x = clamp(zoom.x, initial_zoom.x, 100)
-		zoom.y = clamp(zoom.y, initial_zoom.y, 100)
+			var player = OwlGame.instance.scene.player
+			# TODO EXTRA REMOVE... also turn Player's collision back on and reattach it's camera cartridge
+			player.global_position = global_position + ((player.global_position - global_position) * 0.95)
+		zoom.x = clamp(zoom.x, initial_zoom.x, 15)
+		zoom.y = clamp(zoom.y, initial_zoom.y, 15)
 		if cartridge != null:
 			global_position = cartridge.global_position + ((global_position - cartridge.global_position) * (old_zoom / zoom))
 

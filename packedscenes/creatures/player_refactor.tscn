@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://msq6w1qgh7c6"]
+[gd_scene load_steps=16 format=3 uid="uid://msq6w1qgh7c6"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_4xi5x"]
 [ext_resource type="Script" path="res://scripts/Player_Refactor.gd" id="2_f7rlf"]
@@ -11,35 +11,26 @@
 [ext_resource type="PackedScene" uid="uid://cnn2uxqrtmn78" path="res://packedscenes/bullet.tscn" id="6_qhuna"]
 [ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="6_wtu8y"]
 [ext_resource type="Script" path="res://scripts/Anatomy2D.gd" id="6_xawiv"]
+[ext_resource type="Script" path="res://scripts/WarpBeam.gd" id="6_y0quo"]
 [ext_resource type="AudioStream" uid="uid://gwmuuh2c41u4" path="res://audio/lazerLofi.wav" id="7_2rpq8"]
 [ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="8_kg1ke"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntkiv"]
 radius = 64.0
 
-[node name="Player" node_paths=PackedStringArray("locomotor", "hopdart") instance=ExtResource("1_4xi5x")]
+[node name="Player" node_paths=PackedStringArray("camera_cartridge", "locomotor", "hopdart", "warp_beam") instance=ExtResource("1_4xi5x")]
 freeze_mode = 1
 script = ExtResource("2_f7rlf")
+camera_cartridge = NodePath("CameraCartridge")
 locomotor = NodePath("Locomotor")
 hopdart = NodePath("HopDart")
+warp_beam = NodePath("Anatomy/WarpBeam")
 control_mode = 0
-allow_mouse = true
+allow_mouse = false
 mouse_sensitivity = 1.0
 mouse_gravity = 10.0
 
-[node name="Locomotor" type="Node2D" parent="." index="0"]
-script = ExtResource("3_7v3rj")
-turn_force = 60.0
-max_speed = 1000.0
-excessive_speed_linear_damp_factor = 0.98
-turn_linear_damp_factor = 0.99
-fire_turn_factor = 0.95
-turn_with_velocity_turn_factor = 0.85
-fire_max_speed_factor = 0.9
-fire_acceleration_factor = 0.8
-side_boost = 1000.0
-
-[node name="CameraCartridge" type="Node2D" parent="." index="1" node_paths=PackedStringArray("locomotor", "hopdart")]
+[node name="CameraCartridge" type="Node2D" parent="." index="0" node_paths=PackedStringArray("locomotor", "hopdart")]
 script = ExtResource("4_84jdn")
 locomotor = NodePath("../Locomotor")
 hopdart = NodePath("../HopDart")
@@ -50,14 +41,24 @@ rest_vel_damp = 0.9
 lead_vel_perp_damp = 0.8
 lead_turn_to_rest_ms = 100
 
+[node name="Locomotor" type="Node2D" parent="." index="1"]
+script = ExtResource("3_7v3rj")
+turn_force = 60.0
+max_speed = 1000.0
+excessive_speed_linear_damp_factor = 0.98
+turn_linear_damp_factor = 0.99
+drive_turn_factor = 0.8
+fire_turn_factor = 0.95
+fire_max_speed_factor = 0.9
+fire_acceleration_factor = 0.8
+side_boost = 1000.0
+
 [node name="HopDart" type="Node2D" parent="." index="2"]
 script = ExtResource("5_71gg3")
 
-[node name="Anatomy" type="Node2D" parent="." index="3" node_paths=PackedStringArray("collider", "line_geometry")]
+[node name="Anatomy" type="Node2D" parent="." index="3"]
 script = ExtResource("6_xawiv")
 scale_mode = 1
-collider = NodePath("../TrunkCollision")
-line_geometry = [NodePath("NEW_TrunkPolygon")]
 
 [node name="NEW_TrunkPolygon" type="Polygon2D" parent="Anatomy" index="0"]
 editor_description = "visual aspect"
@@ -117,6 +118,10 @@ shot_parent = NodePath("../..")
 stream = ExtResource("7_2rpq8")
 volume_db = 7.903
 bus = &"Effects"
+
+[node name="WarpBeam" type="Node2D" parent="Anatomy" index="5"]
+script = ExtResource("6_y0quo")
+prep_req_seconds = 1.5
 
 [node name="Thrust" type="AudioStreamPlayer2D" parent="." index="4"]
 stream = ExtResource("3_wencu")
