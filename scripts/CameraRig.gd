@@ -13,25 +13,29 @@ class_name CameraRig
 @export var curious_speed:float = 250
 
 var velocity:Vector2
-var idle_plan:Plan
+var viewport:Viewport
 var prey:Node2D
 
 func get_prey() -> Node2D:
 	return prey
 
+func view_size() -> Vector2:
+	if viewport == null:
+		viewport = get_viewport()
+	var view_size = viewport.size
+	view_size = Vector2(view_size.x / zoom.x, view_size.y / zoom.y)
+	return view_size
+
 func _ready():
 	if ready_center && cartridge != null:
 		global_position = cartridge.global_position
-
-	idle_plan = Plan.new()
-	idle_plan.copy_rig(self)
 
 func _draw():
 	# Only draw Debug display while in Editor
 	show_debug = show_debug && OS.has_feature("editor")
 	if show_debug:
 		if cartridge != null:
-			var debug_msg = cartridge.request_debug(global_position)
+			var debug_msg = cartridge.request_debug(self)
 			if state_label != null:
 				state_label.visible = true
 				state_label.text = debug_msg
@@ -47,7 +51,24 @@ func _physics_process(delta:float):
 		apply_plans(delta)
 
 func apply_plans(delta:float):
-	idle_plan.copy_rig(self)
+	var old_zoom = zoom
+
+	#TODO REMOVE
+	var zoom_speed = 1.05
+	if Input.is_action_pressed("hyperspace") || Input.is_action_pressed("hyperspace_gamepad"):
+		if Input.is_action_pressed("ignore_input"):
+			zoom /= Vector2(zoom_speed, zoom_speed)
+		else:
+			zoom *= Vector2(zoom_speed, zoom_speed)
+		zoom.x = clamp(zoom.x, initial_zoom.x, 100)
+		zoom.y = clamp(zoom.y, initial_zoom.y, 100)
+		if cartridge != null:
+			global_position = cartridge.global_position + ((global_position - cartridge.global_position) * (old_zoom / zoom))
+
+	OwlGame.instance.zooming = old_zoom != zoom
+	if zoom != initial_zoom:
+		return
+	# END REMOVE
 
 	var cartridge_plan:ExclusivePlan = null
 	var hunt_pos = global_position
@@ -55,10 +76,11 @@ func apply_plans(delta:float):
 
 	prey = self
 	if cartridge != null:
-		cartridge_plan = cartridge.build_plan(delta, idle_plan)
-		hunt_pos = cartridge_plan.position
-		tracking_importance = cartridge_plan.exclusivity
-		prey = cartridge_plan.prey
+		cartridge_plan = cartridge.build_plan(delta, self)
+		if cartridge_plan != null:
+			hunt_pos = cartridge_plan.position
+			tracking_importance = cartridge_plan.exclusivity
+			prey = cartridge_plan.prey
 
 	#TODO (sam) should this also be handled in cartridge
 	var curious_pos = hunt_pos
@@ -84,6 +106,8 @@ func apply_plans(delta:float):
 
 	#TODO (sam) how should I be combining velocities?
 	velocity = cartridge_plan.velocity
+
+	OwlGame.instance.zooming = old_zoom != zoom
 
 	queue_redraw()
 

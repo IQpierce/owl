@@ -1,6 +1,8 @@
 extends CameraCartridge
 class_name TrackThrusterCameraCartridge
 
+@export var locomotor:Locomotor = null
+@export var hopdart:Hopdart = null
 @export var track_threshold:float = 300
 @export var lock_threshold:float = 100
 @export var max_relative_speed:float = 1
@@ -11,6 +13,7 @@ class_name TrackThrusterCameraCartridge
 @export var follow_slow_to_rest_ms = 300
 @export var lead_turn_to_rest_ms = 300
 
+var prey:Thing
 var prey_velocity:Vector2
 var prey_bearing:Vector2
 var fallback_start:int
@@ -22,12 +25,13 @@ var lock_rect:Rect2
 enum TrackingState { Rest, Follow, Lead }
 var tracking = TrackingState.Rest
 
-#TODO (sam) can we pass in a const CameraRig instead of the plan?
-func build_plan(delta:float, idle_plan:CameraRig.Plan) -> CameraRig.ExclusivePlan:
+func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 	#TODO (sam) instead of using prey we probably want to find the parent Thing or Node
-	var prey = get_parent() as Thing
+	var prey = null
+	if locomotor != null:
+		prey = locomotor.body as Thing
 
-	plan.copy(idle_plan)
+	plan.copy_rig(data_rig)
 
 	#TODO (sam) use the body that Locomotor is tracking
 	plan.prey = prey
@@ -37,14 +41,13 @@ func build_plan(delta:float, idle_plan:CameraRig.Plan) -> CameraRig.ExclusivePla
 
 	var focus = prey.global_position
 
-	var view_size = get_viewport().size # TODO Is this bad to call every frame? could we just get this from the camera?
-	view_size = Vector2(view_size.x / plan.zoom.x, view_size.y / plan.zoom.y)
+	var view_size = data_rig.view_size()
 	var half_view_size = view_size / 2
 
-	if prey != null:
+	if locomotor != null && prey != null:
 		var to_prey = prey.global_position - plan.position
 		var prey_dist_sqr = to_prey.length_squared()
-		var prey_heading = Vector2.UP.rotated(prey.rotation)
+		var prey_heading = Vector2.UP.rotated(prey.global_rotation)
 		prey_bearing = Vector2.ZERO
 		var prey_speed = prey.linear_velocity.length()
 		if prey_speed > 0:
@@ -86,7 +89,7 @@ func build_plan(delta:float, idle_plan:CameraRig.Plan) -> CameraRig.ExclusivePla
 					if prey.linear_velocity.dot(prey_velocity) <= 0:
 						tracking = TrackingState.Rest
 		elif tracking == TrackingState.Lead:
-			if prey_heading.dot(plan.position - prey.global_position) <= 0:
+			if prey_heading.dot((plan.position - prey.global_position).project(prey.linear_velocity.normalized())) <= 0:
 				if Time.get_ticks_msec() - fallback_start >= lead_turn_to_rest_ms:
 					tracking = TrackingState.Rest
 			else:
@@ -115,8 +118,8 @@ func build_plan(delta:float, idle_plan:CameraRig.Plan) -> CameraRig.ExclusivePla
 					var accelerated_speed = plan.velocity.length()# + prey.get_thrust_speed() * acceleration_factor * delta
 					var prey_relative_speed = prey_velocity.length() * tracking_importance
 
-					if prey.get_thrusting() && prey_heading.dot(to_prey) > 0:
-						accelerated_speed += prey.get_thrust_speed() * acceleration_factor * delta
+					if locomotor.driving && prey_heading.dot(to_prey) > 0:
+						accelerated_speed += locomotor.drive_force * acceleration_factor * delta
 						prey_relative_speed *= max_relative_speed
 					plan.velocity = to_focus_dir * max(accelerated_speed, prey_relative_speed)
 
@@ -124,11 +127,19 @@ func build_plan(delta:float, idle_plan:CameraRig.Plan) -> CameraRig.ExclusivePla
 						plan.velocity = plan.velocity.normalized() * prey_velocity.length()
 				elif tracking == TrackingState.Lead:
 					# When leading accelerate normally, but manually narrow center the prey perpendicular to its bearing
-					plan.velocity += to_focus_dir * (prey.get_thrust_speed() * acceleration_factor * delta)
-					var vel_para_to_focus = plan.velocity.project(to_focus_dir)
-					var vel_perp_to_focus = plan.velocity - vel_para_to_focus
-					vel_perp_to_focus *= lead_vel_perp_damp
-					plan.velocity = vel_para_to_focus + vel_perp_to_focus
+					var to_fuzzy_focus = to_focus#to_focus.project(prey.linear_velocity)
+					if hopdart != null && hopdart.engaged:
+						# TODO (sam) I'd like to delay the camera following after a hopdart, but can't get it quite right
+						var fuzzy_focus = (prey.global_position - hopdart.sum_move) + (prey_bearing * lead_distance)
+						to_fuzzy_focus = fuzzy_focus - global_position
+					var to_fuzzy_focus_dir = to_fuzzy_focus.normalized()
+					plan.velocity += to_fuzzy_focus_dir * (locomotor.drive_force * acceleration_factor * delta)
+					var vel_para_to_fuzzy_focus = plan.velocity.project(to_fuzzy_focus_dir)
+					var vel_perp_to_fuzzy_focus = plan.velocity - vel_para_to_fuzzy_focus
+					vel_perp_to_fuzzy_focus *= lead_vel_perp_damp
+					#vel_para_to_fuzzy_focus = vel_para_to_fuzzy_focus.normalized() * max(vel_para_to_fuzzy_focus.length(), prey.linear_velocity.length())
+					plan.velocity = vel_para_to_fuzzy_focus + vel_perp_to_fuzzy_focus
+					#print(plan.velocity)
 			else:
 				plan.velocity = prey.linear_velocity
 
@@ -162,27 +173,28 @@ func build_plan(delta:float, idle_plan:CameraRig.Plan) -> CameraRig.ExclusivePla
 
 	return plan
 
-func request_debug(camera_position:Vector2) -> String:
-	super(camera_position)
+func request_debug(drawee_rig:CameraRig) -> String:
+	if drawee_rig != null:
+		# Screen Center
+		drawee_rig.draw_arc(Vector2.ZERO, 10, 0, TAU, 60, Color.WHITE)
+
+		if tracking == TrackingState.Lead:
+			#Lead Target
+			#if prey_heading.dot((plan.position - prey.global_position).project(prey.linear_velocity.normalized())) <= 0:
+
+			# Desired Screen Center (focus)
+			var prey = get_parent() as Thing
+			var relative_prey_pos = prey.global_position - drawee_rig.global_position
+			var relative_lead_pos = relative_prey_pos + (prey_bearing * lead_distance)
+			drawee_rig.draw_line(relative_lead_pos + Vector2(-10, -10), relative_lead_pos + Vector2(10, 10),  Color.WHITE)
+			drawee_rig.draw_line(relative_lead_pos + Vector2(-10, 10),  relative_lead_pos + Vector2(10, -10), Color.WHITE)
+
+			# Maintain Tracking or Rest Threshold
+			var prey_perp = Vector2(relative_prey_pos.y, -relative_prey_pos.x).normalized() * 100
+			drawee_rig.draw_dashed_line(relative_prey_pos - prey_perp, relative_prey_pos + prey_perp, Color.WHITE, 1.0, 10.0)
+
+		if tracking != TrackingState.Lead:
+			drawee_rig.draw_rect(track_rect, Color.GRAY, false, 2.0)
+
+		drawee_rig.draw_rect(lock_rect, Color.GRAY, false, 4.0 * (tracking + 1))
 	return TrackingState.keys()[tracking]
-
-func _draw():
-	# Screen Center
-	draw_arc(Vector2.ZERO, 10, 0, TAU, 60, Color.WHITE)
-
-	if tracking == TrackingState.Lead:
-		# Desired Screen Center (focus)
-		var prey = get_parent() as Thing
-		var relative_prey_pos = prey.global_position - global_position
-		var relative_lead_pos = relative_prey_pos + (prey_bearing * lead_distance)
-		draw_line(relative_lead_pos + Vector2(-10, -10), relative_lead_pos + Vector2(10, 10),  Color.WHITE)
-		draw_line(relative_lead_pos + Vector2(-10, 10),  relative_lead_pos + Vector2(10, -10), Color.WHITE)
-
-		# Maintain Tracking or Rest Threshold
-		var prey_perp = Vector2(relative_prey_pos.y, -relative_prey_pos.x).normalized() * 100
-		draw_dashed_line(relative_prey_pos - prey_perp, relative_prey_pos + prey_perp, Color.WHITE, 1.0, 10.0)
-
-	if tracking != TrackingState.Lead:
-		draw_rect(track_rect, Color.GRAY, false, 2.0)
-
-	draw_rect(lock_rect, Color.GRAY, false, 4.0 * (tracking + 1))

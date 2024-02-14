@@ -1,4 +1,5 @@
 extends Polygon2D
+class_name VectorPolygonRendering
 
 @export var point_draw_radius:float = .09
 @export var circle_draw_color:Color = Color(0.86274510622025, 0.86274510622025, 0.86274510622025)
@@ -6,6 +7,13 @@ extends Polygon2D
 @export var draw_line_width:float = .1
 @export var draw_line_antialiased:bool = true
 @export var skip_line_indeces:Array[int]	# Each line that begins with a vert index that's in this list, will be skipped
+
+var initial_point_radius:float = 1
+var initial_line_width:float = 1
+
+func _ready():
+	initial_point_radius = point_draw_radius
+	initial_line_width = draw_line_width
 
 func _draw():
 	var vertex_count = polygon.size()  

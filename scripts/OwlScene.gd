@@ -29,7 +29,7 @@ func _ready():
 	Engine.max_fps = 60
 	
 	if hide_mouse:
-		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	player.died.connect(self.on_player_died)
 
@@ -62,6 +62,7 @@ func _ready():
 	
 	if world_camera:
 		world_camera.zoom *= view_diagonal / default_view_diagonal
+		world_camera.initial_zoom = world_camera.zoom
 	
 	if fishbowl_camera:
 		fishbowl_camera.zoom *= view_diagonal / default_view_diagonal
