@@ -110,7 +110,22 @@ func process_keyboard_mouse(delta:float):
 			var fastest_view = slowest_view / 1024;
 			view_speed = (mouse_sensitivity * slowest_view) + ((1 - mouse_sensitivity) * fastest_view)
 
-	if control_mode == ControlMode.Roam:
+	var preping_warp = false
+	if warp_beam != null:
+		var zoom_speed = 1.05
+		if Input.is_action_pressed("hyperspace"):
+			warp_beam.visible = true
+			preping_warp = true
+			angular_velocity = 0
+
+			if warp_beam != null && warp_beam.target != null:
+				linear_velocity *= 0.95
+		else:
+			if warp_beam.target != null && warp_beam.warp_ready:
+				pass # TODO make the zoom happen
+			warp_beam.visible = false
+
+	if control_mode == ControlMode.Roam && !preping_warp:
 		var drive_factor = 0.0
 		var want_dir = Vector2.ZERO
 		var turn_fraction = 1.0
@@ -145,7 +160,7 @@ func process_keyboard_mouse(delta:float):
 
 		#Input.warp_mouse(pos_on_canvas + Vector2.UP.rotated(global_rotation) * 100)
 
-	elif control_mode == ControlMode.Tank || control_mode == ControlMode.Dynamic:
+	elif (control_mode == ControlMode.Tank || control_mode == ControlMode.Dynamic) && !preping_warp:
 		var drive_factor = 0.0
 		var turn_factor = 0.0
 

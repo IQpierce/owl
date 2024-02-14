@@ -120,8 +120,13 @@ volume_db = 7.903
 bus = &"Effects"
 
 [node name="WarpBeam" type="Node2D" parent="Anatomy" index="5"]
+visible = false
 script = ExtResource("6_y0quo")
+max_reach = 250.0
+reach_rate = 2.0
+segment_count = 10
 prep_req_seconds = 1.5
+transversity = 0.9
 
 [node name="Thrust" type="AudioStreamPlayer2D" parent="." index="4"]
 stream = ExtResource("3_wencu")
