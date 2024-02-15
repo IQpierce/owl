@@ -48,7 +48,10 @@ func _physics_process(delta:float):
 			if hit != null && hit.has("position"):
 				var hit_pos = hit["position"]
 				var to_hit = hit_pos - body.global_position
-				if to_hit.length_squared() < move.length_squared() && to_hit.dot(move) > 0:
+				var other:Node2D = null
+				if hit.has("collider"):
+					other = hit["collider"]
+				if other != body && to_hit.length_squared() < move.length_squared() && to_hit.dot(move) > 0:
 					move = Vector2.ZERO
 			
 			body.global_position += move

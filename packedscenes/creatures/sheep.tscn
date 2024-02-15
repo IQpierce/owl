@@ -110,29 +110,32 @@ power = 9001.0
 position = Vector2(0, 8.28248)
 polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.538, 25, -58.538, 35.638, -44.803, 46.564, -24.247)
 
-[node name="TrunkPolygon" parent="." index="4"]
-position = Vector2(0, 8.28248)
-polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.538, 25, -58.538, 35.638, -44.803, 46.564, -24.247)
-skip_line_indeces = Array[int]([11])
+[node name="HeadCollision" type="CollisionPolygon2D" parent="." index="4"]
+position = Vector2(0, 0.53)
+polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
 
-[node name="Stomach" parent="." index="5" node_paths=PackedStringArray("nodes_to_scale")]
+[node name="Anatomy" parent="." index="5" node_paths=PackedStringArray("line_geometry")]
+line_geometry = [NodePath("TrunkPolygon"), NodePath("HeadRenderer"), NodePath("Beak/BeakRight/Polygon"), NodePath("Beak/BeakLeft/Polygon")]
+
+[node name="Stomach" parent="Anatomy" index="0" node_paths=PackedStringArray("nodes_to_scale")]
 nodes_to_scale = [NodePath("../TrunkPolygon")]
 min_x_scale = 0.75
 max_x_scale = 1.4
 
-[node name="EnergyReservoir" parent="Stomach" index="0"]
+[node name="Reservoir" parent="Anatomy/Stomach" index="0"]
 consumable_type = 1
 
-[node name="Beak" parent="." index="6" instance=ExtResource("5_mgc12")]
+[node name="TrunkPolygon" parent="Anatomy" index="1"]
+position = Vector2(0, 8.28248)
+polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.538, 25, -58.538, 35.638, -44.803, 46.564, -24.247)
+skip_line_indeces = Array[int]([11])
+
+[node name="Beak" parent="Anatomy" index="2" instance=ExtResource("5_mgc12")]
 position = Vector2(-0.014, -67.514)
 speed_factor = 2.0
 rotate_factor = 0.6
 
-[node name="HeadCollision" type="CollisionPolygon2D" parent="." index="7"]
-position = Vector2(0, 0.53)
-polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
-
-[node name="HeadRenderer" type="Polygon2D" parent="." index="8"]
+[node name="HeadRenderer" type="Polygon2D" parent="Anatomy" index="3"]
 editor_description = "visual aspect"
 position = Vector2(0, 0.53)
 scale = Vector2(0.99, 1)

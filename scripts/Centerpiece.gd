@@ -5,12 +5,12 @@ class_name Centerpiece
 @export var notice_radius = 2500
 @export var peripheral_radius = 200
 
-var camera:Camera_Deprecated
+var camera:CameraRig
 
 func _ready():
 	var game = OwlGame.instance.scene
 	if game != null:
-		camera = game.world_camera as Camera_Deprecated
+		camera = game.world_camera
 
 func _physics_process(float):
 	if camera != null:

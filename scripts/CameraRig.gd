@@ -1,5 +1,5 @@
 #TODO (sam) We may endup needing multiple cameras, so this would manage those NOT be one
-extends Camera_Deprecated
+extends Camera2D
 class_name CameraRig
 
 @export_group("Debug")
@@ -15,6 +15,9 @@ class_name CameraRig
 var velocity:Vector2
 var viewport:Viewport
 var prey:Node2D
+var attention_center:Vector2
+var center_priority:int
+var initial_zoom:Vector2 = Vector2.ONE
 
 func get_prey() -> Node2D:
 	return prey
@@ -117,6 +120,14 @@ func apply_plans(delta:float):
 
 	queue_redraw()
 
+func pique_curiousity(focus_global:Vector2, priority:int):
+	var take_priority = priority > center_priority
+	if !take_priority && priority == center_priority:
+		take_priority = (focus_global - global_position).length_squared() < (attention_center - global_position).length_squared()
+
+	if take_priority:
+		attention_center = focus_global
+		center_priority = priority
 
 # Maybe just remove these and pass down the rig
 class Plan:

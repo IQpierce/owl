@@ -1,9 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=19 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_80w6u"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_rhngu"]
-[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="3_r2sfy"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
 [ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="5_pt2a0"]
 [ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/cosmic_bodies/sun.tscn" id="6_4kfgg"]
@@ -12,10 +11,10 @@
 [ext_resource type="PackedScene" uid="uid://vyncb8ek17e" path="res://packedscenes/asteroids/medium_asteroid.tscn" id="6_w6vm2"]
 [ext_resource type="Script" path="res://scripts/Anatomy2D.gd" id="7_5bfid"]
 [ext_resource type="Script" path="res://scripts/TrackThrusterCameraCartridge.gd" id="7_orc3h"]
-[ext_resource type="PackedScene" uid="uid://msq6w1qgh7c6" path="res://packedscenes/creatures/player_refactor.tscn" id="8_ifucg"]
+[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="8_ifucg"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_m427m"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="10_foqed"]
-[ext_resource type="PackedScene" uid="uid://bs64p7ff3fvw2" path="res://packedscenes/camera_refactor.tscn" id="11_llngb"]
+[ext_resource type="PackedScene" uid="uid://bs64p7ff3fvw2" path="res://packedscenes/camera_rig.tscn" id="11_llngb"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
@@ -28,8 +27,12 @@ size = Vector2(61440, 34560)
 
 [node name="GameFeel" type="Node2D" node_paths=PackedStringArray("player", "world_camera")]
 script = ExtResource("1_80w6u")
-player = NodePath("Player_Refactor")
-world_camera = NodePath("Camera_Refactor")
+hide_mouse = null
+fishbowl_mode = null
+player = NodePath("Player")
+world_camera = NodePath("CameraRig")
+fishbowl_mode_auto_reset_secs = null
+muted = true
 emulate_phosphor_monitor = false
 phosphor_emulation_proto = ExtResource("2_eojni")
 
@@ -112,10 +115,8 @@ draw_line_width = 0.005
 [node name="CollisionPolygon2D" parent="ZOOM_ASTEROID" index="1"]
 scale = Vector2(200, 200)
 
-[node name="CameraCartridge" type="Node2D" parent="ZOOM_ASTEROID" node_paths=PackedStringArray("locomotor", "hopdart")]
+[node name="CameraCartridge" type="Node2D" parent="ZOOM_ASTEROID"]
 script = ExtResource("7_orc3h")
-locomotor = NodePath("../../Player_Refactor/Locomotor")
-hopdart = NodePath("../../Player_Refactor/HopDart")
 max_relative_speed = 2.0
 acceleration_factor = 1.5
 lead_distance = 400
@@ -147,20 +148,11 @@ script = ExtResource("6_kek22")
 notice_radius = 1500
 peripheral_radius = 100
 
-[node name="Player" parent="." instance=ExtResource("3_r2sfy")]
-process_mode = 4
-visible = false
+[node name="Player" parent="." instance=ExtResource("8_ifucg")]
 position = Vector2(6000, 4000)
-thrust_speed = 400.0
-turn_speed = 50.0
-max_speed = 1000.0
-side_boost = 1000.0
 
-[node name="Player_Refactor" parent="." instance=ExtResource("8_ifucg")]
-position = Vector2(4000, 4000)
-
-[node name="Camera_Refactor" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("11_llngb")]
-cartridge = NodePath("../Player_Refactor/CameraCartridge")
+[node name="CameraRig" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("11_llngb")]
+cartridge = NodePath("../Player/CameraCartridge")
 
 [node name="AsteroidBelt" type="Area2D" parent="."]
 position = Vector2(6000, 8000)

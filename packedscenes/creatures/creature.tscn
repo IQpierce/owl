@@ -1,13 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://dvs73k0tkjij4"]
+[gd_scene load_steps=8 format=3 uid="uid://dvs73k0tkjij4"]
 
 [ext_resource type="Script" path="res://scripts/creatures/Creature.gd" id="1_7fvrv"]
 [ext_resource type="PhysicsMaterial" uid="uid://bk8d6toxvi2yb" path="res://physics_materials/creature.tres" id="1_8m65c"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_lckca"]
+[ext_resource type="Script" path="res://scripts/Anatomy2D.gd" id="3_5gnci"]
 [ext_resource type="Script" path="res://scripts/creatures/anatomy/Stomach.gd" id="4_fwo6w"]
 [ext_resource type="Script" path="res://scripts/ConsumableContainer.gd" id="5_7rk73"]
 [ext_resource type="AudioStream" uid="uid://bb1c4e4ljwmtd" path="res://audio/asteroid_damaged.wav" id="6_fmx7a"]
 
-[node name="Creature" type="RigidBody2D"]
+[node name="Creature" type="RigidBody2D" node_paths=PackedStringArray("anatomy")]
 disable_mode = 2
 collision_mask = 35
 physics_material_override = ExtResource("1_8m65c")
@@ -19,12 +20,28 @@ contact_monitor = true
 linear_damp = 0.1
 angular_damp = 3.0
 script = ExtResource("1_7fvrv")
+anatomy = NodePath("Anatomy")
 
 [node name="TrunkCollision" type="CollisionPolygon2D" parent="."]
 editor_description = "collision/physics aspect"
 polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
 
-[node name="TrunkPolygon" type="Polygon2D" parent="."]
+[node name="Anatomy" type="Node2D" parent="." node_paths=PackedStringArray("collider", "line_geometry")]
+script = ExtResource("3_5gnci")
+collider = NodePath("../TrunkCollision")
+line_geometry = [NodePath("TrunkPolygon")]
+
+[node name="Stomach" type="Node2D" parent="Anatomy" node_paths=PackedStringArray("consumable_reservoir")]
+script = ExtResource("4_fwo6w")
+consumable_reservoir = NodePath("Reservoir")
+
+[node name="Reservoir" type="Node2D" parent="Anatomy/Stomach"]
+script = ExtResource("5_7rk73")
+amount_contained = 3.9
+maximum_amount = 12.0
+decay_rate_per_sec = 0.05
+
+[node name="TrunkPolygon" type="Polygon2D" parent="Anatomy"]
 editor_description = "visual aspect"
 color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
@@ -32,18 +49,8 @@ script = ExtResource("2_lckca")
 point_draw_radius = 1.08
 draw_line_width = 1.2
 
-[node name="Stomach" type="Node2D" parent="." node_paths=PackedStringArray("consumable_reservoir")]
-script = ExtResource("4_fwo6w")
-consumable_reservoir = NodePath("Reservoir")
-
-[node name="Reservoir" type="Node2D" parent="Stomach"]
-script = ExtResource("5_7rk73")
-amount_contained = 3.9
-maximum_amount = 12.0
-decay_rate_per_sec = 0.05
-
 [node name="DamagedSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_fmx7a")
 
 [connection signal="damaged" from="." to="DamagedSFX" method="play"]
-[connection signal="on_consumed_pickup" from="." to="Stomach" method="on_pickup_consumed"]
+[connection signal="on_consumed_pickup" from="." to="Anatomy/Stomach" method="on_pickup_consumed"]

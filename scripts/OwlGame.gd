@@ -26,7 +26,7 @@ func anti_zoom() -> float:
 
 func get_default_camera_cartridge() -> CameraCartridge:
 	if scene != null:
-		var player = scene.player as Player_Refactor
+		var player = scene.player
 		if player != null:
 			return player.camera_cartridge
 	return null

@@ -1,7 +1,7 @@
 extends Area2D
 
 @export var teleport_translation := Vector2(0,0)
-var camera:Camera_Deprecated
+var camera:CameraRig
 var jank_fighter:JankFighter
 
 func _ready():
