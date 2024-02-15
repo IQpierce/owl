@@ -119,7 +119,6 @@ lifetime = 5.0
 visibility_rect = Rect2(-1000, -1000, 2000, 2000)
 
 [node name="SparseExhaust" type="GPUParticles2D" parent="Player"]
-visible = false
 modulate = Color(0.666667, 0.666667, 0.666667, 1)
 emitting = false
 amount = 100
