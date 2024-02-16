@@ -122,7 +122,7 @@ func process_keyboard_mouse(delta:float):
 				linear_velocity *= 0.95
 		else:
 			if warp_beam.target != null && warp_beam.warp_ready:
-				pass # TODO make the zoom happen
+				warp_in()
 			warp_beam.visible = false
 
 	if control_mode == ControlMode.Roam && !preping_warp:
@@ -202,43 +202,34 @@ func process_keyboard_mouse(delta:float):
 		if hopdart_dir.length_squared() > 0:
 			hopdart.engage(hopdart_dir)
 
-
-
 	var mouse_reduction = mouse_motion.normalized() * mouse_gravity * view_speed * delta
 	if mouse_reduction.length_squared() > mouse_motion.length_squared():
 		mouse_reduction = mouse_motion
 	mouse_motion -= mouse_reduction
 
-
-
-	#turn_damp_factor *= fire_turn_factor;
-	#max_speed_factor *= fire_max_speed_factor;
-	#acceleration_factor *= fire_acceleration_factor;
-
-#		if Input.is_action_just_pressed("up_primary"):
-#			if time_now - drive_tap_time <= double_tap_msec && acceleration.dot(body.linear_velocity) < 0:
-#				acceleration *= turn_around_acceleration_factor;
-#				thrust_tap_time = 0
-#			thrust_tap_time = time_now
-#	if turning_left && !turning_right:
-#		if Input.is_action_just_pressed("left_primary"):
-#			if time_now - left_tap_time <= double_tap_msec:
-#				#body.rotation -= quick_turn_degrees * PI / 180
-#				body.linear_velocity -= Vector2.RIGHT.rotated(body.rotation) * side_boost
-#				left_tap_time = 0
-#			left_tap_time = time_now
-#		else:
-#			body.angular_velocity -= delta * turn_speed
-#		if !driving:
-#			linear_damp_factor *= turn_linear_damp_factor
-#	if turning_right && !turning_left:
-#		if Input.is_action_just_pressed("right_primary"):
-#			if time_now - right_tap_time <= double_tap_msec:
-#				#body.rotation += quick_turn_degrees * PI / 180
-#				body.linear_velocity += Vector2.RIGHT.rotated(body.rotation) * side_boost
-#				right_tap_time = 0
-#			right_tap_time = time_now
-#		else:
-#			body.angular_velocity += delta * turn_speed
-#		if !driving:
-#			linear_damp_factor *= turn_linear_damp_factor
+# TODO This probably wants to live elsewhere ... also very hardcoded at the moment
+func warp_in():
+	var layer = collision_layer
+	var mask = collision_mask
+	collision_layer = 0
+	collision_mask = 0
+	var end_zoom = 15 * camera_rig.initial_zoom
+	var zoom_speed = 1.05
+	var zoom_done = false
+	camera_rig.cartridge = null # THIS ALONE MEANS WE NEED TO USE A CAMERA CARTRIDGE FOR ZOOM
+	warp_beam.get_geometry(warp_beam.target).undraw()
+	while !zoom_done:
+		OwlGame.instance.zooming = true
+		camera_rig.zoom *= Vector2(zoom_speed, zoom_speed)
+		global_position = camera_rig.global_position + ((global_position - camera_rig.global_position) * 0.9)
+		if camera_rig.zoom >= end_zoom:
+			camera_rig.zoom = end_zoom
+			zoom_done = true
+		await get_tree().physics_frame
+	OwlGame.instance.zooming = false
+	await get_tree().create_timer(0.25).timeout
+	get_tree().change_scene_to_file("res://scenes/inner_warp_test.tscn")
+	#collision_layer = layer
+	#collision_mask = mask
+	#if cartridge != null:
+	#	global_position = cartridge.global_position + ((global_position - cartridge.global_position) * (old_zoom / zoom))

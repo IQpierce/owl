@@ -31,7 +31,8 @@ func view_size() -> Vector2:
 
 func _ready():
 	if cartridge == null:
-		cartridge = OwlGame.instance.get_default_camera_cartridge()
+		if OwlGame.instance.scene != null:
+			cartridge = OwlGame.instance.scene.get_default_camera_cartridge()
 
 	if ready_center && cartridge != null:
 		global_position = cartridge.global_position

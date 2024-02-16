@@ -1,20 +1,19 @@
-[gd_scene load_steps=19 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=17 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_80w6u"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_rhngu"]
 [ext_resource type="Script" path="res://scripts/util/SpawnRandomField.gd" id="4_e5ljk"]
-[ext_resource type="PackedScene" uid="uid://d4m1t88007x4m" path="res://packedscenes/tiny_star.tscn" id="5_pt2a0"]
 [ext_resource type="PackedScene" uid="uid://mym88qteigwb" path="res://packedscenes/cosmic_bodies/sun.tscn" id="6_4kfgg"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="6_e337w"]
 [ext_resource type="Script" path="res://scripts/Centerpiece.gd" id="6_kek22"]
 [ext_resource type="PackedScene" uid="uid://vyncb8ek17e" path="res://packedscenes/asteroids/medium_asteroid.tscn" id="6_w6vm2"]
-[ext_resource type="Script" path="res://scripts/Anatomy2D.gd" id="7_5bfid"]
-[ext_resource type="Script" path="res://scripts/TrackThrusterCameraCartridge.gd" id="7_orc3h"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="8_ifucg"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="8_m427m"]
-[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="10_foqed"]
+[ext_resource type="Material" uid="uid://xfvetgr7tls0" path="res://particles/starfield.tres" id="11_0l88q"]
 [ext_resource type="PackedScene" uid="uid://bs64p7ff3fvw2" path="res://packedscenes/camera_rig.tscn" id="11_llngb"]
+[ext_resource type="Texture2D" uid="uid://d01krn0pvudlc" path="res://textures/dot.png" id="12_4aes3"]
+[ext_resource type="Script" path="res://scripts/hacks/HackParticlesEmission.gd" id="13_1js2g"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
@@ -22,16 +21,10 @@ custom_solver_bias = 0.1
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 6400.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_psnnu"]
-size = Vector2(61440, 34560)
-
 [node name="GameFeel" type="Node2D" node_paths=PackedStringArray("player", "world_camera")]
 script = ExtResource("1_80w6u")
-hide_mouse = null
-fishbowl_mode = null
 player = NodePath("Player")
 world_camera = NodePath("CameraRig")
-fishbowl_mode_auto_reset_secs = null
 muted = true
 emulate_phosphor_monitor = false
 phosphor_emulation_proto = ExtResource("2_eojni")
@@ -107,49 +100,18 @@ position = Vector2(3995, 3700)
 rotation = -1.74533
 anatomy = NodePath("Anatomy")
 
-[node name="Polygon2D" parent="ZOOM_ASTEROID" index="0"]
+[node name="Polygon2D" parent="ZOOM_ASTEROID/Anatomy" index="0"]
 scale = Vector2(200, 200)
-point_draw_radius = 0.012
-draw_line_width = 0.005
+intro_secs = 1.0
+_warpable = true
+point_draw_radius = 0.005
+draw_line_width = 0.002
 
 [node name="CollisionPolygon2D" parent="ZOOM_ASTEROID" index="1"]
 scale = Vector2(200, 200)
 
-[node name="CameraCartridge" type="Node2D" parent="ZOOM_ASTEROID"]
-script = ExtResource("7_orc3h")
-max_relative_speed = 2.0
-acceleration_factor = 1.5
-lead_distance = 400
-rest_vel_damp = 0.9
-lead_vel_perp_damp = 0.8
-lead_turn_to_rest_ms = 100
-
-[node name="Anatomy" type="Node2D" parent="ZOOM_ASTEROID" node_paths=PackedStringArray("collider", "line_geometry")]
-script = ExtResource("7_5bfid")
-collider = NodePath("../CollisionPolygon2D")
-line_geometry = [NodePath("../Polygon2D")]
-
-[node name="FAKE_ASTEROID" type="Polygon2D" parent="."]
-visible = false
-position = Vector2(5500, 1000)
-scale = Vector2(600, 600)
-color = Color(0, 0, 0, 0)
-polygon = PackedVector2Array(-0.45, -0.05, -0.33, 0.36, 0, 0.5, 0.345, 0.2, 0.42, -0.1, 0.23, -0.41, 0.1, -0.5, -0.19, -0.19, -0.11, -0.05, -0.2, -0.1)
-script = ExtResource("10_foqed")
-point_draw_radius = 0.024
-circle_draw_color = Color(1, 1, 1, 1)
-line_draw_color = Color(0.921569, 0.921569, 0.921569, 1)
-draw_line_width = 0.01
-
-[node name="Centerpiece" type="Node2D" parent="FAKE_ASTEROID"]
-process_mode = 4
-visible = false
-script = ExtResource("6_kek22")
-notice_radius = 1500
-peripheral_radius = 100
-
 [node name="Player" parent="." instance=ExtResource("8_ifucg")]
-position = Vector2(6000, 4000)
+position = Vector2(4000, 4000)
 
 [node name="CameraRig" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("11_llngb")]
 cartridge = NodePath("../Player/CameraCartridge")
@@ -166,19 +128,22 @@ script = ExtResource("4_e5ljk")
 num_to_spawn = 100
 proto = ExtResource("6_e337w")
 
-[node name="StarfieldBG" type="Area2D" parent="."]
-visible = false
+[node name="Starfield" type="Node2D" parent="."]
 z_index = -100
 position = Vector2(1, 13)
-collision_layer = 0
-collision_mask = 0
 
-[node name="SpawnRandomStarField" type="CollisionShape2D" parent="StarfieldBG"]
-position = Vector2(19201, 10800)
-shape = SubResource("RectangleShape2D_psnnu")
-script = ExtResource("4_e5ljk")
-num_to_spawn = 50000
-proto = ExtResource("5_pt2a0")
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Starfield"]
+position = Vector2(28801, 16200)
+emitting = false
+amount = 80000
+process_material = ExtResource("11_0l88q")
+texture = ExtResource("12_4aes3")
+lifetime = 1e+13
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 12
+visibility_rect = Rect2(-29000, -16200, 58000, 32400)
+script = ExtResource("13_1js2g")
 
 [node name="HUD" parent="." instance=ExtResource("8_m427m")]
 

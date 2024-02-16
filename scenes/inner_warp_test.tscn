@@ -1,0 +1,156 @@
+[gd_scene load_steps=8 format=3 uid="uid://3iiqd25k3siw"]
+
+[ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_hmpcl"]
+[ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_355mo"]
+[ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_bfjef"]
+[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="3_aha6m"]
+[ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="4_dbpt6"]
+[ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="5_7p7k7"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vbcit"]
+custom_solver_bias = 0.1
+
+[node name="WrappingScreenTest" type="Node2D" node_paths=PackedStringArray("player")]
+script = ExtResource("1_hmpcl")
+player = NodePath("Player")
+muted = true
+emulate_phosphor_monitor = false
+phosphor_emulation_proto = ExtResource("2_355mo")
+
+[node name="WrappingWalls" type="Node2D" parent="."]
+position = Vector2(1, 1)
+
+[node name="BottomWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(960, 1080)
+scale = Vector2(6, 6)
+disable_mode = 1
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("2_bfjef")
+teleport_translation = Vector2(0, -1050)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/BottomWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_vbcit")
+
+[node name="TopWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(960, 0)
+rotation = 3.14159
+scale = Vector2(6, 6)
+disable_mode = 1
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("2_bfjef")
+teleport_translation = Vector2(0, 1050)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/TopWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_vbcit")
+
+[node name="RightWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(1920, 540)
+rotation = -1.5708
+scale = Vector2(6, 6)
+disable_mode = 1
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("2_bfjef")
+teleport_translation = Vector2(-1900, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/RightWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_vbcit")
+
+[node name="LeftWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(0, 540)
+rotation = 1.5708
+scale = Vector2(6, 6)
+disable_mode = 1
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("2_bfjef")
+teleport_translation = Vector2(1900, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/LeftWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_vbcit")
+
+[node name="Asteroids" type="Node2D" parent="."]
+
+[node name="Asteroid" parent="Asteroids" instance=ExtResource("3_aha6m")]
+position = Vector2(857, 327)
+linear_velocity = Vector2(210, 0)
+
+[node name="Polygon2D" parent="Asteroids/Asteroid/Anatomy" index="0"]
+intro_secs = 1.0
+
+[node name="Asteroid2" parent="Asteroids" instance=ExtResource("3_aha6m")]
+position = Vector2(609, 433)
+linear_velocity = Vector2(150, -75)
+
+[node name="Polygon2D" parent="Asteroids/Asteroid2/Anatomy" index="0"]
+intro_secs = 1.0
+
+[node name="Asteroid3" parent="Asteroids" instance=ExtResource("3_aha6m")]
+position = Vector2(517, 571)
+linear_velocity = Vector2(150, -150)
+
+[node name="Polygon2D" parent="Asteroids/Asteroid3/Anatomy" index="0"]
+intro_secs = 1.0
+
+[node name="Asteroid4" parent="Asteroids" instance=ExtResource("3_aha6m")]
+position = Vector2(583, 691)
+linear_velocity = Vector2(-50, -200)
+
+[node name="Polygon2D" parent="Asteroids/Asteroid4/Anatomy" index="0"]
+intro_secs = 1.0
+
+[node name="Asteroid5" parent="Asteroids" instance=ExtResource("3_aha6m")]
+position = Vector2(725, 863)
+linear_velocity = Vector2(-150, 100)
+
+[node name="Polygon2D" parent="Asteroids/Asteroid5/Anatomy" index="0"]
+intro_secs = 1.0
+
+[node name="Asteroid6" parent="Asteroids" instance=ExtResource("3_aha6m")]
+position = Vector2(1087, 841)
+linear_velocity = Vector2(-210, 0)
+
+[node name="Polygon2D" parent="Asteroids/Asteroid6/Anatomy" index="0"]
+intro_secs = 1.0
+
+[node name="Asteroid7" parent="Asteroids" instance=ExtResource("3_aha6m")]
+position = Vector2(1329, 729)
+linear_velocity = Vector2(-150, 100)
+
+[node name="Polygon2D" parent="Asteroids/Asteroid7/Anatomy" index="0"]
+intro_secs = 1.0
+
+[node name="Asteroid8" parent="Asteroids" instance=ExtResource("3_aha6m")]
+position = Vector2(1371, 419)
+linear_velocity = Vector2(0, 200)
+
+[node name="Polygon2D" parent="Asteroids/Asteroid8/Anatomy" index="0"]
+intro_secs = 1.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(960, 530)
+
+[node name="Player" parent="." instance=ExtResource("4_dbpt6")]
+position = Vector2(960, 540)
+
+[node name="HUD" parent="." instance=ExtResource("5_7p7k7")]
+
+[connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/RightWrappingWall" to="WrappingWalls/RightWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/LeftWrappingWall" to="WrappingWalls/LeftWrappingWall" method="on_body_entered"]
+
+[editable path="Asteroids/Asteroid"]
+[editable path="Asteroids/Asteroid2"]
+[editable path="Asteroids/Asteroid3"]
+[editable path="Asteroids/Asteroid4"]
+[editable path="Asteroids/Asteroid5"]
+[editable path="Asteroids/Asteroid6"]
+[editable path="Asteroids/Asteroid7"]
+[editable path="Asteroids/Asteroid8"]

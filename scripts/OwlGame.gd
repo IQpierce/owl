@@ -23,10 +23,3 @@ func anti_zoom() -> float:
 		if scene.world_camera.zoom.x != 0 && scene.world_camera.zoom.y != 0:
 			return (scene.world_camera.initial_zoom / scene.world_camera.zoom).x
 	return 1
-
-func get_default_camera_cartridge() -> CameraCartridge:
-	if scene != null:
-		var player = scene.player
-		if player != null:
-			return player.camera_cartridge
-	return null

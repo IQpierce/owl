@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://jymuym62nmct"]
+[gd_scene load_steps=16 format=3 uid="uid://jymuym62nmct"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_5vrjf"]
 [ext_resource type="Script" path="res://scripts/Player.gd" id="2_6aefa"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://scripts/Hopdart.gd" id="5_jqx77"]
 [ext_resource type="AudioStream" uid="uid://gwmuuh2c41u4" path="res://audio/lazerLofi.wav" id="6_0an66"]
 [ext_resource type="Script" path="res://scripts/WarpBeam.gd" id="10_xktmg"]
+[ext_resource type="PackedScene" uid="uid://cyer1flukqix1" path="res://packedscenes/centerpiece.tscn" id="11_6o2xu"]
 [ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="13_suvhi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntkiv"]
@@ -59,6 +60,9 @@ script = ExtResource("5_jqx77")
 
 [node name="TrunkCollision" parent="." index="3"]
 polygon = PackedVector2Array(6, -3, 0, -12, -6, -3, -8.5, 7.5, -3.5, 5, 3.5, 5, 8.5, 7.5)
+
+[node name="Anatomy" parent="." index="4"]
+scale_mode = 1
 
 [node name="TrunkPolygon" parent="Anatomy" index="1"]
 polygon = PackedVector2Array(6, -3, 0, -12, -6, -3, -8.5, 7.5, -3.5, 5, 3.5, 5, 8.5, 7.5)
@@ -124,6 +128,7 @@ reach_rate = 2.0
 segment_count = 10
 prep_req_seconds = 1.5
 transversity = 0.9
+centerpiece_proto = ExtResource("11_6o2xu")
 
 [node name="PickupVacuum" type="Area2D" parent="Anatomy" index="7"]
 disable_mode = 2
