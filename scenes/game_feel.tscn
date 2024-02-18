@@ -94,19 +94,11 @@ script = ExtResource("6_kek22")
 priority = 0
 notice_radius = 2501
 
-[node name="ZOOM_ASTEROID" parent="." node_paths=PackedStringArray("anatomy") instance=ExtResource("6_w6vm2")]
+[node name="ZOOM_ASTEROID" parent="." instance=ExtResource("6_w6vm2")]
 position = Vector2(3995, 3700)
 rotation = -1.74533
-anatomy = NodePath("Anatomy")
 
-[node name="Polygon2D" parent="ZOOM_ASTEROID/Anatomy" index="0"]
-scale = Vector2(200, 200)
-intro_secs = 1.0
-_warpable = true
-point_draw_radius = 0.005
-draw_line_width = 0.002
-
-[node name="CollisionPolygon2D" parent="ZOOM_ASTEROID" index="1"]
+[node name="CollisionPolygon2D" parent="ZOOM_ASTEROID" index="0"]
 scale = Vector2(200, 200)
 
 [node name="Player" parent="." instance=ExtResource("8_ifucg")]
