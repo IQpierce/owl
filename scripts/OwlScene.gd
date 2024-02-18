@@ -94,3 +94,7 @@ func on_player_died(utterly:bool):
 	game_over = true
 	on_game_ended.emit(false)
 	
+func get_default_camera_cartridge() -> CameraCartridge:
+	if player != null:
+		return player.camera_cartridge
+	return null

@@ -1,7 +1,7 @@
 extends Node2D
 class_name Centerpiece
 
-@export var priority:int = 1
+@export_range(0, 999) var priority:int = 1
 @export var notice_radius = 2500
 @export var peripheral_radius = 200
 

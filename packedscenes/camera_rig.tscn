@@ -15,6 +15,7 @@ process_callback = 0
 script = ExtResource("1_5fqcy")
 show_debug = false
 state_label = NodePath("Camera State")
+curious_speed = 200.0
 
 [node name="Camera State" type="Label" parent="."]
 visible = false

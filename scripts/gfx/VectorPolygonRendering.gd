@@ -1,6 +1,10 @@
 extends Polygon2D
 class_name VectorPolygonRendering
 
+enum DrawState { Intro, Stable, Outro }
+
+@export var intro_secs:float = 0
+@export var _warpable:bool = false
 @export var point_draw_radius:float = .09
 @export var circle_draw_color:Color = Color(0.86274510622025, 0.86274510622025, 0.86274510622025)
 @export var line_draw_color:Color = Color(0.70588237047195, 0.70588237047195, 0.70588237047195)
@@ -8,21 +12,49 @@ class_name VectorPolygonRendering
 @export var draw_line_antialiased:bool = true
 @export var skip_line_indeces:Array[int]	# Each line that begins with a vert index that's in this list, will be skipped
 
+var draw_state:DrawState = DrawState.Stable
+var draw_elapsed:float = 0
 var initial_point_radius:float = 1
 var initial_line_width:float = 1
 var warp_points:PackedVector2Array
 
+func can_warp() -> bool:
+	return true#draw_state == DrawState.Stable && _warpable
+
 func _ready():
 	initial_point_radius = point_draw_radius
 	initial_line_width = draw_line_width
+	if intro_secs > 0:
+		draw_state = DrawState.Intro
+		draw_elapsed = 0
+	else:
+		draw_state = DrawState.Stable
+
+func _process(delta:float):
+	var redraw = false
+	if draw_state == DrawState.Intro:
+		redraw = true
+		draw_elapsed += delta
+		if draw_elapsed >= intro_secs:
+			draw_state = DrawState.Stable
+	elif draw_state == DrawState.Outro:
+		redraw = true
+		draw_elapsed -= delta
+
+	if redraw:
+		queue_redraw()
 
 func _draw():
 	var points = polygon
 	var stride = 1
-	if warp_points.size() > 0:
+	if can_warp() && warp_points.size() > 0:
 		points = warp_points
 		stride = 2
 
+	var draw_portion = 1
+	if draw_state == DrawState.Intro || draw_state == DrawState.Outro && intro_secs > 0:
+		draw_portion = draw_elapsed / intro_secs
+	
 	var vertex_count = points.size()
 	
 	for i in range(0, vertex_count, stride):
@@ -30,17 +62,35 @@ func _draw():
 		if skip_line_indeces.has(i):
 			continue
 		
-		var x = points[i].x
-		var y = points[i].y
+		#var x = points[i].x
+		#var y = points[i].y
+
+		#if draw_portion < i / (polygon.size * 1.0):
+		#	x = last_drawn.x
+		#	y = last_drawn.y
 		
-		var nextPoint = [0, 0]
-		
+		var next_index = 0
 		if i < vertex_count - 1:
-			nextPoint = points[i + 1]
-		else:
-			nextPoint = points[0]
-		
-		draw_line(points[i], nextPoint, line_draw_color, draw_line_width, draw_line_antialiased)
+			next_index = i + 1
+
+		var next_point = points[next_index]
+
+		var draw_line = true
+		if draw_state != DrawState.Stable:
+			var check_index = i
+			#if i > points.size() / 2:
+			#	check_index = points.size() - i
+
+			var index_portion = check_index / (points.size() * 1.0)
+			var next_portion = (check_index + 1) / (points.size() * 1.0)
+			if draw_portion <= index_portion:
+				draw_line = false
+			else:
+				var line_portion = clamp((draw_portion - index_portion) / (next_portion - index_portion), 0, 1)
+				next_point = ((1 - line_portion) * points[i]) + (line_portion * next_point)
+
+		if draw_line:
+			draw_line(points[i], next_point, line_draw_color, draw_line_width, draw_line_antialiased)
 	
 	#if vertex_count % stride != 0:
 	#	draw_line(points[points.size() - 1], points[0], line_draw_color, draw_line_width, draw_line_antialiased)
@@ -52,20 +102,29 @@ func _draw():
 	for i in range(polygon_vertex_count):
 		var x = polygon[i].x
 		var y = polygon[i].y
-		
-		var nextPoint = [0, 0]
-		
-		if i < polygon_vertex_count - 1:
-			nextPoint = polygon[i + 1]
-		else:
-			nextPoint = polygon[0]
-		
-		draw_circle(Vector2(x, y), point_draw_radius, circle_draw_color)
+
+		var draw_vert = true
+		if draw_state != DrawState.Stable:
+			var check_index = i
+			#if i > polygon.size() / 2:
+			#	check_index = polygon.size() - i
+
+			if draw_portion <= check_index / (polygon.size() * 1.0):
+				draw_vert = false
+
+		if draw_vert:
+			draw_circle(Vector2(x, y), point_draw_radius, circle_draw_color)
+
+func undraw():
+	if draw_elapsed > intro_secs || draw_elapsed <= 0:
+		draw_elapsed = intro_secs
+	draw_state = DrawState.Outro
 
 func initiate_warp(points_structure:PackedVector2Array):
 	if polygon.size() == 0 || points_structure.size() < polygon.size() * 2:
 		return
 
+	print("initiate warp")
 	warp_points = points_structure
 	var polygon_period = warp_points.size() / (polygon.size() + 1)
 
@@ -78,9 +137,11 @@ func initiate_warp(points_structure:PackedVector2Array):
 		warp_points[i * 2 - 1] = polygon[i]
 		warp_points[i * 2] = polygon[i]
 
-func resolve_warp():
+func resolve_warp(reset_points:bool):
 	# TODO (sam) Are we slowly gonna accumulate a bunch of garbage from all the things that have been warped?
-	warp_points.clear()
+	# TODO (sam) I really hate this approach but PackedVector2Arrays cannot be null
+	if reset_points:
+		warp_points = PackedVector2Array()
 	queue_redraw()
 
 func prepare_warp(warp_progress:float, cycle_progress:float, delta:float):
