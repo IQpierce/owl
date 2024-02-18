@@ -1,15 +1,15 @@
 [gd_resource type="VisualShader" load_steps=13 format=3 uid="uid://dljfibrx8y7eu"]
 
 [sub_resource type="Curve" id="Curve_e3vqb"]
-_data = [Vector2(0, 0), 0.0, 0.907692, 0, 1, Vector2(1, 0.907692), 0.907692, 0.0, 1, 0]
+_data = [Vector2(0, 0), 0.0, 0.681358, 0, 0, Vector2(1, 0.92622), 0.521153, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_1fp1x"]
-_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+_data = [Vector2(0, 0), 0.0, 1.07297, 0, 0, Vector2(1, 1), 0.631766, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_r6qvj"]
-_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(0.135135, 0.667991), 0.931245, 0.931245, 0, 0, Vector2(0.636637, 0.896708), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(0.135135, 0.667991), 0.931245, 0.931245, 0, 0, Vector2(0.642643, 0.918842), 0.153554, 0.153554, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="CurveXYZTexture" id="CurveXYZTexture_625ud"]
@@ -89,6 +89,7 @@ void fragment() {
 
 }
 "
+graph_offset = Vector2(-314.428, 191.916)
 mode = 1
 flags/unshaded = true
 flags/light_only = false

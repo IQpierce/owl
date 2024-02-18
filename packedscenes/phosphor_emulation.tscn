@@ -11,7 +11,7 @@
 background_mode = 3
 glow_enabled = true
 glow_intensity = 0.379
-glow_strength = 1.196
+glow_strength = 1.112
 glow_mix = 0.138
 glow_bloom = 1.0
 glow_blend_mode = 1
@@ -32,7 +32,7 @@ script = ExtResource("2_bmhjd")
 data_direction = 1
 world_env = NodePath("../WorldEnvironment")
 glow_intensity = 0.379
-glow_strength = 1.196
+glow_strength = 1.112
 glow_bloom = 1.0
 cr_post_processing = NodePath("../VpC_PostProcessing/Vp_PostProcessing/CanvasLayer_PostProcessing/ColorRect_PostProcessing")
 trails_post_processing = 0.05
