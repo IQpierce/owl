@@ -1,9 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://vyncb8ek17e"]
 
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="1_xoki8"]
-[ext_resource type="PackedScene" uid="uid://dqss13qh6tkja" path="res://packedscenes/asteroids/small_asteroid.tscn" id="2_vxg4o"]
+[ext_resource type="PackedScene" uid="uid://degw0thw5ultr" path="res://scenes/microcosm_bonus_level_0.tscn" id="2_icnha"]
 
-[node name="Asteroid" instance=ExtResource("1_xoki8")]
-
-[node name="SpawnSmallerAsteroidOnDeath" parent="." index="3"]
-spawn_protos = Array[PackedScene]([ExtResource("2_vxg4o")])
+[node name="MediumAsteroid" instance=ExtResource("1_xoki8")]
+inner_microcosm_scene = ExtResource("2_icnha")

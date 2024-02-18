@@ -4,6 +4,7 @@ class_name Asteroid
 
 # Keys are ConsumablefType's, values are relevance for seeker brains.
 @export var consumable_reservoir_nibbleable_relevance:Dictionary
+@export var inner_microcosm_scene:PackedScene	# Points to a Scene that we'll "warp" the player into
 
 @export_category("Thing Roosting Inside")
 
@@ -39,6 +40,9 @@ class_name Asteroid
 			
 			on_creature_stopped_roosting_inside.emit(creature_getting_ejected)
 
+@export var ejection_spawner:Spawner
+
+
 signal on_creature_started_roosting_inside(roosting_creature:Creature)
 signal on_creature_stopped_roosting_inside(ejected_creature:Creature)
 
@@ -61,14 +65,40 @@ func spawns_consumable_pickups_when_nibbled(consumable_type:GameEnums.Consumable
 	
 	return 0
 
+func get_warp_target_definition() -> Dictionary:
+	assert(inner_microcosm_scene != null)
+	return {
+			"target_packed_scene" : inner_microcosm_scene,
+			"on_warped_microcosm_dispel_callback": on_inner_microcosm_dispelled
+	}
+
+func on_inner_microcosm_dispelled(escaped_body:RigidBody2D, microcosm:Microcosm):
+	if escaped_body != null:
+		eject_body_inside(escaped_body)
+	die()
+	
+	
+func eject_body_inside(ejecting_body:RigidBody2D):
+	assert(ejecting_body != null)
+	
+	var ejection_parent:Node2D = get_parent()
+	if ejection_parent == null:
+		ejection_parent = get_tree().current_scene
+	assert(ejection_parent != null)
+	ejecting_body.reparent(ejection_parent)
+	
+	ejecting_body.global_position = global_position
+	
+	if ejection_spawner != null:
+		ejection_spawner.handle_body_as_spawned(ejecting_body)
+	
+
 func die(utterly:bool = false):
 	if creature_roosting_inside != null:
-		var ejection_parent:Node2D = get_parent()
-		if ejection_parent == null:
-			ejection_parent = get_tree().current_scene
-		assert(ejection_parent != null)
-		creature_roosting_inside.reparent(ejection_parent)
-		
+		eject_body_inside(creature_roosting_inside)
 		creature_roosting_inside = null
+	
+	# @TODO: Figure out if there are things/bodies in the microcosm inside us,
+	#	and eject them?
 	
 	super(utterly)

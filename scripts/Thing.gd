@@ -19,6 +19,10 @@ class_name Thing
 signal damaged(dmg_amt, global_position)
 signal died()
 
+var dead:bool:
+	get:
+		return health <= 0
+
 var accumulated_damage_by_spawner:Dictionary	# whose keys align exactly with those of spawn_per_damage, and whose values represent the accumulated damage taken - reset and modulo'ed by the maximum represented by the float val of the emit_per_damage row
 var last_damaged_sfx_playtime:float = NAN
 
@@ -42,7 +46,9 @@ func deal_damage(dmg_amt:float, global_position:Vector2):
 	for spawner_key:NodePath in spawned_per_damage:
 		var spawner:Spawner = get_node(spawner_key)
 		
-		assert(spawner != null)
+		if spawner == null:
+			push_error("No spawner for dealing damage! ", spawner_key)
+			return
 		
 		var dmg_max:float = spawned_per_damage[spawner_key]	# This is the threshhold for how much damage we take before we perform the spawn(s)
 		var accumulated_dmg:float = accumulated_damage_by_spawner[spawner_key] + dmg_amt
@@ -83,6 +89,9 @@ func die(utterly:bool = false):
 	
 	if !utterly:
 		for spawner:Spawner in spawned_on_death:
+			if spawner == null:
+				continue
+			
 			spawner.reparent(get_parent())
 			spawner.free_after_spawn = true
 			spawner.spawn(get_parent())

@@ -1,24 +1,44 @@
-[gd_scene load_steps=3 format=3 uid="uid://22brxer3r2yy"]
+[gd_scene load_steps=7 format=3 uid="uid://22brxer3r2yy"]
 
 [ext_resource type="PackedScene" uid="uid://vyncb8ek17e" path="res://packedscenes/asteroids/medium_asteroid.tscn" id="1_yvegu"]
 [ext_resource type="PackedScene" uid="uid://1eu167rid5gi" path="res://packedscenes/creatures/cuttlefish.tscn" id="2_bcoka"]
+[ext_resource type="Script" path="res://scripts/util/Spawner.gd" id="5_itqbk"]
+[ext_resource type="PackedScene" uid="uid://dnsafpxfqwwbh" path="res://packedscenes/energy_crystal.tscn" id="6_pmn6e"]
+[ext_resource type="PackedScene" uid="uid://dwld2v4cgdhq6" path="res://packedscenes/sfx/shatter.tscn" id="7_uuu58"]
+[ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="8_h4rbd"]
 
-[node name="Asteroid" node_paths=PackedStringArray("creature_roosting_inside") instance=ExtResource("1_yvegu")]
+[node name="MediumAsteroidWithCuttlefishRoosting" node_paths=PackedStringArray("creature_roosting_inside", "spawned_on_death") instance=ExtResource("1_yvegu")]
 collision_mask = 2
 consumable_reservoir_nibbleable_relevance = {
 1: 1.1
 }
-creature_roosting_inside = NodePath("Cuttlefish")
+creature_roosting_inside = NodePath("Salt/Cuttlefish")
+spawned_per_damage = {
+NodePath("SpawnEnergyCrystalOnDamage"): 1.0
+}
+spawned_on_death = [null]
 
-[node name="Cuttlefish" parent="." index="0" instance=ExtResource("2_bcoka")]
+[node name="CollisionPolygon2D" parent="." index="0"]
+rotation = 0.907571
+
+[node name="SpawnEnergyCrystalOnDamage" type="Node2D" parent="." index="1"]
+script = ExtResource("5_itqbk")
+spawn_protos = Array[PackedScene]([ExtResource("6_pmn6e")])
+num_to_spawn = 0
+spawn_random_angle = 0.0
+
+[node name="Cuttlefish" parent="Salt" index="0" instance=ExtResource("2_bcoka")]
 position = Vector2(0, 3.38604)
 
-[node name="Polygon2D" parent="." index="1"]
-rotation = 0.907571
-color = Color(0, 0, 0, 1)
+[node name="WarpNibbleZone" parent="Salt/Cuttlefish/Anatomy/Beak" index="0" node_paths=PackedStringArray("things_to_ignore", "warp_target_definition_container")]
+things_to_ignore = []
+warp_target_definition_container = NodePath("../../../../..")
 
-[node name="CollisionPolygon2D" parent="." index="2"]
-rotation = 0.907571
+[node name="DiedSFX" parent="." index="3" instance=ExtResource("7_uuu58")]
+volume_db = -0.2
+pitch_scale = 0.6
+script = ExtResource("8_h4rbd")
 
-[node name="SpawnEnergyCrystalOnDamage" parent="." index="3"]
-num_to_spawn = 0
+[editable path="Salt/Cuttlefish"]
+[editable path="Salt/Cuttlefish/Anatomy/Beak"]
+[editable path="Salt/Cuttlefish/Anatomy/Spear"]

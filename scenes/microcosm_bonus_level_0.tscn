@@ -1,0 +1,143 @@
+[gd_scene load_steps=6 format=3 uid="uid://degw0thw5ultr"]
+
+[ext_resource type="Script" path="res://scripts/Microcosm.gd" id="1_f3lu6"]
+[ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_y6n2t"]
+[ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="3_00rrc"]
+[ext_resource type="PackedScene" uid="uid://dnsafpxfqwwbh" path="res://packedscenes/energy_crystal.tscn" id="4_wb4ys"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vbcit"]
+custom_solver_bias = 0.1
+
+[node name="Microcosm_BonusLevel0" type="Node2D"]
+script = ExtResource("1_f3lu6")
+
+[node name="WrappingWalls" type="Node2D" parent="."]
+position = Vector2(1, 1)
+
+[node name="BottomWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(960, 1080)
+scale = Vector2(6, 6)
+disable_mode = 1
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("2_y6n2t")
+teleport_translation = Vector2(0, -1050)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/BottomWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_vbcit")
+
+[node name="TopWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(960, 0)
+rotation = 3.14159
+scale = Vector2(6, 6)
+disable_mode = 1
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("2_y6n2t")
+teleport_translation = Vector2(0, 1050)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/TopWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_vbcit")
+
+[node name="RightWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(1920, 540)
+rotation = -1.5708
+scale = Vector2(6, 6)
+disable_mode = 1
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("2_y6n2t")
+teleport_translation = Vector2(-1900, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/RightWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_vbcit")
+
+[node name="LeftWrappingWall" type="Area2D" parent="WrappingWalls"]
+position = Vector2(0, 540)
+rotation = 1.5708
+scale = Vector2(6, 6)
+disable_mode = 1
+collision_layer = 4
+collision_mask = 27
+script = ExtResource("2_y6n2t")
+teleport_translation = Vector2(1900, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WrappingWalls/LeftWrappingWall"]
+position = Vector2(0.166667, 0)
+shape = SubResource("WorldBoundaryShape2D_vbcit")
+
+[node name="HUD" parent="." instance=ExtResource("3_00rrc")]
+
+[node name="PlayerStart" type="Node2D" parent="."]
+position = Vector2(960, 540)
+
+[node name="energy_crystal2" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(1337, 723)
+
+[node name="energy_crystal3" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(226, 268)
+
+[node name="energy_crystal4" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(778, 808)
+
+[node name="energy_crystal14" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(936, 827)
+
+[node name="energy_crystal16" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(377, 912)
+
+[node name="energy_crystal18" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(1656, 594)
+
+[node name="energy_crystal21" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(1444, 345)
+
+[node name="energy_crystal25" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(400, 650)
+
+[node name="energy_crystal26" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(1562, 854)
+
+[node name="energy_crystal27" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(725, 653)
+
+[node name="energy_crystal28" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(1322, 529)
+
+[node name="energy_crystal29" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(1322, 181)
+
+[node name="energy_crystal30" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(595, 950)
+
+[node name="energy_crystal19" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(666, 139)
+
+[node name="energy_crystal20" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(1218, 679)
+
+[node name="energy_crystal22" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(1809, 899)
+
+[node name="energy_crystal23" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(698, 444)
+
+[node name="energy_crystal24" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(1250, 984)
+
+[node name="energy_crystal5" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(1159, 282)
+
+[node name="energy_crystal31" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(1599, 153)
+
+[node name="energy_crystal32" parent="." groups=["EliminateTarget"] instance=ExtResource("4_wb4ys")]
+position = Vector2(1631, 458)
+
+[connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/RightWrappingWall" to="WrappingWalls/RightWrappingWall" method="on_body_entered"]
+[connection signal="body_entered" from="WrappingWalls/LeftWrappingWall" to="WrappingWalls/LeftWrappingWall" method="on_body_entered"]

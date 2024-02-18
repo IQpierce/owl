@@ -36,7 +36,7 @@ func _on_body_exited(body:PhysicsBody2D):
 			on_thing_unstuck.emit(rigid_body)
 			
 			if stuck_things.is_empty():
-				on_became_empty_of_stuck_things.emit(rigid_body)
+				on_became_empty_of_stuck_things.emit()
 	
 func is_valid_body_for_sticking(body:RigidBody2D):
 	return !ignore_things.has(body)

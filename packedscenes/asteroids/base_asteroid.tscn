@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dwld2v4cgdhq6" path="res://packedscenes/sfx/shatter.tscn" id="6_1wbsw"]
 [ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="7_raf4m"]
 
-[node name="Asteroid" type="RigidBody2D" node_paths=PackedStringArray("spawned_on_death")]
+[node name="Asteroid" type="RigidBody2D" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death")]
 collision_layer = 2
 collision_mask = 3
 mass = 48.0
@@ -23,19 +23,24 @@ script = ExtResource("2_xnywi")
 consumable_reservoir_nibbleable_relevance = {
 1: 1.0
 }
+ejection_spawner = NodePath("Sulphur/SpawnEnergyCrystalOnDamage")
 spawned_per_damage = {
-NodePath("SpawnEnergyCrystalOnDamage"): 1.0
+NodePath("Sulphur/SpawnEnergyCrystalOnDamage"): 1
 }
-spawned_on_death = [NodePath("SpawnSmallerAsteroidOnDeath")]
+spawned_on_death = [NodePath("Sulphur/SpawnSmallerAsteroidOnDeath")]
 health = 12.0
 max_health = 12.0
 
-[node name="Anatomy" type="Node2D" parent="." node_paths=PackedStringArray("collider", "line_geometry")]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(40, 40)
+polygon = PackedVector2Array(-0.45, -0.05, -0.33, 0.36, 0, 0.5, 0.345, 0.2, 0.42, -0.1, 0.23, -0.41, 0.1, -0.5, -0.19, -0.19, -0.11, -0.05, -0.2, -0.1)
+
+[node name="Salt" type="Node2D" parent="." node_paths=PackedStringArray("collider", "line_geometry")]
 script = ExtResource("3_xd7k1")
 collider = NodePath("../CollisionPolygon2D")
 line_geometry = [NodePath("Polygon2D")]
 
-[node name="Polygon2D" type="Polygon2D" parent="Anatomy"]
+[node name="Polygon2D" type="Polygon2D" parent="Salt"]
 scale = Vector2(40, 40)
 color = Color(0, 0, 0, 0)
 polygon = PackedVector2Array(-0.45, -0.05, -0.33, 0.36, 0, 0.5, 0.345, 0.2, 0.42, -0.1, 0.23, -0.41, 0.1, -0.5, -0.19, -0.19, -0.11, -0.05, -0.2, -0.1)
@@ -45,16 +50,14 @@ circle_draw_color = Color(1, 1, 1, 1)
 line_draw_color = Color(0.921569, 0.921569, 0.921569, 1)
 draw_line_width = 0.01
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-scale = Vector2(40, 40)
-polygon = PackedVector2Array(-0.45, -0.05, -0.33, 0.36, 0, 0.5, 0.345, 0.2, 0.42, -0.1, 0.23, -0.41, 0.1, -0.5, -0.19, -0.19, -0.11, -0.05, -0.2, -0.1)
+[node name="Sulphur" type="Node2D" parent="."]
 
-[node name="SpawnEnergyCrystalOnDamage" type="Node2D" parent="."]
+[node name="SpawnEnergyCrystalOnDamage" type="Node2D" parent="Sulphur"]
 script = ExtResource("4_0ys4r")
 spawn_protos = Array[PackedScene]([ExtResource("5_wm5mc")])
 spawn_random_angle = 0.0
 
-[node name="SpawnSmallerAsteroidOnDeath" type="Node2D" parent="."]
+[node name="SpawnSmallerAsteroidOnDeath" type="Node2D" parent="Sulphur"]
 script = ExtResource("4_0ys4r")
 spawn_protos = Array[PackedScene]([ExtResource("5_wm5mc")])
 num_to_spawn = 2
@@ -64,7 +67,9 @@ max_spawn_dist = 15.0
 min_initial_velocity = 48.0
 max_initial_velocity = 120.0
 
-[node name="DiedSFX" parent="." instance=ExtResource("6_1wbsw")]
+[node name="DiedSFX" parent="Sulphur" instance=ExtResource("6_1wbsw")]
 volume_db = -0.2
 pitch_scale = 0.6
 script = ExtResource("7_raf4m")
+
+[node name="Mercury" type="Node2D" parent="."]

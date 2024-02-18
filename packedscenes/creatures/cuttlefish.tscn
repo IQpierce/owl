@@ -4,8 +4,8 @@
 [ext_resource type="Script" path="res://scripts/creatures/brains/CreatureMetaBrain.gd" id="2_nthbq"]
 [ext_resource type="Script" path="res://scripts/creatures/anatomy/ThrustEngine.gd" id="3_bsp5l"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/VisionConeValidator.gd" id="3_jgjpx"]
-[ext_resource type="Script" path="res://scripts/DamageZone.gd" id="6_gskqu"]
 [ext_resource type="PackedScene" uid="uid://dclbqd5q45c40" path="res://packedscenes/creatures/anatomy/spear.tscn" id="6_hgf5q"]
+[ext_resource type="Script" path="res://scripts/WarpZone.gd" id="6_igu2b"]
 [ext_resource type="Script" path="res://scripts/util/RotateTowards.gd" id="9_e5krn"]
 [ext_resource type="PackedScene" uid="uid://bq4yi2hqjoxm5" path="res://packedscenes/creatures/anatomy/beak.tscn" id="11_ffupc"]
 
@@ -57,17 +57,17 @@ rotate_factor = 0.6
 [node name="WarpNibbleZone" type="Area2D" parent="Anatomy/Beak" index="0" node_paths=PackedStringArray("things_to_ignore")]
 disable_mode = 1
 collision_layer = 0
-script = ExtResource("6_gskqu")
+script = ExtResource("6_igu2b")
+secs_duration_til_warp = 2.0
 things_to_ignore = [NodePath("../../..")]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Anatomy/Beak/WarpNibbleZone" index="0"]
 polygon = PackedVector2Array(-21.5006, 1.40118, -24.5286, -11.0845, 26.5084, -11.0845, 23.0306, 1.32305)
 
-[node name="NibbleZone" parent="Anatomy/Beak" index="1" node_paths=PackedStringArray("things_to_ignore")]
+[node name="NibbleZone" parent="Anatomy/Beak" index="1"]
 process_mode = 4
 visible = false
 collision_mask = 1
-things_to_ignore = [NodePath("../../..")]
 
 [node name="CollisionPolygon2D" parent="Anatomy/Beak/NibbleZone" index="0"]
 polygon = PackedVector2Array(-21.5006, 1.40118, -24.5286, -11.0845, 26.5084, -11.0845, 23.0306, 1.32305)
