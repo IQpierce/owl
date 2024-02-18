@@ -26,6 +26,7 @@ var mouse_position:Vector2 = Vector2.ZERO
 var mouse_motion:Vector2 = Vector2.ZERO
 
 signal shot_fired()
+signal warped_in()
 
 func _ready():
 	var scene = OwlGame.instance.scene
@@ -218,6 +219,9 @@ func warp_in():
 	var zoom_done = false
 	camera_rig.cartridge = null # THIS ALONE MEANS WE NEED TO USE A CAMERA CARTRIDGE FOR ZOOM
 	warp_beam.get_geometry(warp_beam.target).undraw()
+
+	warped_in.emit()
+
 	while !zoom_done:
 		OwlGame.instance.zooming = true
 		camera_rig.zoom *= Vector2(zoom_speed, zoom_speed)
