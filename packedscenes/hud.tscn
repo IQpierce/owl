@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://cv5asni7oqeby"]
+[gd_scene load_steps=9 format=3 uid="uid://cv5asni7oqeby"]
 
 [ext_resource type="Script" path="res://scripts/HUD.gd" id="1_ohgch"]
 [ext_resource type="FontFile" uid="uid://bfc5s6j3cdokw" path="res://fonts/Vectorb.ttf" id="2_ebi6m"]
 [ext_resource type="Texture2D" uid="uid://bbba5x7uh1wid" path="res://textures/iconHealth.svg" id="3_jsnxx"]
 [ext_resource type="Texture2D" uid="uid://cheg3s1kcqpkr" path="res://textures/iconMeter.svg" id="4_tqtwv"]
 [ext_resource type="Texture2D" uid="uid://l35pvs5jupjn" path="res://textures/iconPower.svg" id="5_0sc5i"]
+[ext_resource type="Texture2D" uid="uid://bp3lqpeye3rji" path="res://textures/iconCrystal.svg" id="6_m6xxm"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pl6hg"]
 font = ExtResource("2_ebi6m")
@@ -85,12 +86,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 70
-theme_override_constants/margin_top = 30
+theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 70
-theme_override_constants/margin_bottom = 30
+theme_override_constants/margin_bottom = 40
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
+size_flags_horizontal = 0
 theme_override_constants/separation = 33
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
@@ -111,7 +113,11 @@ centered = false
 offset = Vector2(44, -7)
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 41)
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+alignment = 1
 
 [node name="IconPower" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
 texture = ExtResource("5_0sc5i")
@@ -121,3 +127,14 @@ centered = false
 texture = ExtResource("4_tqtwv")
 centered = false
 offset = Vector2(44, -7)
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="IconCrystal" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer2/HBoxContainer"]
+texture = ExtResource("6_m6xxm")
+centered = false
