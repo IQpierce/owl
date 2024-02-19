@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bbba5x7uh1wid"
-path="res://.godot/imported/iconHealth.svg-0f127ca09c7425bc5b096bd77c576334.ctex"
+uid="uid://dosuf1vsfjiee"
+path="res://.godot/imported/iconLine.svg-35dd46fe388e5734069b93405db7ba65.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/iconHealth.svg"
-dest_files=["res://.godot/imported/iconHealth.svg-0f127ca09c7425bc5b096bd77c576334.ctex"]
+source_file="res://textures/iconLine.svg"
+dest_files=["res://.godot/imported/iconLine.svg-35dd46fe388e5734069b93405db7ba65.ctex"]
 
 [params]
 
@@ -31,7 +31,7 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
 svg/scale=0.2
 editor/scale_with_editor_scale=false
 editor/convert_colors_with_editor_theme=false

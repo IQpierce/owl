@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://cv5asni7oqeby"]
+[gd_scene load_steps=10 format=3 uid="uid://cv5asni7oqeby"]
 
 [ext_resource type="Script" path="res://scripts/HUD.gd" id="1_ohgch"]
 [ext_resource type="FontFile" uid="uid://bfc5s6j3cdokw" path="res://fonts/Vectorb.ttf" id="2_ebi6m"]
 [ext_resource type="Texture2D" uid="uid://bbba5x7uh1wid" path="res://textures/iconHealth.svg" id="3_jsnxx"]
 [ext_resource type="Texture2D" uid="uid://cheg3s1kcqpkr" path="res://textures/iconMeter.svg" id="4_tqtwv"]
 [ext_resource type="Texture2D" uid="uid://l35pvs5jupjn" path="res://textures/iconPower.svg" id="5_0sc5i"]
+[ext_resource type="Texture2D" uid="uid://dosuf1vsfjiee" path="res://textures/iconLine.svg" id="5_xbnum"]
 [ext_resource type="Texture2D" uid="uid://bp3lqpeye3rji" path="res://textures/iconCrystal.svg" id="6_m6xxm"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pl6hg"]
@@ -112,6 +113,10 @@ texture = ExtResource("4_tqtwv")
 centered = false
 offset = Vector2(44, -7)
 
+[node name="IconLine" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+position = Vector2(114, 14)
+texture = ExtResource("5_xbnum")
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 41)
 layout_mode = 2
@@ -127,6 +132,10 @@ centered = false
 texture = ExtResource("4_tqtwv")
 centered = false
 offset = Vector2(44, -7)
+
+[node name="IconLine2" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
+position = Vector2(114, 14)
+texture = ExtResource("5_xbnum")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
