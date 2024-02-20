@@ -63,7 +63,12 @@ func _draw():
 	
 	var vertex_count = points.size()
 
-	#print(low_warp_index, " | ", warp_points.size())
+	#TODO REMOVE
+	if vertex_count >= 40:
+		pass#print("REMOVE ", points)
+
+	#if warp_points.size() > 0:
+	#	print(low_warp_index, " | ", warp_points[low_warp_index], " | ", warp_points[low_warp_index + 1])
 	for i in range(0, vertex_count, stride):
 		# TODO (sam) Warp Points does not properly support this
 		if skip_line_indeces.has(i):
@@ -84,7 +89,8 @@ func _draw():
 
 		# TODO (sam) low and high warp index are not sufficient for warps that don't start at polygon[0]
 		var beyond_warp = i >= low_warp_index && i <= high_warp_index
-		var draw_line = !warping || beyond_warp || (i < low_warp_index && i % 2 == 0)
+		var draw_line = !warping || beyond_warp || (i < low_warp_index && i % 2 == 0) || (i > high_warp_index && (points.size() - i) % 2 == 0)
+		#var draw_line = !warping || (i > high_warp_index && (i - high_warp_index) % 2 == 0)
 		if draw_state != DrawState.Stable:
 			var check_index = i
 			#if i > points.size() / 2:
@@ -144,14 +150,14 @@ func initiate_warp(points_structure:PackedVector2Array):
 	var prev_point = warp_points[0]
 	var total_dist = 0.0
 	var index = 0
-	for counted in polygon.size() + 1:
+	for counted in range(1, polygon.size()):
 		index = (index + 1) % polygon.size()
 		var next_point = polygon[index]
 		warp_points.append(next_point)
 		total_dist += (next_point - prev_point).length()
 		prev_point = next_point
 	total_dist += (warp_points[0] - prev_point).length()
-	far_distance = total_dist# / 2
+	far_distance = total_dist / 2
 
 	low_warp_index = 0
 	high_warp_index = warp_points.size() - 1
@@ -168,57 +174,119 @@ func prepare_warp(warp_progress:float, cycle_progress:float, delta:float):
 		return
 
 	#TODO define this as a member?
-	var max_dash_points = 80
+	var max_dash_points = 40
 
 	var dash_points = (max_dash_points * warp_progress) as int
 
 	var warp_dist = far_distance * warp_progress
+	var low_poly_index = 1
+	var high_poly_index = polygon.size()
 
 	var ran_length = 0
-	var points_ran = 0
+	var poly_points_added = 0
 	var start_poly_index = 0 #TODO this depends on where started ... we often want to start between two polygon points, so is this the first or last one we'll reach?
 	var prev_poly_point = polygon[start_poly_index] # TODO this should instead be the point we start the warp (which may not be an exact vert on the polygon
 	var warp_point_index = 0
 	var warp_end_found = false
-	#for i in range(0, warp_points.size(), 1):
-	#while points_ran < dash_points:
-	var i = 0
-	while i < polygon.size():
-		var next_poly_point = polygon[(start_poly_index + i + 1) % polygon.size()]
-		if !warp_end_found:
-			var segment_length = (next_poly_point - prev_poly_point).length()
-			if ran_length + segment_length > warp_dist:
-				var end_portion = clamp((warp_dist - ran_length) / segment_length, 0, 1)
-				next_poly_point = ((1 - end_portion) * prev_poly_point) + (end_portion * next_poly_point)
-				segment_length = (warp_dist - ran_length)
-				warp_end_found = true
-			var points_between = ((segment_length / far_distance) * max_dash_points) as int + 1
-			for j in points_between:
-				var portion = clamp(j / (points_between * 1.0), 0, 1)
-				var new_warp_point = ((1 - portion) * prev_poly_point) + (portion * next_poly_point)
-				if warp_point_index < warp_points.size():
-					warp_points[warp_point_index] = new_warp_point
-				else:
-					warp_points.append(new_warp_point)
-				low_warp_index = warp_point_index
-				high_warp_index = warp_points.size() - 1
-				warp_point_index += 1
-				points_ran += 1
-			ran_length += segment_length
-			if !warp_end_found:
-				i += 1
+	var inc_i = 0
+	while inc_i < polygon.size() && !warp_end_found:
+		var next_poly_point = polygon[(start_poly_index + inc_i + 1) % polygon.size()]
+		var segment_length = (next_poly_point - prev_poly_point).length()
+		if ran_length + segment_length > warp_dist:
+			var end_portion = clamp((warp_dist - ran_length) / segment_length, 0, 1)
+			next_poly_point = ((1 - end_portion) * prev_poly_point) + (end_portion * next_poly_point)
+			segment_length = (warp_dist - ran_length)
+			warp_end_found = true
 		else:
+			low_poly_index += 1
+		var points_between = ((segment_length / far_distance) * max_dash_points) as int + 1
+		for j in points_between:
+			var portion = clamp(j / (points_between * 1.0), 0, 1)
+			# TODO (sam) This is rough approximation of letting dashes be smaller than gaps
+			#if warp_point_index % 2 != 0:
+			#	var prev_portion = clamp((j - 1) / (points_between * 1.0), 0, 1)
+			#	portion = (prev_portion + portion) / 2
+			var new_warp_point = ((1 - portion) * prev_poly_point) + (portion * next_poly_point)
 			if warp_point_index < warp_points.size():
-				warp_points[warp_point_index] = next_poly_point
+				warp_points[warp_point_index] = new_warp_point
 			else:
-				warp_points.append(next_poly_point)
+				warp_points.append(new_warp_point)
+			low_warp_index = warp_point_index
+			#high_warp_index = warp_points.size() - 1
 			warp_point_index += 1
-			i += 1
+		ran_length += segment_length
+		prev_poly_point = next_poly_point
+		if !warp_end_found:
+			inc_i += 1
+			poly_points_added += 1
+		else:
+			break
+
+	var dec_i = polygon.size()
+	ran_length = 0
+	#var start_poly_index = 0 #TODO this depends on where started ... we often want to start between two polygon points, so is this the first or last one we'll reach?
+	prev_poly_point = polygon[start_poly_index] # TODO this should instead be the point we start the warp (which may not be an exact vert on the polygon
+	#var warp_point_index = warp_points.size()
+	#var insert_index = warp_points.size() #NO insert size is not length because this could be later frame... but we cannot just append because we are going backwards
+	warp_end_found = false
+	warp_point_index = warp_points.size() - 1
+	while dec_i >= 0 && !warp_end_found:
+		var next_poly_point = polygon[(start_poly_index + dec_i - 1) % polygon.size()]
+		var segment_length = (next_poly_point - prev_poly_point).length()
+		if ran_length + segment_length > warp_dist:
+			var end_portion = clamp((warp_dist - ran_length) / segment_length, 0, 1)
+			next_poly_point = ((1 - end_portion) * prev_poly_point) + (end_portion * next_poly_point)
+			segment_length = (warp_dist - ran_length)
+			warp_end_found = true
+		else:
+			high_poly_index -= 1
+		var points_between = ((segment_length / far_distance) * max_dash_points) as int + 1
+		for j in points_between:
+			var portion = clamp(j / (points_between * 1.0), 0, 1)
+			# TODO (sam) This is rough approximation of letting dashes be smaller than gaps
+			#if warp_point_index % 2 != 0:
+			#	var prev_portion = clamp((j - 1) / (points_between * 1.0), 0, 1)
+			#	portion = (prev_portion + portion) / 2
+			var new_warp_point = ((1 - portion) * prev_poly_point) + (portion * next_poly_point)
+			if warp_point_index > low_warp_index + 1:
+				warp_points[warp_point_index] = new_warp_point
+			else:
+				warp_point_index = low_warp_index + 1
+				warp_points.insert(warp_point_index, new_warp_point)
+			#warp_points.insert(insert_index, new_warp_point)
+			#low_warp_index = warp_point_index
+			high_warp_index = warp_point_index
+			warp_point_index -= 1
+		ran_length += segment_length
+		prev_poly_point = next_poly_point
+		if !warp_end_found:
+			dec_i -= 1
+			poly_points_added += 1
+		else:
+			break
+
+	var fill_index = low_warp_index + 1
+	#if low_warp_index % 2 == 0:
+	#	low_warp_index -= 1
+	var poly_index = low_poly_index
+	warp_point_index = fill_index
+	prev_poly_point = warp_points[fill_index]
+	while poly_index < high_poly_index:
+		var next_poly_point = polygon[poly_index % polygon.size()]
+		if warp_point_index < high_warp_index:
+			warp_points[warp_point_index] = next_poly_point
+		else:
+			warp_points.insert(warp_point_index, next_poly_point)
+			high_warp_index += 1
+		warp_point_index += 1
+		fill_index += 1
+		poly_points_added += 1
+		poly_index += 1
 		prev_poly_point = next_poly_point
 	
 	# TODO (sam) This is a hack to remove the extra visible-dash at the end... this should not exist
-	if warp_progress >= 1:
-		high_warp_index = low_warp_index - 1
+	#if warp_progress >= 1:
+	#	high_warp_index = low_warp_index - 1
 	#print("-------")
 
 

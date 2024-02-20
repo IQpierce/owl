@@ -105,8 +105,8 @@ scale = Vector2(200, 200)
 scale = Vector2(200, 200)
 intro_secs = 1.0
 _warpable = true
-point_draw_radius = 0.005
-draw_line_width = 0.002
+point_draw_radius = 0.008
+draw_line_width = 0.005
 
 [node name="Player" parent="." instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
