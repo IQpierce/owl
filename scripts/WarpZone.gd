@@ -32,7 +32,7 @@ func _process(delta:float):
 	# Make sure we never re-warp something already warped.
 	for thing_warped:Thing in things_warped:
 		things_to_warp.erase(thing_warped)
-		
+	
 	for thing_to_warp:Thing in things_to_warp:
 		if thing_to_warp == null:
 			continue
@@ -130,4 +130,4 @@ func _on_body_exited(body:RigidBody2D):
 		things_to_warp.erase(body_thing)
 
 func is_valid_thing_to_warp(thing:Thing):
-	return thing != null && !things_to_ignore.has(thing)
+	return is_instance_valid(thing) && !things_to_ignore.has(thing)
