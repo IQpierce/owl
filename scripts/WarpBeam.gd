@@ -41,7 +41,7 @@ func _physics_process(delta:float):
 	else:
 		reach = 0
 		if target != null:
-			prepare_target(null, delta)
+			prepare_target(null, Vector2.ZERO, delta)
 
 	if target == null && centerpiece != null:
 		centerpiece.queue_free()
@@ -64,9 +64,11 @@ func _draw():
 	var space_state = get_world_2d().direct_space_state
 	var raycast = PhysicsRayQueryParameters2D.create(global_position, global_position + direction * cap)
 	var hit = space_state.intersect_ray(raycast)
+	var warp_start = Vector2.ZERO
 	if hit != null:
 		if hit.has("position"):
 			cap = (hit["position"] - global_position).length()
+			warp_start = hit["position"]
 		if hit.has("collider"):
 			new_target = hit["collider"] as Thing
 
@@ -90,7 +92,7 @@ func _draw():
 		points[i].y *= -1
 
 	draw_multiline(points, Color.WHITE)
-	prepare_target(new_target, draw_delta)
+	prepare_target(new_target, warp_start, draw_delta)
 
 	progress += cycle_speed * draw_delta
 	if progress >= dash_size.y * 2:
@@ -98,7 +100,7 @@ func _draw():
 
 	draw_delta = 0
 
-func prepare_target(new_target:Thing, delta:float):
+func prepare_target(new_target:Thing, warp_start:Vector2, delta:float):
 	var target_geom = get_geometry(new_target)
 	if target != new_target:
 		var old_target_geom = get_geometry(target)
@@ -106,7 +108,7 @@ func prepare_target(new_target:Thing, delta:float):
 			old_target_geom.resolve_warp(!warp_ready)
 		target = new_target
 		if target_geom != null:
-			target_geom.initiate_warp(target_points)
+			target_geom.initiate_warp(warp_start)
 		prep_duration = 0
 	
 	if target != null:

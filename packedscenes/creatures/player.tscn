@@ -127,7 +127,7 @@ script = ExtResource("10_xktmg")
 max_reach = 250.0
 reach_rate = 2.0
 segment_count = 10
-prep_req_seconds = 1.5
+prep_req_seconds = 3.0
 transversity = 0.9
 centerpiece_proto = ExtResource("11_6o2xu")
 

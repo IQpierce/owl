@@ -95,8 +95,7 @@ priority = 0
 notice_radius = 2501
 
 [node name="ZOOM_ASTEROID" parent="." instance=ExtResource("6_w6vm2")]
-position = Vector2(3995, 3700)
-rotation = -1.74533
+position = Vector2(3975, 3720)
 
 [node name="CollisionPolygon2D" parent="ZOOM_ASTEROID" index="0"]
 scale = Vector2(200, 200)

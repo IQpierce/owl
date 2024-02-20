@@ -19,6 +19,7 @@ var initial_line_width:float = 1
 var warp_points:PackedVector2Array
 #var warp_start:Vector2 = Vector2.ZERO
 var far_distance:float = -1
+var start_poly_index = 0
 var low_warp_index = 0
 var high_warp_index = 0
 
@@ -62,10 +63,6 @@ func _draw():
 		draw_portion = draw_elapsed / intro_secs
 	
 	var vertex_count = points.size()
-
-	#TODO REMOVE
-	if vertex_count >= 40:
-		pass#print("REMOVE ", points)
 
 	#if warp_points.size() > 0:
 	#	print(low_warp_index, " | ", warp_points[low_warp_index], " | ", warp_points[low_warp_index + 1])
@@ -136,21 +133,40 @@ func undraw():
 	draw_state = DrawState.Outro
 
 # TODO (sam) do not take in points structure
-func initiate_warp(points_structure:PackedVector2Array):
-	if polygon.size() == 0 || points_structure.size() < polygon.size() * 2:
+func initiate_warp(warp_start:Vector2):
+	if polygon.size() == 0:
 		return
 
 	#warp_points = points_structure
-	warp_points = PackedVector2Array()
+	#warp_points = PackedVector2Array()
+	warp_points.clear()
 	#for point in polygon:
 	#	warp_points.append(point)
 
-	#TODO (sam) we need to consider where we start the warp from, instead of first polygon vert
-	warp_points.append(polygon[0])
-	var prev_point = warp_points[0]
+
+	var match_off_line = INF
+	var match_prev = 0
+	var match_next = 0
+
+	for i in polygon.size():
+		var prev_point = to_global(polygon[i])
+		var next_point = to_global(polygon[(i + 1) % polygon.size()])
+		var prev_to_warp = Vector3(warp_start.x - prev_point.x, warp_start.y - prev_point.y, 0)
+		var warp_to_next = Vector3(next_point.x - warp_start.x, next_point.y - warp_start.y, 0)
+		#TODO (sam) Is finding abs(min) sufficient, or do we need to match winding order?
+		var off_line = abs(prev_to_warp.cross(warp_to_next).z)
+		if off_line < match_off_line:
+			match_off_line = off_line
+			match_prev = i
+			match_next = (i + 1) % polygon.size()
+	
+	start_poly_index = match_prev
+
+	var prev_point = to_local(warp_start)
+	warp_points.append(prev_point)
 	var total_dist = 0.0
-	var index = 0
-	for counted in range(1, polygon.size()):
+	var index = match_prev
+	for counted in range(1, polygon.size() + 1):
 		index = (index + 1) % polygon.size()
 		var next_point = polygon[index]
 		warp_points.append(next_point)
@@ -166,7 +182,8 @@ func resolve_warp(reset_points:bool):
 	# TODO (sam) Are we slowly gonna accumulate a bunch of garbage from all the things that have been warped?
 	# TODO (sam) I really hate this approach but PackedVector2Arrays cannot be null
 	if reset_points:
-		warp_points = PackedVector2Array()
+		warp_points.clear()
+		#warp_points = PackedVector2Array()
 	queue_redraw()
 
 func prepare_warp(warp_progress:float, cycle_progress:float, delta:float):
@@ -179,13 +196,13 @@ func prepare_warp(warp_progress:float, cycle_progress:float, delta:float):
 	var dash_points = (max_dash_points * warp_progress) as int
 
 	var warp_dist = far_distance * warp_progress
-	var low_poly_index = 1
-	var high_poly_index = polygon.size()
+	var low_poly_index = start_poly_index + 1
+	var high_poly_index = start_poly_index + polygon.size() + 1
 
 	var ran_length = 0
 	var poly_points_added = 0
-	var start_poly_index = 0 #TODO this depends on where started ... we often want to start between two polygon points, so is this the first or last one we'll reach?
-	var prev_poly_point = polygon[start_poly_index] # TODO this should instead be the point we start the warp (which may not be an exact vert on the polygon
+	#var start_poly_index = 0 #TODO this depends on where started ... we often want to start between two polygon points, so is this the first or last one we'll reach?
+	var prev_poly_point = warp_points[0] # TODO this should instead be the point we start the warp (which may not be an exact vert on the polygon
 	var warp_point_index = 0
 	var warp_end_found = false
 	var inc_i = 0
@@ -225,13 +242,13 @@ func prepare_warp(warp_progress:float, cycle_progress:float, delta:float):
 	var dec_i = polygon.size()
 	ran_length = 0
 	#var start_poly_index = 0 #TODO this depends on where started ... we often want to start between two polygon points, so is this the first or last one we'll reach?
-	prev_poly_point = polygon[start_poly_index] # TODO this should instead be the point we start the warp (which may not be an exact vert on the polygon
+	prev_poly_point = warp_points[0] # TODO this should instead be the point we start the warp (which may not be an exact vert on the polygon
 	#var warp_point_index = warp_points.size()
 	#var insert_index = warp_points.size() #NO insert size is not length because this could be later frame... but we cannot just append because we are going backwards
 	warp_end_found = false
 	warp_point_index = warp_points.size() - 1
 	while dec_i >= 0 && !warp_end_found:
-		var next_poly_point = polygon[(start_poly_index + dec_i - 1) % polygon.size()]
+		var next_poly_point = polygon[(start_poly_index + dec_i) % polygon.size()]
 		var segment_length = (next_poly_point - prev_poly_point).length()
 		if ran_length + segment_length > warp_dist:
 			var end_portion = clamp((warp_dist - ran_length) / segment_length, 0, 1)
@@ -284,11 +301,5 @@ func prepare_warp(warp_progress:float, cycle_progress:float, delta:float):
 		poly_index += 1
 		prev_poly_point = next_poly_point
 	
-	# TODO (sam) This is a hack to remove the extra visible-dash at the end... this should not exist
-	#if warp_progress >= 1:
-	#	high_warp_index = low_warp_index - 1
-	#print("-------")
-
-
 	queue_redraw()
 		
