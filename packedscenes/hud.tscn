@@ -114,7 +114,7 @@ centered = false
 offset = Vector2(44, -7)
 
 [node name="IconLine" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
-position = Vector2(114, 14)
+position = Vector2(103, 12)
 texture = ExtResource("5_xbnum")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
@@ -134,7 +134,7 @@ centered = false
 offset = Vector2(44, -7)
 
 [node name="IconLine2" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
-position = Vector2(114, 14)
+position = Vector2(103, 13)
 texture = ExtResource("5_xbnum")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/MarginContainer"]
