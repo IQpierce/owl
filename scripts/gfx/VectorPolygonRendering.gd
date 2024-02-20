@@ -17,6 +17,10 @@ var draw_elapsed:float = 0
 var initial_point_radius:float = 1
 var initial_line_width:float = 1
 var warp_points:PackedVector2Array
+#var warp_start:Vector2 = Vector2.ZERO
+var far_distance:float = -1
+var low_warp_index = 0
+var high_warp_index = 0
 
 func can_warp() -> bool:
 	return true#draw_state == DrawState.Stable && _warpable
@@ -47,16 +51,19 @@ func _process(delta:float):
 func _draw():
 	var points = polygon
 	var stride = 1
+	var warping = false
 	if can_warp() && warp_points.size() > 0:
 		points = warp_points
-		stride = 2
+		stride = 1#2
+		warping = true
 
 	var draw_portion = 1
 	if draw_state == DrawState.Intro || draw_state == DrawState.Outro && intro_secs > 0:
 		draw_portion = draw_elapsed / intro_secs
 	
 	var vertex_count = points.size()
-	
+
+	#print(low_warp_index, " | ", warp_points.size())
 	for i in range(0, vertex_count, stride):
 		# TODO (sam) Warp Points does not properly support this
 		if skip_line_indeces.has(i):
@@ -75,7 +82,9 @@ func _draw():
 
 		var next_point = points[next_index]
 
-		var draw_line = true
+		# TODO (sam) low and high warp index are not sufficient for warps that don't start at polygon[0]
+		var beyond_warp = i >= low_warp_index && i <= high_warp_index
+		var draw_line = !warping || beyond_warp || (i < low_warp_index && i % 2 == 0)
 		if draw_state != DrawState.Stable:
 			var check_index = i
 			#if i > points.size() / 2:
@@ -120,22 +129,32 @@ func undraw():
 		draw_elapsed = intro_secs
 	draw_state = DrawState.Outro
 
+# TODO (sam) do not take in points structure
 func initiate_warp(points_structure:PackedVector2Array):
 	if polygon.size() == 0 || points_structure.size() < polygon.size() * 2:
 		return
 
-	print("initiate warp")
-	warp_points = points_structure
-	var polygon_period = warp_points.size() / (polygon.size() + 1)
+	#warp_points = points_structure
+	warp_points = PackedVector2Array()
+	#for point in polygon:
+	#	warp_points.append(point)
 
-	# Default all points, because we probably skip the last few when building proper positions
-	for i in warp_points.size():
-		warp_points[i] = polygon[0]
-	
-	warp_points[0] = polygon[0]
-	for i in range(1, polygon.size()):
-		warp_points[i * 2 - 1] = polygon[i]
-		warp_points[i * 2] = polygon[i]
+	#TODO (sam) we need to consider where we start the warp from, instead of first polygon vert
+	warp_points.append(polygon[0])
+	var prev_point = warp_points[0]
+	var total_dist = 0.0
+	var index = 0
+	for counted in polygon.size() + 1:
+		index = (index + 1) % polygon.size()
+		var next_point = polygon[index]
+		warp_points.append(next_point)
+		total_dist += (next_point - prev_point).length()
+		prev_point = next_point
+	total_dist += (warp_points[0] - prev_point).length()
+	far_distance = total_dist# / 2
+
+	low_warp_index = 0
+	high_warp_index = warp_points.size() - 1
 
 func resolve_warp(reset_points:bool):
 	# TODO (sam) Are we slowly gonna accumulate a bunch of garbage from all the things that have been warped?
@@ -145,45 +164,63 @@ func resolve_warp(reset_points:bool):
 	queue_redraw()
 
 func prepare_warp(warp_progress:float, cycle_progress:float, delta:float):
-	var polygon_period = warp_points.size() / (polygon.size() + 1)
-	var index_offset = 0
-	var prev_polygon_index = 0
-	var next_polygon_index = 0
-	
-	#TODO (sam) FIGURE OUT PROPER INDEXING
+	if far_distance <= 0:
+		return
 
-	#TODO (sam) This is a HACK to reduce render mishaps
-	warp_progress = min(warp_progress, 0.89)
+	#TODO define this as a member?
+	var max_dash_points = 80
 
-	var affected_points = (polygon.size() * polygon_period * warp_progress) as int
-	if affected_points % 2 != 0:
-		affected_points += 1
+	var dash_points = (max_dash_points * warp_progress) as int
 
-	for i in affected_points:
-		if i % polygon_period == 0:
-			if i < warp_points.size():
-				warp_points[i] = polygon[next_polygon_index]
-			prev_polygon_index = next_polygon_index
-			next_polygon_index += 1
-			if next_polygon_index >= polygon.size():
-				next_polygon_index = 0
-				index_offset = 0#i + polygon_period
+	var warp_dist = far_distance * warp_progress
+
+	var ran_length = 0
+	var points_ran = 0
+	var start_poly_index = 0 #TODO this depends on where started ... we often want to start between two polygon points, so is this the first or last one we'll reach?
+	var prev_poly_point = polygon[start_poly_index] # TODO this should instead be the point we start the warp (which may not be an exact vert on the polygon
+	var warp_point_index = 0
+	var warp_end_found = false
+	#for i in range(0, warp_points.size(), 1):
+	#while points_ran < dash_points:
+	var i = 0
+	while i < polygon.size():
+		var next_poly_point = polygon[(start_poly_index + i + 1) % polygon.size()]
+		if !warp_end_found:
+			var segment_length = (next_poly_point - prev_poly_point).length()
+			if ran_length + segment_length > warp_dist:
+				var end_portion = clamp((warp_dist - ran_length) / segment_length, 0, 1)
+				next_poly_point = ((1 - end_portion) * prev_poly_point) + (end_portion * next_poly_point)
+				segment_length = (warp_dist - ran_length)
+				warp_end_found = true
+			var points_between = ((segment_length / far_distance) * max_dash_points) as int + 1
+			for j in points_between:
+				var portion = clamp(j / (points_between * 1.0), 0, 1)
+				var new_warp_point = ((1 - portion) * prev_poly_point) + (portion * next_poly_point)
+				if warp_point_index < warp_points.size():
+					warp_points[warp_point_index] = new_warp_point
+				else:
+					warp_points.append(new_warp_point)
+				low_warp_index = warp_point_index
+				high_warp_index = warp_points.size() - 1
+				warp_point_index += 1
+				points_ran += 1
+			ran_length += segment_length
+			if !warp_end_found:
+				i += 1
 		else:
-			var portion = (i - index_offset - (prev_polygon_index * polygon_period)) / (polygon_period * 1.0)
-			if i < warp_points.size():
-				warp_points[i] = ((1 - portion) * polygon[prev_polygon_index]) + (portion * polygon[next_polygon_index])
+			if warp_point_index < warp_points.size():
+				warp_points[warp_point_index] = next_poly_point
+			else:
+				warp_points.append(next_poly_point)
+			warp_point_index += 1
+			i += 1
+		prev_poly_point = next_poly_point
+	
+	# TODO (sam) This is a hack to remove the extra visible-dash at the end... this should not exist
+	if warp_progress >= 1:
+		high_warp_index = low_warp_index - 1
+	#print("-------")
 
-	# Default all points, because we probably skip the last few when building proper positions
-	#for i in range(affected_points, warp_points.size()):
-	#	warp_points[i] = polygon[next_polygon_index]
-
-	if affected_points < warp_points.size():
-		warp_points[affected_points] = polygon[next_polygon_index]
-	for i in range(next_polygon_index - 1, polygon.size()):
-		var warp_index = (affected_points) + ((i - (next_polygon_index -1)) * 2)
-		if warp_index < warp_points.size():
-			warp_points[warp_index - 1] = polygon[i]
-			warp_points[warp_index] = polygon[i]
 
 	queue_redraw()
 		

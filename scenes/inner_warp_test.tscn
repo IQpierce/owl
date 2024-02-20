@@ -81,56 +81,56 @@ shape = SubResource("WorldBoundaryShape2D_vbcit")
 position = Vector2(857, 327)
 linear_velocity = Vector2(210, 0)
 
-[node name="Polygon2D" parent="Asteroids/Asteroid/Anatomy" index="0"]
+[node name="Polygon2D" parent="Asteroids/Asteroid/Salt" index="0"]
 intro_secs = 1.0
 
 [node name="Asteroid2" parent="Asteroids" instance=ExtResource("3_aha6m")]
 position = Vector2(609, 433)
 linear_velocity = Vector2(150, -75)
 
-[node name="Polygon2D" parent="Asteroids/Asteroid2/Anatomy" index="0"]
+[node name="Polygon2D" parent="Asteroids/Asteroid2/Salt" index="0"]
 intro_secs = 1.0
 
 [node name="Asteroid3" parent="Asteroids" instance=ExtResource("3_aha6m")]
 position = Vector2(517, 571)
 linear_velocity = Vector2(150, -150)
 
-[node name="Polygon2D" parent="Asteroids/Asteroid3/Anatomy" index="0"]
+[node name="Polygon2D" parent="Asteroids/Asteroid3/Salt" index="0"]
 intro_secs = 1.0
 
 [node name="Asteroid4" parent="Asteroids" instance=ExtResource("3_aha6m")]
 position = Vector2(583, 691)
 linear_velocity = Vector2(-50, -200)
 
-[node name="Polygon2D" parent="Asteroids/Asteroid4/Anatomy" index="0"]
+[node name="Polygon2D" parent="Asteroids/Asteroid4/Salt" index="0"]
 intro_secs = 1.0
 
 [node name="Asteroid5" parent="Asteroids" instance=ExtResource("3_aha6m")]
 position = Vector2(725, 863)
 linear_velocity = Vector2(-150, 100)
 
-[node name="Polygon2D" parent="Asteroids/Asteroid5/Anatomy" index="0"]
+[node name="Polygon2D" parent="Asteroids/Asteroid5/Salt" index="0"]
 intro_secs = 1.0
 
 [node name="Asteroid6" parent="Asteroids" instance=ExtResource("3_aha6m")]
 position = Vector2(1087, 841)
 linear_velocity = Vector2(-210, 0)
 
-[node name="Polygon2D" parent="Asteroids/Asteroid6/Anatomy" index="0"]
+[node name="Polygon2D" parent="Asteroids/Asteroid6/Salt" index="0"]
 intro_secs = 1.0
 
 [node name="Asteroid7" parent="Asteroids" instance=ExtResource("3_aha6m")]
 position = Vector2(1329, 729)
 linear_velocity = Vector2(-150, 100)
 
-[node name="Polygon2D" parent="Asteroids/Asteroid7/Anatomy" index="0"]
+[node name="Polygon2D" parent="Asteroids/Asteroid7/Salt" index="0"]
 intro_secs = 1.0
 
 [node name="Asteroid8" parent="Asteroids" instance=ExtResource("3_aha6m")]
 position = Vector2(1371, 419)
 linear_velocity = Vector2(0, 200)
 
-[node name="Polygon2D" parent="Asteroids/Asteroid8/Anatomy" index="0"]
+[node name="Polygon2D" parent="Asteroids/Asteroid8/Salt" index="0"]
 intro_secs = 1.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
