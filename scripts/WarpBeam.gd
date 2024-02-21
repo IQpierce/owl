@@ -14,10 +14,11 @@ enum WarpSpace { Interior, Exterior }
 @export var centerpiece_proto:PackedScene = null
 
 var reach:float = 0
+var reach_cap:float = 0
+var dash_size:Vector2 = Vector2.ZERO
 var progress:float = 0
 var points:PackedVector2Array
 var target_points:PackedVector2Array
-var draw_delta:float = 0
 var target:Thing
 var prep_duration:float = 0
 var warp_ready:bool = false
@@ -33,10 +34,35 @@ func _ready():
 	for i in target_point_count:
 		target_points.append(Vector2.ZERO)
 
-func _physics_process(delta:float):
+func _process(delta:float):
 	if visible:
-		draw_delta += delta
 		reach = min(reach + (reach_rate * max_reach * delta), max_reach)
+		var direction = Vector2.UP.rotated(global_rotation)
+		dash_size = Vector2(0, reach / ((segment_count * 2) - 1))
+		reach_cap = reach
+		var new_target:Thing = null
+
+		# TODO (sam) It would be better to raycast from the behind the parents collider, so don't miss the raycast up-close.
+		var space_state = get_world_2d().direct_space_state
+		var raycast = PhysicsRayQueryParameters2D.create(global_position, global_position + direction * reach_cap)
+		var hit = space_state.intersect_ray(raycast)
+		var warp_start = Vector2.ZERO
+		if hit != null:
+			if hit.has("position"):
+				reach_cap = (hit["position"] - global_position).length()
+				warp_start = hit["position"]
+			if hit.has("collider"):
+				new_target = hit["collider"] as Thing
+
+		progress += cycle_speed * delta
+		if progress >= dash_size.y * 2:
+			progress -= dash_size.y * 2
+
+		prepare_target(new_target, warp_start, delta)
+		progress += cycle_speed * delta
+		if progress >= dash_size.y * 2:
+			progress -= dash_size.y * 2
+
 		queue_redraw()
 	else:
 		reach = 0
@@ -47,8 +73,9 @@ func _physics_process(delta:float):
 		centerpiece.queue_free()
 
 func _draw():
-	var direction = Vector2.UP.rotated(global_rotation)
-	var dash_size = Vector2(0, reach / ((segment_count * 2) - 1))
+	if reach_cap <= 0:
+		return
+
 	var dash_alignment = 1
 	var seg_start = 0
 	var seg_end = progress
@@ -57,26 +84,11 @@ func _draw():
 		dash_size.x = dash_size.y
 		dash_alignment = 0
 
-	var cap = reach
-	var new_target:Thing = null
-
-	# TODO (sam) It would be better to raycast from the behind the parents collider, so don't miss the raycast up-close.
-	var space_state = get_world_2d().direct_space_state
-	var raycast = PhysicsRayQueryParameters2D.create(global_position, global_position + direction * cap)
-	var hit = space_state.intersect_ray(raycast)
-	var warp_start = Vector2.ZERO
-	if hit != null:
-		if hit.has("position"):
-			cap = (hit["position"] - global_position).length()
-			warp_start = hit["position"]
-		if hit.has("collider"):
-			new_target = hit["collider"] as Thing
-
 	var progress_portion = progress / (dash_size.y * 2)
 	var base_transverse_size = dash_size.x * progress_portion * (1 - transversity)
 
-	points[0] = Vector2(-base_transverse_size, clamp(progress - (dash_size.y * dash_alignment), 0, cap))
-	points[1] = Vector2(base_transverse_size, min(seg_end, cap))
+	points[0] = Vector2(-base_transverse_size, clamp(progress - (dash_size.y * dash_alignment), 0, reach_cap))
+	points[1] = Vector2(base_transverse_size, min(seg_end, reach_cap))
 
 	for i in segment_count - 1:
 		var index = (i + 1) * 2
@@ -84,21 +96,14 @@ func _draw():
 		seg_end = seg_start + dash_size.y * dash_alignment
 		var transverse_size = base_transverse_size + (dash_size.x * transversity * (i / (segment_count - 1.0)))
 
-		points[index] = Vector2(-transverse_size, min(seg_start, cap))
-		points[index + 1] = Vector2(transverse_size, min(seg_end, cap))
+		points[index] = Vector2(-transverse_size, min(seg_start, reach_cap))
+		points[index + 1] = Vector2(transverse_size, min(seg_end, reach_cap))
 	
 	# It is just easier to think in positive numbers and then flip
 	for i in points.size():
 		points[i].y *= -1
 
 	draw_multiline(points, Color.WHITE)
-	prepare_target(new_target, warp_start, draw_delta)
-
-	progress += cycle_speed * draw_delta
-	if progress >= dash_size.y * 2:
-		progress -= dash_size.y * 2
-
-	draw_delta = 0
 
 func prepare_target(new_target:Thing, warp_start:Vector2, delta:float):
 	var target_geom = get_geometry(new_target)
