@@ -38,7 +38,7 @@ func _ready():
 	if OS.has_feature("editor"):
 		print("Zoom ", view_size.x, "x",view_size.y, " to show ", default_view_size.x, "x", default_view_size.y, "(ish)")
 
-	if emulate_phosphor_monitor && phosphor_emulation_proto:
+	if emulate_phosphor_monitor && phosphor_emulation_proto != null:
 		var scene_children = get_children();
 		var phosphor_emu:PhosphorEmulation = phosphor_emulation_proto.instantiate()
 		add_child(phosphor_emu)
@@ -60,11 +60,10 @@ func _ready():
 	var default_view_diagonal = default_view_size.length()
 	var view_diagonal = view_size.length()
 	
-	if world_camera:
-		world_camera.zoom *= view_diagonal / default_view_diagonal
-		world_camera.initial_zoom = world_camera.zoom
+	if world_camera != null:
+		world_camera.init_zoom(view_diagonal / default_view_diagonal, true)
 	
-	if fishbowl_camera:
+	if fishbowl_camera != null:
 		fishbowl_camera.zoom *= view_diagonal / default_view_diagonal
 	
 	if fishbowl_mode && fishbowl_mode_auto_reset_secs > 0:

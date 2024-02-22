@@ -21,5 +21,5 @@ func anti_zoom() -> float:
 	var scene = instance.scene
 	if scene != null && scene.world_camera != null:
 		if scene.world_camera.zoom.x != 0 && scene.world_camera.zoom.y != 0:
-			return (scene.world_camera.initial_zoom / scene.world_camera.zoom).x
+			return scene.world_camera.anti_zoom()
 	return 1

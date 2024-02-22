@@ -214,7 +214,7 @@ func warp_in():
 	var mask = collision_mask
 	collision_layer = 0
 	collision_mask = 0
-	var end_zoom = 15 * camera_rig.initial_zoom
+	var end_zoom = 15.0
 	var zoom_speed = 1.05
 	var zoom_done = false
 	camera_rig.cartridge = null # THIS ALONE MEANS WE NEED TO USE A CAMERA CARTRIDGE FOR ZOOM
@@ -226,8 +226,8 @@ func warp_in():
 		OwlGame.instance.zooming = true
 		camera_rig.zoom *= Vector2(zoom_speed, zoom_speed)
 		global_position = camera_rig.global_position + ((global_position - camera_rig.global_position) * 0.9)
-		if camera_rig.zoom >= end_zoom:
-			camera_rig.zoom = end_zoom
+		if camera_rig.relative_zoom() >= end_zoom:
+			camera_rig.zoom = Vector2(end_zoom, end_zoom)
 			zoom_done = true
 		await get_tree().physics_frame
 	OwlGame.instance.zooming = false

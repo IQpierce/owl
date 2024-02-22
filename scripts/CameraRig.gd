@@ -17,7 +17,7 @@ var viewport:Viewport
 var prey:Node2D
 var attention_center:Vector2
 var center_priority:int
-var initial_zoom:Vector2 = Vector2.ONE
+var _initial_zoom:Vector2 = Vector2.ONE
 
 func get_prey() -> Node2D:
 	return prey
@@ -36,6 +36,19 @@ func _ready():
 
 	if ready_center && cartridge != null:
 		global_position = cartridge.global_position
+
+func init_zoom(new_zoom:float, relative_to_current_zoom:bool):
+	_initial_zoom = Vector2(new_zoom, new_zoom)
+	if relative_to_current_zoom:
+		_initial_zoom *= zoom
+	zoom = _initial_zoom
+	print(_initial_zoom, " ", zoom)
+
+func relative_zoom() -> float:
+	return zoom.x / _initial_zoom.x
+
+func anti_zoom() -> float:
+	return _initial_zoom.x / zoom.x
 
 func _draw():
 	# Only draw Debug display while in Editor
@@ -60,26 +73,6 @@ func _physics_process(delta:float):
 func apply_plans(delta:float):
 	var old_zoom = zoom
 
-	#TODO REMOVE
-	#var zoom_speed = 1.05
-	#if Input.is_action_pressed("hyperspace") || Input.is_action_pressed("hyperspace_gamepad"):
-	#	if Input.is_action_pressed("ignore_input"):
-	#		zoom /= Vector2(zoom_speed, zoom_speed)
-	#	else:
-	#		zoom *= Vector2(zoom_speed, zoom_speed)
-	#		var player = OwlGame.instance.scene.player
-	#		# TODO EXTRA REMOVE... also turn Player's collision back on and reattach it's camera cartridge
-	#		player.global_position = global_position + ((player.global_position - global_position) * 0.95)
-	#	zoom.x = clamp(zoom.x, initial_zoom.x, 15)
-	#	zoom.y = clamp(zoom.y, initial_zoom.y, 15)
-	#	if cartridge != null:
-	#		global_position = cartridge.global_position + ((global_position - cartridge.global_position) * (old_zoom / zoom))
-
-	#OwlGame.instance.zooming = old_zoom != zoom
-	#if zoom != initial_zoom:
-	#	return
-	# END REMOVE
-
 	var cartridge_plan:ExclusivePlan = null
 	var hunt_pos = global_position
 	var tracking_importance = 0
@@ -89,6 +82,7 @@ func apply_plans(delta:float):
 		cartridge_plan = cartridge.build_plan(delta, self)
 		if cartridge_plan != null:
 			hunt_pos = cartridge_plan.position
+			zoom = cartridge_plan.zoom * _initial_zoom
 			tracking_importance = cartridge_plan.exclusivity
 			prey = cartridge_plan.prey
 
@@ -134,7 +128,7 @@ func pique_curiousity(focus_global:Vector2, priority:int):
 class Plan:
 	var position:Vector2 = Vector2.ZERO
 	var velocity:Vector2 = Vector2.ZERO
-	var zoom:Vector2 = Vector2.ONE
+	var zoom:float = 1
 
 	func copy(other:Plan):
 		position        = other.position
@@ -144,7 +138,7 @@ class Plan:
 	func copy_rig(rig:CameraRig):
 		position = rig.global_position
 		velocity = rig.velocity
-		zoom = rig.zoom
+		zoom = rig.relative_zoom()
 
 class CommonPlan extends Plan:
 	var position_weight:float = 0
