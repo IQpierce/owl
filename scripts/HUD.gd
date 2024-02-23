@@ -10,6 +10,10 @@ var game:OwlScene
 
 @onready var fishbowl_mode_label = $"Fishbowl Mode label"
 
+@export var health_line:Node2D
+@export var charge_line:Node2D
+@export var score_label:Label
+
 var accept_input_timeout:float
 
 func _ready():
@@ -20,6 +24,15 @@ func _ready():
 		push_error("No OwlGame instance!!")
 
 func _process(delta):
+	var scene = OwlGame.instance.scene
+	if scene != null && scene.player != null:
+		if health_line != null:
+			health_line.scale.x = clamp(scene.player.health_portion(), 0, 1)
+		if charge_line != null:
+			charge_line.scale.x = clamp(scene.player.charge_portion(), 0, 1)
+		if score_label != null:
+			score_label.text = "%06d" % scene.player.score_total()
+
 	if debug_fps_label.visible:
 		debug_fps_label.text = "FPS: %.02f" % (Engine.get_frames_per_second())
 	

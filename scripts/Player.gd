@@ -26,8 +26,25 @@ var camera_rig:CameraRig
 var mouse_position:Vector2 = Vector2.ZERO
 var mouse_motion:Vector2 = Vector2.ZERO
 
+#TODO (sam) where should these actually live? On Thing?
+var charge:float = 100
+var max_charge:float = 100
+var recharge_rate:float = 10
+var recharge_delay:float = 1
+var charge_use_time:int = 0
+var score:int = 0
+
 signal shot_fired()
 signal warped_in()
+
+func health_portion() -> float:
+	return health / max_health
+
+func charge_portion() -> float:
+	return charge / max_charge
+
+func score_total() -> int:
+	return score
 
 func _ready():
 	var scene = OwlGame.instance.scene
@@ -46,6 +63,10 @@ func _input(event:InputEvent):
 		mouse_motion = event.relative
 
 func _physics_process(delta:float):
+	if charge < max_charge:
+		if Time.get_ticks_msec() - charge_use_time >= recharge_delay * 1000:
+			charge = min(charge + recharge_rate * delta, max_charge)
+
 	if !process_gamepad(delta):
 		process_keyboard_mouse(delta)
 
@@ -111,7 +132,7 @@ func process_keyboard_mouse(delta:float):
 	var preping_warp = false
 	if warp_beam != null:
 		var zoom_speed = 1.05
-		if Input.is_action_pressed("hyperspace"):
+		if Input.is_action_pressed("hyperspace") && try_discharge(10 * delta):
 			warp_beam.visible = true
 			preping_warp = true
 			angular_velocity = 0
@@ -208,6 +229,17 @@ func process_keyboard_mouse(delta:float):
 	if mouse_reduction.length_squared() > mouse_motion.length_squared():
 		mouse_reduction = mouse_motion
 	mouse_motion -= mouse_reduction
+
+func try_discharge(amount:float) -> bool:
+	# TODO (sam) Is this a game that allows you to use charge you don't have?
+	if charge > 0:
+		charge -= amount
+		charge_use_time = Time.get_ticks_msec()
+		return true
+	return false
+
+func _apply_pickup(pickup:Pickup):
+	score += 1
 
 func drop_hard_focus():
 	print("drop hard _focus")

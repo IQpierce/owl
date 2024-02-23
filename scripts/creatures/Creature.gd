@@ -12,6 +12,10 @@ func consume_pickup(pickup:Pickup) -> bool:
 	if (!can_consume_pickup(pickup)):
 		return false
 	
+	_apply_pickup(pickup)
 	on_consumed_pickup.emit(pickup)
 	return true
+
+func _apply_pickup(pickup:Pickup):
+	pass
 

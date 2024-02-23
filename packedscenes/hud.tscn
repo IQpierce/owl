@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cv5asni7oqeby"]
+[gd_scene load_steps=11 format=3 uid="uid://cv5asni7oqeby"]
 
 [ext_resource type="Script" path="res://scripts/HUD.gd" id="1_ohgch"]
 [ext_resource type="FontFile" uid="uid://bfc5s6j3cdokw" path="res://fonts/Vectorb.ttf" id="2_ebi6m"]
@@ -20,9 +20,17 @@ shadow_offset = Vector2(0, 0)
 default_font = ExtResource("2_ebi6m")
 default_font_size = 40
 
-[node name="HUD" type="CanvasLayer"]
+[sub_resource type="LabelSettings" id="LabelSettings_or5ah"]
+font = ExtResource("2_ebi6m")
+font_size = 24
+outline_color = Color(0, 0, 0, 0)
+
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("health_line", "charge_line", "score_label")]
 script = ExtResource("1_ohgch")
 fishbowl_label_blink_rate_secs = 2.5
+health_line = NodePath("Control/MarginContainer/VBoxContainer/HBoxContainer/HealthLine")
+charge_line = NodePath("Control/MarginContainer/VBoxContainer/HBoxContainer2/PowerLine")
+score_label = NodePath("Control/MarginContainer/VBoxContainer2/HBoxContainer/ScoreText")
 
 [node name="FPS" type="Label" parent="."]
 visible = false
@@ -113,9 +121,10 @@ texture = ExtResource("4_tqtwv")
 centered = false
 offset = Vector2(44, -7)
 
-[node name="IconLine" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
-position = Vector2(103, 12)
+[node name="HealthLine" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+position = Vector2(44, 12)
 texture = ExtResource("5_xbnum")
+centered = false
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 41)
@@ -133,9 +142,10 @@ texture = ExtResource("4_tqtwv")
 centered = false
 offset = Vector2(44, -7)
 
-[node name="IconLine2" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
-position = Vector2(103, 13)
+[node name="PowerLine" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
+position = Vector2(44, 13)
 texture = ExtResource("5_xbnum")
+centered = false
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
@@ -144,6 +154,15 @@ size_flags_horizontal = 8
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="IconCrystal" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer2/HBoxContainer"]
+[node name="ScoreText" type="Label" parent="Control/MarginContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+text = "000000"
+label_settings = SubResource("LabelSettings_or5ah")
+
+[node name="Control" type="Control" parent="Control/MarginContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
+[node name="IconCrystal" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer2/HBoxContainer/Control"]
 texture = ExtResource("6_m6xxm")
 centered = false
