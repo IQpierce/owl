@@ -95,7 +95,7 @@ priority = 0
 notice_radius = 2501
 
 [node name="ZOOM_ASTEROID" parent="." instance=ExtResource("6_w6vm2")]
-position = Vector2(3975, 3720)
+position = Vector2(3975, 3675)
 
 [node name="CollisionPolygon2D" parent="ZOOM_ASTEROID" index="0"]
 scale = Vector2(200, 200)
@@ -110,8 +110,7 @@ draw_line_width = 0.005
 [node name="Player" parent="." instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
 
-[node name="CameraRig" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("11_llngb")]
-cartridge = NodePath("../Player/CameraCartridge")
+[node name="CameraRig" parent="." instance=ExtResource("11_llngb")]
 
 [node name="AsteroidBelt" type="Area2D" parent="."]
 position = Vector2(6000, 8000)

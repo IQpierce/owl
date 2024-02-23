@@ -4,6 +4,7 @@ class_name Player
 enum ControlMode { Dynamic, Roam, Tank }
 
 @export var camera_cartridge:CameraCartridge
+@export var hard_focus:HardFocusCameraCartridge = null
 @export var locomotor:Locomotor
 @export var hopdart:Hopdart
 @export var warp_beam:WarpBeam
@@ -47,10 +48,6 @@ func _input(event:InputEvent):
 func _physics_process(delta:float):
 	if !process_gamepad(delta):
 		process_keyboard_mouse(delta)
-
-	# TODO (sam) REMOVE ... figure out a better way to stop motion while doing this
-	#if warp_beam != null && warp_beam.target != null:
-	#	linear_velocity = Vector2.ZERO
 
 func process_gamepad(delta:float) -> bool:
 	var gamepad_acting = false
@@ -120,9 +117,13 @@ func process_keyboard_mouse(delta:float):
 			angular_velocity = 0
 
 			if warp_beam != null && warp_beam.target != null:
+				if camera_rig != null && hard_focus != null && camera_rig.cartridge != hard_focus:
+					hard_focus.prey = warp_beam.target
+					hard_focus.zoom = camera_rig.relative_zoom()
+					camera_rig.cartridge = hard_focus
 				linear_velocity *= 0.95
 		else:
-			if warp_beam.target != null && warp_beam.warp_ready:
+			if warp_beam.target != null && warp_beam.visible && warp_beam.warp_ready:
 				warp_in()
 			warp_beam.visible = false
 
@@ -208,32 +209,38 @@ func process_keyboard_mouse(delta:float):
 		mouse_reduction = mouse_motion
 	mouse_motion -= mouse_reduction
 
+func drop_hard_focus():
+	print("drop hard _focus")
+	if hard_focus != null:
+		hard_focus.prey = null
+		if camera_rig != null && camera_rig.cartridge == hard_focus:
+			camera_rig.cartridge = camera_cartridge
+
 # TODO This probably wants to live elsewhere ... also very hardcoded at the moment
 func warp_in():
+	if hard_focus == null:
+		return
+
 	var layer = collision_layer
 	var mask = collision_mask
 	collision_layer = 0
 	collision_mask = 0
 	var end_zoom = 15.0
-	var zoom_speed = 1.05
+	var zoom_speed = 1.07
 	var zoom_done = false
-	camera_rig.cartridge = null # THIS ALONE MEANS WE NEED TO USE A CAMERA CARTRIDGE FOR ZOOM
 	warp_beam.get_geometry(warp_beam.target).undraw()
-
 	warped_in.emit()
 
 	while !zoom_done:
-		OwlGame.instance.zooming = true
-		camera_rig.zoom *= Vector2(zoom_speed, zoom_speed)
+		hard_focus.zoom *= zoom_speed
 		global_position = camera_rig.global_position + ((global_position - camera_rig.global_position) * 0.9)
 		if camera_rig.relative_zoom() >= end_zoom:
-			camera_rig.zoom = Vector2(end_zoom, end_zoom)
+			#camera_rig.zoom = Vector2(end_zoom, end_zoom)
 			zoom_done = true
 		await get_tree().physics_frame
-	OwlGame.instance.zooming = false
 	await get_tree().create_timer(0.25).timeout
 	get_tree().change_scene_to_file("res://scenes/inner_warp_test.tscn")
-	#collision_layer = layer
-	#collision_mask = mask
+	collision_layer = layer
+	collision_mask = mask
 	#if cartridge != null:
 	#	global_position = cartridge.global_position + ((global_position - cartridge.global_position) * (old_zoom / zoom))

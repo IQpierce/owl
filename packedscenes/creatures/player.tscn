@@ -8,21 +8,22 @@
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]
 [ext_resource type="Script" path="res://scripts/Locomotor.gd" id="4_0rs86"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="4_ienpe"]
+[ext_resource type="Script" path="res://scripts/HardFocusCameraCartridge.gd" id="4_rodj5"]
 [ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="5_iboy3"]
 [ext_resource type="Script" path="res://scripts/Hopdart.gd" id="5_jqx77"]
 [ext_resource type="AudioStream" uid="uid://gwmuuh2c41u4" path="res://audio/lazerLofi.wav" id="6_0an66"]
 [ext_resource type="Script" path="res://scripts/WarpBeam.gd" id="10_xktmg"]
-[ext_resource type="PackedScene" uid="uid://cyer1flukqix1" path="res://packedscenes/centerpiece.tscn" id="11_6o2xu"]
 [ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="13_suvhi"]
 [ext_resource type="AudioStream" uid="uid://4tue0i75rkn0" path="res://audio/zoom.mp3" id="15_wyh7b"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntkiv"]
 radius = 192.0
 
-[node name="Player" node_paths=PackedStringArray("camera_cartridge", "locomotor", "hopdart", "warp_beam") instance=ExtResource("1_5vrjf")]
+[node name="Player" node_paths=PackedStringArray("camera_cartridge", "hard_focus", "locomotor", "hopdart", "warp_beam") instance=ExtResource("1_5vrjf")]
 freeze_mode = 1
 script = ExtResource("2_6aefa")
-camera_cartridge = NodePath("CameraCartridge")
+camera_cartridge = NodePath("CameraTracking")
+hard_focus = NodePath("HardFocus")
 locomotor = NodePath("Locomotor")
 hopdart = NodePath("HopDart")
 warp_beam = NodePath("Anatomy/WarpBeam")
@@ -33,7 +34,7 @@ mouse_gravity = 30.0
 health = 3.0
 max_health = 3.0
 
-[node name="CameraCartridge" type="Node2D" parent="." index="0" node_paths=PackedStringArray("locomotor", "hopdart")]
+[node name="CameraTracking" type="Node2D" parent="." index="0" node_paths=PackedStringArray("locomotor", "hopdart")]
 script = ExtResource("3_cu50v")
 locomotor = NodePath("../Locomotor")
 hopdart = NodePath("../HopDart")
@@ -44,7 +45,11 @@ rest_vel_damp = 0.9
 lead_vel_perp_damp = 0.8
 lead_turn_to_rest_ms = 100
 
-[node name="Locomotor" type="Node2D" parent="." index="1"]
+[node name="HardFocus" type="Node2D" parent="." index="1"]
+script = ExtResource("4_rodj5")
+lock_speed = 150.0
+
+[node name="Locomotor" type="Node2D" parent="." index="2"]
 script = ExtResource("4_0rs86")
 turn_force = 60.0
 max_speed = 1000.0
@@ -56,13 +61,13 @@ fire_max_speed_factor = 0.9
 fire_acceleration_factor = 0.8
 side_boost = 1000.0
 
-[node name="HopDart" type="Node2D" parent="." index="2"]
+[node name="HopDart" type="Node2D" parent="." index="3"]
 script = ExtResource("5_jqx77")
 
-[node name="TrunkCollision" parent="." index="3"]
+[node name="TrunkCollision" parent="." index="4"]
 polygon = PackedVector2Array(6, -3, 0, -12, -6, -3, -8.5, 7.5, -3.5, 5, 3.5, 5, 8.5, 7.5)
 
-[node name="Anatomy" parent="." index="4"]
+[node name="Anatomy" parent="." index="5"]
 scale_mode = 1
 
 [node name="TrunkPolygon" parent="Anatomy" index="1"]
@@ -129,7 +134,6 @@ reach_rate = 2.0
 segment_count = 10
 prep_req_seconds = 3.0
 transversity = 0.9
-centerpiece_proto = ExtResource("11_6o2xu")
 
 [node name="PickupVacuum" type="Area2D" parent="Anatomy" index="7"]
 disable_mode = 2
@@ -148,13 +152,13 @@ script = ExtResource("5_iboy3")
 [node name="VacuumCollisionShape" type="CollisionShape2D" parent="Anatomy/PickupVacuum" index="0"]
 shape = SubResource("CircleShape2D_ntkiv")
 
-[node name="Thrust" type="AudioStreamPlayer2D" parent="." index="5"]
+[node name="Thrust" type="AudioStreamPlayer2D" parent="." index="6"]
 stream = ExtResource("3_7eqxd")
 volume_db = 7.61
 bus = &"Effects"
 script = ExtResource("13_suvhi")
 
-[node name="ZoomSFX" type="AudioStreamPlayer2D" parent="." index="7"]
+[node name="ZoomSFX" type="AudioStreamPlayer2D" parent="." index="8"]
 stream = ExtResource("15_wyh7b")
 bus = &"Effects"
 
@@ -164,4 +168,5 @@ bus = &"Effects"
 [connection signal="driving_state_change" from="Locomotor" to="Thrust" method="signal_play_or_stop"]
 [connection signal="turning_left_state_change" from="Locomotor" to="Anatomy/TurnLeftTriangle" method="set_visible"]
 [connection signal="turning_right_state_change" from="Locomotor" to="Anatomy/TurnRightTriangle" method="set_visible"]
+[connection signal="lost_target" from="Anatomy/WarpBeam" to="." method="drop_hard_focus"]
 [connection signal="body_entered" from="Anatomy/PickupVacuum" to="Anatomy/PickupVacuum" method="_on_body_entered"]

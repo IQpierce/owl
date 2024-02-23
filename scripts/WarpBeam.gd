@@ -11,7 +11,6 @@ enum WarpSpace { Interior, Exterior }
 @export_range(0.2, 10) var prep_req_seconds:float = 1
 @export_range(1, 100) var target_segment_count:int = 40
 @export_range(0, 1) var transversity:float = 0
-@export var centerpiece_proto:PackedScene = null
 
 var reach:float = 0
 var reach_cap:float = 0
@@ -22,7 +21,9 @@ var target_points:PackedVector2Array
 var target:Thing
 var prep_duration:float = 0
 var warp_ready:bool = false
-var centerpiece:Centerpiece
+
+signal found_target
+signal lost_target
 
 func _ready():
 	# TODO (sam) Is there really no way reserve a dynamic size all at once?
@@ -66,11 +67,8 @@ func _process(delta:float):
 		queue_redraw()
 	else:
 		reach = 0
-		if target != null:
+		if !warp_ready && target != null:
 			prepare_target(null, Vector2.ZERO, delta)
-
-	if target == null && centerpiece != null:
-		centerpiece.queue_free()
 
 func _draw():
 	if reach_cap <= 0:
@@ -106,31 +104,30 @@ func _draw():
 	draw_multiline(points, Color.WHITE)
 
 func prepare_target(new_target:Thing, warp_start:Vector2, delta:float):
+	# If warp is currently ready, it cannot be changed
+	if warp_ready:
+		return
+
 	var target_geom = get_geometry(new_target)
 	if target != new_target:
 		var old_target_geom = get_geometry(target)
 		if old_target_geom != null:
 			old_target_geom.resolve_warp(!warp_ready)
+		else:
+			found_target.emit()
 		target = new_target
 		if target_geom != null:
 			target_geom.initiate_warp(warp_start)
+		else:
+			lost_target.emit()
 		prep_duration = 0
 	
 	if target != null:
 		if target_geom != null:
 			target_geom.prepare_warp(prep_duration / prep_req_seconds, 1, delta)	
-			if centerpiece == null:
-				if centerpiece_proto != null:
-					centerpiece = centerpiece_proto.instantiate()
-					centerpiece.priority = 999
-					target.add_child(centerpiece)
-					centerpiece.position = Vector2.ZERO
-				else:
-					centerpiece.reparent(target)
-					centerpiece.position = Vector2.ZERO
 		prep_duration = min(prep_duration + delta, prep_req_seconds)
 	
-	warp_ready = target != null && prep_duration >= prep_req_seconds
+	warp_ready = (target != null && prep_duration >= prep_req_seconds) || warp_ready
 
 func get_geometry(target:Thing) -> VectorPolygonRendering:
 	if target != null && target.anatomy != null && target.anatomy.line_geometry.size() > 0:

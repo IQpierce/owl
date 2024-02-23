@@ -42,7 +42,6 @@ func init_zoom(new_zoom:float, relative_to_current_zoom:bool):
 	if relative_to_current_zoom:
 		_initial_zoom *= zoom
 	zoom = _initial_zoom
-	print(_initial_zoom, " ", zoom)
 
 func relative_zoom() -> float:
 	return zoom.x / _initial_zoom.x

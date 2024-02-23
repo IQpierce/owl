@@ -17,6 +17,11 @@ var scene:OwlScene:
 func _ready():
 	instance = self
 
+func world_camera() -> CameraRig:
+	if instance.scene != null:
+		return instance.scene.world_camera
+	return null
+
 func anti_zoom() -> float:
 	var scene = instance.scene
 	if scene != null && scene.world_camera != null:

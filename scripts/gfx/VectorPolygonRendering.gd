@@ -23,7 +23,7 @@ var low_warp_index = 0
 var high_warp_index = 0
 
 func can_warp() -> bool:
-	return draw_state == DrawState.Stable && _warpable
+	return draw_state != DrawState.Intro && _warpable
 
 func _ready():
 	initial_point_radius = point_draw_radius
