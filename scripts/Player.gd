@@ -92,7 +92,7 @@ func process_gamepad(delta:float) -> bool:
 		var drive_factor = Input.get_action_strength("up_gamepad_primary")
 		var turn_factor = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
 
-		gamepad_acting = gamepad_acting || drive_factor > 0 || turn_factor > 0
+		gamepad_acting = gamepad_acting || drive_factor > 0 || turn_factor != 0
 
 		if gamepad_acting && locomotor != null:
 			locomotor.locomote(drive_factor, turn_factor, delta)
