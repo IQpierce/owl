@@ -151,9 +151,15 @@ func locomote(drive_factor:float, turn_factor:float, delta:float):
 	# We can combine that damp with ours to approximate a true max_turn_speed and the artificially reduce that
 	var approx_ang_damp = (1 - (delta * body.angular_damp)) * turn_damp_factor
 	var new_turn_speed = body.angular_velocity + turn_force * turn_factor * delta
+	if (body.angular_velocity > 0 && turn_factor < 0) || (body.angular_velocity < 0 && turn_factor > 0):
+		body.angular_velocity *= 0.5
+		turn_factor *= 0.5
+
 	if abs(new_turn_speed * approx_ang_damp * turn_factor) > abs(body.angular_velocity):
 		body.angular_velocity = new_turn_speed
 	body.angular_velocity *= turn_damp_factor
+	#if turn_factor == 0:
+	#	body.angular_velocity *= 0.75
 	#print(body.angular_velocity, " | ", approx_ang_damp)
 	
 
@@ -161,4 +167,7 @@ func locomote(drive_factor:float, turn_factor:float, delta:float):
 	var min_speed = stop_below_speed * anti_zoom
 	if !driving && body.linear_velocity.length_squared() < min_speed * min_speed:
 		body.linear_velocity = Vector2.ZERO
+
+	if abs(body.angular_velocity) < 0.001:
+		body.angular_velocity = 0
 

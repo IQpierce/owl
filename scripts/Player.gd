@@ -92,6 +92,10 @@ func process_gamepad(delta:float) -> bool:
 		want_dir.y = Input.get_axis("up_gamepad_primary", "down_gamepad_primary")
 		gamepad_acting = gamepad_acting || drive_factor > 0 || want_dir.length_squared()
 
+		# TODO (sam) Testing if we can do turn-only and thrust-turn without an extra button (also might feel more intuitive)
+		if (want_dir.length() >= 0.95):
+			drive_factor += 1
+
 		if gamepad_acting && locomotor != null:
 			locomotor.locomote_towards(drive_factor, global_position + want_dir, turn_fraction, delta)
 	elif control_mode == ControlMode.Tank:
