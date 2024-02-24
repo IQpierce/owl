@@ -96,8 +96,7 @@ physics_material_override = null
 health = 1.0
 max_health = 1.0
 
-[node name="CameraRig" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("6_i1asv")]
-cartridge = NodePath("../Player/CameraCartridge")
+[node name="CameraRig" parent="." instance=ExtResource("6_i1asv")]
 
 [node name="StarfieldBG" type="Node2D" parent="."]
 z_index = -100

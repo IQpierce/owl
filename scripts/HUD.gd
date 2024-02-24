@@ -31,7 +31,7 @@ func _process(delta):
 		if charge_line != null:
 			charge_line.scale.x = clamp(scene.player.charge_portion(), 0, 1)
 		if score_label != null:
-			score_label.text = "%06d" % scene.player.score_total()
+			score_label.text = "%01d" % scene.player.score_total()
 
 	if debug_fps_label.visible:
 		debug_fps_label.text = "FPS: %.02f" % (Engine.get_frames_per_second())
