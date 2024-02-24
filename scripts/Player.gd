@@ -9,11 +9,16 @@ enum ControlMode { Dynamic, Roam, Tank }
 @export var hopdart:Hopdart
 @export var warp_beam:WarpBeam
 @export var control_mode:ControlMode = ControlMode.Dynamic
+@export_group("TankControls")
+@export_range(0.0, 1.0) var down_turn_fraction:float = 1 #TODO (sam) currently this only affects keyboard
+@export_range(0.0, 1.0) var initial_turn_fraction:float = 1
+@export var precise_turn_degrees:float = 5
+@export var precise_turn_damping:float = 0.5
+@export_group("RoamControls")
+@export_group("Mouse")
 @export var allow_mouse:bool = false
 @export_range(0, 1) var mouse_sensitivity:float = 0
 @export_range(0, 60) var mouse_gravity: float = 30
-@export_group("TankControls")
-@export_group("RoamControls")
 @export_group("")
 
 ## Window to input double tap of a key
@@ -25,6 +30,7 @@ enum ControlMode { Dynamic, Roam, Tank }
 var camera_rig:CameraRig
 var mouse_position:Vector2 = Vector2.ZERO
 var mouse_motion:Vector2 = Vector2.ZERO
+var known_turn:float = 0
 
 #TODO (sam) where should these actually live? On Thing?
 var charge:float = 100
@@ -69,7 +75,7 @@ func _physics_process(delta:float):
 
 	if !process_gamepad(delta):
 		process_keyboard_mouse(delta)
-
+	
 func process_gamepad(delta:float) -> bool:
 	var gamepad_acting = false
 	if control_mode == ControlMode.Roam || control_mode == ControlMode.Dynamic:
@@ -85,6 +91,10 @@ func process_gamepad(delta:float) -> bool:
 		want_dir.x = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
 		want_dir.y = Input.get_axis("up_gamepad_primary", "down_gamepad_primary")
 		gamepad_acting = gamepad_acting || drive_factor > 0 || want_dir.length_squared()
+
+		# TODO (sam) Testing if we can do turn-only and thrust-turn without an extra button (also might feel more intuitive)
+		if (want_dir.length() >= 0.95):
+			drive_factor += 1
 
 		if gamepad_acting && locomotor != null:
 			locomotor.locomote_towards(drive_factor, global_position + want_dir, turn_fraction, delta)
@@ -186,15 +196,28 @@ func process_keyboard_mouse(delta:float):
 	elif (control_mode == ControlMode.Tank || control_mode == ControlMode.Dynamic) && !preping_warp:
 		var drive_factor = 0.0
 		var turn_factor = 0.0
+		var turn_damp = 1.0
+		var any_turn = false
+		var precise_turn_radians = precise_turn_degrees * PI / 180
+
+		if Input.is_action_pressed("left_primary"):
+			turn_factor -= 1
+			any_turn = true
+
+		if Input.is_action_pressed("right_primary"):
+			turn_factor += 1
+			any_turn = true
+
+		if any_turn:
+			var about_face_portion = abs(known_turn) / precise_turn_radians
+			turn_factor *= ((1 - about_face_portion) * initial_turn_fraction) + (about_face_portion)
 
 		if Input.is_action_pressed("up_primary") || mouse_pressed:
 			drive_factor += 1
 
-		if Input.is_action_pressed("left_primary"):
-			turn_factor -= 1
-
-		if Input.is_action_pressed("right_primary"):
-			turn_factor += 1
+		# Allow player to hold DOWN to aim more precisely
+		if Input.is_action_pressed("down_primary"):
+			turn_factor *= down_turn_fraction
 
 		if allow_mouse:
 			#var self_right = Vector2.RIGHT.rotated(global_rotation)
@@ -206,6 +229,15 @@ func process_keyboard_mouse(delta:float):
 
 		if locomotor != null:
 			locomotor.locomote(drive_factor, turn_factor, delta)
+
+		if abs(angular_velocity) < precise_turn_radians && !any_turn:
+			angular_velocity *= precise_turn_damping
+
+		if !any_turn:
+			known_turn = 0
+		else:
+			known_turn = clamp(known_turn + angular_velocity * delta, -precise_turn_radians, precise_turn_radians)
+
 
 	if Input.is_action_pressed("shoot"):
 		shot_fired.emit()

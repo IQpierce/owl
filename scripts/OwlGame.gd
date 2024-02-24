@@ -16,6 +16,7 @@ var scene:OwlScene:
 
 func _ready():
 	instance = self
+	Engine.max_fps = 60
 
 func world_camera() -> CameraRig:
 	if instance.scene != null:

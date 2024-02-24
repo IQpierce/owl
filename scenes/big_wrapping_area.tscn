@@ -24,10 +24,11 @@ custom_solver_bias = 0.1
 [sub_resource type="CircleShape2D" id="CircleShape2D_xkjbt"]
 radius = 10000.0
 
-[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("jank_fighter", "player", "fishbowl_camera")]
+[node name="BigWrappingArea" type="Node2D" node_paths=PackedStringArray("jank_fighter", "player", "world_camera", "fishbowl_camera")]
 script = ExtResource("1_lu7r6")
 jank_fighter = NodePath("JankFighter")
 player = NodePath("Player")
+world_camera = NodePath("CameraRig")
 fishbowl_camera = NodePath("FishbowlCamera")
 phosphor_emulation_proto = ExtResource("2_sywk8")
 
@@ -91,8 +92,9 @@ position = Vector2(28844, 26368)
 [node name="Player" parent="." instance=ExtResource("11_11kq6")]
 position = Vector2(28033.3, 26593.4)
 scale = Vector2(0.995902, 1)
-collision_mask = 27
 physics_material_override = null
+precise_turn_degrees = 5.0
+precise_turn_damping = 0.5
 health = 1.0
 max_health = 1.0
 
