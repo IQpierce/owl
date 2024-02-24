@@ -26,8 +26,6 @@ var game_over:bool
 var fishbowl_mode_auto_reset_timestamp:float = NAN
 
 func _ready():
-	Engine.max_fps = 60
-	
 	if hide_mouse:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
