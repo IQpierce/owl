@@ -153,11 +153,13 @@ size_flags_horizontal = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer2"]
 layout_mode = 2
+theme_override_constants/separation = 20
 
 [node name="ScoreText" type="Label" parent="Control/MarginContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
-text = "000000"
+text = "0"
 label_settings = SubResource("LabelSettings_or5ah")
+horizontal_alignment = 2
 
 [node name="Control" type="Control" parent="Control/MarginContainer/VBoxContainer2/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
