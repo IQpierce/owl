@@ -20,6 +20,7 @@
 radius = 192.0
 
 [node name="Player" node_paths=PackedStringArray("camera_cartridge", "hard_focus", "locomotor", "hopdart", "warp_beam") instance=ExtResource("1_5vrjf")]
+collision_mask = 27
 freeze_mode = 1
 script = ExtResource("2_6aefa")
 camera_cartridge = NodePath("CameraTracking")
@@ -28,6 +29,10 @@ locomotor = NodePath("Locomotor")
 hopdart = NodePath("HopDart")
 warp_beam = NodePath("Anatomy/WarpBeam")
 control_mode = 0
+down_turn_fraction = 0.8
+initial_turn_fraction = 0.4
+precise_turn_degrees = 7.0
+precise_turn_damping = 0.4
 allow_mouse = false
 mouse_sensitivity = 0.0
 mouse_gravity = 30.0

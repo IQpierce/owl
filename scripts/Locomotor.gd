@@ -147,8 +147,14 @@ func locomote(drive_factor:float, turn_factor:float, delta:float):
 	if linear_damp_factor <= 0.99: # Cannot trust 1 to mean 1 every frame apparantly; maybe it is the rigidbody damping
 		body.linear_velocity *= linear_damp_factor
 
-	body.angular_velocity += turn_force * turn_factor * delta
+	# Godot Phyics applies damp as val *= 1.0 - step * damp (where step is essentially delta)
+	# We can combine that damp with ours to approximate a true max_turn_speed and the artificially reduce that
+	var approx_ang_damp = (1 - (delta * body.angular_damp)) * turn_damp_factor
+	var new_turn_speed = body.angular_velocity + turn_force * turn_factor * delta
+	if abs(new_turn_speed * approx_ang_damp * turn_factor) > abs(body.angular_velocity):
+		body.angular_velocity = new_turn_speed
 	body.angular_velocity *= turn_damp_factor
+	#print(body.angular_velocity, " | ", approx_ang_damp)
 	
 
 	# TODO (sam) need to force velocity to zero if near it, because there are some calculations that behave subtely different 
