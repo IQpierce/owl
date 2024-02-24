@@ -12,9 +12,11 @@ enum ControlMode { Dynamic, Roam, Tank }
 @export_group("TankControls")
 @export_range(0.0, 1.0) var down_turn_fraction:float = 1 #TODO (sam) currently this only affects keyboard
 @export_range(0.0, 1.0) var initial_turn_fraction:float = 1
+@export_range(0.0, 1.0) var shoot_turn_damp:float = 1
 @export var precise_turn_degrees:float = 5
 @export var precise_turn_damping:float = 0.5
 @export_group("RoamControls")
+@export_range(0, 1) var turn_only_threshold:float = 0.75
 @export_group("Mouse")
 @export var allow_mouse:bool = false
 @export_range(0, 1) var mouse_sensitivity:float = 0
@@ -93,8 +95,11 @@ func process_gamepad(delta:float) -> bool:
 		gamepad_acting = gamepad_acting || drive_factor > 0 || want_dir.length_squared()
 
 		# TODO (sam) Testing if we can do turn-only and thrust-turn without an extra button (also might feel more intuitive)
-		if (want_dir.length() >= 0.95):
+		if (want_dir.length() > turn_only_threshold):
 			drive_factor += 1
+		elif turn_only_threshold > 0:
+			want_dir.x = clamp(want_dir.x / turn_only_threshold, -1, 1)
+			want_dir.y = clamp(want_dir.y / turn_only_threshold, -1, 1)
 
 		if gamepad_acting && locomotor != null:
 			locomotor.locomote_towards(drive_factor, global_position + want_dir, turn_fraction, delta)
@@ -130,6 +135,7 @@ func process_keyboard_mouse(delta:float):
 	var mouse_pressed = allow_mouse && Input.is_action_pressed("mouse_left_click")
 	var mouse_moved = false
 	var view_speed = 1
+	var any_turn = false
 
 	if mouse_motion.length_squared() > 0:
 		mouse_moved = true
@@ -178,6 +184,9 @@ func process_keyboard_mouse(delta:float):
 		if Input.is_action_pressed("right_primary"):
 			want_dir.x += 1
 
+		if want_dir.length_squared() > 0:
+			any_turn = true
+
 		if mouse_moved:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 		#	var mouse_turn = clamp(mouse_motion.x * PI / view_speed, -1, 1)
@@ -197,7 +206,6 @@ func process_keyboard_mouse(delta:float):
 		var drive_factor = 0.0
 		var turn_factor = 0.0
 		var turn_damp = 1.0
-		var any_turn = false
 		var precise_turn_radians = precise_turn_degrees * PI / 180
 
 		if Input.is_action_pressed("left_primary"):
@@ -226,6 +234,8 @@ func process_keyboard_mouse(delta:float):
 			#	mouse_strength *= -1;
 			#turn_factor += clamp(mouse_strength / view_speed, -1, 1)
 			turn_factor += clamp(mouse_motion.x * TAU, -1, 1)
+			if turn_factor != 0:
+				any_turn = true
 
 		if locomotor != null:
 			locomotor.locomote(drive_factor, turn_factor, delta)
@@ -241,6 +251,9 @@ func process_keyboard_mouse(delta:float):
 
 	if Input.is_action_pressed("shoot"):
 		shot_fired.emit()
+		if !any_turn:
+			#TODO (sam) only do this if a shot is actually fired?
+			angular_velocity *= shoot_turn_damp
 	
 	if hopdart != null:
 		var hopdart_dir = Vector2.ZERO
