@@ -17,6 +17,7 @@ enum ControlMode { Dynamic, Roam, Tank }
 @export var precise_turn_damping:float = 0.5
 @export_group("RoamControls")
 @export_range(0, 1) var turn_only_threshold:float = 0.75
+@export_range(0, 1) var relative_turn_only_threshold:float = 0.25
 @export_group("Mouse")
 @export var allow_mouse:bool = false
 @export_range(0, 1) var mouse_sensitivity:float = 0
@@ -37,6 +38,7 @@ var camera_rig:CameraRig
 var mouse_position:Vector2 = Vector2.ZERO
 var mouse_motion:Vector2 = Vector2.ZERO
 var known_turn:float = 0
+var prev_frame_left_stick:float = 0
 
 #TODO (sam) where should these actually live? On Thing?
 var charge:float = 100
@@ -100,14 +102,21 @@ func process_gamepad(delta:float) -> bool:
 		gamepad_acting = gamepad_acting || drive_factor > 0 || want_dir.length_squared()
 
 		# TODO (sam) Testing if we can do turn-only and thrust-turn without an extra button (also might feel more intuitive)
-		if (want_dir.length() > turn_only_threshold):
+		var quick_change = want_dir.length() - prev_frame_left_stick > relative_turn_only_threshold
+		var far_push = want_dir.length() > turn_only_threshold
+		if quick_change || far_push:
+			prev_frame_left_stick = 0
 			drive_factor += 1
-		elif turn_only_threshold > 0:
-			want_dir.x = clamp(want_dir.x / turn_only_threshold, -1, 1)
-			want_dir.y = clamp(want_dir.y / turn_only_threshold, -1, 1)
+		else:
+			prev_frame_left_stick = want_dir.length()
+			if turn_only_threshold > 0:
+				want_dir.x = clamp(want_dir.x / turn_only_threshold, -1, 1)
+				want_dir.y = clamp(want_dir.y / turn_only_threshold, -1, 1)
+
 
 		if gamepad_acting && locomotor != null:
 			locomotor.locomote_towards(drive_factor, global_position + want_dir, turn_fraction, delta)
+
 	elif control_mode == ControlMode.Tank:
 		var drive_factor = Input.get_action_strength("up_gamepad_primary")
 		var turn_factor = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
