@@ -23,6 +23,10 @@ enum ControlMode { Dynamic, Roam, Tank }
 @export_range(0, 60) var mouse_gravity: float = 30
 @export_group("")
 
+@onready var heartbeat = $Heartbeat
+@onready var heartbeat_timer = $HeartbeatTimer
+
+
 ## Window to input double tap of a key
 #@export var double_tap_msec:float = 1;
 #var thrust_tap_time:int = 0;
@@ -64,6 +68,7 @@ func _ready():
 
 	if hopdart != null:
 		hopdart.body = self
+		
 
 func _input(event:InputEvent):
 	if event is InputEventMouseMotion:
@@ -321,3 +326,11 @@ func warp_in():
 	collision_mask = mask
 	#if cartridge != null:
 	#	global_position = cartridge.global_position + ((global_position - cartridge.global_position) * (old_zoom / zoom))
+	
+	
+# Heartbeat stuff
+
+
+
+func _on_heartbeat_timer_timeout():
+	heartbeat.play()

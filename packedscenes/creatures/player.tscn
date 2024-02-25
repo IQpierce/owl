@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://jymuym62nmct"]
+[gd_scene load_steps=18 format=3 uid="uid://jymuym62nmct"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_5vrjf"]
 [ext_resource type="Script" path="res://scripts/Player.gd" id="2_6aefa"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://scripts/WarpBeam.gd" id="10_xktmg"]
 [ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="13_suvhi"]
 [ext_resource type="AudioStream" uid="uid://4tue0i75rkn0" path="res://audio/zoom.mp3" id="15_wyh7b"]
+[ext_resource type="AudioStream" uid="uid://vq13beud6vep" path="res://audio/heartbeat.mp3" id="16_3y4ij"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntkiv"]
 radius = 192.0
@@ -34,7 +35,7 @@ initial_turn_fraction = 1.0
 shoot_turn_damp = 0.5
 precise_turn_degrees = 7.0
 precise_turn_damping = 0.4
-turn_only_threshold = 0.75
+turn_only_threshold = 0.626
 allow_mouse = false
 mouse_sensitivity = 0.0
 mouse_gravity = 30.0
@@ -169,6 +170,14 @@ script = ExtResource("13_suvhi")
 stream = ExtResource("15_wyh7b")
 bus = &"Effects"
 
+[node name="Heartbeat" type="AudioStreamPlayer2D" parent="." index="9"]
+stream = ExtResource("16_3y4ij")
+bus = &"Effects"
+
+[node name="HeartbeatTimer" type="Timer" parent="." index="10"]
+wait_time = 5.0
+autostart = true
+
 [connection signal="shot_fired" from="." to="Anatomy/Gun" method="shoot"]
 [connection signal="warped_in" from="." to="ZoomSFX" method="play"]
 [connection signal="driving_state_change" from="Locomotor" to="Anatomy/ThrustTriangle" method="set_visible"]
@@ -177,3 +186,4 @@ bus = &"Effects"
 [connection signal="turning_right_state_change" from="Locomotor" to="Anatomy/TurnRightTriangle" method="set_visible"]
 [connection signal="lost_target" from="Anatomy/WarpBeam" to="." method="drop_hard_focus"]
 [connection signal="body_entered" from="Anatomy/PickupVacuum" to="Anatomy/PickupVacuum" method="_on_body_entered"]
+[connection signal="timeout" from="HeartbeatTimer" to="." method="_on_heartbeat_timer_timeout"]
