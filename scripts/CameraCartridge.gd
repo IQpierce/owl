@@ -12,7 +12,8 @@ func _ready():
 	plan = CameraRig.ExclusivePlan.new()
 
 func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
-	return null
+	plan.copy_rig(data_rig)
+	return plan
 
 func request_debug(draw_rig:CameraRig) -> String:
 	return ""

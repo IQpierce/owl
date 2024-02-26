@@ -1,18 +1,21 @@
-[gd_scene load_steps=8 format=3 uid="uid://3iiqd25k3siw"]
+[gd_scene load_steps=10 format=3 uid="uid://3iiqd25k3siw"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_hmpcl"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_355mo"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_bfjef"]
 [ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="3_aha6m"]
+[ext_resource type="PackedScene" uid="uid://bs64p7ff3fvw2" path="res://packedscenes/camera_rig.tscn" id="3_wdsqn"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="4_dbpt6"]
+[ext_resource type="Script" path="res://scripts/CameraCartridge.gd" id="4_gsir2"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="5_7p7k7"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vbcit"]
 custom_solver_bias = 0.1
 
-[node name="WrappingScreenTest" type="Node2D" node_paths=PackedStringArray("player")]
+[node name="WrappingScreenTest" type="Node2D" node_paths=PackedStringArray("player", "world_camera")]
 script = ExtResource("1_hmpcl")
 player = NodePath("Player")
+world_camera = NodePath("CameraRig")
 muted = true
 emulate_phosphor_monitor = false
 phosphor_emulation_proto = ExtResource("2_355mo")
@@ -133,11 +136,17 @@ linear_velocity = Vector2(0, 200)
 [node name="Polygon2D" parent="Asteroids/Asteroid8/Salt" index="0"]
 intro_secs = 1.0
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(960, 530)
+[node name="CameraRig" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("3_wdsqn")]
+position = Vector2(960, 540)
+cartridge = NodePath("CameraCartridge")
+
+[node name="CameraCartridge" type="Node2D" parent="CameraRig"]
+script = ExtResource("4_gsir2")
 
 [node name="Player" parent="." instance=ExtResource("4_dbpt6")]
 position = Vector2(960, 540)
+shoot_turn_damp = 1.0
+turn_only_threshold = 0.75
 
 [node name="HUD" parent="." instance=ExtResource("5_7p7k7")]
 
