@@ -36,7 +36,7 @@ shoot_turn_damp = 0.5
 precise_turn_degrees = 7.0
 precise_turn_damping = 0.4
 turn_only_threshold = 0.626
-relative_turn_only_threshold = 0.25
+relative_turn_only_threshold = 1.0
 allow_mouse = false
 mouse_sensitivity = 0.0
 mouse_gravity = 30.0
@@ -72,6 +72,7 @@ side_boost = 1000.0
 
 [node name="HopDart" type="Node2D" parent="." index="3"]
 script = ExtResource("5_jqx77")
+motion = 1
 
 [node name="TrunkCollision" parent="." index="4"]
 polygon = PackedVector2Array(6, -3, 0, -12, -6, -3, -8.5, 7.5, -3.5, 5, 3.5, 5, 8.5, 7.5)

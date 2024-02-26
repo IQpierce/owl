@@ -110,8 +110,8 @@ func process_gamepad(delta:float) -> bool:
 		else:
 			prev_frame_left_stick = want_dir.length()
 			if turn_only_threshold > 0:
-				want_dir.x = clamp(want_dir.x / turn_only_threshold, -1, 1)
-				want_dir.y = clamp(want_dir.y / turn_only_threshold, -1, 1)
+				want_dir.x /= clamp(turn_only_threshold, 0, 1)
+				want_dir.y /= clamp(turn_only_threshold, 0, 1)
 
 
 		if gamepad_acting && locomotor != null:
