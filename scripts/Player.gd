@@ -17,6 +17,7 @@ enum ControlMode { Dynamic, Roam, Tank }
 @export var precise_turn_degrees:float = 5
 @export var precise_turn_damping:float = 0.5
 @export_group("RoamControls")
+@export_range(-1, 1) var thrust_heading_alignment:float = 0
 @export_range(0, 1) var thrust_deadzone:float = 0.75
 @export_range(0, 1) var thrust_smash_threshold:float = 0.25
 @export_group("Mouse")
@@ -117,9 +118,11 @@ func process_gamepad(delta:float) -> bool:
 		var want_length = clamp(want_dir.length(), 0, 1)
 		var quick_change = want_length - prev_frame_left_stick > thrust_smash_threshold
 		var far_push = want_length > thrust_deadzone
+		var thrust_aligned = want_dir.normalized().dot(Vector2.UP.rotated(global_rotation)) >= thrust_heading_alignment
 		if quick_change || far_push:
-			prev_frame_left_stick = 0
-			drive_factor += 1
+			if thrust_aligned:
+				prev_frame_left_stick = 0
+				drive_factor += 1
 		else:
 			prev_frame_left_stick = want_length
 			if thrust_deadzone > 0:
