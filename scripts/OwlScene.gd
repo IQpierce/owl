@@ -28,6 +28,11 @@ var fishbowl_mode_auto_reset_timestamp:float = NAN
 func _ready():
 	if hide_mouse:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+	if player.process_mode == ProcessMode.PROCESS_MODE_DISABLED:
+		player.process_mode = ProcessMode.PROCESS_MODE_INHERIT
+	if !player.visible:
+		player.visible = true
 	
 	player.died.connect(self.on_player_died)
 

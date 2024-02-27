@@ -6,22 +6,27 @@ enum ControlMode { Dynamic, Roam, Tank }
 @export var camera_cartridge:CameraCartridge
 @export var hard_focus:HardFocusCameraCartridge = null
 @export var locomotor:Locomotor
+@export var gun:Gun
 @export var hopdart:Hopdart
 @export var warp_beam:WarpBeam
 @export var control_mode:ControlMode = ControlMode.Dynamic
 @export_group("TankControls")
 @export_range(0.0, 1.0) var down_turn_fraction:float = 1 #TODO (sam) currently this only affects keyboard
 @export_range(0.0, 1.0) var initial_turn_fraction:float = 1
-@export_range(0.0, 1.0) var shoot_turn_damp:float = 1
 @export var precise_turn_degrees:float = 5
 @export var precise_turn_damping:float = 0.5
 @export_group("RoamControls")
-@export_range(0, 1) var turn_only_threshold:float = 0.75
-@export_range(0, 1) var relative_turn_only_threshold:float = 0.25
+@export_range(0, 1) var thrust_deadzone:float = 0.75
+@export_range(0, 1) var thrust_smash_threshold:float = 0.25
 @export_group("Mouse")
 @export var allow_mouse:bool = false
 @export_range(0, 1) var mouse_sensitivity:float = 0
 @export_range(0, 60) var mouse_gravity: float = 30
+@export_group("Test Cartridges")
+@export var drive_test:DriveCartridge
+@export var turn_test:TurnCartridge
+@export var roam_test:RoamCartridge
+@export var gun_test:GunCartridge
 @export_group("")
 
 @onready var heartbeat = $Heartbeat
@@ -48,7 +53,7 @@ var recharge_delay:float = 1
 var charge_use_time:int = 0
 var score:int = 0
 
-signal shot_fired()
+signal shot_fired(moving:bool, turning:bool)
 signal warped_in()
 
 func health_portion() -> float:
@@ -67,10 +72,10 @@ func _ready():
 	
 	if locomotor != null:
 		locomotor.body = self
-
+	if gun != null:
+		gun.body = self
 	if hopdart != null:
 		hopdart.body = self
-		
 
 func _input(event:InputEvent):
 	if event is InputEventMouseMotion:
@@ -78,6 +83,8 @@ func _input(event:InputEvent):
 		mouse_motion = event.relative
 
 func _physics_process(delta:float):
+	apply_test_cartridges()
+
 	if charge < max_charge:
 		if Time.get_ticks_msec() - charge_use_time >= recharge_delay * 1000:
 			charge = min(charge + recharge_rate * delta, max_charge)
@@ -87,8 +94,9 @@ func _physics_process(delta:float):
 	
 func process_gamepad(delta:float) -> bool:
 	var gamepad_acting = false
+	var drive_factor = 0.0
+	var any_turn = false
 	if control_mode == ControlMode.Roam || control_mode == ControlMode.Dynamic:
-		var drive_factor = 0.0
 		var want_dir = Vector2.ZERO
 		var turn_fraction = 1.0
 
@@ -99,36 +107,39 @@ func process_gamepad(delta:float) -> bool:
 
 		want_dir.x = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
 		want_dir.y = Input.get_axis("up_gamepad_primary", "down_gamepad_primary")
-		gamepad_acting = gamepad_acting || drive_factor > 0 || want_dir.length_squared()
+
+		any_turn = want_dir.length_squared() > 0 && want_dir.normalized().dot(Vector2.UP.rotated(global_rotation))
+		gamepad_acting = gamepad_acting || drive_factor > 0 || any_turn
 
 		# TODO (sam) Testing if we can do turn-only and thrust-turn without an extra button (also might feel more intuitive)
-		var quick_change = want_dir.length() - prev_frame_left_stick > relative_turn_only_threshold
-		var far_push = want_dir.length() > turn_only_threshold
+		var want_length = clamp(want_dir.length(), 0, 1)
+		var quick_change = want_length - prev_frame_left_stick > thrust_smash_threshold
+		var far_push = want_length > thrust_deadzone
 		if quick_change || far_push:
 			prev_frame_left_stick = 0
 			drive_factor += 1
 		else:
-			prev_frame_left_stick = want_dir.length()
-			if turn_only_threshold > 0:
-				want_dir.x /= clamp(turn_only_threshold, 0, 1)
-				want_dir.y /= clamp(turn_only_threshold, 0, 1)
-
+			prev_frame_left_stick = want_length
+			if thrust_deadzone > 0:
+				want_dir.x /= clamp(thrust_deadzone, 0, 1)
+				want_dir.y /= clamp(thrust_deadzone, 0, 1)
 
 		if gamepad_acting && locomotor != null:
 			locomotor.locomote_towards(drive_factor, global_position + want_dir, turn_fraction, delta)
 
 	elif control_mode == ControlMode.Tank:
-		var drive_factor = Input.get_action_strength("up_gamepad_primary")
+		drive_factor = Input.get_action_strength("up_gamepad_primary")
 		var turn_factor = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
 
-		gamepad_acting = gamepad_acting || drive_factor > 0 || turn_factor != 0
+		any_turn = turn_factor != 0
+		gamepad_acting = gamepad_acting || drive_factor > 0 || any_turn
 
 		if gamepad_acting && locomotor != null:
 			locomotor.locomote(drive_factor, turn_factor, delta)
 
 	if Input.is_action_pressed("shoot_gamepad"):
 		gamepad_acting = true
-		shot_fired.emit()
+		shot_fired.emit(drive_factor > 0, any_turn)
 
 	if hopdart != null:
 		var hopdart_dir = Vector2.ZERO
@@ -149,6 +160,7 @@ func process_keyboard_mouse(delta:float):
 	var mouse_pressed = allow_mouse && Input.is_action_pressed("mouse_left_click")
 	var mouse_moved = false
 	var view_speed = 1
+	var drive_factor = 0.0
 	var any_turn = false
 
 	if mouse_motion.length_squared() > 0:
@@ -179,7 +191,6 @@ func process_keyboard_mouse(delta:float):
 			warp_beam.visible = false
 
 	if control_mode == ControlMode.Roam && !preping_warp:
-		var drive_factor = 0.0
 		var want_dir = Vector2.ZERO
 		var turn_fraction = 1.0
 
@@ -217,7 +228,6 @@ func process_keyboard_mouse(delta:float):
 		#Input.warp_mouse(pos_on_canvas + Vector2.UP.rotated(global_rotation) * 100)
 
 	elif (control_mode == ControlMode.Tank || control_mode == ControlMode.Dynamic) && !preping_warp:
-		var drive_factor = 0.0
 		var turn_factor = 0.0
 		var turn_damp = 1.0
 		var precise_turn_radians = precise_turn_degrees * PI / 180
@@ -262,12 +272,8 @@ func process_keyboard_mouse(delta:float):
 		else:
 			known_turn = clamp(known_turn + angular_velocity * delta, -precise_turn_radians, precise_turn_radians)
 
-
 	if Input.is_action_pressed("shoot"):
-		shot_fired.emit()
-		if !any_turn:
-			#TODO (sam) only do this if a shot is actually fired?
-			angular_velocity *= shoot_turn_damp
+		shot_fired.emit(drive_factor > 0, any_turn)
 	
 	if hopdart != null:
 		var hopdart_dir = Vector2.ZERO
@@ -304,7 +310,7 @@ func drop_hard_focus():
 	print("drop hard _focus")
 	if hard_focus != null:
 		hard_focus.prey = null
-		if camera_rig != null && camera_rig.cartridge == hard_focus:
+		if camera_rig != null && hard_focus != null && camera_rig.cartridge == hard_focus:
 			camera_rig.cartridge = camera_cartridge
 
 # TODO This probably wants to live elsewhere ... also very hardcoded at the moment
@@ -335,7 +341,16 @@ func warp_in():
 	collision_mask = mask
 	#if cartridge != null:
 	#	global_position = cartridge.global_position + ((global_position - cartridge.global_position) * (old_zoom / zoom))
-	
+
+func apply_test_cartridges():
+	if drive_test != null:
+		drive_test.apply(self, locomotor)
+	if turn_test != null:
+		turn_test.apply(self, locomotor)
+	if roam_test != null:
+		roam_test.apply(self)
+	if gun_test != null:
+		gun_test.apply(gun)
 	
 # Heartbeat stuff
 

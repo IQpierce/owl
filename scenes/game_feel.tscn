@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=21 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_80w6u"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
@@ -14,6 +14,10 @@
 [ext_resource type="PackedScene" uid="uid://bs64p7ff3fvw2" path="res://packedscenes/camera_rig.tscn" id="11_llngb"]
 [ext_resource type="Texture2D" uid="uid://d01krn0pvudlc" path="res://textures/dot.png" id="12_4aes3"]
 [ext_resource type="Script" path="res://scripts/hacks/HackParticlesEmission.gd" id="13_1js2g"]
+[ext_resource type="Script" path="res://scripts/TestCartridges/DriveCartridge.gd" id="15_5mt74"]
+[ext_resource type="Script" path="res://scripts/TestCartridges/TurnCartridge.gd" id="16_wpvoa"]
+[ext_resource type="Script" path="res://scripts/TestCartridges/RoamCartridge.gd" id="17_28w32"]
+[ext_resource type="Script" path="res://scripts/TestCartridges/GunCartridge.gd" id="18_cebdg"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
@@ -107,9 +111,6 @@ _warpable = true
 point_draw_radius = 0.008
 draw_line_width = 0.005
 
-[node name="Player" parent="." instance=ExtResource("8_ifucg")]
-position = Vector2(4000, 4000)
-
 [node name="CameraRig" parent="." instance=ExtResource("11_llngb")]
 
 [node name="AsteroidBelt" type="Area2D" parent="."]
@@ -142,6 +143,109 @@ visibility_rect = Rect2(-29000, -16200, 58000, 32400)
 script = ExtResource("13_1js2g")
 
 [node name="HUD" parent="." instance=ExtResource("8_m427m")]
+
+[node name="Player" parent="." node_paths=PackedStringArray("drive_test", "turn_test", "roam_test", "gun_test") instance=ExtResource("8_ifucg")]
+position = Vector2(4000, 4000)
+thrust_deadzone = 1.0
+thrust_smash_threshold = 1.0
+drive_test = NodePath("../Hideout/DriveCartridges/HighDrift_Original")
+turn_test = NodePath("../Hideout/TurnCartridges/HighDrift")
+roam_test = NodePath("../Hideout/RoamCartridges/ButtonThrust")
+gun_test = NodePath("../Hideout/GunCartridges/SlowNoHelp_Original")
+
+[node name="Hideout" type="Node2D" parent="."]
+process_mode = 4
+
+[node name="DriveCartridges" type="Node2D" parent="Hideout"]
+
+[node name="LowDrift_Asteroids" type="Node2D" parent="Hideout/DriveCartridges"]
+script = ExtResource("15_5mt74")
+
+[node name="MedDrift" type="Node2D" parent="Hideout/DriveCartridges"]
+script = ExtResource("15_5mt74")
+drive_force = 600.0
+linear_damp = 0.5
+
+[node name="HighDrift_Original" type="Node2D" parent="Hideout/DriveCartridges"]
+script = ExtResource("15_5mt74")
+drive_force = 400.0
+linear_damp = 0.1
+
+[node name="TurnCartridges" type="Node2D" parent="Hideout"]
+
+[node name="ExactSlow" type="Node2D" parent="Hideout/TurnCartridges"]
+script = ExtResource("16_wpvoa")
+turn_force = 40.0
+
+[node name="ExactMed_Asteroids" type="Node2D" parent="Hideout/TurnCartridges"]
+script = ExtResource("16_wpvoa")
+
+[node name="ExactFast" type="Node2D" parent="Hideout/TurnCartridges"]
+script = ExtResource("16_wpvoa")
+turn_force = 100.0
+
+[node name="LowDrift" type="Node2D" parent="Hideout/TurnCartridges"]
+script = ExtResource("16_wpvoa")
+turn_force = 50.0
+angular_damp = 5.0
+
+[node name="MedDrift_Original" type="Node2D" parent="Hideout/TurnCartridges"]
+script = ExtResource("16_wpvoa")
+turn_force = 40.0
+angular_damp = 3.0
+
+[node name="HighDrift" type="Node2D" parent="Hideout/TurnCartridges"]
+script = ExtResource("16_wpvoa")
+turn_force = 20.0
+angular_damp = 0.5
+drive_turn_factor = 0.85
+
+[node name="RoamCartridges" type="Node2D" parent="Hideout"]
+
+[node name="ButtonThrust" type="Node2D" parent="Hideout/RoamCartridges"]
+script = ExtResource("17_28w32")
+
+[node name="DeadzoneThrust" type="Node2D" parent="Hideout/RoamCartridges"]
+script = ExtResource("17_28w32")
+thrust_deadzone = 0.626
+
+[node name="SmashThrust" type="Node2D" parent="Hideout/RoamCartridges"]
+script = ExtResource("17_28w32")
+thrust_smash_threshold = 0.25
+
+[node name="GunCartridges" type="Node2D" parent="Hideout"]
+
+[node name="SlowNoHelp_Original" type="Node2D" parent="Hideout/GunCartridges"]
+script = ExtResource("18_cebdg")
+cooldown_duration_secs = 0.23
+
+[node name="FastNoHelp" type="Node2D" parent="Hideout/GunCartridges"]
+script = ExtResource("18_cebdg")
+cooldown_duration_secs = 0.15
+
+[node name="SlowAlwaysHelp" type="Node2D" parent="Hideout/GunCartridges"]
+script = ExtResource("18_cebdg")
+affect_motion_mode = 1
+shoot_turn_damp = 0.5
+cooldown_duration_secs = 0.23
+
+[node name="FastAlwaysHelp" type="Node2D" parent="Hideout/GunCartridges"]
+script = ExtResource("18_cebdg")
+affect_motion_mode = 1
+shoot_turn_damp = 0.5
+cooldown_duration_secs = 0.15
+
+[node name="SlowShotHelp" type="Node2D" parent="Hideout/GunCartridges"]
+script = ExtResource("18_cebdg")
+affect_motion_mode = 2
+shoot_turn_damp = 0.2
+cooldown_duration_secs = 0.23
+
+[node name="FastShotHelp" type="Node2D" parent="Hideout/GunCartridges"]
+script = ExtResource("18_cebdg")
+affect_motion_mode = 2
+shoot_turn_damp = 0.2
+cooldown_duration_secs = 0.15
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]

@@ -1,5 +1,10 @@
 extends Node2D
+class_name Gun
 
+enum AffectMotionMode { Never, Always, OnShot }
+
+@export var affect_motion_mode:AffectMotionMode = AffectMotionMode.Never
+@export_range(0.0, 1.0) var shoot_turn_damp:float = 1
 @export var shot_proto:PackedScene
 @export var shot_force:float
 @export var cooldown_duration_secs:float
@@ -9,6 +14,7 @@ extends Node2D
 
 @onready var lazer:AudioStreamPlayer2D = $Lazer
 
+var body:RigidBody2D = null
 
 
 var cooldown_timestamp:int
@@ -16,9 +22,15 @@ var cooldown_timestamp:int
 func is_waiting_on_cooldown():
 	return Time.get_ticks_msec() < cooldown_timestamp
 
-func shoot():
+func shoot(moving:bool, turning:bool):
+	if affect_motion_mode == AffectMotionMode.Always:
+		affect_motion(moving, turning)
+
 	if (is_waiting_on_cooldown()):
 		return
+
+	if affect_motion_mode == AffectMotionMode.OnShot:
+		affect_motion(moving, turning)
 
 	var shot_instance:Bullet = shot_proto.instantiate()
 	shot_instance.global_position = global_position
@@ -34,4 +46,7 @@ func shoot():
 	
 	# lazer audio
 	lazer.play()
-	
+
+func affect_motion(moving:bool, turning:bool):
+	if body != null && !turning:
+		body.angular_velocity *= shoot_turn_damp
