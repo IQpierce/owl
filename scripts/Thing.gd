@@ -73,6 +73,19 @@ func deal_damage(dmg_amt:float, global_position:Vector2):
 	if (health <= 0):
 		health = 0
 		die(false)
+	else:
+		# TODO (sam) Placeholder for responding to damage
+		var tree = get_tree()
+		var blinks = 1
+		var blink_frames = 6
+		while blinks > 0:
+			blinks -= 1
+			visible = false
+			for i in blink_frames:
+				await tree.process_frame
+			visible = true
+			for i in blink_frames:
+				await tree.process_frame
 
 func die(utterly:bool = false):
 	if died_sfx != null:
