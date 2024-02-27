@@ -1,6 +1,13 @@
 extends Node2D
 class_name OwlGame
 
+@export var muted:bool:
+	set(v):
+		muted = v
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), muted)
+
+@export var emulate_phosphor_monitor:bool = true
+
 static var instance
 
 var zooming:bool = false
@@ -17,6 +24,11 @@ var scene:OwlScene:
 func _ready():
 	instance = self
 	Engine.max_fps = 60
+	muted = false
+
+func _process(delta:float):
+	if Input.is_action_just_pressed("toggle_mute"):
+		muted = !muted
 
 func world_camera() -> CameraRig:
 	if instance.scene != null:

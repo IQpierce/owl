@@ -16,8 +16,6 @@ custom_solver_bias = 0.1
 script = ExtResource("1_8v45w")
 player = NodePath("Player")
 world_camera = NodePath("CameraRig")
-muted = true
-emulate_phosphor_monitor = false
 phosphor_emulation_proto = ExtResource("2_5du3d")
 
 [node name="WrappingWalls" type="Node2D" parent="."]

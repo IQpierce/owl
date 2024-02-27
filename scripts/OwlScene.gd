@@ -10,13 +10,6 @@ class_name OwlScene
 @export var fishbowl_camera:Camera2D
 @export var fishbowl_mode_auto_reset_secs:float = 60 * 30
 
-
-@export var muted:bool = false:
-	set(v):
-		muted = v
-		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), muted)
-
-@export var emulate_phosphor_monitor:bool = true
 ## PhosphorEmulation we need to render everything under to pretend the game is rendered in suspended phospor.
 @export var phosphor_emulation_proto:PackedScene
 
@@ -40,8 +33,10 @@ func _ready():
 	var view_size = get_viewport().size
 	if OS.has_feature("editor"):
 		print("Zoom ", view_size.x, "x",view_size.y, " to show ", default_view_size.x, "x", default_view_size.y, "(ish)")
+	
+	var want_phosphor = OwlGame.instance.emulate_phosphor_monitor && phosphor_emulation_proto != null
 
-	if emulate_phosphor_monitor && phosphor_emulation_proto != null:
+	if want_phosphor && ProjectSettings.get_setting("rendering/renderer/rendering_method") != "gl_compatibility":
 		var scene_children = get_children();
 		var phosphor_emu:PhosphorEmulation = phosphor_emulation_proto.instantiate()
 		add_child(phosphor_emu)
@@ -73,9 +68,6 @@ func _ready():
 		fishbowl_mode_auto_reset_timestamp = Time.get_unix_time_from_system() + fishbowl_mode_auto_reset_secs
 
 func _process(delta):
-	if Input.is_action_just_pressed("toggle_mute"):
-		muted = !muted
-	
 	if fishbowl_mode:
 		if fishbowl_camera:
 			if world_camera:

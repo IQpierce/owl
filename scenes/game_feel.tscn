@@ -30,7 +30,6 @@ radius = 6400.0
 script = ExtResource("1_80w6u")
 player = NodePath("Player")
 world_camera = NodePath("CameraRig")
-emulate_phosphor_monitor = false
 phosphor_emulation_proto = ExtResource("2_eojni")
 
 [node name="WrappingWalls" type="Node2D" parent="."]

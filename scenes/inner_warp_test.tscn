@@ -16,8 +16,6 @@ custom_solver_bias = 0.1
 script = ExtResource("1_hmpcl")
 player = NodePath("Player")
 world_camera = NodePath("CameraRig")
-muted = true
-emulate_phosphor_monitor = false
 phosphor_emulation_proto = ExtResource("2_355mo")
 
 [node name="WrappingWalls" type="Node2D" parent="."]
@@ -145,8 +143,6 @@ script = ExtResource("4_gsir2")
 
 [node name="Player" parent="." instance=ExtResource("4_dbpt6")]
 position = Vector2(960, 540)
-shoot_turn_damp = 1.0
-turn_only_threshold = 0.75
 
 [node name="HUD" parent="." instance=ExtResource("5_7p7k7")]
 
