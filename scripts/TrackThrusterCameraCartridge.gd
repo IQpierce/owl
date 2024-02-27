@@ -14,6 +14,8 @@ class_name TrackThrusterCameraCartridge
 @export var lead_turn_to_rest_ms = 300
 
 var prey:Thing
+var prey_offset:Vector2
+var old_prey_offset:Vector2
 var prey_velocity:Vector2
 var prey_bearing:Vector2
 var fallback_start:int
@@ -39,13 +41,14 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 	if !visible || prey == null:
 		return plan
 
-	var focus = prey.global_position
+	var prey_pos = prey.global_position + prey_offset
+	var focus = prey_pos
 
 	var view_size = data_rig.view_size()
 	var half_view_size = view_size / 2
 
 	if locomotor != null && prey != null:
-		var to_prey = prey.global_position - plan.position
+		var to_prey = prey_pos - plan.position
 		var prey_dist_sqr = to_prey.length_squared()
 		var prey_heading = Vector2.UP.rotated(prey.global_rotation)
 		prey_bearing = Vector2.ZERO
@@ -53,10 +56,10 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 		if prey_speed > 0:
 			prey_bearing = prey.linear_velocity / prey_speed
 
-		focus = prey.global_position + (prey_bearing * lead_distance)
+		focus = prey_pos + (prey_bearing * lead_distance)
 		var to_focus = focus - plan.position
 
-		var to_prey_soon = prey.global_position + (prey.linear_velocity * delta * 2) - plan.position
+		var to_prey_soon = prey_pos + (prey.linear_velocity * delta * 2) - plan.position
 
 		track_rect = Rect2(
 			track_threshold - half_view_size.x,
@@ -70,9 +73,9 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 			view_size.y - lock_threshold * 2)
 	
 		if tracking == TrackingState.Rest:
-			var within_tracking_x = abs(prey.global_position.x - plan.position.x) > half_view_size.x - track_threshold
-			var within_tracking_y = abs(prey.global_position.y - plan.position.y) > half_view_size.y - track_threshold
-			if (within_tracking_x || within_tracking_y) && prey.linear_velocity.dot(prey.global_position - plan.position) > 0:
+			var within_tracking_x = abs(prey_pos.x - plan.position.x) > half_view_size.x - track_threshold
+			var within_tracking_y = abs(prey_pos.y - plan.position.y) > half_view_size.y - track_threshold
+			if (within_tracking_x || within_tracking_y) && prey.linear_velocity.dot(prey_pos - plan.position) > 0:
 				tracking = TrackingState.Follow
 		elif tracking == TrackingState.Follow:
 			if prey.linear_velocity.length_squared() < prey_velocity.length_squared():
@@ -80,7 +83,7 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 					tracking = TrackingState.Rest
 			else:
 				fallback_start = Time.get_ticks_msec()
-				if plan.velocity.dot(prey.global_position - plan.position) <= 0:
+				if plan.velocity.dot(prey_pos - plan.position) <= 0:
 					if to_prey.project(prey_heading).dot(to_prey_soon.project(prey_heading)) <= 0:
 						tracking = TrackingState.Lead
 					else:
@@ -89,7 +92,7 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 					if prey.linear_velocity.dot(prey_velocity) <= 0:
 						tracking = TrackingState.Rest
 		elif tracking == TrackingState.Lead:
-			if prey_heading.dot((plan.position - prey.global_position).project(prey.linear_velocity.normalized())) <= 0:
+			if prey_heading.dot((plan.position - prey_pos).project(prey.linear_velocity.normalized())) <= 0:
 				if Time.get_ticks_msec() - fallback_start >= lead_turn_to_rest_ms:
 					tracking = TrackingState.Rest
 			else:
@@ -107,6 +110,7 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 
 		if tracking == TrackingState.Rest:
 			plan.velocity *= rest_vel_damp
+			plan.position += prey_offset - old_prey_offset
 		else:
 			var to_focus_length = to_focus.length()
 			if to_focus_length > 0:
@@ -130,7 +134,7 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 					var to_fuzzy_focus = to_focus#to_focus.project(prey.linear_velocity)
 					if hopdart != null && hopdart.engaged:
 						# TODO (sam) I'd like to delay the camera following after a hopdart, but can't get it quite right
-						var fuzzy_focus = (prey.global_position - hopdart.sum_move) + (prey_bearing * lead_distance)
+						var fuzzy_focus = (prey_pos - hopdart.sum_move) + (prey_bearing * lead_distance)
 						to_fuzzy_focus = fuzzy_focus - global_position
 					var to_fuzzy_focus_dir = to_fuzzy_focus.normalized()
 					plan.velocity += to_fuzzy_focus_dir * (locomotor.drive_force * acceleration_factor * delta)
@@ -171,6 +175,7 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 		plan.velocity = prey.linear_velocity
 		plan.position.y = prey.global_position.y - (half_view_size.y - lock_threshold)
 
+	old_prey_offset = prey_offset
 	return plan
 
 func request_debug(drawee_rig:CameraRig) -> String:

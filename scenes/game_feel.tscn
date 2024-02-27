@@ -152,7 +152,7 @@ thrust_smash_threshold = 1.0
 drive_test = NodePath("../Hideout/DriveCartridges/HighDrift_Original")
 turn_test = NodePath("../Hideout/TurnCartridges/HighDrift")
 roam_test = NodePath("../Hideout/RoamCartridges/ButtonThrust")
-gun_test = NodePath("../Hideout/GunCartridges/SlowNoHelp_Original")
+gun_test = NodePath("../Hideout/GunCartridges/SlowShotHelp")
 strafe_test = NodePath("../Hideout/StrafeCartridges/DirectScreenShort")
 
 [node name="Hideout" type="Node2D" parent="."]
@@ -249,6 +249,13 @@ affect_motion_mode = 2
 shoot_turn_damp = 0.2
 cooldown_duration_secs = 0.15
 
+[node name="CameraPull_SlowShotHelp" type="Node2D" parent="Hideout/GunCartridges"]
+script = ExtResource("18_cebdg")
+affect_motion_mode = 2
+shoot_turn_damp = 0.2
+cooldown_duration_secs = 0.23
+camera_pull_factor = 0.1
+
 [node name="StrafeCartridges" type="Node2D" parent="Hideout"]
 
 [node name="DirectScreenShort" type="Node2D" parent="Hideout/StrafeCartridges"]
@@ -272,6 +279,14 @@ initial_impulse = 160.0
 finesse_impulse = 400.0
 initial_msec = 200
 finesse_msec = 500
+
+[node name="DirectBodyLong" type="Node2D" parent="Hideout/StrafeCartridges"]
+script = ExtResource("19_c0wvn")
+initial_distance = 100.0
+finesse_distance = 200.0
+alignment = 1
+initial_msec = 150
+finesse_msec = 250
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]

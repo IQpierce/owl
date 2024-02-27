@@ -29,3 +29,18 @@ func anti_zoom() -> float:
 		if scene.world_camera.zoom.x != 0 && scene.world_camera.zoom.y != 0:
 			return scene.world_camera.anti_zoom()
 	return 1
+
+func beyond_screen(global_pos:Vector2) -> Vector2:
+	var scene = instance.scene
+	var beyond = Vector2.ZERO
+	if scene != null && scene.world_camera != null:
+		beyond = abs(global_pos - scene.world_camera.global_position) - (scene.world_camera.view_size() / 2)
+		if beyond.x > 0:
+			beyond.x *= -1 if global_pos.x < scene.world_camera.global_position.x else 1
+		else:
+			beyond.x = 0
+		if beyond.y > 0:
+			beyond.y *= -1 if global_pos.y < scene.world_camera.global_position.y else 1
+		else:
+			beyond.y = 0
+	return beyond

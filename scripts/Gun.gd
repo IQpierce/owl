@@ -12,9 +12,14 @@ enum AffectMotionMode { Never, Always, OnShot }
 @export var immune_to_shots:Array[RigidBody2D]
 @export var shot_parent:Node2D
 
+# TODO (sam) See bullet: This is placeholder
+@export var camera_track:TrackThrusterCameraCartridge = null
+@export var camera_pull_factor:float = 0
+
 @onready var lazer:AudioStreamPlayer2D = $Lazer
 
 var body:RigidBody2D = null
+
 
 
 var cooldown_timestamp:int
@@ -40,6 +45,9 @@ func shoot(moving:bool, turning:bool):
 	shot_instance.set_linear_velocity(initial_velocity)
 	
 	shot_instance.ignore_bodies.append_array(immune_to_shots)
+
+	shot_instance.camera_track = camera_track
+	shot_instance.camera_pull_factor = camera_pull_factor
 	
 	shot_parent.get_parent().add_child(shot_instance)
 	cooldown_timestamp = Time.get_ticks_msec() + (cooldown_duration_secs * 1000);
