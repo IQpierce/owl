@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=22 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_80w6u"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://scripts/TestCartridges/TurnCartridge.gd" id="16_wpvoa"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/RoamCartridge.gd" id="17_28w32"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/GunCartridge.gd" id="18_cebdg"]
+[ext_resource type="Script" path="res://scripts/TestCartridges/StrafeCartridge.gd" id="19_c0wvn"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
@@ -144,7 +145,7 @@ script = ExtResource("13_1js2g")
 
 [node name="HUD" parent="." instance=ExtResource("8_m427m")]
 
-[node name="Player" parent="." node_paths=PackedStringArray("drive_test", "turn_test", "roam_test", "gun_test") instance=ExtResource("8_ifucg")]
+[node name="Player" parent="." node_paths=PackedStringArray("drive_test", "turn_test", "roam_test", "gun_test", "strafe_test") instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
 thrust_deadzone = 1.0
 thrust_smash_threshold = 1.0
@@ -152,6 +153,7 @@ drive_test = NodePath("../Hideout/DriveCartridges/HighDrift_Original")
 turn_test = NodePath("../Hideout/TurnCartridges/HighDrift")
 roam_test = NodePath("../Hideout/RoamCartridges/ButtonThrust")
 gun_test = NodePath("../Hideout/GunCartridges/SlowNoHelp_Original")
+strafe_test = NodePath("../Hideout/StrafeCartridges/DirectScreenShort")
 
 [node name="Hideout" type="Node2D" parent="."]
 process_mode = 4
@@ -246,6 +248,30 @@ script = ExtResource("18_cebdg")
 affect_motion_mode = 2
 shoot_turn_damp = 0.2
 cooldown_duration_secs = 0.15
+
+[node name="StrafeCartridges" type="Node2D" parent="Hideout"]
+
+[node name="DirectScreenShort" type="Node2D" parent="Hideout/StrafeCartridges"]
+script = ExtResource("19_c0wvn")
+
+[node name="ImpulseScreenShort" type="Node2D" parent="Hideout/StrafeCartridges"]
+script = ExtResource("19_c0wvn")
+motion = 1
+
+[node name="DirectScreenLong" type="Node2D" parent="Hideout/StrafeCartridges"]
+script = ExtResource("19_c0wvn")
+initial_distance = 100.0
+finesse_distance = 200.0
+initial_msec = 150
+finesse_msec = 250
+
+[node name="ImpulseScreenLong" type="Node2D" parent="Hideout/StrafeCartridges"]
+script = ExtResource("19_c0wvn")
+motion = 1
+initial_impulse = 160.0
+finesse_impulse = 400.0
+initial_msec = 200
+finesse_msec = 500
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]

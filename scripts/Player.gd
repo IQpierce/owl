@@ -27,6 +27,7 @@ enum ControlMode { Dynamic, Roam, Tank }
 @export var turn_test:TurnCartridge
 @export var roam_test:RoamCartridge
 @export var gun_test:GunCartridge
+@export var strafe_test:StrafeCartridge
 @export_group("")
 
 @onready var heartbeat = $Heartbeat
@@ -351,6 +352,8 @@ func apply_test_cartridges():
 		roam_test.apply(self)
 	if gun_test != null:
 		gun_test.apply(gun)
+	if strafe_test != null:
+		strafe_test.apply(hopdart)
 	
 # Heartbeat stuff
 
