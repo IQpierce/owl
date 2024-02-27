@@ -703,6 +703,12 @@ camera_pull_factor = 0.1
 
 [node name="StrafeCartridges" type="Node2D" parent="Hideout"]
 
+[node name="DirectScreenXShort" type="Node2D" parent="Hideout/StrafeCartridges"]
+script = ExtResource("19_c0wvn")
+initial_distance = 10.0
+finesse_distance = 40.0
+finesse_msec = 400
+
 [node name="DirectScreenShort" type="Node2D" parent="Hideout/StrafeCartridges"]
 script = ExtResource("19_c0wvn")
 

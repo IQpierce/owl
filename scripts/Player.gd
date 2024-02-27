@@ -134,9 +134,38 @@ func process_gamepad(delta:float) -> bool:
 
 	elif control_mode == ControlMode.Tank:
 		drive_factor = Input.get_action_strength("up_gamepad_primary")
-		var turn_factor = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
-
+		#var turn_factor = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
+		var turn_factor = Input.get_axis("trigger_left_gamepad", "trigger_right_gamepad")
 		any_turn = turn_factor != 0
+
+		#if any_turn:
+		#	var about_face_portion = abs(known_turn) / precise_turn_radians
+		#	turn_factor *= ((1 - about_face_portion) * initial_turn_fraction) + (about_face_portion)
+
+		# Allow player to hold DOWN to aim more precisely
+		if Input.is_action_pressed("down_gamepad_primary"):
+			turn_factor *= down_turn_fraction
+			gamepad_acting = true
+
+		# TODO (sam) Testing smash to strafe
+		var want_dir = Vector2.ZERO
+		want_dir.x = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
+		want_dir.y = Input.get_axis("up_gamepad_primary", "down_gamepad_primary")
+		var want_length = clamp(want_dir.length(), 0, 1)
+		var quick_change = want_length - prev_frame_left_stick > 0.5#thrust_smash_threshold
+		var side_aligned = want_dir.normalized().dot(Vector2.UP) < 0.25
+		if quick_change:
+			if side_aligned:
+				gamepad_acting = true
+				prev_frame_left_stick = 0
+				if hopdart.alignment == Hopdart.Alignment.Screen:
+					want_dir.y = 0
+					want_dir = want_dir.rotated(global_rotation)
+				hopdart.engage(want_dir)
+		else:
+			prev_frame_left_stick = want_length
+
+		#any_turn = turn_factor != 0
 		gamepad_acting = gamepad_acting || drive_factor > 0 || any_turn
 
 		if gamepad_acting && locomotor != null:
