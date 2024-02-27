@@ -129,6 +129,8 @@ func process_gamepad(delta:float) -> bool:
 				want_dir.x /= clamp(thrust_deadzone, 0, 1)
 				want_dir.y /= clamp(thrust_deadzone, 0, 1)
 
+		turn_fraction *= clamp(want_dir.length(), 0, 1)
+
 		if gamepad_acting && locomotor != null:
 			locomotor.locomote_towards(drive_factor, global_position + want_dir, turn_fraction, delta)
 
