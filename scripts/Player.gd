@@ -47,6 +47,7 @@ var mouse_position:Vector2 = Vector2.ZERO
 var mouse_motion:Vector2 = Vector2.ZERO
 var known_turn:float = 0
 var prev_frame_left_stick:float = 0
+var rotating_towards:Vector2 = Vector2.ZERO
 
 #TODO (sam) where should these actually live? On Thing?
 var charge:float = 100
@@ -111,8 +112,14 @@ func process_gamepad(delta:float) -> bool:
 		want_dir.x = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
 		want_dir.y = Input.get_axis("up_gamepad_primary", "down_gamepad_primary")
 
-		any_turn = want_dir.length_squared() > 0 && want_dir.normalized().dot(Vector2.UP.rotated(global_rotation))
-		gamepad_acting = gamepad_acting || drive_factor > 0 || any_turn
+		if want_dir.length_squared() == 0 && rotating_towards.length_squared() > 0:
+			want_dir = rotating_towards
+			rotating_towards -= rotating_towards.project(Vector2.UP.rotated(global_rotation))
+			rotating_towards *= 1 - (angular_damp * delta)
+			if rotating_towards.length_squared() < 0.01:
+				rotating_towards = Vector2.ZERO
+		else:
+			rotating_towards = want_dir
 
 		# TODO (sam) Testing if we can do turn-only and thrust-turn without an extra button (also might feel more intuitive)
 		var want_length = clamp(want_dir.length(), 0, 1)
@@ -130,6 +137,9 @@ func process_gamepad(delta:float) -> bool:
 				want_dir.y /= clamp(thrust_deadzone, 0, 1)
 
 		turn_fraction *= clamp(want_dir.length(), 0, 1)
+
+		any_turn = want_dir.length_squared() > 0 && want_dir.normalized().dot(Vector2.UP.rotated(global_rotation))
+		gamepad_acting = gamepad_acting || drive_factor > 0 || any_turn
 
 		if gamepad_acting && locomotor != null:
 			locomotor.locomote_towards(drive_factor, global_position + want_dir, turn_fraction, delta)
