@@ -377,7 +377,6 @@ func _apply_pickup(pickup:Pickup):
 	score += 1
 
 func drop_hard_focus():
-	print("drop hard _focus")
 	if hard_focus != null:
 		hard_focus.prey = null
 		if camera_rig != null && hard_focus != null && camera_rig.cartridge == hard_focus:

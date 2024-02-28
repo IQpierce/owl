@@ -34,8 +34,7 @@ func counter_zoom():
 		if line_geometry != null:
 			for geom in line_geometry:
 				if geom != null:
-					geom.point_draw_radius = geom.initial_point_radius * anti_zoom
-					geom.draw_line_width = geom.initial_line_width * anti_zoom
+					geom.zoom_scaling = anti_zoom
 					geom.queue_redraw()
 	elif scale_mode == ScaleMode.Transform:
 		scale = initial_scale * anti_zoom

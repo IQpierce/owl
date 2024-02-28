@@ -5,17 +5,17 @@ enum DrawState { Intro, Stable, Outro }
 
 @export var intro_secs:float = 0
 @export var _warpable:bool = false
-@export var point_draw_radius:float = .09
 @export var circle_draw_color:Color = Color(0.86274510622025, 0.86274510622025, 0.86274510622025)
 @export var line_draw_color:Color = Color(0.70588237047195, 0.70588237047195, 0.70588237047195)
-@export var draw_line_width:float = .1
 @export var draw_line_antialiased:bool = true
 @export var skip_line_indeces:Array[int]	# Each line that begins with a vert index that's in this list, will be skipped
 @export var split_points_max = 40
+
 var draw_state:DrawState = DrawState.Stable
 var draw_elapsed:float = 0
-var initial_point_radius:float = 1
-var initial_line_width:float = 1
+var initial_point_radius:float = 0
+var initial_line_width:float = 0
+var zoom_scaling = 1
 var warp_points:PackedVector2Array
 var far_distance:float = -1
 var poly_from_warp_index = 0
@@ -26,8 +26,14 @@ func can_warp() -> bool:
 	return draw_state != DrawState.Intro && _warpable
 
 func _ready():
-	initial_point_radius = point_draw_radius
-	initial_line_width = draw_line_width
+	if global_scale.y != global_scale.x && OS.has_feature("editor"):
+		push_warning("Vector Rendering requires uniform scaling for good lines. Matching scale.y to scale.x.")
+		global_scale.y = global_scale.x
+
+	if global_scale.x > 0:
+		initial_point_radius = OwlGame.instance.draw_point_thickness / global_scale.x
+		initial_line_width = OwlGame.instance.draw_line_thickness / global_scale.x
+
 	if intro_secs > 0:
 		draw_state = DrawState.Intro
 		draw_elapsed = 0
@@ -87,7 +93,7 @@ func _draw():
 				next_point = ((1 - line_portion) * points[i]) + (line_portion * next_point)
 
 		if draw_line:
-			draw_line(points[i], next_point, line_draw_color, draw_line_width, draw_line_antialiased)
+			draw_line(points[i], next_point, line_draw_color, initial_line_width * zoom_scaling, draw_line_antialiased)
 	
 	# @TODO - it would be nice to not have to repeat this entire loop verbatim!! dupe code!!!	
 	# ... actually not quite dupe code anymore if we support dashed lines
@@ -103,7 +109,7 @@ func _draw():
 				draw_vert = false
 
 		if draw_vert:
-			draw_circle(Vector2(x, y), point_draw_radius, circle_draw_color)
+			draw_circle(Vector2(x, y), initial_point_radius * zoom_scaling, circle_draw_color)
 
 func undraw():
 	if draw_elapsed > intro_secs || draw_elapsed <= 0:
