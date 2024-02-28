@@ -16,6 +16,7 @@ enum ControlMode { Dynamic, Roam, Tank }
 @export_range(0.0, 1.0) var initial_turn_fraction:float = 1
 @export var precise_turn_degrees:float = 5
 @export var precise_turn_damping:float = 0.5
+@export_range(0, 90) var turn_band_degrees:float = 45
 @export_group("RoamControls")
 @export_range(-1, 1) var thrust_heading_alignment:float = 0
 @export_range(0, 1) var thrust_deadzone:float = 0.75
@@ -153,7 +154,16 @@ func process_gamepad(delta:float) -> bool:
 		if Input.is_action_pressed("drive_gamepad"):
 			drive_factor += 1
 
-		var turn_factor = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
+		#var turn_factor = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
+		var stick_pos = Vector2(Input.get_axis("left_gamepad_primary", "right_gamepad_primary"), Input.get_axis("up_gamepad_primary", "down_gamepad_primary"))
+		var vert_turn_adjustment = 1
+		var hori_turn_portion = clamp(Vector2(abs(stick_pos.x), stick_pos.y).normalized().dot(Vector2.RIGHT), 0, 1)
+		var full_turn_threshold = cos(turn_band_degrees / 180.0 * PI)
+		if hori_turn_portion < full_turn_threshold:
+			vert_turn_adjustment = hori_turn_portion / full_turn_threshold
+		if stick_pos.x < 0:
+			vert_turn_adjustment *= -1
+		var turn_factor = clamp(stick_pos.x + abs(stick_pos.y) * vert_turn_adjustment, -1, 1)
 
 		#if any_turn:
 		#	var about_face_portion = abs(known_turn_gamepad) / precise_turn_radians

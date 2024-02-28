@@ -39,6 +39,7 @@ down_turn_fraction = 0.7
 initial_turn_fraction = 0.33
 precise_turn_degrees = 7.0
 precise_turn_damping = 0.4
+turn_band_degrees = 45.0
 thrust_heading_alignment = 0.0
 thrust_deadzone = 0.75
 thrust_smash_threshold = 0.25
