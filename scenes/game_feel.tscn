@@ -586,12 +586,14 @@ script = ExtResource("13_1js2g")
 
 [node name="Player" parent="." node_paths=PackedStringArray("drive_test", "turn_test", "roam_test", "gun_test", "strafe_test") instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
+control_mode = 2
+thrust_heading_alignment = -1.0
 thrust_deadzone = 1.0
-thrust_smash_threshold = 1.0
-drive_test = NodePath("../Hideout/DriveCartridges/HighDrift_Original")
-turn_test = NodePath("../Hideout/TurnCartridges/MedDrift_Original")
+thrust_smash_threshold = 0.1
+drive_test = NodePath("../Hideout/DriveCartridges/MedDrift")
+turn_test = NodePath("../Hideout/TurnCartridges/ExactMed_Asteroids")
 roam_test = NodePath("../Hideout/RoamCartridges/ButtonThrust_Original")
-gun_test = NodePath("../Hideout/GunCartridges/SlowNoHelp_Original")
+gun_test = NodePath("../Hideout/GunCartridges/SlowShotHelp")
 strafe_test = NodePath("../Hideout/StrafeCartridges/DirectScreenShort")
 
 [node name="Hideout" type="Node2D" parent="."]

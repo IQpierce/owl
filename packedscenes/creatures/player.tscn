@@ -15,7 +15,7 @@
 [ext_resource type="Script" path="res://scripts/WarpBeam.gd" id="10_xktmg"]
 [ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="13_suvhi"]
 [ext_resource type="AudioStream" uid="uid://4tue0i75rkn0" path="res://audio/zoom.mp3" id="15_wyh7b"]
-[ext_resource type="AudioStream" uid="uid://vq13beud6vep" path="res://audio/heartbeat.mp3" id="16_3y4ij"]
+[ext_resource type="AudioStream" uid="uid://bfpjvgg3m4qms" path="res://audio/heartbeat2.mp3" id="16_m31wx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ntkiv"]
 radius = 192.0
@@ -179,7 +179,7 @@ stream = ExtResource("15_wyh7b")
 bus = &"Effects"
 
 [node name="Heartbeat" type="AudioStreamPlayer2D" parent="." index="9"]
-stream = ExtResource("16_3y4ij")
+stream = ExtResource("16_m31wx")
 bus = &"Effects"
 
 [node name="HeartbeatTimer" type="Timer" parent="." index="10"]

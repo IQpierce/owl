@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cv5asni7oqeby"]
+[gd_scene load_steps=12 format=3 uid="uid://cv5asni7oqeby"]
 
 [ext_resource type="Script" path="res://scripts/HUD.gd" id="1_ohgch"]
 [ext_resource type="FontFile" uid="uid://bfc5s6j3cdokw" path="res://fonts/Vectorb.ttf" id="2_ebi6m"]
@@ -19,6 +19,11 @@ shadow_offset = Vector2(0, 0)
 [sub_resource type="Theme" id="Theme_viact"]
 default_font = ExtResource("2_ebi6m")
 default_font_size = 40
+
+[sub_resource type="FontVariation" id="FontVariation_kvi18"]
+base_font = ExtResource("2_ebi6m")
+spacing_glyph = 21
+spacing_space = 5
 
 [sub_resource type="LabelSettings" id="LabelSettings_or5ah"]
 font = ExtResource("2_ebi6m")
@@ -157,6 +162,8 @@ theme_override_constants/separation = 20
 
 [node name="ScoreText" type="Label" parent="Control/MarginContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = SubResource("FontVariation_kvi18")
 text = "0"
 label_settings = SubResource("LabelSettings_or5ah")
 horizontal_alignment = 2
