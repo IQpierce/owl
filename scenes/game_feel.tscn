@@ -584,17 +584,11 @@ script = ExtResource("13_1js2g")
 
 [node name="HUD" parent="." instance=ExtResource("8_m427m")]
 
-[node name="Player" parent="." node_paths=PackedStringArray("drive_test", "turn_test", "roam_test", "gun_test", "strafe_test") instance=ExtResource("8_ifucg")]
+[node name="Player" parent="." node_paths=PackedStringArray("turn_test") instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
-control_mode = 2
-thrust_heading_alignment = -1.0
 thrust_deadzone = 1.0
-thrust_smash_threshold = 0.1
-drive_test = NodePath("../Hideout/DriveCartridges/MedDrift")
-turn_test = NodePath("../Hideout/TurnCartridges/ExactMed_Asteroids")
-roam_test = NodePath("../Hideout/RoamCartridges/ButtonThrust_Original")
-gun_test = NodePath("../Hideout/GunCartridges/SlowShotHelp")
-strafe_test = NodePath("../Hideout/StrafeCartridges/DirectScreenShort")
+thrust_smash_threshold = 1.0
+turn_test = NodePath("../Hideout/TurnCartridges/HighDrift")
 
 [node name="Hideout" type="Node2D" parent="."]
 process_mode = 4
@@ -626,6 +620,7 @@ script = ExtResource("16_wpvoa")
 [node name="ExactFast" type="Node2D" parent="Hideout/TurnCartridges"]
 script = ExtResource("16_wpvoa")
 turn_force = 100.0
+initial_turn_fraction = 0.33
 
 [node name="LowDrift" type="Node2D" parent="Hideout/TurnCartridges"]
 script = ExtResource("16_wpvoa")
@@ -642,6 +637,7 @@ script = ExtResource("16_wpvoa")
 turn_force = 20.0
 angular_damp = 0.5
 drive_turn_factor = 0.85
+initial_turn_fraction = 0.8
 
 [node name="RoamCartridges" type="Node2D" parent="Hideout"]
 
@@ -656,7 +652,7 @@ thrust_deadzone = 0.626
 [node name="SmashThrust" type="Node2D" parent="Hideout/RoamCartridges"]
 script = ExtResource("17_28w32")
 thrust_heading_alignment = 0.5
-thrust_smash_threshold = 0.25
+thrust_smash_threshold = 0.1
 
 [node name="EagerDeadzoneThrust" type="Node2D" parent="Hideout/RoamCartridges"]
 script = ExtResource("17_28w32")
@@ -687,7 +683,7 @@ cooldown_duration_secs = 0.15
 [node name="SlowShotHelp" type="Node2D" parent="Hideout/GunCartridges"]
 script = ExtResource("18_cebdg")
 affect_motion_mode = 2
-shoot_turn_damp = 0.2
+shoot_turn_damp = 0.1
 cooldown_duration_secs = 0.23
 
 [node name="FastShotHelp" type="Node2D" parent="Hideout/GunCartridges"]

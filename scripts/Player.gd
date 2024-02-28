@@ -46,6 +46,7 @@ var camera_rig:CameraRig
 var mouse_position:Vector2 = Vector2.ZERO
 var mouse_motion:Vector2 = Vector2.ZERO
 var known_turn:float = 0
+var known_turn_gamepad:float = 0
 var prev_frame_left_stick:float = 0
 var rotating_towards:Vector2 = Vector2.ZERO
 
@@ -93,7 +94,8 @@ func _physics_process(delta:float):
 		if Time.get_ticks_msec() - charge_use_time >= recharge_delay * 1000:
 			charge = min(charge + recharge_rate * delta, max_charge)
 
-	if !process_gamepad(delta):
+	var gamepad_acting = process_gamepad(delta)
+	if !gamepad_acting:
 		process_keyboard_mouse(delta)
 	
 func process_gamepad(delta:float) -> bool:
@@ -104,7 +106,7 @@ func process_gamepad(delta:float) -> bool:
 		var want_dir = Vector2.ZERO
 		var turn_fraction = 1.0
 
-		if Input.is_action_pressed("roam_gamepad_thrust"):
+		if Input.is_action_pressed("drive_gamepad"):
 			drive_factor += 1
 		else:
 			drive_factor += Input.get_action_strength("roam_gamepad_thrust_axis")
@@ -145,28 +147,37 @@ func process_gamepad(delta:float) -> bool:
 			locomotor.locomote_towards(drive_factor, global_position + want_dir, turn_fraction, delta)
 
 	elif control_mode == ControlMode.Tank:
-		drive_factor = Input.get_action_strength("trigger_right_gamepad")
+		var precise_turn_radians = precise_turn_degrees * PI / 180
+
+		# TODO (sam) drive_gamepad is hooked to bottom-face-button which is incorrect on switch... we need differentiate or calibrate
+		if Input.is_action_pressed("drive_gamepad"):
+			drive_factor += 1
+
 		var turn_factor = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
-		#var turn_factor = Input.get_axis("trigger_left_gamepad", "trigger_right_gamepad")
-		any_turn = turn_factor != 0
 
 		#if any_turn:
-		#	var about_face_portion = abs(known_turn) / precise_turn_radians
+		#	var about_face_portion = abs(known_turn_gamepad) / precise_turn_radians
 		#	turn_factor *= ((1 - about_face_portion) * initial_turn_fraction) + (about_face_portion)
 
-		# Allow player to hold DOWN to aim more precisely
-		if Input.is_action_pressed("down_gamepad_primary"):
-			turn_factor *= down_turn_fraction
-			gamepad_acting = true
+		any_turn = turn_factor != 0
+		if any_turn:
+			var about_face_portion = abs(known_turn_gamepad) / precise_turn_radians
+			turn_factor *= ((1 - about_face_portion) * initial_turn_fraction) + (about_face_portion)
 
-
-		#any_turn = turn_factor != 0
 		gamepad_acting = gamepad_acting || drive_factor > 0 || any_turn
 
 		if gamepad_acting && locomotor != null:
 			locomotor.locomote(drive_factor, turn_factor, delta)
 
-	if Input.is_action_pressed("shoot_gamepad"):
+		if abs(angular_velocity) < precise_turn_radians && !any_turn:
+			angular_velocity *= precise_turn_damping
+
+		if !any_turn:
+			known_turn_gamepad = 0
+		else:
+			known_turn_gamepad = clamp(known_turn_gamepad + angular_velocity * delta, -precise_turn_radians, precise_turn_radians)
+
+	if Input.is_action_pressed("shoot_gamepad") || Input.get_action_strength("shoot_gamepad") > 0:
 		gamepad_acting = true
 		shot_fired.emit(drive_factor > 0, any_turn)
 
@@ -396,6 +407,7 @@ func apply_test_cartridges():
 		drive_test.apply(self, locomotor)
 	if turn_test != null:
 		turn_test.apply(self, locomotor)
+		turn_test.apply_player(self)
 	if roam_test != null:
 		roam_test.apply(self)
 	if gun_test != null:
