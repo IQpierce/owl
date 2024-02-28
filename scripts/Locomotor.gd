@@ -11,8 +11,10 @@ static var stop_below_speed: = 15
 @export var hard_speed_limit:float = 7000 # TODO should this be world property that all things follow? Maybe a property on a parent?
 ## Ignore the hard_speed_limit so forces in the worldcan move you faster
 @export var ignore_speed_limit:bool = false
+@export_range(0, 1) var peak_band_min:float = 0.5
+@export_range(0, 1) var peak_band_max:float = 0.75
+@export_range(0.25, 1) var drive_outside_band:float = 0.5
 ## Slow down when moving beyond max speed
-@export_range(0.25, 1) var drive_at_max_speed:float = 0.5
 @export var excessive_speed_linear_damp_factor:float = 1;
 ## Modifies deceleration while turning
 @export var turn_linear_damp_factor:float = 1;
@@ -99,7 +101,12 @@ func locomote(drive_factor:float, turn_factor:float, delta:float):
 
 	if drive_factor > 0:
 		var speed_portion = clamp((body.linear_velocity.length() / max_speed) * heading_dir.dot(body.linear_velocity.normalized()), 0, 1)
-		var drive_lerp = (1 - speed_portion) + (speed_portion * drive_at_max_speed)
+		var band_portion = 1.0
+		if speed_portion < peak_band_min:
+			band_portion = speed_portion / peak_band_min
+		elif speed_portion > peak_band_max:
+			band_portion = (1 - speed_portion) / (1 - peak_band_max)
+		var drive_lerp = ((1 - band_portion) * drive_outside_band) + band_portion
 		var drive_delta = drive_force * drive_lerp * delta;
 		var acceleration = heading_dir * drive_delta;
 
