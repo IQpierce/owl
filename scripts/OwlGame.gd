@@ -7,8 +7,8 @@ class_name OwlGame
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), muted)
 
 @export var emulate_phosphor_monitor:bool = true
-@export var draw_line_thickness = 1
-@export var draw_point_thickness = 0.9
+@export var draw_line_thickness  = 0.5
+@export var draw_point_thickness = 0.45
 
 static var instance
 

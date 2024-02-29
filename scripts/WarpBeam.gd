@@ -101,7 +101,7 @@ func _draw():
 	for i in points.size():
 		points[i].y *= -1
 
-	draw_multiline(points, Color.WHITE)
+	draw_multiline(points, Color.WHITE, OwlGame.instance.draw_line_thickness / global_scale.x)
 
 func prepare_target(new_target:Thing, warp_start:Vector2, delta:float):
 	# If warp is currently ready, it cannot be changed
