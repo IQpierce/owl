@@ -3,7 +3,7 @@ class_name Player
 
 enum ControlMode { Dynamic, Roam, Tank }
 
-@export var camera_cartridge:CameraCartridge
+@export var camera_leader:CameraCartridge
 @export var camera_adjust_speed:float = 300
 @export var hard_focus:HardFocusCameraCartridge = null
 @export var locomotor:Locomotor
@@ -210,15 +210,15 @@ func process_gamepad(delta:float) -> bool:
 			hopdart.engage(hopdart_dir)
 
 	if Input.is_action_pressed("dpad_left_gamepad"):
-		camera_cartridge.prey_offset += Vector2(-1, 0) * camera_adjust_speed * delta
+		camera_leader.prey_offset += Vector2(-1, 0) * camera_adjust_speed * delta
 	if Input.is_action_pressed("dpad_right_gamepad"):
-		camera_cartridge.prey_offset += Vector2(1, 0) * camera_adjust_speed * delta
+		camera_leader.prey_offset += Vector2(1, 0) * camera_adjust_speed * delta
 	if Input.is_action_pressed("dpad_up_gamepad"):
-		camera_cartridge.prey_offset += Vector2(0, -1) * camera_adjust_speed * delta
+		camera_leader.prey_offset += Vector2(0, -1) * camera_adjust_speed * delta
 	if Input.is_action_pressed("dpad_down_gamepad"):
-		camera_cartridge.prey_offset += Vector2(0, 1) * camera_adjust_speed * delta
+		camera_leader.prey_offset += Vector2(0, 1) * camera_adjust_speed * delta
 	if Input.is_action_pressed("camera_reset_gamepad"):
-		camera_cartridge.prey_offset = Vector2(0, 0)
+		camera_leader.prey_offset = Vector2(0, 0)
 	
 	return gamepad_acting
 
@@ -380,7 +380,7 @@ func drop_hard_focus():
 	if hard_focus != null:
 		hard_focus.prey = null
 		if camera_rig != null && hard_focus != null && camera_rig.cartridge == hard_focus:
-			camera_rig.cartridge = camera_cartridge
+			camera_rig.cartridge = camera_leader
 
 # TODO This probably wants to live elsewhere ... also very hardcoded at the moment
 func warp_in():

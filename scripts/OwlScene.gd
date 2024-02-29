@@ -90,5 +90,5 @@ func on_player_died(utterly:bool):
 	
 func get_default_camera_cartridge() -> CameraCartridge:
 	if player != null:
-		return player.camera_cartridge
+		return player.camera_leader
 	return null
