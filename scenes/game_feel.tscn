@@ -117,226 +117,189 @@ position = Vector2(4000, 4000)
 [node name="MediumAsteroid" parent="Testeraoids" instance=ExtResource("6_w6vm2")]
 position = Vector2(-200, -100)
 
-[node name="MediumAsteroid2" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid2" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(200, -100)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid3" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid3" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-300, -200)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid5" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid5" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-202, -290)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid6" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid6" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(198, -290)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid8" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid8" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(298, -390)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid9" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid9" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-198, -498)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid10" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid10" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(202, -498)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid11" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid11" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-298, -598)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid12" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid12" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(302, -598)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid13" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid13" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(90, -444)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid15" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid15" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-446, -998)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid16" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid16" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-340, -1472)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid18" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid18" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(488, -634)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid19" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid19" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-12, -734)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid21" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid21" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(92, -842)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid22" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid22" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(492, -842)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid23" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid23" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-8, -942)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid25" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid25" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-204, -662)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid26" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid26" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(196, -662)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid28" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid28" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(296, -762)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid29" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid29" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-206, -852)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid30" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid30" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-470, -1264)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid31" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid31" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-500, -1110)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid33" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid33" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-202, -1060)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid34" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid34" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(198, -1060)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid35" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid35" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-302, -1160)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid36" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid36" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-376, -1366)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid38" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid38" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-188, -1448)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid39" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid39" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-578, -508)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid41" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid41" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-480, -598)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid42" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid42" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-80, -598)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid43" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid43" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-580, -698)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid44" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid44" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(20, -698)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid45" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid45" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-476, -806)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid47" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid47" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-576, -906)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="MediumAsteroid48" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="MediumAsteroid48" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-220, -1316)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
-[node name="ResizeAsteroid4" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="ResizeAsteroid4" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(300, -200)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid4" index="0"]
@@ -349,10 +312,9 @@ line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid4/Salt" index="0"]
 scale = Vector2(80, 80)
 
-[node name="ResizeAsteroid7" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="ResizeAsteroid7" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-302, -390)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid7" index="0"]
@@ -365,10 +327,9 @@ line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid7/Salt" index="0"]
 scale = Vector2(80, 80)
 
-[node name="ResizeAsteroid14" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="ResizeAsteroid14" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(490, -444)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid14" index="0"]
@@ -381,10 +342,9 @@ line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid14/Salt" index="0"]
 scale = Vector2(80, 80)
 
-[node name="ResizeAsteroid17" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="ResizeAsteroid17" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(88, -634)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid17" index="0"]
@@ -397,10 +357,9 @@ line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid17/Salt" index="0"]
 scale = Vector2(100, 100)
 
-[node name="ResizeAsteroid20" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="ResizeAsteroid20" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(588, -734)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid20" index="0"]
@@ -413,10 +372,9 @@ line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid20/Salt" index="0"]
 scale = Vector2(100, 100)
 
-[node name="ResizeAsteroid24" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="ResizeAsteroid24" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(592, -942)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid24" index="0"]
@@ -429,10 +387,9 @@ line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid24/Salt" index="0"]
 scale = Vector2(100, 100)
 
-[node name="ResizeAsteroid27" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="ResizeAsteroid27" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-304, -762)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid27" index="0"]
@@ -445,10 +402,9 @@ line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid27/Salt" index="0"]
 scale = Vector2(120, 120)
 
-[node name="ResizeAsteroid32" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="ResizeAsteroid32" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(294, -952)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid32" index="0"]
@@ -462,10 +418,9 @@ line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 scale = Vector2(120, 120)
 _warpable = true
 
-[node name="ResizeAsteroid37" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="ResizeAsteroid37" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-478, -408)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid37" index="0"]
@@ -478,10 +433,9 @@ line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid37/Salt" index="0"]
 scale = Vector2(120, 120)
 
-[node name="ResizeAsteroid40" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="ResizeAsteroid40" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(442, -1076)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid40" index="0"]
@@ -494,10 +448,9 @@ line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid40/Salt" index="0"]
 scale = Vector2(160, 160)
 
-[node name="ResizeAsteroid46" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="ResizeAsteroid46" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-76, -806)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid46" index="0"]
@@ -510,10 +463,9 @@ line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid46/Salt" index="0"]
 scale = Vector2(160, 160)
 
-[node name="ResizeAsteroid47" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+[node name="ResizeAsteroid47" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-10, -1148)
 ejection_spawner = NodePath("../MediumAsteroid/Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("../MediumAsteroid/Salt")
 spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDeath")]
 
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid47" index="0"]

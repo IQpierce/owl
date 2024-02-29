@@ -2,14 +2,14 @@
 
 [ext_resource type="PhysicsMaterial" uid="uid://d5h87yh5ctsf" path="res://physics_materials/rock.tres" id="1_hgml5"]
 [ext_resource type="Script" path="res://scripts/Asteroid.gd" id="2_xnywi"]
+[ext_resource type="Script" path="res://scripts/ScalingGroup2D.gd" id="3_bg4dw"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="3_bl00j"]
-[ext_resource type="Script" path="res://scripts/Anatomy2D.gd" id="3_xd7k1"]
 [ext_resource type="Script" path="res://scripts/util/Spawner.gd" id="4_0ys4r"]
 [ext_resource type="PackedScene" uid="uid://dnsafpxfqwwbh" path="res://packedscenes/energy_crystal.tscn" id="5_wm5mc"]
 [ext_resource type="PackedScene" uid="uid://dwld2v4cgdhq6" path="res://packedscenes/sfx/shatter.tscn" id="6_1wbsw"]
 [ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="7_raf4m"]
 
-[node name="Asteroid" type="RigidBody2D" node_paths=PackedStringArray("ejection_spawner", "anatomy", "spawned_on_death")]
+[node name="Asteroid" type="RigidBody2D" node_paths=PackedStringArray("ejection_spawner", "scaling_group", "spawned_on_death")]
 collision_layer = 2
 collision_mask = 3
 mass = 48.0
@@ -24,7 +24,7 @@ consumable_reservoir_nibbleable_relevance = {
 1: 1.0
 }
 ejection_spawner = NodePath("Sulphur/SpawnEnergyCrystalOnDamage")
-anatomy = NodePath("Salt")
+scaling_group = NodePath("Salt")
 spawned_per_damage = {
 NodePath("Sulphur/SpawnEnergyCrystalOnDamage"): 1
 }
@@ -37,7 +37,7 @@ scale = Vector2(40, 40)
 polygon = PackedVector2Array(-0.45, -0.05, -0.33, 0.36, 0, 0.5, 0.345, 0.2, 0.42, -0.1, 0.23, -0.41, 0.1, -0.5, -0.19, -0.19, -0.11, -0.05, -0.2, -0.1)
 
 [node name="Salt" type="Node2D" parent="." node_paths=PackedStringArray("collider", "line_geometry")]
-script = ExtResource("3_xd7k1")
+script = ExtResource("3_bg4dw")
 collider = NodePath("../CollisionPolygon2D")
 line_geometry = [NodePath("Polygon2D")]
 

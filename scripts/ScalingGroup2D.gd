@@ -1,5 +1,5 @@
 extends Node2D
-class_name Anatomy2D
+class_name ScalingGroup2D
 
 enum ScaleMode { LineWidth, Transform }
 

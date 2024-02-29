@@ -130,9 +130,9 @@ func prepare_target(new_target:Thing, warp_start:Vector2, delta:float):
 	warp_ready = (target != null && prep_duration >= prep_req_seconds) || warp_ready
 
 func get_geometry(target:Thing) -> VectorPolygonRendering:
-	if target != null && target.anatomy != null && target.anatomy.line_geometry.size() > 0:
-		if target.anatomy.line_geometry[0].can_warp():
-			return target.anatomy.line_geometry[0]
+	if target != null && target.scaling_group != null && target.scaling_group.line_geometry.size() > 0:
+		if target.scaling_group.line_geometry[0].can_warp():
+			return target.scaling_group.line_geometry[0]
 	return null
 
 

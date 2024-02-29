@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://scripts/creatures/Creature.gd" id="1_7fvrv"]
 [ext_resource type="PhysicsMaterial" uid="uid://bk8d6toxvi2yb" path="res://physics_materials/creature.tres" id="1_8m65c"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_lckca"]
-[ext_resource type="Script" path="res://scripts/Anatomy2D.gd" id="3_5gnci"]
+[ext_resource type="Script" path="res://scripts/ScalingGroup2D.gd" id="3_5gnci"]
 [ext_resource type="Script" path="res://scripts/creatures/anatomy/Stomach.gd" id="4_fwo6w"]
 [ext_resource type="Script" path="res://scripts/ConsumableContainer.gd" id="5_7rk73"]
 [ext_resource type="AudioStream" uid="uid://bb1c4e4ljwmtd" path="res://audio/asteroid_damaged.wav" id="6_fmx7a"]
 
-[node name="Creature" type="RigidBody2D" node_paths=PackedStringArray("anatomy")]
+[node name="Creature" type="RigidBody2D" node_paths=PackedStringArray("scaling_group")]
 disable_mode = 2
 collision_mask = 35
 physics_material_override = ExtResource("1_8m65c")
@@ -20,7 +20,7 @@ contact_monitor = true
 linear_damp = 0.1
 angular_damp = 3.0
 script = ExtResource("1_7fvrv")
-anatomy = NodePath("Anatomy")
+scaling_group = NodePath("Anatomy")
 
 [node name="TrunkCollision" type="CollisionPolygon2D" parent="."]
 editor_description = "collision/physics aspect"
@@ -46,8 +46,6 @@ editor_description = "visual aspect"
 color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
 script = ExtResource("2_lckca")
-point_draw_radius = 1.08
-draw_line_width = 1.2
 
 [node name="DamagedSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_fmx7a")
