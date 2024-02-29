@@ -3,7 +3,7 @@ extends Node2D
 class_name Stomach
 
 @export var consumable_reservoir:ConsumableReservoir
-@export var polygons_to_scale:Array[Polygon2D]
+@export var polygons_to_scale:Array[PatchworkPolygon2D]
 @export var colliders_to_scale:Array[CollisionPolygon2D]
 @export_range(0.0, 100.0) var min_x_scale:float = 0.805
 @export_range(0.0, 100.0) var max_x_scale:float = 1.35
@@ -28,6 +28,7 @@ func update_scales_based_on_amount(old_amt:float, amt:float):
 		if polygons_to_scale.size() > index && polygons_to_scale[index] != null:
 			for vert in polygons_to_scale[index].polygon.size():
 				polygons_to_scale[index].polygon[vert].x *= scale_change
+			polygons_to_scale[index].build_patchwork()
 			polygons_to_scale[index].queue_redraw()
 		if colliders_to_scale.size() > index && colliders_to_scale[index] != null:
 			for vert in colliders_to_scale[index].polygon.size():

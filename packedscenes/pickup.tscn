@@ -22,8 +22,7 @@ script = ExtResource("1_qsy5d")
 [node name="Polygon2D" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-5, 0, 0, -6.25, 5, 0, 0, 6.25)
 script = ExtResource("2_n6hll")
-point_draw_radius = 1.0
-draw_line_width = 1.0
+ccw_convexity = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 scale = Vector2(5, 5)

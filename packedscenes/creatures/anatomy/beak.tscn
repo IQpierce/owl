@@ -33,8 +33,7 @@ physics_material_override = ExtResource("1_p5h4y")
 color = Color(0.462745, 0.462745, 0.462745, 0)
 polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)
 script = ExtResource("1_uob70")
-point_draw_radius = 1.0
-draw_line_width = 1.0
+ccw_convexity = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BeakRight"]
 polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)
@@ -54,8 +53,7 @@ color = Color(0.462745, 0.462745, 0.462745, 0)
 offset = Vector2(0.00910282, -0.0398865)
 polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)
 script = ExtResource("1_uob70")
-point_draw_radius = 1.0
-draw_line_width = 1.0
+ccw_convexity = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BeakLeft"]
 polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)

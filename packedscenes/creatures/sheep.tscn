@@ -5,13 +5,13 @@
 [ext_resource type="Script" path="res://scripts/creatures/brains/CreatureMetaBrain.gd" id="2_t8ih4"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/ConsumableSeekerBrain.gd" id="3_sb8nx"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/SeekByFunction.gd" id="4_fa6f3"]
-[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="5_jatoi"]
 [ext_resource type="PackedScene" uid="uid://bq4yi2hqjoxm5" path="res://packedscenes/creatures/anatomy/beak.tscn" id="5_mgc12"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/ThreatResponseFallbackBrain.gd" id="6_g2qx3"]
 [ext_resource type="Script" path="res://scripts/creatures/anatomy/ThrustEngine.gd" id="6_v2jqy"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/FlightResponseBrain.gd" id="7_ub1id"]
 [ext_resource type="Script" path="res://scripts/util/RotateTowards.gd" id="8_0ygyx"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/WanderBrain.gd" id="8_31eyc"]
+[ext_resource type="Script" path="res://scripts/InjectedPolygon2D.gd" id="12_1pme2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ibxja"]
 radius = 800.0
@@ -116,7 +116,7 @@ polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 1
 
 [node name="Anatomy" parent="." index="5" node_paths=PackedStringArray("colliders", "line_geometry")]
 colliders = [NodePath("../TrunkCollision"), NodePath("../HeadCollision")]
-line_geometry = [NodePath("VitalPolygons/TrunkPolygon"), NodePath("VitalPolygons/HeadRenderer"), NodePath("Beak/BeakRight/Polygon"), NodePath("Beak/BeakLeft/Polygon")]
+line_geometry = [NodePath("VitalPolygons/TrunkPolygon"), NodePath("Beak/BeakRight/Polygon"), NodePath("Beak/BeakLeft/Polygon")]
 
 [node name="Stomach" parent="Anatomy" index="0" node_paths=PackedStringArray("polygons_to_scale", "colliders_to_scale")]
 polygons_to_scale = [NodePath("../VitalPolygons/TrunkPolygon")]
@@ -127,22 +127,24 @@ max_x_scale = 1.4
 [node name="Reservoir" parent="Anatomy/Stomach" index="0"]
 consumable_type = 1
 
-[node name="TrunkPolygon" parent="Anatomy/VitalPolygons" index="0"]
+[node name="TrunkPolygon" parent="Anatomy/VitalPolygons" index="0" node_paths=PackedStringArray("injected_polygons")]
 position = Vector2(0, 8.28248)
 polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.538, 25, -58.538, 35.638, -44.803, 46.564, -24.247)
-skip_line_indeces = Array[int]([11])
+ccw_convexity = false
+injected_polygons = [NodePath("../HeadRenderer")]
 
 [node name="HeadRenderer" type="Polygon2D" parent="Anatomy/VitalPolygons" index="1"]
 editor_description = "visual aspect"
 position = Vector2(0, 0.53)
-scale = Vector2(0.99, 1)
-color = Color(0, 0, 0, 1)
+color = Color(0, 0, 0, 0)
 polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
-script = ExtResource("5_jatoi")
-skip_line_indeces = Array[int]([7])
+script = ExtResource("12_1pme2")
+injectee_open = 10
+injectee_close = 13
+ccw_convexity = false
 
 [node name="Beak" parent="Anatomy" index="2" instance=ExtResource("5_mgc12")]
-position = Vector2(-0.014, -67.514)
+position = Vector2(0, -67)
 speed_factor = 2.0
 rotate_factor = 0.6
 

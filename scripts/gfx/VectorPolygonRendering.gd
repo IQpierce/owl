@@ -1,4 +1,4 @@
-extends Polygon2D
+extends PatchworkPolygon2D
 class_name VectorPolygonRendering
 
 enum DrawState { Intro, Stable, Outro }
@@ -24,6 +24,9 @@ func can_warp() -> bool:
 	return draw_state != DrawState.Intro && _warpable
 
 func _ready():
+	super()
+	build_patchwork()
+
 	if global_scale.y != global_scale.x && OS.has_feature("editor"):
 		push_warning("Vector Rendering requires uniform scaling for good lines. Matching scale.y to scale.x.")
 		global_scale.y = global_scale.x
@@ -53,7 +56,9 @@ func _process(delta:float):
 		queue_redraw()
 
 func _draw():
-	var points = polygon
+	super()
+
+	var points = patchwork
 	var stride = 1
 	var warping = false
 	if can_warp() && warp_points.size() > 0:
@@ -96,15 +101,15 @@ func _draw():
 	
 	# @TODO - it would be nice to not have to repeat this entire loop verbatim!! dupe code!!!	
 	# ... actually not quite dupe code anymore if we support dashed lines
-	var polygon_vertex_count = polygon.size()
+	var polygon_vertex_count = patchwork.size()
 	for i in range(polygon_vertex_count):
-		var x = polygon[i].x
-		var y = polygon[i].y
+		var x = patchwork[i].x
+		var y = patchwork[i].y
 
 		var draw_vert = true
 		if draw_state != DrawState.Stable:
 			var check_index = i
-			if draw_portion <= check_index / (polygon.size() * 1.0):
+			if draw_portion <= check_index / (polygon_vertex_count * 1.0):
 				draw_vert = false
 
 		if draw_vert:
@@ -116,7 +121,7 @@ func undraw():
 	draw_state = DrawState.Outro
 
 func initiate_warp(warp_start:Vector2):
-	if polygon.size() == 0:
+	if patchwork.size() == 0:
 		return
 
 	warp_points.clear()
@@ -124,9 +129,9 @@ func initiate_warp(warp_start:Vector2):
 	var match_prev = 0
 	var match_next = 0
 
-	for i in polygon.size():
-		var prev_point = to_global(polygon[i])
-		var next_point = to_global(polygon[(i + 1) % polygon.size()])
+	for i in patchwork.size():
+		var prev_point = to_global(patchwork[i])
+		var next_point = to_global(patchwork[(i + 1) % patchwork.size()])
 		var prev_to_warp = Vector3(warp_start.x - prev_point.x, warp_start.y - prev_point.y, 0)
 		var warp_to_next = Vector3(next_point.x - warp_start.x, next_point.y - warp_start.y, 0)
 		#TODO (sam) Is finding abs(min) sufficient, or do we need to match winding order?
@@ -134,7 +139,7 @@ func initiate_warp(warp_start:Vector2):
 		if off_line < match_off_line:
 			match_off_line = off_line
 			match_prev = i
-			match_next = (i + 1) % polygon.size()
+			match_next = (i + 1) % patchwork.size()
 	
 	poly_from_warp_index = match_prev
 
@@ -142,9 +147,9 @@ func initiate_warp(warp_start:Vector2):
 	warp_points.append(prev_point)
 	var total_dist = 0.0
 	var index = match_prev
-	for counted in range(1, polygon.size() + 1):
-		index = (index + 1) % polygon.size()
-		var next_point = polygon[index]
+	for counted in range(1, patchwork.size() + 1):
+		index = (index + 1) % patchwork.size()
+		var next_point = patchwork[index]
 		warp_points.append(next_point)
 		total_dist += (next_point - prev_point).length()
 		prev_point = next_point
@@ -176,7 +181,7 @@ func prepare_warp(warp_progress:float, cycle_progress:float, delta:float):
 	var warp_point_index = fill_index
 	var prev_poly_point = warp_points[fill_index]
 	while poly_index < high_poly_index:
-		var next_poly_point = polygon[poly_index % polygon.size()]
+		var next_poly_point = patchwork[poly_index % patchwork.size()]
 		if warp_point_index < high_warp_index:
 			warp_points[warp_point_index] = next_poly_point
 		else:
@@ -193,17 +198,17 @@ func build_warp_direction(increment:bool, threshold_warp_index:int, start_poly_i
 	var dash_points = (split_points_max * warp_progress) as int
 	var warp_dist = far_distance * warp_progress
 
-	var accumulate_poly_index = poly_from_warp_index + 1 if increment else poly_from_warp_index + polygon.size() + 1
+	var accumulate_poly_index = poly_from_warp_index + 1 if increment else poly_from_warp_index + patchwork.size() + 1
 
 	var ran_length = 0
 	var prev_poly_point = warp_points[0]
 	var warp_end_found = false
 	var warp_point_index = 0 if increment else warp_points.size() - 1
-	var step_i           = 0 if increment else polygon.size()
+	var step_i           = 0 if increment else patchwork.size()
 	var step_size        = 1 if increment else -1
 
-	while !warp_end_found && ((increment && step_i < polygon.size()) || (!increment && step_i >= 0)):
-		var next_poly_point = polygon[(start_poly_index + step_i) % polygon.size()]
+	while !warp_end_found && ((increment && step_i < patchwork.size()) || (!increment && step_i >= 0)):
+		var next_poly_point = patchwork[(start_poly_index + step_i) % patchwork.size()]
 		var segment_length = (next_poly_point - prev_poly_point).length()
 		if ran_length + segment_length > warp_dist:
 			var end_portion = clamp((warp_dist - ran_length) / segment_length, 0, 1)
