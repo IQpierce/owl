@@ -114,7 +114,8 @@ polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58
 position = Vector2(0, 0.53)
 polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
 
-[node name="Anatomy" parent="." index="5" node_paths=PackedStringArray("line_geometry")]
+[node name="Anatomy" parent="." index="5" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = [NodePath("../TrunkCollision"), NodePath("../HeadCollision")]
 line_geometry = [NodePath("TrunkPolygon"), NodePath("HeadRenderer"), NodePath("Beak/BeakRight/Polygon"), NodePath("Beak/BeakLeft/Polygon")]
 
 [node name="Stomach" parent="Anatomy" index="0" node_paths=PackedStringArray("nodes_to_scale")]
@@ -142,8 +143,6 @@ scale = Vector2(0.99, 1)
 color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
 script = ExtResource("5_jatoi")
-point_draw_radius = 1.08
-draw_line_width = 1.2
 skip_line_indeces = Array[int]([7])
 
 [connection signal="damaged" from="." to="MetaBrain" method="on_damage_dealt"]

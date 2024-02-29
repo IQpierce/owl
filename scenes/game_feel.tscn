@@ -104,6 +104,9 @@ position = Vector2(3975, 3675)
 [node name="CollisionPolygon2D" parent="ZOOM_ASTEROID" index="0"]
 scale = Vector2(200, 200)
 
+[node name="Salt" parent="ZOOM_ASTEROID" index="1" node_paths=PackedStringArray("colliders")]
+colliders = []
+
 [node name="Polygon2D" parent="ZOOM_ASTEROID/Salt" index="0"]
 scale = Vector2(200, 200)
 intro_secs = 1.0
@@ -305,8 +308,8 @@ spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDe
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid4" index="0"]
 scale = Vector2(80, 80)
 
-[node name="Salt" parent="Testeraoids/ResizeAsteroid4" index="1" node_paths=PackedStringArray("collider", "line_geometry")]
-collider = NodePath("../../MediumAsteroid/CollisionPolygon2D")
+[node name="Salt" parent="Testeraoids/ResizeAsteroid4" index="1" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid4/Salt" index="0"]
@@ -320,8 +323,8 @@ spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDe
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid7" index="0"]
 scale = Vector2(80, 80)
 
-[node name="Salt" parent="Testeraoids/ResizeAsteroid7" index="1" node_paths=PackedStringArray("collider", "line_geometry")]
-collider = NodePath("../../MediumAsteroid/CollisionPolygon2D")
+[node name="Salt" parent="Testeraoids/ResizeAsteroid7" index="1" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid7/Salt" index="0"]
@@ -335,8 +338,8 @@ spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDe
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid14" index="0"]
 scale = Vector2(80, 80)
 
-[node name="Salt" parent="Testeraoids/ResizeAsteroid14" index="1" node_paths=PackedStringArray("collider", "line_geometry")]
-collider = NodePath("../../MediumAsteroid/CollisionPolygon2D")
+[node name="Salt" parent="Testeraoids/ResizeAsteroid14" index="1" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid14/Salt" index="0"]
@@ -350,8 +353,8 @@ spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDe
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid17" index="0"]
 scale = Vector2(100, 100)
 
-[node name="Salt" parent="Testeraoids/ResizeAsteroid17" index="1" node_paths=PackedStringArray("collider", "line_geometry")]
-collider = NodePath("../../MediumAsteroid/CollisionPolygon2D")
+[node name="Salt" parent="Testeraoids/ResizeAsteroid17" index="1" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid17/Salt" index="0"]
@@ -365,8 +368,8 @@ spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDe
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid20" index="0"]
 scale = Vector2(100, 100)
 
-[node name="Salt" parent="Testeraoids/ResizeAsteroid20" index="1" node_paths=PackedStringArray("collider", "line_geometry")]
-collider = NodePath("../../MediumAsteroid/CollisionPolygon2D")
+[node name="Salt" parent="Testeraoids/ResizeAsteroid20" index="1" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid20/Salt" index="0"]
@@ -380,8 +383,8 @@ spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDe
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid24" index="0"]
 scale = Vector2(100, 100)
 
-[node name="Salt" parent="Testeraoids/ResizeAsteroid24" index="1" node_paths=PackedStringArray("collider", "line_geometry")]
-collider = NodePath("../../MediumAsteroid/CollisionPolygon2D")
+[node name="Salt" parent="Testeraoids/ResizeAsteroid24" index="1" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid24/Salt" index="0"]
@@ -395,8 +398,8 @@ spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDe
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid27" index="0"]
 scale = Vector2(120, 120)
 
-[node name="Salt" parent="Testeraoids/ResizeAsteroid27" index="1" node_paths=PackedStringArray("collider", "line_geometry")]
-collider = NodePath("../../MediumAsteroid/CollisionPolygon2D")
+[node name="Salt" parent="Testeraoids/ResizeAsteroid27" index="1" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid27/Salt" index="0"]
@@ -410,8 +413,8 @@ spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDe
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid32" index="0"]
 scale = Vector2(120, 120)
 
-[node name="Salt" parent="Testeraoids/ResizeAsteroid32" index="1" node_paths=PackedStringArray("collider", "line_geometry")]
-collider = NodePath("../../MediumAsteroid/CollisionPolygon2D")
+[node name="Salt" parent="Testeraoids/ResizeAsteroid32" index="1" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid32/Salt" index="0"]
@@ -426,8 +429,8 @@ spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDe
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid37" index="0"]
 scale = Vector2(120, 120)
 
-[node name="Salt" parent="Testeraoids/ResizeAsteroid37" index="1" node_paths=PackedStringArray("collider", "line_geometry")]
-collider = NodePath("../../MediumAsteroid/CollisionPolygon2D")
+[node name="Salt" parent="Testeraoids/ResizeAsteroid37" index="1" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid37/Salt" index="0"]
@@ -441,8 +444,8 @@ spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDe
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid40" index="0"]
 scale = Vector2(160, 160)
 
-[node name="Salt" parent="Testeraoids/ResizeAsteroid40" index="1" node_paths=PackedStringArray("collider", "line_geometry")]
-collider = NodePath("../../MediumAsteroid/CollisionPolygon2D")
+[node name="Salt" parent="Testeraoids/ResizeAsteroid40" index="1" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid40/Salt" index="0"]
@@ -456,8 +459,8 @@ spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDe
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid46" index="0"]
 scale = Vector2(160, 160)
 
-[node name="Salt" parent="Testeraoids/ResizeAsteroid46" index="1" node_paths=PackedStringArray("collider", "line_geometry")]
-collider = NodePath("../../MediumAsteroid/CollisionPolygon2D")
+[node name="Salt" parent="Testeraoids/ResizeAsteroid46" index="1" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid46/Salt" index="0"]
@@ -471,8 +474,8 @@ spawned_on_death = [NodePath("../MediumAsteroid/Sulphur/SpawnSmallerAsteroidOnDe
 [node name="CollisionPolygon2D" parent="Testeraoids/ResizeAsteroid47" index="0"]
 scale = Vector2(160, 160)
 
-[node name="Salt" parent="Testeraoids/ResizeAsteroid47" index="1" node_paths=PackedStringArray("collider", "line_geometry")]
-collider = NodePath("../../MediumAsteroid/CollisionPolygon2D")
+[node name="Salt" parent="Testeraoids/ResizeAsteroid47" index="1" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid47/Salt" index="0"]

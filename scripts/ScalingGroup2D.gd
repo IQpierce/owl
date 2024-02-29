@@ -4,17 +4,18 @@ class_name ScalingGroup2D
 enum ScaleMode { LineWidth, Transform }
 
 @export var scale_mode:ScaleMode = ScaleMode.LineWidth
-@export var collider:CollisionPolygon2D = null
+@export var colliders:Array[CollisionPolygon2D]
 @export var line_geometry:Array[VectorPolygonRendering]
 
 var initial_scale:Vector2 = Vector2.ONE
-var collider_scale_relative:Vector2 = Vector2.ONE
+var colliders_scale_relative:Array[Vector2]
 var camera_rig:CameraRig = null
 
 func _ready():
 	initial_scale = scale
-	if collider != null:
-		collider_scale_relative = collider.scale / scale
+	for i in colliders.size():
+		if colliders[i] != null:
+			colliders_scale_relative.append(colliders[i].scale / scale)
 
 	var scene = OwlGame.instance.scene
 	if scene != null:
@@ -38,5 +39,6 @@ func counter_zoom():
 					geom.queue_redraw()
 	elif scale_mode == ScaleMode.Transform:
 		scale = initial_scale * anti_zoom
-		if collider != null:
-			collider.scale = scale * collider_scale_relative
+		for i in colliders.size():
+			if colliders[i] != null:
+				colliders[i].scale = scale * colliders_scale_relative[i]

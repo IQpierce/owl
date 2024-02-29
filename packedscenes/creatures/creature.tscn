@@ -26,9 +26,9 @@ scaling_group = NodePath("Anatomy")
 editor_description = "collision/physics aspect"
 polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
 
-[node name="Anatomy" type="Node2D" parent="." node_paths=PackedStringArray("collider", "line_geometry")]
+[node name="Anatomy" type="Node2D" parent="." node_paths=PackedStringArray("colliders", "line_geometry")]
 script = ExtResource("3_5gnci")
-collider = NodePath("../TrunkCollision")
+colliders = [NodePath("../TrunkCollision")]
 line_geometry = [NodePath("TrunkPolygon")]
 
 [node name="Stomach" type="Node2D" parent="Anatomy" node_paths=PackedStringArray("consumable_reservoir")]
