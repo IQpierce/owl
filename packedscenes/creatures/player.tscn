@@ -99,8 +99,6 @@ scale = Vector2(9.5, 9.5)
 color = Color(0, 0, 0, 0)
 polygon = PackedVector2Array(-0.3, 0.5, 0.3, 0.5, 0, -0.857147)
 script = ExtResource("4_ienpe")
-circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
-line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
 [node name="TurnLeftTriangle" type="Polygon2D" parent="Anatomy" index="3"]
 visible = false
@@ -111,8 +109,6 @@ scale = Vector2(9.5, 9.5)
 color = Color(0, 0, 0, 0)
 polygon = PackedVector2Array(-0.2, 0.1, 0.2, 0.1, 0, -0.4)
 script = ExtResource("4_ienpe")
-circle_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
-line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
 [node name="TurnRightTriangle" type="Polygon2D" parent="Anatomy" index="4"]
 visible = false
@@ -123,8 +119,6 @@ scale = Vector2(9.5, 9.5)
 color = Color(0, 0, 0, 0)
 polygon = PackedVector2Array(-0.2, 0.1, 0.2, 0.1, 0, -0.4)
 script = ExtResource("4_ienpe")
-circle_draw_color = Color(1, 1, 1, 1)
-line_draw_color = Color(0.654902, 0.654902, 0.654902, 1)
 
 [node name="Gun" type="Node2D" parent="Anatomy" index="5" node_paths=PackedStringArray("inherit_velocity", "immune_to_shots", "shot_parent", "camera_track")]
 position = Vector2(0, -13.175)

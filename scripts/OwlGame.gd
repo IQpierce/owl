@@ -9,6 +9,8 @@ class_name OwlGame
 @export var emulate_phosphor_monitor:bool = true
 @export var draw_line_thickness  = 0.5
 @export var draw_point_thickness = 0.45
+@export var draw_line_color:Color  = Color(0.92, 0.92, 0.92)
+@export var draw_point_color:Color = Color(1.0,  1.0,  1.0 )
 
 static var instance
 
