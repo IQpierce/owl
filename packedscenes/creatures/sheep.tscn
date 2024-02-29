@@ -116,27 +116,23 @@ polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 1
 
 [node name="Anatomy" parent="." index="5" node_paths=PackedStringArray("colliders", "line_geometry")]
 colliders = [NodePath("../TrunkCollision"), NodePath("../HeadCollision")]
-line_geometry = [NodePath("TrunkPolygon"), NodePath("HeadRenderer"), NodePath("Beak/BeakRight/Polygon"), NodePath("Beak/BeakLeft/Polygon")]
+line_geometry = [NodePath("VitalPolygons/TrunkPolygon"), NodePath("VitalPolygons/HeadRenderer"), NodePath("Beak/BeakRight/Polygon"), NodePath("Beak/BeakLeft/Polygon")]
 
-[node name="Stomach" parent="Anatomy" index="0" node_paths=PackedStringArray("nodes_to_scale")]
-nodes_to_scale = [NodePath("../TrunkPolygon")]
+[node name="Stomach" parent="Anatomy" index="0" node_paths=PackedStringArray("polygons_to_scale", "colliders_to_scale")]
+polygons_to_scale = [NodePath("../VitalPolygons/TrunkPolygon")]
+colliders_to_scale = [NodePath("../../TrunkCollision")]
 min_x_scale = 0.75
 max_x_scale = 1.4
 
 [node name="Reservoir" parent="Anatomy/Stomach" index="0"]
 consumable_type = 1
 
-[node name="TrunkPolygon" parent="Anatomy" index="1"]
+[node name="TrunkPolygon" parent="Anatomy/VitalPolygons" index="0"]
 position = Vector2(0, 8.28248)
 polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.538, 25, -58.538, 35.638, -44.803, 46.564, -24.247)
 skip_line_indeces = Array[int]([11])
 
-[node name="Beak" parent="Anatomy" index="2" instance=ExtResource("5_mgc12")]
-position = Vector2(-0.014, -67.514)
-speed_factor = 2.0
-rotate_factor = 0.6
-
-[node name="HeadRenderer" type="Polygon2D" parent="Anatomy" index="3"]
+[node name="HeadRenderer" type="Polygon2D" parent="Anatomy/VitalPolygons" index="1"]
 editor_description = "visual aspect"
 position = Vector2(0, 0.53)
 scale = Vector2(0.99, 1)
@@ -144,6 +140,11 @@ color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
 script = ExtResource("5_jatoi")
 skip_line_indeces = Array[int]([7])
+
+[node name="Beak" parent="Anatomy" index="2" instance=ExtResource("5_mgc12")]
+position = Vector2(-0.014, -67.514)
+speed_factor = 2.0
+rotate_factor = 0.6
 
 [connection signal="damaged" from="." to="MetaBrain" method="on_damage_dealt"]
 [connection signal="on_target_location_changed" from="MetaBrain/SeekEnergyMetaBrain" to="DorsalFin" method="set_target_world_position"]
@@ -156,3 +157,5 @@ skip_line_indeces = Array[int]([7])
 [connection signal="on_target_velocity_changed" from="MetaBrain/SeekEnergyMetaBrain/WanderBrain" to="ThrustEngine" method="set_target_velocity"]
 [connection signal="on_target_location_changed" from="MetaBrain/HandleThreatMetaBrain/FlightResponseBrain/RunAwayBrain" to="DorsalFin" method="set_target_world_position"]
 [connection signal="on_target_velocity_changed" from="MetaBrain/HandleThreatMetaBrain/FlightResponseBrain/RunAwayBrain" to="ThrustEngine" method="set_target_velocity"]
+[connection signal="on_consumable_consumed" from="Anatomy/Stomach" to="Anatomy/Stomach/Reservoir" method="apply_consumable_change_by_type"]
+[connection signal="on_amount_contained_changed" from="Anatomy/Stomach/Reservoir" to="Anatomy/Stomach" method="on_container_change"]

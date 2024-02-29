@@ -61,6 +61,7 @@ func _draw():
 		stride = 1#2
 		warping = true
 
+
 	var draw_portion = 1
 	if draw_state == DrawState.Intro || draw_state == DrawState.Outro && intro_secs > 0:
 		draw_portion = draw_elapsed / intro_secs
