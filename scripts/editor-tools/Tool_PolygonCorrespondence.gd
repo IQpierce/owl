@@ -25,7 +25,6 @@ func _process(delta:float):
 	elif in_editor && editortime_sync_data:
 		# We're executing in the editor, and someone checked the checkbox to sync these.
 		editortime_sync_data = false
-		print("srpnow 50.0")
 		sync_polygon_data()
 
 func sync_polygon_data():
