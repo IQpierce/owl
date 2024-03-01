@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://jymuym62nmct"]
+[gd_scene load_steps=19 format=3 uid="uid://jymuym62nmct"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_5vrjf"]
 [ext_resource type="Script" path="res://scripts/Player.gd" id="2_6aefa"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://mkfbd0r5o8ke" path="res://audio/thrust.wav" id="3_7eqxd"]
 [ext_resource type="Script" path="res://scripts/TrackThrusterCameraCartridge.gd" id="3_cu50v"]
 [ext_resource type="Script" path="res://scripts/Gun.gd" id="3_r8khv"]
+[ext_resource type="Curve" uid="uid://m8g7iaercfdj" path="res://curves/heartbeat_by_health_remaining_curve.tres" id="3_srwru"]
 [ext_resource type="Script" path="res://scripts/Locomotor.gd" id="4_0rs86"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="4_ienpe"]
 [ext_resource type="Script" path="res://scripts/HardFocusCameraCartridge.gd" id="4_rodj5"]
@@ -34,7 +35,8 @@ locomotor = NodePath("Locomotor")
 gun = NodePath("Anatomy/Gun")
 hopdart = NodePath("HopDart")
 warp_beam = NodePath("Anatomy/WarpBeam")
-control_mode = 2
+control_mode = 0
+heartbeat_by_health_curve = ExtResource("3_srwru")
 down_turn_fraction = 0.7
 initial_turn_fraction = 0.33
 precise_turn_degrees = 7.0
@@ -172,16 +174,30 @@ volume_db = 7.61
 bus = &"Effects"
 script = ExtResource("13_suvhi")
 
-[node name="ZoomSFX" type="AudioStreamPlayer2D" parent="." index="8"]
+[node name="TurnThrustLeft" type="AudioStreamPlayer2D" parent="." index="7"]
+stream = ExtResource("3_7eqxd")
+volume_db = -3.0
+pitch_scale = 2.0
+bus = &"Effects"
+script = ExtResource("13_suvhi")
+
+[node name="TurnThrustRight" type="AudioStreamPlayer2D" parent="." index="8"]
+stream = ExtResource("3_7eqxd")
+volume_db = -3.0
+pitch_scale = 2.2
+bus = &"Effects"
+script = ExtResource("13_suvhi")
+
+[node name="ZoomSFX" type="AudioStreamPlayer2D" parent="." index="10"]
 stream = ExtResource("15_wyh7b")
 bus = &"Effects"
 
-[node name="Heartbeat" type="AudioStreamPlayer2D" parent="." index="9"]
+[node name="Heartbeat" type="AudioStreamPlayer2D" parent="." index="11"]
 stream = ExtResource("16_m31wx")
 bus = &"Effects"
 
-[node name="HeartbeatTimer" type="Timer" parent="." index="10"]
-wait_time = 5.0
+[node name="HeartbeatTimer" type="Timer" parent="." index="12"]
+wait_time = 2.5
 autostart = true
 
 [connection signal="shot_fired" from="." to="Anatomy/Gun" method="shoot"]
@@ -189,7 +205,9 @@ autostart = true
 [connection signal="driving_state_change" from="Locomotor" to="Anatomy/ThrustTriangle" method="set_visible"]
 [connection signal="driving_state_change" from="Locomotor" to="Thrust" method="signal_play_or_stop"]
 [connection signal="turning_left_state_change" from="Locomotor" to="Anatomy/TurnLeftTriangle" method="set_visible"]
+[connection signal="turning_left_state_change" from="Locomotor" to="TurnThrustLeft" method="signal_play_or_stop"]
 [connection signal="turning_right_state_change" from="Locomotor" to="Anatomy/TurnRightTriangle" method="set_visible"]
+[connection signal="turning_right_state_change" from="Locomotor" to="TurnThrustRight" method="signal_play_or_stop"]
 [connection signal="lost_target" from="Anatomy/WarpBeam" to="." method="drop_hard_focus"]
 [connection signal="body_entered" from="Anatomy/PickupVacuum" to="Anatomy/PickupVacuum" method="_on_body_entered"]
 [connection signal="timeout" from="HeartbeatTimer" to="." method="_on_heartbeat_timer_timeout"]

@@ -11,26 +11,32 @@ enum ControlMode { Dynamic, Roam, Tank }
 @export var hopdart:Hopdart
 @export var warp_beam:WarpBeam
 @export var control_mode:ControlMode = ControlMode.Dynamic
+@export var heartbeat_by_health_curve:Curve
+
 @export_group("TankControls")
 @export_range(0.0, 1.0) var down_turn_fraction:float = 1 #TODO (sam) currently this only affects keyboard
 @export_range(0.0, 1.0) var initial_turn_fraction:float = 1
 @export var precise_turn_degrees:float = 5
 @export var precise_turn_damping:float = 0.5
 @export_range(0, 90) var turn_band_degrees:float = 45
+
 @export_group("RoamControls")
 @export_range(-1, 1) var thrust_heading_alignment:float = 0
 @export_range(0, 1) var thrust_deadzone:float = 0.75
 @export_range(0, 1) var thrust_smash_threshold:float = 0.25
+
 @export_group("Mouse")
 @export var allow_mouse:bool = false
 @export_range(0, 1) var mouse_sensitivity:float = 0
 @export_range(0, 60) var mouse_gravity: float = 30
+
 @export_group("Test Cartridges")
 @export var drive_test:DriveCartridge
 @export var turn_test:TurnCartridge
 @export var roam_test:RoamCartridge
 @export var gun_test:GunCartridge
 @export var strafe_test:StrafeCartridge
+
 @export_group("")
 
 @onready var heartbeat = $Heartbeat
@@ -87,6 +93,22 @@ func _input(event:InputEvent):
 	if event is InputEventMouseMotion:
 		mouse_position = event.position
 		mouse_motion = event.relative
+
+func _process(delta:float):
+	if heartbeat_timer:
+		heartbeat_timer.wait_time = get_current_heartbeat_delta_time()
+		
+	# debug input
+	# @TODO Compile this out for shipping builds!
+	if Input.is_action_just_pressed("debug_self_harm"):
+		deal_damage(1.0, global_position)
+
+func get_current_heartbeat_delta_time() -> float:
+	if heartbeat_by_health_curve == null:
+		push_error("No heartbeat rate data available")
+		return 2.5
+	
+	return heartbeat_by_health_curve.sample_baked(health / max_health)
 
 func _physics_process(delta:float):
 	apply_test_cartridges()
