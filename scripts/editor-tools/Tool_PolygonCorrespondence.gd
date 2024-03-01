@@ -4,14 +4,15 @@ extends CollisionPolygon2D
 
 class_name PolygonCorrespondence
 
-@export var counterpart:Polygon2D
+@export var counterpart:PatchworkPolygon2D
+@export var match_patchwork:bool = true
 @export var runtime_check_each_frame:bool = false
 @export var runtime_sync_onready:bool = false
 @export var editortime_sync_data:bool = false
-	
 
 func _ready():
 	assert(counterpart != null)
+	counterpart.matching_collider = self
 	if !Engine.is_editor_hint() && runtime_sync_onready:
 		sync_polygon_data()
 
@@ -28,4 +29,7 @@ func _process(delta:float):
 		sync_polygon_data()
 
 func sync_polygon_data():
-	counterpart.polygon = self.polygon
+	self.global_position = counterpart.global_position
+	self.global_rotation = counterpart.global_rotation
+	self.global_scale = counterpart.global_scale
+	self.polygon = counterpart.patchwork if match_patchwork else counterpart.polygon

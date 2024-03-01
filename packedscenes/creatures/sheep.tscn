@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://df8xel7mmjlk2"]
+[gd_scene load_steps=15 format=3 uid="uid://df8xel7mmjlk2"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_aoyla"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/SeekerFallbackBrain.gd" id="2_etigy"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://scripts/creatures/brains/FlightResponseBrain.gd" id="7_ub1id"]
 [ext_resource type="Script" path="res://scripts/util/RotateTowards.gd" id="8_0ygyx"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/WanderBrain.gd" id="8_31eyc"]
+[ext_resource type="Script" path="res://scripts/editor-tools/Tool_PolygonCorrespondence.gd" id="11_1eemr"]
 [ext_resource type="Script" path="res://scripts/InjectedPolygon2D.gd" id="12_1pme2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ibxja"]
@@ -109,10 +110,14 @@ power = 9001.0
 [node name="TrunkCollision" parent="." index="3"]
 position = Vector2(0, 8.28248)
 polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.538, 25, -58.538, 35.638, -44.803, 46.564, -24.247)
+match_patchwork = false
 
-[node name="HeadCollision" type="CollisionPolygon2D" parent="." index="4"]
+[node name="HeadCollision" type="CollisionPolygon2D" parent="." index="4" node_paths=PackedStringArray("counterpart")]
 position = Vector2(0, 0.53)
 polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
+script = ExtResource("11_1eemr")
+counterpart = NodePath("../Anatomy/VitalPolygons/HeadRenderer")
+runtime_sync_onready = true
 
 [node name="Anatomy" parent="." index="5" node_paths=PackedStringArray("colliders", "line_geometry")]
 colliders = [NodePath("../TrunkCollision"), NodePath("../HeadCollision")]

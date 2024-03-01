@@ -4,10 +4,10 @@ class_name PatchworkPolygon2D
 @export var ccw_convexity:bool = true
 # TODO (sam) This is pretty gross, but Godot doesn't support exporting arbitrary data class, so we're stuck with this or a dictionary.
 @export var injected_polygons:Array[InjectedPolygon2D]
-@export var matching_collider:CollisionPolygon2D
 
 var patchwork:PackedVector2Array
 var patch_pairs:PackedByteArray
+var matching_collider:PolygonCorrespondence
 
 static func compare(a: InjectedPolygon2D, b:InjectedPolygon2D):
 	return a.injectee_open < b.injectee_open
@@ -75,15 +75,8 @@ func build_patchwork():
 				patch_pairs.append(patch_end)
 				patchwork_i = patch_end + 1
 	
-	# TODO (sam) I'm worried this will conflict with PolygonCorrespondence, because we could overwrite raw polygon with patchwork
 	if matching_collider != null:
-		if matching_collider.polygon == polygon:
-			matching_collider.polygon = PackedVector2Array()
-		else:
-			matching_collider.polygon.clear()
-
-		for vert in patchwork:
-			matching_collider.polygon.append(vert)
+		matching_collider.sync_polygon_data()
 
 func reinject(inject:InjectedPolygon2D):
 	for inject_i in injected_polygons.size():

@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dvs73k0tkjij4"]
+[gd_scene load_steps=9 format=3 uid="uid://dvs73k0tkjij4"]
 
 [ext_resource type="Script" path="res://scripts/creatures/Creature.gd" id="1_7fvrv"]
 [ext_resource type="PhysicsMaterial" uid="uid://bk8d6toxvi2yb" path="res://physics_materials/creature.tres" id="1_8m65c"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_lckca"]
 [ext_resource type="Script" path="res://scripts/ScalingGroup2D.gd" id="3_5gnci"]
+[ext_resource type="Script" path="res://scripts/editor-tools/Tool_PolygonCorrespondence.gd" id="3_yp5tx"]
 [ext_resource type="Script" path="res://scripts/creatures/anatomy/Stomach.gd" id="4_fwo6w"]
 [ext_resource type="Script" path="res://scripts/ConsumableContainer.gd" id="5_7rk73"]
 [ext_resource type="AudioStream" uid="uid://bb1c4e4ljwmtd" path="res://audio/asteroid_damaged.wav" id="6_fmx7a"]
@@ -22,9 +23,12 @@ angular_damp = 3.0
 script = ExtResource("1_7fvrv")
 scaling_group = NodePath("Anatomy")
 
-[node name="TrunkCollision" type="CollisionPolygon2D" parent="."]
+[node name="TrunkCollision" type="CollisionPolygon2D" parent="." node_paths=PackedStringArray("counterpart")]
 editor_description = "collision/physics aspect"
 polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
+script = ExtResource("3_yp5tx")
+counterpart = NodePath("../Anatomy/VitalPolygons/TrunkPolygon")
+runtime_sync_onready = true
 
 [node name="Anatomy" type="Node2D" parent="." node_paths=PackedStringArray("colliders", "line_geometry")]
 script = ExtResource("3_5gnci")
