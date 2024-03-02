@@ -18,9 +18,6 @@ NodePath("SpawnEnergyCrystalOnDamage"): 1.0
 }
 spawned_on_death = [null]
 
-[node name="CollisionPolygon2D" parent="." index="0"]
-rotation = 0.907571
-
 [node name="SpawnEnergyCrystalOnDamage" type="Node2D" parent="." index="1"]
 script = ExtResource("5_itqbk")
 spawn_protos = Array[PackedScene]([ExtResource("6_pmn6e")])
@@ -28,11 +25,23 @@ num_to_spawn = 0
 spawn_random_angle = 0.0
 
 [node name="Cuttlefish" parent="Salt" index="0" instance=ExtResource("2_bcoka")]
-position = Vector2(0, 3.38604)
+position = Vector2(0, 3)
+
+[node name="TrunkPolygon" parent="Salt/Cuttlefish/Anatomy/VitalPolygons" index="0" node_paths=PackedStringArray("stencil_polygons")]
+stencil_polygons = [NodePath("../../../../Polygon2D")]
+
+[node name="Beak" parent="Salt/Cuttlefish/Anatomy" index="2"]
+visible = false
 
 [node name="WarpNibbleZone" parent="Salt/Cuttlefish/Anatomy/Beak" index="0" node_paths=PackedStringArray("things_to_ignore", "warp_target_definition_container")]
 things_to_ignore = []
 warp_target_definition_container = NodePath("../../../../..")
+
+[node name="Spear" parent="Salt/Cuttlefish/Anatomy" index="3"]
+visible = false
+
+[node name="DorsalFin" parent="Salt/Cuttlefish/Anatomy" index="4"]
+visible = false
 
 [node name="DiedSFX" parent="." index="3" instance=ExtResource("7_uuu58")]
 volume_db = -0.2

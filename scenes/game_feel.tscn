@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=24 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_80w6u"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://scripts/hacks/HackParticlesEmission.gd" id="13_1js2g"]
 [ext_resource type="PackedScene" uid="uid://df8xel7mmjlk2" path="res://packedscenes/creatures/sheep.tscn" id="14_kovm1"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/DriveCartridge.gd" id="15_5mt74"]
+[ext_resource type="PackedScene" uid="uid://22brxer3r2yy" path="res://packedscenes/asteroids/medium_asteroid_with_cuttlefish_roosting.tscn" id="16_3wf5d"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/TurnCartridge.gd" id="16_wpvoa"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/RoamCartridge.gd" id="17_28w32"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/GunCartridge.gd" id="18_cebdg"]
@@ -515,13 +516,26 @@ script = ExtResource("13_1js2g")
 [node name="HUD" parent="." instance=ExtResource("8_m427m")]
 
 [node name="Sheep" parent="." instance=ExtResource("14_kovm1")]
+process_mode = 4
 position = Vector2(4000, 3700)
 
 [node name="Player" parent="." node_paths=PackedStringArray("turn_test") instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
+camera_adjust_speed = null
+turn_band_degrees = null
+thrust_heading_alignment = null
 thrust_deadzone = 1.0
 thrust_smash_threshold = 1.0
+allow_mouse = null
+mouse_sensitivity = null
+mouse_gravity = null
 turn_test = NodePath("../Hideout/TurnCartridges/HighDrift")
+spawned_per_damage = null
+damage_sfx_cooldown_secs = null
+
+[node name="Cuttlesteroid" parent="." node_paths=PackedStringArray("spawned_on_death") instance=ExtResource("16_3wf5d")]
+position = Vector2(4200, 4300)
+spawned_on_death = [null]
 
 [node name="Hideout" type="Node2D" parent="."]
 process_mode = 4

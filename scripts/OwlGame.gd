@@ -12,7 +12,7 @@ class_name OwlGame
 @export var draw_line_color:Color  = Color(0.92, 0.92, 0.92)
 @export var draw_point_color:Color = Color(1.0,  1.0,  1.0 )
 @export_group("Debug")
-@export var draw_normals:int = 10
+@export var draw_normals:int = 0
 @export_group("")
 
 static var instance

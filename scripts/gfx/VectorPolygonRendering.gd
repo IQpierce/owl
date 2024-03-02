@@ -85,7 +85,11 @@ func _draw():
 		var next_point = points[next_index]
 
 		var beyond_warp = i >= low_warp_index && i <= high_warp_index
-		var draw_line = !warping || beyond_warp || (i < low_warp_index && i % 2 == 0) || (i > high_warp_index && (points.size() - i) % 2 == 0)
+		#TODO (sam) we could track hidden_index and not have to search whole array on each vertex
+		var draw_line = !hidden_verts.has(i) || !hidden_verts.has(next_index)
+		if draw_line:
+			draw_line = !warping || beyond_warp || (i < low_warp_index && i % 2 == 0) || (i > high_warp_index && (points.size() - i) % 2 == 0)
+
 		if draw_state != DrawState.Stable:
 			var check_index = i
 			var index_portion = check_index / (points.size() * 1.0)
@@ -106,7 +110,7 @@ func _draw():
 		var x = patchwork[i].x
 		var y = patchwork[i].y
 
-		var draw_vert = true
+		var draw_vert = !hidden_verts.has(i)
 		if draw_state != DrawState.Stable:
 			var check_index = i
 			if draw_portion <= check_index / (polygon_vertex_count * 1.0):
@@ -135,7 +139,7 @@ func initiate_warp(warp_start:Vector2):
 		var prev_to_warp = Vector3(warp_start.x - prev_point.x, warp_start.y - prev_point.y, 0)
 		var warp_to_next = Vector3(next_point.x - warp_start.x, next_point.y - warp_start.y, 0)
 		#TODO (sam) Is finding abs(min) sufficient, or do we need to match winding order?
-		var off_line = abs(prev_to_warp.cross(warp_to_next).z)
+		var off_line = abs(prev_to_warp.normalized().cross(warp_to_next.normalized()).z)
 		if off_line < match_off_line:
 			match_off_line = off_line
 			match_prev = i

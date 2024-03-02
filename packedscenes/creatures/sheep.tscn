@@ -148,10 +148,19 @@ injectee_open = 10
 injectee_close = 13
 ccw_convexity = false
 
-[node name="Beak" parent="Anatomy" index="2" instance=ExtResource("5_mgc12")]
+[node name="Beak" parent="Anatomy" index="2" node_paths=PackedStringArray("left_poly", "right_poly") instance=ExtResource("5_mgc12")]
 position = Vector2(0, -67)
+left_poly = NodePath("BeakRight/Polygon")
+right_poly = NodePath("BeakLeft/Polygon")
 speed_factor = 2.0
 rotate_factor = 0.6
+
+[node name="BeakRight" parent="Anatomy/Beak" index="1"]
+rotation = 0.0
+scale = Vector2(1e-05, 1e-05)
+
+[node name="Polygon" parent="Anatomy/Beak/BeakRight" index="0" node_paths=PackedStringArray("stencil_polygons")]
+stencil_polygons = [NodePath("../../../VitalPolygons/HeadRenderer")]
 
 [connection signal="damaged" from="." to="MetaBrain" method="on_damage_dealt"]
 [connection signal="on_target_location_changed" from="MetaBrain/SeekEnergyMetaBrain" to="DorsalFin" method="set_target_world_position"]
@@ -166,3 +175,5 @@ rotate_factor = 0.6
 [connection signal="on_target_velocity_changed" from="MetaBrain/HandleThreatMetaBrain/FlightResponseBrain/RunAwayBrain" to="ThrustEngine" method="set_target_velocity"]
 [connection signal="on_consumable_consumed" from="Anatomy/Stomach" to="Anatomy/Stomach/Reservoir" method="apply_consumable_change_by_type"]
 [connection signal="on_amount_contained_changed" from="Anatomy/Stomach/Reservoir" to="Anatomy/Stomach" method="on_container_change"]
+
+[editable path="Anatomy/Beak"]
