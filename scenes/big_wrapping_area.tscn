@@ -93,7 +93,6 @@ position = Vector2(28844, 26368)
 position = Vector2(28033.3, 26593.4)
 scale = Vector2(0.995902, 1)
 physics_material_override = null
-control_mode = 0
 precise_turn_degrees = 5.0
 precise_turn_damping = 0.5
 
