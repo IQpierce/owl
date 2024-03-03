@@ -4,3 +4,4 @@
 
 [resource]
 shader = ExtResource("1_ol8rj")
+shader_parameter/Trails = 0.05

@@ -41,7 +41,7 @@ trails_never_clear = 0.05
 
 [node name="Hum" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_u788m")
-volume_db = -17.826
+volume_db = -80.0
 autoplay = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
