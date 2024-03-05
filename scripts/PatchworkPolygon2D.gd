@@ -1,6 +1,8 @@
 extends Polygon2D
 class_name PatchworkPolygon2D
 
+#TODO (sam) We can remove patchwork field and always just edit raw polygon data, but children must define all verts 
+#  this is to allow for Polygon to draw its fill so we can properly stencil
 @export var ccw_convexity:bool = true
 # TODO (sam) This is pretty gross, but Godot doesn't support exporting arbitrary data class, so we're stuck with this or a dictionary.
 @export var injected_polygons:Array[InjectedPolygon2D]

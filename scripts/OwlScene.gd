@@ -7,6 +7,7 @@ class_name OwlScene
 @export var fishbowl_mode:bool = false
 @export var player:Player
 @export var world_camera:CameraRig
+@export var occlusion_fills:Node2D
 @export var fishbowl_camera:Camera2D
 @export var fishbowl_mode_auto_reset_secs:float = 60 * 30
 
@@ -34,9 +35,9 @@ func _ready():
 	if OS.has_feature("editor"):
 		print("Zoom ", view_size.x, "x",view_size.y, " to show ", default_view_size.x, "x", default_view_size.y, "(ish)")
 	
-	var want_phosphor = OwlGame.instance.emulate_phosphor_monitor && phosphor_emulation_proto != null
+	var want_phosphor = phosphor_emulation_proto != null && OwlGame.instance.emulate_phosphor_monitor
 
-	if want_phosphor && ProjectSettings.get_setting("rendering/renderer/rendering_method") != "gl_compatibility":
+	if want_phosphor:# && ProjectSettings.get_setting("rendering/renderer/rendering_method") != "gl_compatibility":
 		var scene_children = get_children();
 		var phosphor_emu:PhosphorEmulation = phosphor_emulation_proto.instantiate()
 		add_child(phosphor_emu)

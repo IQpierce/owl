@@ -1,0 +1,2 @@
+extends Polygon2D
+class_name OcclusionFillPolygon2D

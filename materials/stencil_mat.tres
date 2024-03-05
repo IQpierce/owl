@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bj6g0meayytlo"]
+
+[ext_resource type="Shader" uid="uid://bac8baijrg8xg" path="res://shaders/stencil.tres" id="1_wyhxk"]
+
+[resource]
+shader = ExtResource("1_wyhxk")

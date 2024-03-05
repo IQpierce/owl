@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://cgjbstotnfcvd"]
+[gd_scene load_steps=10 format=3 uid="uid://cgjbstotnfcvd"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://d5h87yh5ctsf" path="res://physics_materials/rock.tres" id="1_hgml5"]
 [ext_resource type="Script" path="res://scripts/Asteroid.gd" id="2_xnywi"]
 [ext_resource type="Script" path="res://scripts/ScalingGroup2D.gd" id="3_bg4dw"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="3_bl00j"]
 [ext_resource type="Script" path="res://scripts/util/Spawner.gd" id="4_0ys4r"]
+[ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="5_4h5jk"]
 [ext_resource type="PackedScene" uid="uid://dnsafpxfqwwbh" path="res://packedscenes/energy_crystal.tscn" id="5_wm5mc"]
 [ext_resource type="PackedScene" uid="uid://dwld2v4cgdhq6" path="res://packedscenes/sfx/shatter.tscn" id="6_1wbsw"]
 [ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="7_raf4m"]
@@ -42,10 +43,12 @@ colliders = [NodePath("../CollisionPolygon2D")]
 line_geometry = [NodePath("Polygon2D")]
 
 [node name="Polygon2D" type="Polygon2D" parent="Salt"]
+material = ExtResource("5_4h5jk")
 scale = Vector2(40, 40)
 color = Color(0, 0, 0, 0)
 polygon = PackedVector2Array(-0.45, -0.05, -0.33, 0.36, 0, 0.5, 0.345, 0.2, 0.42, -0.1, 0.23, -0.41, 0.1, -0.5, -0.19, -0.19, -0.11, -0.05, -0.2, -0.1)
 script = ExtResource("3_bl00j")
+rank = 4
 
 [node name="Sulphur" type="Node2D" parent="."]
 

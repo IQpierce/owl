@@ -22,8 +22,9 @@ glow_map_strength = 0.57
 glow_map = ExtResource("4_jj5g8")
 adjustment_color_correction = ExtResource("4_qm6oe")
 
-[node name="PhosphorEmulation" type="Node2D" node_paths=PackedStringArray("injection_viewport", "viewport_containers")]
+[node name="PhosphorEmulation" type="Node2D" node_paths=PackedStringArray("post_process", "injection_viewport", "viewport_containers")]
 script = ExtResource("1_txn4c")
+post_process = NodePath("WorldEnvironment")
 injection_viewport = NodePath("VpC_PostProcessing/Vp_PostProcessing/VpC_NeverClear/Vp_NeverClear")
 viewport_containers = [NodePath("VpC_PostProcessing"), NodePath("VpC_PostProcessing/Vp_PostProcessing/VpC_NeverClear")]
 

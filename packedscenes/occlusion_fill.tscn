@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqduvoam7k1dl"]
+
+[ext_resource type="Script" path="res://scripts/OcclusionFillPolygon.gd" id="1_rcy2k"]
+
+[node name="OcclusionFill" type="Polygon2D"]
+script = ExtResource("1_rcy2k")
