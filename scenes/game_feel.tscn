@@ -107,8 +107,6 @@ notice_radius = 2501
 [node name="CameraRig" parent="." instance=ExtResource("11_llngb")]
 
 [node name="Testeraoids" type="Node2D" parent="."]
-process_mode = 4
-visible = false
 position = Vector2(4000, 4000)
 
 [node name="MediumAsteroid" parent="Testeraoids" instance=ExtResource("6_w6vm2")]
@@ -307,9 +305,7 @@ colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid4/Salt" index="0"]
-material = null
 scale = Vector2(80, 80)
-rank = 1
 
 [node name="ResizeAsteroid7" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-302, -390)
@@ -324,9 +320,7 @@ colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid7/Salt" index="0"]
-material = null
 scale = Vector2(80, 80)
-rank = 1
 
 [node name="ResizeAsteroid14" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(490, -444)
@@ -341,9 +335,7 @@ colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid14/Salt" index="0"]
-material = null
 scale = Vector2(80, 80)
-rank = 1
 
 [node name="ResizeAsteroid17" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(88, -634)
@@ -358,9 +350,7 @@ colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid17/Salt" index="0"]
-material = null
 scale = Vector2(100, 100)
-rank = 1
 
 [node name="ResizeAsteroid20" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(588, -734)
@@ -375,9 +365,7 @@ colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid20/Salt" index="0"]
-material = null
 scale = Vector2(100, 100)
-rank = 1
 
 [node name="ResizeAsteroid24" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(592, -942)
@@ -392,9 +380,7 @@ colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid24/Salt" index="0"]
-material = null
 scale = Vector2(100, 100)
-rank = 1
 
 [node name="ResizeAsteroid27" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-304, -762)
@@ -409,9 +395,7 @@ colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid27/Salt" index="0"]
-material = null
 scale = Vector2(120, 120)
-rank = 1
 
 [node name="ResizeAsteroid32" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(294, -952)
@@ -426,9 +410,7 @@ colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid32/Salt" index="0"]
-material = null
 scale = Vector2(120, 120)
-rank = 1
 _warpable = true
 
 [node name="ResizeAsteroid37" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
@@ -444,9 +426,7 @@ colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid37/Salt" index="0"]
-material = null
 scale = Vector2(120, 120)
-rank = 1
 
 [node name="ResizeAsteroid40" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(442, -1076)
@@ -461,9 +441,7 @@ colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid40/Salt" index="0"]
-material = null
 scale = Vector2(160, 160)
-rank = 1
 
 [node name="ResizeAsteroid46" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-76, -806)
@@ -478,9 +456,7 @@ colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid46/Salt" index="0"]
-material = null
 scale = Vector2(160, 160)
-rank = 1
 
 [node name="ResizeAsteroid47" parent="Testeraoids" node_paths=PackedStringArray("ejection_spawner", "spawned_on_death") instance=ExtResource("6_w6vm2")]
 position = Vector2(-10, -1148)
@@ -495,9 +471,7 @@ colliders = []
 line_geometry = [NodePath("../../MediumAsteroid/Salt/Polygon2D")]
 
 [node name="Polygon2D" parent="Testeraoids/ResizeAsteroid47/Salt" index="0"]
-material = null
 scale = Vector2(160, 160)
-rank = 1
 
 [node name="AsteroidBelt" type="Area2D" parent="."]
 visible = false
@@ -532,9 +506,7 @@ script = ExtResource("13_1js2g")
 [node name="HUD" parent="." instance=ExtResource("8_m427m")]
 
 [node name="Sheep" parent="." instance=ExtResource("14_kovm1")]
-process_mode = 4
-visible = false
-position = Vector2(4000, 4400)
+position = Vector2(3600, 3600)
 disable_mode = 0
 
 [node name="ZOOM_ASTEROID" parent="." instance=ExtResource("6_w6vm2")]
@@ -551,11 +523,11 @@ colliders = []
 [node name="Polygon2D" parent="ZOOM_ASTEROID/Salt" index="0"]
 scale = Vector2(200, 200)
 color = Color(0, 0.196078, 0, 0)
-rank = 1
 intro_secs = 1.0
 _warpable = true
 
 [node name="Fog_ASTEROID4" parent="." node_paths=PackedStringArray("ejection_spawner", "scaling_group", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+visible = false
 position = Vector2(3975, 3575)
 collision_layer = 0
 collision_mask = 0
@@ -654,9 +626,40 @@ material = ExtResource("16_8rlql")
 rank = 4
 
 [node name="Cuttlesteroid" parent="." node_paths=PackedStringArray("spawned_on_death") instance=ExtResource("16_3wf5d")]
-process_mode = 4
 position = Vector2(4200, 4300)
 spawned_on_death = [null]
+
+[node name="Cuttlefish" parent="Cuttlesteroid/Salt" index="1"]
+position = Vector2(-6, -2)
+rotation = -0.144862
+
+[node name="Beak" parent="Cuttlesteroid/Salt/Cuttlefish/Anatomy" index="2"]
+position = Vector2(-0.267804, -5.09179)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionPolygon2D" parent="Cuttlesteroid/Salt/Cuttlefish/Anatomy/Beak/WarpNibbleZone" index="0"]
+position = Vector2(-0.836582, -2.25358)
+
+[node name="BeakRight" parent="Cuttlesteroid/Salt/Cuttlefish/Anatomy/Beak" index="2"]
+position = Vector2(5, -1.002)
+
+[node name="Polygon" parent="Cuttlesteroid/Salt/Cuttlefish/Anatomy/Beak/BeakRight" index="0"]
+position = Vector2(0.137078, -4.80574)
+
+[node name="CollisionPolygon2D" parent="Cuttlesteroid/Salt/Cuttlefish/Anatomy/Beak/BeakRight" index="1"]
+position = Vector2(0.137078, -4.80574)
+
+[node name="BeakLeft" parent="Cuttlesteroid/Salt/Cuttlefish/Anatomy/Beak" index="3"]
+position = Vector2(-5, -1.211)
+
+[node name="Polygon" parent="Cuttlesteroid/Salt/Cuttlefish/Anatomy/Beak/BeakLeft" index="0"]
+position = Vector2(3.23974, -3.55219)
+
+[node name="CollisionPolygon2D" parent="Cuttlesteroid/Salt/Cuttlefish/Anatomy/Beak/BeakLeft" index="1"]
+position = Vector2(3.23974, -3.55219)
+
+[node name="Spear" parent="Cuttlesteroid/Salt/Cuttlefish/Anatomy" index="3"]
+visible = false
 
 [node name="Hideout" type="Node2D" parent="."]
 process_mode = 4
@@ -827,3 +830,7 @@ finesse_msec = 250
 [editable path="Covert_ASTEROID2"]
 [editable path="Auxillary_ASTEROID3"]
 [editable path="Player"]
+[editable path="Cuttlesteroid"]
+[editable path="Cuttlesteroid/Salt/Cuttlefish"]
+[editable path="Cuttlesteroid/Salt/Cuttlefish/Anatomy/Beak"]
+[editable path="Cuttlesteroid/Salt/Cuttlefish/Anatomy/Spear"]
