@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bbnjjkemfetim"]
+[gd_scene load_steps=9 format=3 uid="uid://bbnjjkemfetim"]
 
 [ext_resource type="Script" path="res://scripts/PhosphorEmulation.gd" id="1_txn4c"]
 [ext_resource type="Script" path="res://scripts/editor-tools/Tool_PhosphorEmulation.gd" id="2_bmhjd"]
 [ext_resource type="Texture2D" uid="uid://d0fyvmv6pdcm7" path="res://textures/dustScratches3.png" id="4_jj5g8"]
 [ext_resource type="Texture2D" uid="uid://ca8awlxkw0gq1" path="res://textures/gradientBlue.png" id="4_qm6oe"]
 [ext_resource type="AudioStream" uid="uid://c1wbl4jv0yl57" path="res://audio/buzz.wav" id="4_u788m"]
+[ext_resource type="Material" uid="uid://d6kbg1x1tw6n" path="res://materials/finalize_frame_mat.tres" id="6_ar2s5"]
 [ext_resource type="Material" uid="uid://dsinhtn0k3jry" path="res://materials/post.tres" id="6_yul5d"]
 
 [sub_resource type="Environment" id="Environment_4qsp5"]
@@ -30,7 +31,7 @@ viewport_containers = [NodePath("VpC_PostProcessing"), NodePath("VpC_PostProcess
 
 [node name="Editor_PhosphorEmulation" type="Node2D" parent="." node_paths=PackedStringArray("world_env", "cr_post_processing", "cr_never_clear")]
 script = ExtResource("2_bmhjd")
-data_direction = 1
+data_direction = 2
 world_env = NodePath("../WorldEnvironment")
 glow_intensity = 0.379
 glow_strength = 1.112
@@ -38,7 +39,7 @@ glow_bloom = 1.0
 cr_post_processing = NodePath("../VpC_PostProcessing/Vp_PostProcessing/CanvasLayer_PostProcessing/ColorRect_PostProcessing")
 trails_post_processing = 0.05
 cr_never_clear = NodePath("../VpC_PostProcessing/Vp_PostProcessing/VpC_NeverClear/Vp_NeverClear/CanvasLayer_NeverClear/ColorRect_NeverClear")
-trails_never_clear = 0.05
+trails_never_clear = 0.2
 
 [node name="Hum" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_u788m")
@@ -70,7 +71,7 @@ render_target_update_mode = 4
 [node name="CanvasLayer_PostProcessing" type="CanvasLayer" parent="VpC_PostProcessing/Vp_PostProcessing"]
 
 [node name="ColorRect_PostProcessing" type="ColorRect" parent="VpC_PostProcessing/Vp_PostProcessing/CanvasLayer_PostProcessing"]
-material = ExtResource("6_yul5d")
+material = ExtResource("6_ar2s5")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dsinhtn0k3jry"]
 
-[ext_resource type="Shader" uid="uid://dljfibrx8y7eu" path="res://scenes/phosphor.tres" id="1_ol8rj"]
+[ext_resource type="Shader" uid="uid://dljfibrx8y7eu" path="res://shaders/phosphor.tres" id="1_mj64n"]
 
 [resource]
-shader = ExtResource("1_ol8rj")
-shader_parameter/Trails = 0.05
+shader = ExtResource("1_mj64n")
+shader_parameter/Trails = 0.2

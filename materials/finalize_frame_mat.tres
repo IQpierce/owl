@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://d6kbg1x1tw6n"]
+
+[ext_resource type="Shader" uid="uid://d3x266n5mrbry" path="res://shaders/finalize_frame.tres" id="1_qsgys"]
+
+[resource]
+shader = ExtResource("1_qsgys")

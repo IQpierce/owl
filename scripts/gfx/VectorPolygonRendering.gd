@@ -5,16 +5,18 @@ enum DrawState { Intro, Stable, Outro }
 enum DrawRank {
 	Fog = 0,
 	Default,
-	Covert,
-	Auxillary,
+	Subspace,
+	# TODO this means beaks of a Default creature would render, under a subspace creature.
+	# If that matters we'll want to switch to a Space Rank (probably on collider) and Draw Rank, where TopSpace-Pierce == SubSpace.Default (and Default is highest draw rank)
+	Accessory,
 	Pierce,
 }
 
 static var draw_ranks:Array[RankData] = [
 	RankData.new(100, 50), # Fog
 	RankData.new(49, 20), # Default
-	RankData.new(19, 10), # Covert
-	RankData.new(09, 05), # Auxillary
+	RankData.new(19, 10), # Subspace
+	RankData.new(09, 05), # Auxilary
 	RankData.new(00, 00), # Pierce
 ]
 
@@ -22,6 +24,7 @@ static var fill_proto:PackedScene = preload("res://packedscenes/occlusion_fill.t
 static var stencil_mat:Material = preload("res://materials/stencil_mat.tres")
 
 @export var rank:DrawRank = DrawRank.Default
+@export var has_stroke = true
 @export var intro_secs:float = 0
 @export var _warpable:bool = false
 @export var draw_line_antialiased:bool = true
@@ -127,7 +130,7 @@ func _physics_process(delta:float):
 func _draw():
 	super()
 
-	if rank == DrawRank.Fog:
+	if !has_stroke:
 		return
 
 	var points = polygon

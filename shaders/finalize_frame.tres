@@ -1,0 +1,92 @@
+[gd_resource type="VisualShader" load_steps=10 format=3 uid="uid://d3x266n5mrbry"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_vt5wy"]
+expanded_output_ports = [0]
+source = 1
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_fvkvt"]
+input_name = "screen_uv"
+
+[sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_ga2yp"]
+default_input_values = [0, 0.0, 1, 0.0, 2, 0.0, 3, 0.0]
+op_type = 2
+
+[sub_resource type="Curve" id="Curve_e3vqb"]
+_data = [Vector2(0, 0), 0.0, 0.681358, 0, 0, Vector2(1, 0.92622), 0.521153, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_1fp1x"]
+_data = [Vector2(0, 0), 0.0, 1.07297, 0, 0, Vector2(1, 1), 0.631766, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_r6qvj"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(0.135135, 0.667991), 0.931245, 0.931245, 0, 0, Vector2(0.642643, 0.918842), 0.153554, 0.153554, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_625ud"]
+width = 1024
+curve_x = SubResource("Curve_e3vqb")
+curve_y = SubResource("Curve_1fp1x")
+curve_z = SubResource("Curve_r6qvj")
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_4c3o2"]
+expanded_output_ports = [0]
+texture = SubResource("CurveXYZTexture_625ud")
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_vr7qi"]
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix, unshaded;
+
+uniform sampler2D screen_tex_frg_2 : hint_screen_texture;
+uniform sampler2D tex_frg_7 : source_color;
+
+
+
+void fragment() {
+// Input:3
+	vec2 n_out3p0 = SCREEN_UV;
+
+
+	vec4 n_out2p0;
+// Texture2D:2
+	n_out2p0 = texture(screen_tex_frg_2, n_out3p0);
+	float n_out2p2 = n_out2p0.g;
+
+
+// Mix:8
+	float n_in8p0 = 0.00000;
+	float n_in8p1 = 1.00000;
+	float n_out8p0 = mix(n_in8p0, n_in8p1, n_out2p0.x);
+
+
+// Texture2D:7
+	vec4 n_out7p0 = texture(tex_frg_7, vec2(n_out8p0));
+	float n_out7p1 = n_out7p0.r;
+	float n_out7p3 = n_out7p0.b;
+	float n_out7p4 = n_out7p0.a;
+
+
+// Output:0
+	COLOR.rgb = vec3(n_out7p0.xyz);
+
+
+}
+"
+mode = 1
+flags/unshaded = true
+flags/light_only = false
+nodes/fragment/0/position = Vector2(1840, 160)
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_vt5wy")
+nodes/fragment/2/position = Vector2(-560, -60)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_fvkvt")
+nodes/fragment/3/position = Vector2(-1540, -80)
+nodes/fragment/4/node = SubResource("VisualShaderNodeVectorCompose_ga2yp")
+nodes/fragment/4/position = Vector2(1400, -240)
+nodes/fragment/7/node = SubResource("VisualShaderNodeTexture_4c3o2")
+nodes/fragment/7/position = Vector2(600, 120)
+nodes/fragment/8/node = SubResource("VisualShaderNodeMix_vr7qi")
+nodes/fragment/8/position = Vector2(160, 280)
+nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 8, 0, 7, 0, 2, 0, 8, 2, 7, 0, 0, 0, 7, 1, 4, 0, 7, 3, 4, 2, 7, 4, 4, 3, 2, 2, 4, 1)

@@ -34,8 +34,8 @@ func _process(delta):
 			glow_intensity = world_env.environment.glow_intensity
 			glow_strength = world_env.environment.glow_strength
 			glow_bloom = world_env.environment.glow_bloom
-		if cr_post_processing != null:
-			trails_post_processing = cr_post_processing.material.get_shader_parameter("Trails")
+		#if cr_post_processing != null:
+		#	trails_post_processing = cr_post_processing.material.get_shader_parameter("Trails")
 		if cr_never_clear != null:
 			trails_never_clear = cr_never_clear.material.get_shader_parameter("Trails")
 

@@ -527,7 +527,6 @@ intro_secs = 1.0
 _warpable = true
 
 [node name="Fog_ASTEROID4" parent="." node_paths=PackedStringArray("ejection_spawner", "scaling_group", "spawned_on_death") instance=ExtResource("6_w6vm2")]
-visible = false
 position = Vector2(3975, 3575)
 collision_layer = 0
 collision_mask = 0
@@ -611,7 +610,7 @@ damage_sfx_cooldown_secs = null
 
 [node name="TrunkPolygon" parent="Player/Anatomy/VitalPolygons" index="0"]
 material = ExtResource("16_8rlql")
-rank = 4
+rank = 2
 
 [node name="ThrustTriangle" parent="Player/Anatomy" index="2"]
 material = ExtResource("16_8rlql")

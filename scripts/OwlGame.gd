@@ -10,8 +10,8 @@ class_name OwlGame
 @export var draw_line_thickness  = 1#0.5
 @export var draw_point_thickness = 0.45
 #could we render fills FIRST as a normal material then render lines with against the stencil... will this cause lines to never render under their own color?... what if lines were just double thick?
-@export var draw_line_color:Color  = Color(0.46, 0.00, 0.46)#Color(0.92, 0.92, 0.92)
-@export var draw_point_color:Color = Color(0.50, 0.00, 0.50)#Color(1.00, 1.00, 1.00)
+@export var draw_line_color:Color  = Color(0.92, 0.00, 0.92)
+@export var draw_point_color:Color = Color(1.00, 1.00, 1.00)
 @export_group("Debug")
 @export var draw_normals:int = 0
 @export_group("")
