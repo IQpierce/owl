@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" path="res://scripts/PhosphorEmulation.gd" id="1_txn4c"]
 [ext_resource type="Script" path="res://scripts/editor-tools/Tool_PhosphorEmulation.gd" id="2_bmhjd"]
-[ext_resource type="Material" uid="uid://dsinhtn0k3jry" path="res://scenes/post.tres" id="3_gg1dj"]
 [ext_resource type="Texture2D" uid="uid://d0fyvmv6pdcm7" path="res://textures/dustScratches3.png" id="4_jj5g8"]
 [ext_resource type="Texture2D" uid="uid://ca8awlxkw0gq1" path="res://textures/gradientBlue.png" id="4_qm6oe"]
 [ext_resource type="AudioStream" uid="uid://c1wbl4jv0yl57" path="res://audio/buzz.wav" id="4_u788m"]
+[ext_resource type="Material" uid="uid://dsinhtn0k3jry" path="res://materials/post.tres" id="6_yul5d"]
 
 [sub_resource type="Environment" id="Environment_4qsp5"]
 background_mode = 3
@@ -70,7 +70,7 @@ render_target_update_mode = 4
 [node name="CanvasLayer_PostProcessing" type="CanvasLayer" parent="VpC_PostProcessing/Vp_PostProcessing"]
 
 [node name="ColorRect_PostProcessing" type="ColorRect" parent="VpC_PostProcessing/Vp_PostProcessing/CanvasLayer_PostProcessing"]
-material = ExtResource("3_gg1dj")
+material = ExtResource("6_yul5d")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -103,7 +103,7 @@ render_target_update_mode = 4
 [node name="CanvasLayer_NeverClear" type="CanvasLayer" parent="VpC_PostProcessing/Vp_PostProcessing/VpC_NeverClear/Vp_NeverClear"]
 
 [node name="ColorRect_NeverClear" type="ColorRect" parent="VpC_PostProcessing/Vp_PostProcessing/VpC_NeverClear/Vp_NeverClear/CanvasLayer_NeverClear"]
-material = ExtResource("3_gg1dj")
+material = ExtResource("6_yul5d")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
