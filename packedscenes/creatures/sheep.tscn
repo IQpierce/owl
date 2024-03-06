@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://df8xel7mmjlk2"]
+[gd_scene load_steps=16 format=3 uid="uid://df8xel7mmjlk2"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_aoyla"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/SeekerFallbackBrain.gd" id="2_etigy"]
@@ -14,7 +14,6 @@
 [ext_resource type="Script" path="res://scripts/editor-tools/Tool_PolygonCorrespondence.gd" id="11_1eemr"]
 [ext_resource type="Script" path="res://scripts/InjectedPolygon2D.gd" id="12_1pme2"]
 [ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="12_7p8h1"]
-[ext_resource type="Script" path="res://scripts/OcclusionFillPolygon.gd" id="13_d8e4m"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ibxja"]
 radius = 800.0
@@ -138,7 +137,6 @@ consumable_type = 1
 material = ExtResource("12_7p8h1")
 position = Vector2(0, 8.28248)
 polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.538, 25, -58.538, 35.638, -44.803, 46.564, -24.247)
-ccw_convexity = false
 injected_polygons = [NodePath("../HeadRenderer")]
 
 [node name="HeadRenderer" type="Polygon2D" parent="Anatomy/VitalPolygons" index="1"]
@@ -151,37 +149,12 @@ injectee_open = 10
 injectee_close = 13
 ccw_convexity = false
 
-[node name="FillHead" type="Polygon2D" parent="Anatomy/VitalPolygons" index="2"]
-editor_description = "visual aspect"
-position = Vector2(0, 0.53)
-color = Color(0, 1, 0, 0.0784314)
-polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
-script = ExtResource("13_d8e4m")
-
 [node name="Beak" parent="Anatomy" index="2" node_paths=PackedStringArray("left_poly", "right_poly") instance=ExtResource("5_mgc12")]
 position = Vector2(0, -67)
 left_poly = NodePath("BeakRight/Polygon")
 right_poly = NodePath("BeakLeft/Polygon")
 speed_factor = 2.0
 rotate_factor = 0.6
-
-[node name="Polygon" parent="Anatomy/Beak/BeakRight" index="0"]
-material = ExtResource("12_7p8h1")
-
-[node name="FillBeakRight" type="Polygon2D" parent="Anatomy/Beak/BeakRight" index="1"]
-color = Color(0, 1, 0, 0.0784314)
-polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)
-script = ExtResource("13_d8e4m")
-
-[node name="Polygon" parent="Anatomy/Beak/BeakLeft" index="0"]
-material = ExtResource("12_7p8h1")
-
-[node name="FillBeakLeft" type="Polygon2D" parent="Anatomy/Beak/BeakLeft" index="1"]
-scale = Vector2(1, 0.987)
-color = Color(0, 1, 0, 0.0784314)
-offset = Vector2(0.00910282, -0.0398865)
-polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)
-script = ExtResource("13_d8e4m")
 
 [connection signal="damaged" from="." to="MetaBrain" method="on_damage_dealt"]
 [connection signal="on_target_location_changed" from="MetaBrain/SeekEnergyMetaBrain" to="DorsalFin" method="set_target_world_position"]

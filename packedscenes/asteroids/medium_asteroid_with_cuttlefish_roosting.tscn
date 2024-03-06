@@ -24,21 +24,15 @@ spawn_protos = Array[PackedScene]([ExtResource("6_pmn6e")])
 num_to_spawn = 0
 spawn_random_angle = 0.0
 
-[node name="Cuttlefish" parent="Salt" index="0" instance=ExtResource("2_bcoka")]
-position = Vector2(0, 3)
+[node name="Cuttlefish" parent="Salt" index="1" instance=ExtResource("2_bcoka")]
 
-[node name="TrunkPolygon" parent="Salt/Cuttlefish/Anatomy/VitalPolygons" index="0" node_paths=PackedStringArray("stencil_polygons")]
-stencil_polygons = [NodePath("../../../../Polygon2D")]
-
-[node name="Beak" parent="Salt/Cuttlefish/Anatomy" index="2"]
-visible = false
+[node name="TrunkPolygon" parent="Salt/Cuttlefish/Anatomy/VitalPolygons" index="0"]
+rank = 4
+skip_line_indeces = Array[int]([])
 
 [node name="WarpNibbleZone" parent="Salt/Cuttlefish/Anatomy/Beak" index="0" node_paths=PackedStringArray("things_to_ignore", "warp_target_definition_container")]
-things_to_ignore = []
+things_to_ignore = Array[int]([])
 warp_target_definition_container = NodePath("../../../../..")
-
-[node name="Spear" parent="Salt/Cuttlefish/Anatomy" index="3"]
-visible = false
 
 [node name="DorsalFin" parent="Salt/Cuttlefish/Anatomy" index="4"]
 visible = false

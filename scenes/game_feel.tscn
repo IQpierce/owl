@@ -626,6 +626,7 @@ material = ExtResource("16_8rlql")
 rank = 4
 
 [node name="Cuttlesteroid" parent="." node_paths=PackedStringArray("spawned_on_death") instance=ExtResource("16_3wf5d")]
+process_mode = 4
 position = Vector2(4200, 4300)
 spawned_on_death = [null]
 

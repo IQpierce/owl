@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dclbqd5q45c40"]
+[gd_scene load_steps=5 format=3 uid="uid://dclbqd5q45c40"]
 
 [ext_resource type="Script" path="res://scripts/creatures/anatomy/Spear.gd" id="1_b1rd5"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_42nd2"]
 [ext_resource type="Script" path="res://scripts/hacks/StickyZone.gd" id="3_o6m53"]
+[ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="3_yh3nl"]
 
 [node name="Spear" type="Node2D" node_paths=PackedStringArray("hook_connection_point")]
 script = ExtResource("1_b1rd5")
@@ -17,10 +18,10 @@ script = ExtResource("3_o6m53")
 polygon = PackedVector2Array(-0.01, -3, -0.01, 0, 0.01, 0, 0.01, -3)
 
 [node name="ShaftPolygon" type="Polygon2D" parent="Shaft"]
+material = ExtResource("3_yh3nl")
 polygon = PackedVector2Array(0, -0.33, 0, -2.85)
 script = ExtResource("2_42nd2")
-point_draw_radius = 0.18
-draw_line_width = 0.216
+rank = 4
 
 [node name="Head" type="Area2D" parent="."]
 position = Vector2(0, -3)
@@ -37,15 +38,15 @@ scale = Vector2(5, 5)
 polygon = PackedVector2Array(-1.75, 0.2, 0, -2.75, 1.75, 0.2)
 
 [node name="HeadPolygonLeft" type="Polygon2D" parent="Head"]
+material = ExtResource("3_yh3nl")
 position = Vector2(0, -4.721)
 polygon = PackedVector2Array(-0.031, 5, -0.00474358, 1.73671, -1.76563, 4.721, -0.00474358, 1.68415)
 script = ExtResource("2_42nd2")
-point_draw_radius = 0.18
-draw_line_width = 0.216
+rank = 4
 
 [node name="HeadPolygonRight" type="Polygon2D" parent="Head/HeadPolygonLeft"]
+material = ExtResource("3_yh3nl")
 scale = Vector2(-1, 1)
 polygon = PackedVector2Array(-0.031, 5, -0.00474358, 1.73671, -1.76563, 4.721, -0.00474358, 1.68415)
 script = ExtResource("2_42nd2")
-point_draw_radius = 0.18
-draw_line_width = 0.216
+rank = 4
