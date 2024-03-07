@@ -13,6 +13,7 @@ func _process(delta:float):
 	var current_angle:float = controlled_body.get_global_transform().get_rotation() + rotation
 	var desired_angle:float = (target_world_position - global_position).angle()
 	
+	# @TODO: Refined turning torque force math to not always be max/extreme
 	if desired_angle < current_angle:
 		controlled_body.apply_torque(-delta * torque_power)
 	elif desired_angle > current_angle:
