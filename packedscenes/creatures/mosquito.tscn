@@ -1,0 +1,184 @@
+[gd_scene load_steps=15 format=3 uid="uid://dxk8kxig4jkr"]
+
+[ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_nskhh"]
+[ext_resource type="Script" path="res://scripts/creatures/brains/CreatureMind.gd" id="2_ktaqx"]
+[ext_resource type="Script" path="res://scripts/creatures/brains/SeekerFallbackBrain.gd" id="3_guk12"]
+[ext_resource type="Script" path="res://scripts/creatures/brains/ConsumableSeekerBrain.gd" id="4_c13lt"]
+[ext_resource type="Script" path="res://scripts/creatures/brains/WanderBrain.gd" id="6_rph55"]
+[ext_resource type="Script" path="res://scripts/creatures/brains/ThreatResponseFallbackBrain.gd" id="7_lgw3e"]
+[ext_resource type="Script" path="res://scripts/creatures/brains/FlightResponseBrain.gd" id="8_nvk4n"]
+[ext_resource type="Script" path="res://scripts/util/RotateTowards.gd" id="9_tovvu"]
+[ext_resource type="Script" path="res://scripts/creatures/anatomy/ThrustEngine.gd" id="10_ccc8u"]
+[ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="12_1psui"]
+[ext_resource type="Script" path="res://scripts/DamageZone.gd" id="12_4uj1r"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="12_d5o6l"]
+[ext_resource type="PackedScene" uid="uid://dclbqd5q45c40" path="res://packedscenes/creatures/anatomy/spear.tscn" id="12_ksl47"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ibxja"]
+radius = 800.0
+
+[node name="Mosquito" instance=ExtResource("1_nskhh")]
+mass = 1.5
+inertia = 0.0
+can_sleep = true
+freeze_mode = 1
+linear_damp = 0.0
+angular_damp = 2.0
+health = 2.0
+max_health = 2.0
+
+[node name="MosquitoMind" type="Node2D" parent="." index="0" node_paths=PackedStringArray("safe_mode_brains", "threat_mode_brains", "controlled_creature")]
+script = ExtResource("2_ktaqx")
+safe_mode_brains = [NodePath("SeekMeatWithFallbacksBrain")]
+threat_mode_brains = [NodePath("HandleThreatMetaBrain")]
+controlled_creature = NodePath("..")
+auto_think_delta_secs = 1.0
+
+[node name="SeekMeatWithFallbacksBrain" type="Node2D" parent="MosquitoMind" index="0" node_paths=PackedStringArray("prioritized_brains", "controlled_creature")]
+position = Vector2(-2, 0)
+script = ExtResource("3_guk12")
+prioritized_brains = [NodePath("SeekMeatConsumableBrain"), NodePath("WanderBrain")]
+controlled_creature = NodePath("../..")
+
+[node name="SeekMeatConsumableBrain" type="Node2D" parent="MosquitoMind/SeekMeatWithFallbacksBrain" index="0" node_paths=PackedStringArray("controlled_creature")]
+position = Vector2(0, -60)
+script = ExtResource("4_c13lt")
+target_consumable_type = 2
+controlled_creature = NodePath("../../..")
+
+[node name="Area2D" type="Area2D" parent="MosquitoMind/SeekMeatWithFallbacksBrain/SeekMeatConsumableBrain" index="0"]
+position = Vector2(0, -47.0902)
+disable_mode = 1
+collision_layer = 0
+
+[node name="Vision" type="CollisionShape2D" parent="MosquitoMind/SeekMeatWithFallbacksBrain/SeekMeatConsumableBrain/Area2D" index="0"]
+position = Vector2(-1.39203, 45.5198)
+shape = SubResource("CircleShape2D_ibxja")
+
+[node name="WanderBrain" type="Node2D" parent="MosquitoMind/SeekMeatWithFallbacksBrain" index="1" node_paths=PackedStringArray("controlled_creature")]
+position = Vector2(2, 0)
+script = ExtResource("6_rph55")
+urgency = 0.5
+controlled_creature = NodePath("../../..")
+
+[node name="HandleThreatMetaBrain" type="Node2D" parent="MosquitoMind" index="1" node_paths=PackedStringArray("threat_response_brains", "controlled_creature")]
+script = ExtResource("7_lgw3e")
+threat_response_brains = [NodePath("FlightResponseBrain")]
+controlled_creature = NodePath("../..")
+
+[node name="FlightResponseBrain" type="Node2D" parent="MosquitoMind/HandleThreatMetaBrain" index="0" node_paths=PackedStringArray("run_away_brain", "controlled_creature")]
+script = ExtResource("8_nvk4n")
+run_away_brain = NodePath("RunAwayBrain")
+controlled_creature = NodePath("../../..")
+
+[node name="RunAwayBrain" type="Node2D" parent="MosquitoMind/HandleThreatMetaBrain/FlightResponseBrain" index="0" node_paths=PackedStringArray("controlled_creature")]
+script = ExtResource("6_rph55")
+min_dist_to_pick = 2000.0
+max_dist_to_pick = 2100.0
+urgency = 1.0
+avoidance_threshhold = -0.1
+controlled_creature = NodePath("../../../..")
+
+[node name="DorsalFin" type="Node2D" parent="." index="1" node_paths=PackedStringArray("controlled_body")]
+position = Vector2(0, 1)
+rotation = -1.5708
+script = ExtResource("9_tovvu")
+controlled_body = NodePath("..")
+torque_power = 95000.0
+
+[node name="ThrustEngine" type="Node2D" parent="." index="2" node_paths=PackedStringArray("target_body")]
+script = ExtResource("10_ccc8u")
+target_body = NodePath("..")
+power = 10000.0
+
+[node name="TrunkCollision" parent="." index="3"]
+polygon = PackedVector2Array(0, 0, 12, 12, 0, 27, -12, 12)
+match_patchwork = false
+
+[node name="Anatomy" parent="." index="4" node_paths=PackedStringArray("colliders", "line_geometry")]
+colliders = [NodePath("../TrunkCollision"), null]
+line_geometry = [NodePath("VitalPolygons/TrunkPolygon"), null, null]
+
+[node name="Stomach" parent="Anatomy" index="0" node_paths=PackedStringArray("polygons_to_scale", "colliders_to_scale")]
+polygons_to_scale = [NodePath("../VitalPolygons/TrunkPolygon")]
+colliders_to_scale = [NodePath("../../TrunkCollision")]
+min_x_scale = 0.75
+max_x_scale = 1.4
+
+[node name="Reservoir" parent="Anatomy/Stomach" index="0"]
+consumable_type = 1
+
+[node name="TrunkPolygon" parent="Anatomy/VitalPolygons" index="0" node_paths=PackedStringArray("injected_polygons")]
+material = ExtResource("12_1psui")
+polygon = PackedVector2Array(0, 0, 12, 12, 0, 27, -12, 12)
+injected_polygons = [null]
+
+[node name="HeadPolygon" type="Polygon2D" parent="Anatomy/VitalPolygons" index="1" node_paths=PackedStringArray("injected_polygons")]
+editor_description = "visual aspect"
+material = ExtResource("12_1psui")
+position = Vector2(0, -4.89994)
+color = Color(0, 0, 0, 0)
+polygon = PackedVector2Array(0, 0, 3, 3, 0, 5, -3, 3)
+script = ExtResource("12_d5o6l")
+injected_polygons = [null]
+
+[node name="NibbleZone" type="Area2D" parent="Anatomy/VitalPolygons/HeadPolygon" index="0" node_paths=PackedStringArray("things_to_ignore")]
+position = Vector2(0, 4.89994)
+disable_mode = 1
+collision_layer = 0
+script = ExtResource("12_4uj1r")
+damage_per_sec = 0.5
+things_to_ignore = [NodePath("../../../..")]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Anatomy/VitalPolygons/HeadPolygon/NibbleZone" index="0"]
+polygon = PackedVector2Array(-1.61592, 0.0443497, -3.89885, -21.0588, 4.78741, -21.1145, 1.66927, 0.100031)
+
+[node name="Spear" parent="Anatomy" index="2" instance=ExtResource("12_ksl47")]
+position = Vector2(0, -4.343)
+scale = Vector2(3.6, 3.6)
+extension_retracting_rate_per_sec = 0.5
+extension_extending_rate_per_sec = 12.0
+extension_shaft_scale_max = 48.0
+extension_head_collision_active = 1
+extension_shaft_collision_active = 1
+
+[node name="Shaft" parent="Anatomy/Spear" index="0" node_paths=PackedStringArray("ignore_things")]
+ignore_things = [NodePath("../../..")]
+
+[node name="Head" parent="Anatomy/Spear" index="1" node_paths=PackedStringArray("ignore_things")]
+scale = Vector2(0.3, 0.3)
+disable_mode = 2
+collision_layer = 3
+gravity_point_center = Vector2(1, 0)
+gravity_direction = Vector2(1, 0)
+gravity = 7200.0
+linear_damp = 28.0
+angular_damp = 28.0
+ignore_things = [NodePath("../../..")]
+
+[node name="HeadCollision" parent="Anatomy/Spear/Head" index="0"]
+scale = Vector2(2, 2)
+
+[node name="HeadPolygonLeft" parent="Anatomy/Spear/Head" index="1"]
+position = Vector2(0.121657, -9.14933)
+scale = Vector2(2, 2)
+polygon = PackedVector2Array(-1.81864, 4.6698, -0.0535947, 1.71842)
+
+[node name="HeadPolygonRight" parent="Anatomy/Spear/Head/HeadPolygonLeft" index="0"]
+position = Vector2(1.7787, 6.67659)
+scale = Vector2(1, -1)
+polygon = PackedVector2Array(-1.83953, 4.9437, -0.0744865, 1.99955)
+
+[connection signal="damaged" from="." to="MosquitoMind" method="on_damage_dealt"]
+[connection signal="on_target_location_changed" from="MosquitoMind/SeekMeatWithFallbacksBrain" to="DorsalFin" method="set_target_world_position"]
+[connection signal="on_target_velocity_changed" from="MosquitoMind/SeekMeatWithFallbacksBrain" to="ThrustEngine" method="set_target_velocity"]
+[connection signal="body_entered" from="MosquitoMind/SeekMeatWithFallbacksBrain/SeekMeatConsumableBrain/Area2D" to="MosquitoMind/SeekMeatWithFallbacksBrain/SeekMeatConsumableBrain" method="on_body_enters_awareness"]
+[connection signal="body_exited" from="MosquitoMind/SeekMeatWithFallbacksBrain/SeekMeatConsumableBrain/Area2D" to="MosquitoMind/SeekMeatWithFallbacksBrain/SeekMeatConsumableBrain" method="on_body_exits_awareness"]
+[connection signal="on_target_location_changed" from="MosquitoMind/SeekMeatWithFallbacksBrain/WanderBrain" to="DorsalFin" method="set_target_world_position"]
+[connection signal="on_target_velocity_changed" from="MosquitoMind/SeekMeatWithFallbacksBrain/WanderBrain" to="ThrustEngine" method="set_target_velocity"]
+[connection signal="on_target_location_changed" from="MosquitoMind/HandleThreatMetaBrain/FlightResponseBrain/RunAwayBrain" to="DorsalFin" method="set_target_world_position"]
+[connection signal="on_target_velocity_changed" from="MosquitoMind/HandleThreatMetaBrain/FlightResponseBrain/RunAwayBrain" to="ThrustEngine" method="set_target_velocity"]
+[connection signal="on_consumable_consumed" from="Anatomy/Stomach" to="Anatomy/Stomach/Reservoir" method="apply_consumable_change_by_type"]
+[connection signal="on_amount_contained_changed" from="Anatomy/Stomach/Reservoir" to="Anatomy/Stomach" method="on_container_change"]
+
+[editable path="Anatomy/Spear"]

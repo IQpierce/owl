@@ -64,11 +64,17 @@ func is_body_relevant(body:CollisionObject2D):
 	return get_body_relevance(body) > 0
 
 func on_body_enters_awareness(body:CollisionObject2D):
+	if body == controlled_creature:
+		return
+	
 	var relevance:float = get_body_relevance(body)
 	if relevance > 0:
 		add_relevant_target(body, relevance)
 
 func on_body_exits_awareness(body:CollisionObject2D):
+	if body == controlled_creature:
+		return
+	
 	var relevance:float = get_body_relevance(body)
 	if relevance > 0:
 		remove_relevant_target(body, relevance)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://1eu167rid5gi"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_u0a1w"]
-[ext_resource type="Script" path="res://scripts/creatures/brains/CreatureMetaBrain.gd" id="2_nthbq"]
+[ext_resource type="Script" path="res://scripts/creatures/brains/CreatureMind.gd" id="2_dfcr7"]
 [ext_resource type="Script" path="res://scripts/creatures/anatomy/ThrustEngine.gd" id="3_bsp5l"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/VisionConeValidator.gd" id="3_jgjpx"]
 [ext_resource type="PackedScene" uid="uid://dclbqd5q45c40" path="res://packedscenes/creatures/anatomy/spear.tscn" id="6_hgf5q"]
@@ -20,7 +20,7 @@ health = 3.0
 max_health = 3.0
 
 [node name="CreatureMetaBrain" type="Node2D" parent="." index="0" node_paths=PackedStringArray("controlled_creature")]
-script = ExtResource("2_nthbq")
+script = ExtResource("2_dfcr7")
 controlled_creature = NodePath("..")
 
 [node name="VisionValidator" type="Area2D" parent="CreatureMetaBrain" index="0"]

@@ -1,6 +1,6 @@
 extends Brain
 
-class_name CreatureMetaBrain
+class_name CreatureMind
 
 @export var safe_mode_brains:Array[Brain]
 @export var threat_mode_brains:Array[Brain]

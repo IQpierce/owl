@@ -1,8 +1,8 @@
 [gd_scene load_steps=16 format=3 uid="uid://df8xel7mmjlk2"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_aoyla"]
+[ext_resource type="Script" path="res://scripts/creatures/brains/CreatureMind.gd" id="2_bh2im"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/SeekerFallbackBrain.gd" id="2_etigy"]
-[ext_resource type="Script" path="res://scripts/creatures/brains/CreatureMetaBrain.gd" id="2_t8ih4"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/ConsumableSeekerBrain.gd" id="3_sb8nx"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/SeekByFunction.gd" id="4_fa6f3"]
 [ext_resource type="PackedScene" uid="uid://bq4yi2hqjoxm5" path="res://packedscenes/creatures/anatomy/beak.tscn" id="5_mgc12"]
@@ -29,11 +29,10 @@ health = 12.0
 max_health = 12.0
 
 [node name="MetaBrain" type="Node2D" parent="." index="0" node_paths=PackedStringArray("safe_mode_brains", "threat_mode_brains", "controlled_creature")]
-script = ExtResource("2_t8ih4")
+script = ExtResource("2_bh2im")
 safe_mode_brains = [NodePath("SeekEnergyMetaBrain")]
 threat_mode_brains = [NodePath("HandleThreatMetaBrain")]
 controlled_creature = NodePath("..")
-auto_think_delta_secs = 3.0
 
 [node name="SeekEnergyMetaBrain" type="Node2D" parent="MetaBrain" index="0" node_paths=PackedStringArray("prioritized_brains", "controlled_creature")]
 position = Vector2(-2, 0)
