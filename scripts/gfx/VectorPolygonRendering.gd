@@ -13,7 +13,7 @@ enum DrawRank {
 }
 
 static var draw_ranks:Array[RankData] = [
-	RankData.new(100, 50), # Fog
+	RankData.new(99, 50), # Fog
 	RankData.new(49, 20), # Default
 	RankData.new(19, 10), # Subspace
 	RankData.new(09, 05), # Auxilary
@@ -75,9 +75,7 @@ func _exit_tree():
 	_release_occlusion()
 
 func _sync_occlusion(resync_polygon:bool = false):
-	# TODO (sam) we should just match the occluders visibility to our own
-	var should_occlude = OwlGame.instance.can_occlude && is_visible_in_tree() && rank != DrawRank.Pierce
-
+	var should_occlude = OwlGame.instance.can_occlude && rank != DrawRank.Pierce
 	if should_occlude:
 		if occlusion_fill == null:
 			# TODO (sam) are fill polygons getting built twice at start because we aren't in the tree yet?
@@ -92,6 +90,7 @@ func _sync_occlusion(resync_polygon:bool = false):
 		occlusion_fill.global_position = global_position
 		occlusion_fill.global_rotation = global_rotation
 		occlusion_fill.global_scale    = global_scale
+
 		if resync_polygon:
 			var vert_count = polygon.size()
 			var fill_polygon = occlusion_fill.polygon
@@ -102,6 +101,10 @@ func _sync_occlusion(resync_polygon:bool = false):
 			occlusion_fill.polygon = fill_polygon
 	elif occlusion_fill != null:
 		_release_occlusion()
+	
+	# TODO (sam) I kinda need this to check is_visible_in_tree() but that proved MUCH to expensive for this frequency
+	if occlusion_fill != null:
+		occlusion_fill.visible = visible
 
 func _release_occlusion():
 	if occlusion_fill != null:

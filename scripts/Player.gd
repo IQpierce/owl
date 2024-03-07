@@ -131,8 +131,8 @@ func process_gamepad(delta:float) -> bool:
 
 		if Input.is_action_pressed("drive_gamepad"):
 			drive_factor += 1
-		else:
-			drive_factor += Input.get_action_strength("roam_gamepad_thrust_axis")
+		#else:
+		#	drive_factor += Input.get_action_strength("roam_gamepad_thrust_axis")
 
 		want_dir.x = Input.get_axis("left_gamepad_primary", "right_gamepad_primary")
 		want_dir.y = Input.get_axis("up_gamepad_primary", "down_gamepad_primary")
