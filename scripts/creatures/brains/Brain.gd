@@ -17,12 +17,14 @@ func _ready():
 	assert(controlled_creature != null)
 
 func _process(delta):
-	if auto_think_delta_secs > 0 && \
-		(	is_nan(last_auto_think_time) || \
-			Time.get_unix_time_from_system() >= last_auto_think_time + auto_think_delta_secs
-		):
-		think()
-		last_auto_think_time = Time.get_unix_time_from_system()
+	if auto_think_delta_secs > 0:
+		var lod_steps = OwlGame.within_lod_steps(self, OwlGame.LOD.ThinkSmall)
+		if lod_steps <= OwlGame.MAX_LOD_STEPS && \
+			(	is_nan(last_auto_think_time) || \
+				Time.get_unix_time_from_system() >= last_auto_think_time + (auto_think_delta_secs * lod_steps)
+			):
+			think()
+			last_auto_think_time = Time.get_unix_time_from_system()
 
 func think():
 	assert(false, "pure virtual, this should be overridden!!")

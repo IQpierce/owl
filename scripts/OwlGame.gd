@@ -16,6 +16,20 @@ class_name OwlGame
 @export var draw_normals:int = 0
 @export_group("")
 
+enum LOD {
+	Ignore = 0,
+	Draw,
+	ThinkSmall,
+}
+
+const _lod_distances:Array[float] = [
+	INF,   # Ignore
+	2000,  # Draw
+	5000,  # Think Small
+]
+
+const MAX_LOD_STEPS:int = 100
+
 static var instance
 
 var zooming:bool = false
@@ -71,3 +85,15 @@ func beyond_screen(global_pos:Vector2) -> Vector2:
 		else:
 			beyond.y = 0
 	return beyond
+
+static func within_lod_steps(node:Node2D, lod:LOD) -> int:
+	var threshold = _lod_distances[lod]
+	if node == null || threshold <= 0:
+		return MAX_LOD_STEPS + 1
+	if instance == null || instance.scene == null || instance.scene.world_camera == null:
+		return 1
+	var to_node = node.global_position - instance.scene.world_camera.global_position
+	return (max(abs(to_node.x), abs(to_node.y)) / threshold ) as int + 1
+
+static func in_first_lod(node:Node2D, lod:LOD) -> bool:
+	return within_lod_steps(node, lod) == 1

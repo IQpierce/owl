@@ -65,8 +65,15 @@ func _enter_tree():
 func _exit_tree():
 	_release_occlusion()
 
+func _quick_sync_occlusion():
+	if occlusion_fill != null:
+		occlusion_fill.global_position = global_position
+		occlusion_fill.global_rotation = global_rotation
+		occlusion_fill.global_scale    = global_scale
+
 func _sync_occlusion(resync_polygon:bool = false):
-	var should_occlude = OwlGame.instance.can_occlude && rank != DrawRank.Pierce
+	var should_occlude = rank != DrawRank.Pierce && OwlGame.instance.can_occlude
+
 	if should_occlude:
 		if occlusion_fill == null:
 			# TODO (sam) are fill polygons getting built twice at start because we aren't in the tree yet?
@@ -78,10 +85,7 @@ func _sync_occlusion(resync_polygon:bool = false):
 			OwlGame.instance.scene.occlusion_fills.add_child(occlusion_fill)
 			resync_polygon = true
 
-		occlusion_fill.global_position = global_position
-		occlusion_fill.global_rotation = global_rotation
-		occlusion_fill.global_scale    = global_scale
-
+		_quick_sync_occlusion()
 		if resync_polygon:
 			var vert_count = polygon.size()
 			var fill_polygon = occlusion_fill.polygon
@@ -93,9 +97,9 @@ func _sync_occlusion(resync_polygon:bool = false):
 	elif occlusion_fill != null:
 		_release_occlusion()
 	
-	# TODO (sam) I kinda need this to check is_visible_in_tree() but that proved MUCH to expensive for this frequency
+	# TODO (sam) I kinda need this to check is_visible_in_tree() but it's not cheap, is LOD enough to mitigate?
 	if occlusion_fill != null:
-		occlusion_fill.visible = visible
+		occlusion_fill.visible = is_visible_in_tree()
 
 func _release_occlusion():
 	if occlusion_fill != null:
@@ -103,7 +107,6 @@ func _release_occlusion():
 		occlusion_fill = null
 
 func _process(delta:float):
-	_sync_occlusion()
 	var redraw = false
 	if draw_state == DrawState.Intro:
 		redraw = true
@@ -113,22 +116,37 @@ func _process(delta:float):
 	elif draw_state == DrawState.Outro:
 		redraw = true
 		draw_elapsed -= delta
+
+	if !OwlGame.in_first_lod(self, OwlGame.LOD.Draw):
+		_release_occlusion()
+		return
+
 	
-	# TODO (sam) I am a little worried about floating point error across transforms causing this to always happen
-	if global_scale != cached_scale:
+	var scale_change = global_scale - cached_scale
+	if scale_change.length_squared() > 0.00001:
+		# If scale has changed our line widths and injected vertices are wrong
+		build_patchwork()
 		redraw = true
+	
+	if _missed_draw:
+		redraw = true
+
+
+	_sync_occlusion()
 
 	if redraw:
 		queue_redraw()
 
-func _physics_process(delta:float):
-	#TODO (sam) Is this extra sync necessary? Is there much performance overhead?
-	_sync_occlusion()
+#func _physics_process(delta:float):
+#	# TODO (sam) Is this extra sync necessary? Is there much performance overhead?
+#	_quick_sync_occlusion()
 
 func _draw():
 	super()
+	if _missed_draw:
+		return
 
-	var cached_scale = global_scale
+	cached_scale = global_scale
 	var draw_scale = (abs(cached_scale.x) + abs(cached_scale.y)) / 2
 
 	if draw_scale <= 0 || !has_stroke:

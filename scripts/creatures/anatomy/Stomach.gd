@@ -26,13 +26,9 @@ func update_scales_based_on_amount(old_amt:float, amt:float):
 		var lerp_weight:float = inverse_lerp(0, consumable_reservoir.maximum_amount, amt)
 		var scale_change = lerp(min_x_scale, max_x_scale, lerp_weight) / old_scale
 		if polygons_to_scale.size() > index && polygons_to_scale[index] != null:
-			for vert in polygons_to_scale[index].polygon.size():
-				polygons_to_scale[index].polygon[vert].x *= scale_change
-			polygons_to_scale[index].build_patchwork()
-			polygons_to_scale[index].queue_redraw()
+			polygons_to_scale[index].global_scale.x *= scale_change
 		if colliders_to_scale.size() > index && colliders_to_scale[index] != null:
-			for vert in colliders_to_scale[index].polygon.size():
-				colliders_to_scale[index].polygon[vert].x *= scale_change
+			colliders_to_scale[index].global_scale.x *= scale_change
 
 func on_container_change(old_amount:float, new_amount:float):
 	update_scales_based_on_amount(old_amount, new_amount)

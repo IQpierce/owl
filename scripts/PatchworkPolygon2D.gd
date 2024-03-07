@@ -8,6 +8,7 @@ class_name PatchworkPolygon2D
 @export var injected_polygons:Array[InjectedPolygon2D]
 @export var stencil_polygons:Array[PatchworkPolygon2D]
 
+var _missed_draw:bool = false
 var raw_polygon:PackedVector2Array
 #var patchwork:PackedVector2Array
 var patch_pairs:PackedByteArray
@@ -32,15 +33,24 @@ func _ready():
 		build_patchwork()
 
 func _draw():
+	if !OwlGame.in_first_lod(self, OwlGame.LOD.Draw):
+		_missed_draw = true
+		return
+
+	_missed_draw = false
 	var normals_length = OwlGame.instance.draw_normals
-	if normals_length > 0 && global_scale.x > 0:
-		for i in polygon.size():
-			if !hidden_verts.has(i) || !hidden_verts.has((i + 1) % polygon.size()):
-				var start = polygon[i]
-				var end = polygon[(i + 1) % polygon.size()]
-				var mid = (start + end) / 2
-				var normal = get_patchwork_normal(i) / global_scale.x * normals_length
-				draw_line(mid, mid + normal, Color.BLUE, 1 / global_scale.x, true)
+	if normals_length > 0:
+		var draw_scale = (abs(global_scale.x) + abs(global_scale.y)) / 2
+		if draw_scale > 0:
+			var normal_color = Color.GRAY
+			normal_color.g8 = 0
+			for i in polygon.size():
+				if !hidden_verts.has(i) || !hidden_verts.has((i + 1) % polygon.size()):
+					var start = polygon[i]
+					var end = polygon[(i + 1) % polygon.size()]
+					var mid = (start + end) / 2
+					var normal = get_patchwork_normal(i) / draw_scale * normals_length
+					draw_line(mid, mid + normal, normal_color, 1 / draw_scale, true)
 
 func build_patchwork():
 	# We need at least one vertex to attach to, and we don't want to build before we've hit _ready.
