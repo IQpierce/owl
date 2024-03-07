@@ -18,4 +18,10 @@ func consume_pickup(pickup:Pickup) -> bool:
 
 func _apply_pickup(pickup:Pickup):
 	pass
+	
+func get_consumable_units_contained(check_type:GameEnums.ConsumableType) -> float:
+	if check_type == GameEnums.ConsumableType.Meat:
+		return mass
+	
+	return 0
 
