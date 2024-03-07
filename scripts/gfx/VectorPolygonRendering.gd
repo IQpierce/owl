@@ -34,9 +34,8 @@ static var stencil_mat:Material = preload("res://materials/stencil_mat.tres")
 var occlusion_fill:OcclusionFillPolygon2D
 var draw_state:DrawState = DrawState.Stable
 var draw_elapsed:float = 0
-var initial_point_radius:float = 0
-var initial_line_width:float = 0
 var zoom_scaling = 1
+var cached_scale:Vector2 = Vector2(1, 1)
 var warp_points:PackedVector2Array
 var far_distance:float = -1
 var poly_from_warp_index = 0
@@ -53,14 +52,6 @@ func _ready():
 
 	if material == null:
 		material = stencil_mat
-
-	if global_scale.y != global_scale.x && OS.has_feature("editor"):
-		push_warning("Vector Rendering requires uniform scaling for good lines. Matching scale.y to scale.x.")
-		global_scale.y = global_scale.x
-
-	if global_scale.x > 0:
-		initial_point_radius = OwlGame.instance.draw_point_thickness / global_scale.x
-		initial_line_width = OwlGame.instance.draw_line_thickness / global_scale.x
 
 	if intro_secs > 0:
 		draw_state = DrawState.Intro
@@ -122,6 +113,10 @@ func _process(delta:float):
 	elif draw_state == DrawState.Outro:
 		redraw = true
 		draw_elapsed -= delta
+	
+	# TODO (sam) I am a little worried about floating point error across transforms causing this to always happen
+	if global_scale != cached_scale:
+		redraw = true
 
 	if redraw:
 		queue_redraw()
@@ -133,8 +128,19 @@ func _physics_process(delta:float):
 func _draw():
 	super()
 
-	if !has_stroke:
+	var cached_scale = global_scale
+	var draw_scale = (abs(cached_scale.x) + abs(cached_scale.y)) / 2
+
+	if draw_scale <= 0 || !has_stroke:
 		return
+
+	var line_width = OwlGame.instance.draw_line_thickness / draw_scale
+	var point_radius = OwlGame.instance.draw_point_thickness / draw_scale
+
+	var line_color = OwlGame.instance.draw_line_color
+	line_color.g8 = draw_ranks[rank].stroke_priority
+	var point_color = OwlGame.instance.draw_point_color
+	point_color.g8 = draw_ranks[rank].stroke_priority
 
 	var points = polygon
 	var stride = 1
@@ -143,7 +149,6 @@ func _draw():
 		points = warp_points
 		stride = 1#2
 		warping = true
-
 
 	var draw_portion = 1
 	if draw_state == DrawState.Intro || draw_state == DrawState.Outro && intro_secs > 0:
@@ -179,10 +184,8 @@ func _draw():
 				next_point = ((1 - line_portion) * points[i]) + (line_portion * next_point)
 
 		if draw_line:
-			var line_color = OwlGame.instance.draw_line_color
-			line_color.g8 = draw_ranks[rank].stroke_priority
 			#print((line_color.g * 255) as int, " ", name)
-			draw_line(points[i], next_point, line_color, initial_line_width * zoom_scaling, draw_line_antialiased)
+			draw_line(points[i], next_point, line_color, line_width * zoom_scaling, draw_line_antialiased)
 	
 	# @TODO - it would be nice to not have to repeat this entire loop verbatim!! dupe code!!!	
 	# ... actually not quite dupe code anymore if we support dashed lines
@@ -198,9 +201,7 @@ func _draw():
 				draw_vert = false
 
 		if draw_vert:
-			var point_color = OwlGame.instance.draw_point_color
-			point_color.g8 = draw_ranks[rank].stroke_priority
-			draw_circle(Vector2(x, y), initial_point_radius * zoom_scaling, point_color)
+			draw_circle(Vector2(x, y), point_radius * zoom_scaling, point_color)
 
 func undraw():
 	if draw_elapsed > intro_secs || draw_elapsed <= 0:

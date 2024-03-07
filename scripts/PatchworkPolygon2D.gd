@@ -22,6 +22,7 @@ func _build_on_ready() -> bool:
 	return true
 
 func _ready():
+	color.a = 0
 	raw_polygon.resize(polygon.size())
 	for i in polygon.size():
 		raw_polygon[i] = polygon[i]
