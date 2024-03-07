@@ -20,6 +20,7 @@ linear_damp = 5.0
 script = ExtResource("1_qsy5d")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(1, 1, 1, 0.588235)
 polygon = PackedVector2Array(-5, 0, 0, -6.25, 5, 0, 0, 6.25)
 script = ExtResource("2_n6hll")
 ccw_convexity = false

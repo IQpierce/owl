@@ -136,12 +136,13 @@ consumable_type = 1
 material = ExtResource("12_7p8h1")
 position = Vector2(0, 8.28248)
 polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.538, 25, -58.538, 35.638, -44.803, 46.564, -24.247)
+ccw_convexity = false
 injected_polygons = [NodePath("../HeadRenderer")]
 
 [node name="HeadRenderer" type="Polygon2D" parent="Anatomy/VitalPolygons" index="1"]
 editor_description = "visual aspect"
 position = Vector2(0, 0.53)
-color = Color(0, 0, 0, 0)
+color = Color(1, 1, 1, 0.588235)
 polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
 script = ExtResource("12_1pme2")
 injectee_open = 10

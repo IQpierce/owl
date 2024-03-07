@@ -90,6 +90,7 @@ polygon = PackedVector2Array(6, -3, 0, -12, -6, -3, -8.5, 7.5, -3.5, 5, 3.5, 5, 
 scale_mode = 1
 
 [node name="TrunkPolygon" parent="Anatomy/VitalPolygons" index="0"]
+color = Color(1, 1, 1, 0.588235)
 polygon = PackedVector2Array(6, -3, 0, -12, -6, -3, -8.5, 7.5, -3.5, 5, 3.5, 5, 8.5, 7.5)
 
 [node name="ThrustTriangle" type="Polygon2D" parent="Anatomy" index="2"]

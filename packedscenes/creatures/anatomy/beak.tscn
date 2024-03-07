@@ -32,7 +32,7 @@ physics_material_override = ExtResource("1_p5h4y")
 
 [node name="Polygon" type="Polygon2D" parent="BeakRight"]
 material = ExtResource("4_mfg4l")
-color = Color(0.462745, 0.462745, 0.462745, 0)
+color = Color(1, 1, 1, 0.588235)
 polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)
 script = ExtResource("1_uob70")
 rank = 3
@@ -52,8 +52,7 @@ physics_material_override = ExtResource("1_p5h4y")
 
 [node name="Polygon" type="Polygon2D" parent="BeakLeft"]
 material = ExtResource("4_mfg4l")
-scale = Vector2(1, 0.987)
-color = Color(0.462745, 0.462745, 0.462745, 0)
+color = Color(0.0980392, 1, 1, 0.588235)
 offset = Vector2(0.00910282, -0.0398865)
 polygon = PackedVector2Array(0, 7.5, 0, 0, 15, -15, 15, 0)
 script = ExtResource("1_uob70")

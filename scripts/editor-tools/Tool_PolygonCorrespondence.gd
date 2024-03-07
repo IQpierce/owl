@@ -32,4 +32,4 @@ func sync_polygon_data():
 	self.global_position = counterpart.global_position
 	self.global_rotation = counterpart.global_rotation
 	self.global_scale = counterpart.global_scale
-	self.polygon = counterpart.polygon# if match_patchwork else counterpart.raw_polygon
+	self.polygon = counterpart.polygon if match_patchwork else counterpart.raw_polygon
