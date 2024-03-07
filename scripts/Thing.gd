@@ -16,6 +16,10 @@ class_name Thing
 @onready var damaged_sfx:AudioStreamPlayer2D = get_node_or_null("DamagedSFX")
 @onready var died_sfx:AttentiveAudio2D = get_node_or_null("DiedSFX")
 
+const damage_blink_frames:int = 6
+const damage_blink_count:int = 1
+var frames_since_damage:int = -1
+
 signal damaged(dmg_amt, global_position)
 signal died()
 
@@ -33,6 +37,17 @@ func _ready():
 func reset_health():
 	health = max_health
 	reset_accumulated_damage()
+
+func _process(delta:float):
+	# TODO (sam) Placeholder for responding to damage
+	if frames_since_damage >= 0:
+		if frames_since_damage >= damage_blink_frames * damage_blink_count * 2:
+			visible = true
+			frames_since_damage = -1
+		else:
+			if frames_since_damage % damage_blink_frames == 0:
+				visible = !visible
+			frames_since_damage += 1
 
 	
 func reset_accumulated_damage():
@@ -74,18 +89,8 @@ func deal_damage(dmg_amt:float, global_position:Vector2):
 		health = 0
 		die(false)
 	else:
-		# TODO (sam) Placeholder for responding to damage
-		var tree = get_tree()
-		var blinks = 1
-		var blink_frames = 6
-		while blinks > 0:
-			blinks -= 1
-			visible = false
-			for i in blink_frames:
-				await tree.process_frame
-			visible = true
-			for i in blink_frames:
-				await tree.process_frame
+		if visible && frames_since_damage < 0:
+			frames_since_damage = 0
 
 func die(utterly:bool = false):
 	if died_sfx != null:
