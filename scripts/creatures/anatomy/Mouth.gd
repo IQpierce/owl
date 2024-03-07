@@ -13,11 +13,3 @@ func _process(delta:float):
 	left_half.rotate(mouth_flap_angle * deg_to_rad(rotate_factor))
 	right_half.rotate(-mouth_flap_angle * deg_to_rad(rotate_factor))
 
-	# TODO (sam) This is really not great to do every frame... maybe it won't be bad if we ensure both self and stencil are low vert count
-	# Maybe make beak include the mouth-line and stencil against that instead of creature's head
-	if left_poly != null:
-		left_poly.build_patchwork()
-	if right_poly != null:
-		right_poly.build_patchwork()
-
-
