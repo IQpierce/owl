@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=32 format=3 uid="uid://d3x266n5mrbry"]
+[gd_resource type="VisualShader" load_steps=33 format=3 uid="uid://d3x266n5mrbry"]
 
 [sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_p00dm"]
 default_input_values = [0, 1.0, 1, 3.0, 2, 0.0]
@@ -84,6 +84,11 @@ op_type = 0
 [sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_m2glm"]
 output_port_for_preview = 0
 default_input_values = [0, Vector2(0, 0), 1, Vector2(0.5, 0.5)]
+op_type = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_6l1im"]
+default_input_values = [0, Vector2(0, 0), 1, Vector2(0, 0)]
 op_type = 0
 operator = 2
 
@@ -192,9 +197,47 @@ void fragment() {
 	vec2 n_out31p0 = n_out30p0 * n_in31p1;
 
 
+// Input:13
+	float n_out13p0 = TIME;
+
+
+// FloatOp:15
+	float n_in15p1 = 0.85000;
+	float n_out15p0 = n_out13p0 * n_in15p1;
+
+
+// FloatFunc:14
+	float n_out14p0 = min(max(n_out15p0, 0.0), 1.0);
+
+
+// Mix:12
+	float n_in12p0 = 3.00000;
+	float n_in12p1 = 1.00000;
+	float n_out12p0 = mix(n_in12p0, n_in12p1, n_out14p0);
+
+
+// Mix:17
+	float n_in17p0 = -5.00000;
+	float n_in17p1 = 0.00000;
+	float n_out17p0 = mix(n_in17p0, n_in17p1, n_out14p0);
+
+
+// FloatOp:16
+	float n_out16p0 = n_out12p0 + n_out17p0;
+
+
+// VectorCompose:10
+	float n_in10p0 = 1.00000;
+	vec2 n_out10p0 = vec2(n_in10p0, n_out16p0);
+
+
+// VectorOp:32
+	vec2 n_out32p0 = n_out31p0 * n_out10p0;
+
+
 	vec4 n_out2p0;
 // Texture2D:2
-	n_out2p0 = texture(screen_tex_frg_2, n_out31p0);
+	n_out2p0 = texture(screen_tex_frg_2, n_out32p0);
 	float n_out2p2 = n_out2p0.g;
 
 
@@ -217,7 +260,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-1927.9, -1322.15)
+graph_offset = Vector2(-1615.68, -750.224)
 mode = 1
 flags/unshaded = true
 flags/light_only = false
@@ -231,25 +274,25 @@ nodes/fragment/7/position = Vector2(380, -380)
 nodes/fragment/8/node = SubResource("VisualShaderNodeMix_vr7qi")
 nodes/fragment/8/position = Vector2(140, -320)
 nodes/fragment/9/node = SubResource("VisualShaderNodeInput_6uqk6")
-nodes/fragment/9/position = Vector2(-860, -360)
+nodes/fragment/9/position = Vector2(-2660, -540)
 nodes/fragment/10/node = SubResource("VisualShaderNodeVectorCompose_p00dm")
-nodes/fragment/10/position = Vector2(-700, -260)
+nodes/fragment/10/position = Vector2(-2500, -440)
 nodes/fragment/11/node = SubResource("VisualShaderNodeVectorOp_1vwqd")
-nodes/fragment/11/position = Vector2(-500, -340)
+nodes/fragment/11/position = Vector2(-2300, -520)
 nodes/fragment/12/node = SubResource("VisualShaderNodeMix_d2h7v")
-nodes/fragment/12/position = Vector2(-920, -240)
+nodes/fragment/12/position = Vector2(-2720, -420)
 nodes/fragment/13/node = SubResource("VisualShaderNodeInput_na8oj")
-nodes/fragment/13/position = Vector2(-1280, -380)
+nodes/fragment/13/position = Vector2(-3080, -560)
 nodes/fragment/14/node = SubResource("VisualShaderNodeFloatFunc_ex4op")
-nodes/fragment/14/position = Vector2(-1160, -140)
+nodes/fragment/14/position = Vector2(-2960, -320)
 nodes/fragment/15/node = SubResource("VisualShaderNodeFloatOp_q5d7r")
-nodes/fragment/15/position = Vector2(-1140, -280)
+nodes/fragment/15/position = Vector2(-2940, -460)
 nodes/fragment/16/node = SubResource("VisualShaderNodeFloatOp_n3nn4")
-nodes/fragment/16/position = Vector2(-760, -100)
+nodes/fragment/16/position = Vector2(-2560, -280)
 nodes/fragment/17/node = SubResource("VisualShaderNodeMix_spxw8")
-nodes/fragment/17/position = Vector2(-940, -40)
+nodes/fragment/17/position = Vector2(-2740, -220)
 nodes/fragment/18/node = SubResource("VisualShaderNodeInput_dhfg6")
-nodes/fragment/18/position = Vector2(-2060, -1300)
+nodes/fragment/18/position = Vector2(-2740, -1280)
 nodes/fragment/19/node = SubResource("VisualShaderNodeVectorOp_l5fbl")
 nodes/fragment/19/position = Vector2(-2060, -1200)
 nodes/fragment/20/node = SubResource("VisualShaderNodeVectorOp_pyw35")
@@ -257,11 +300,11 @@ nodes/fragment/20/position = Vector2(-1900, -1200)
 nodes/fragment/21/node = SubResource("VisualShaderNodeFloatOp_o5vff")
 nodes/fragment/21/position = Vector2(-1580, -1100)
 nodes/fragment/22/node = SubResource("VisualShaderNodeVectorLen_x217c")
-nodes/fragment/22/position = Vector2(-1580, -1200)
+nodes/fragment/22/position = Vector2(-1580, -1220)
 nodes/fragment/23/node = SubResource("VisualShaderNodeFloatOp_08hm0")
 nodes/fragment/23/position = Vector2(-1360, -1200)
 nodes/fragment/24/node = SubResource("VisualShaderNodeFloatParameter_eedun")
-nodes/fragment/24/position = Vector2(-1740, -880)
+nodes/fragment/24/position = Vector2(-1640, -920)
 nodes/fragment/25/node = SubResource("VisualShaderNodeFloatFunc_0hikf")
 nodes/fragment/25/position = Vector2(-1300, -1040)
 nodes/fragment/26/node = SubResource("VisualShaderNodeFloatOp_w4i67")
@@ -276,4 +319,6 @@ nodes/fragment/30/node = SubResource("VisualShaderNodeVectorOp_mq8sg")
 nodes/fragment/30/position = Vector2(-700, -1120)
 nodes/fragment/31/node = SubResource("VisualShaderNodeVectorOp_m2glm")
 nodes/fragment/31/position = Vector2(-540, -1120)
-nodes/fragment/connections = PackedInt32Array(8, 0, 7, 0, 2, 0, 8, 2, 7, 0, 0, 0, 7, 1, 4, 0, 7, 3, 4, 2, 7, 4, 4, 3, 2, 2, 4, 1, 9, 0, 11, 0, 14, 0, 12, 2, 13, 0, 15, 0, 15, 0, 14, 0, 10, 0, 11, 1, 12, 0, 16, 0, 16, 0, 10, 1, 14, 0, 17, 2, 17, 0, 16, 1, 18, 0, 19, 0, 19, 0, 20, 0, 20, 0, 22, 0, 21, 0, 25, 0, 23, 0, 26, 0, 25, 0, 26, 1, 21, 0, 27, 0, 23, 0, 28, 0, 27, 0, 28, 1, 29, 0, 30, 0, 30, 0, 31, 0, 28, 0, 29, 1, 26, 0, 29, 0, 20, 2, 21, 0, 20, 1, 21, 1, 22, 0, 23, 0, 24, 0, 23, 1, 31, 0, 2, 0)
+nodes/fragment/32/node = SubResource("VisualShaderNodeVectorOp_6l1im")
+nodes/fragment/32/position = Vector2(-552.32, -492.475)
+nodes/fragment/connections = PackedInt32Array(8, 0, 7, 0, 2, 0, 8, 2, 7, 0, 0, 0, 7, 1, 4, 0, 7, 3, 4, 2, 7, 4, 4, 3, 2, 2, 4, 1, 9, 0, 11, 0, 14, 0, 12, 2, 13, 0, 15, 0, 15, 0, 14, 0, 10, 0, 11, 1, 12, 0, 16, 0, 16, 0, 10, 1, 14, 0, 17, 2, 17, 0, 16, 1, 18, 0, 19, 0, 20, 0, 22, 0, 21, 0, 25, 0, 23, 0, 26, 0, 25, 0, 26, 1, 21, 0, 27, 0, 23, 0, 28, 0, 27, 0, 28, 1, 29, 0, 30, 0, 30, 0, 31, 0, 28, 0, 29, 1, 26, 0, 29, 0, 20, 2, 21, 0, 20, 1, 21, 1, 22, 0, 23, 0, 24, 0, 23, 1, 19, 0, 20, 0, 31, 0, 32, 0, 10, 0, 32, 1, 32, 0, 2, 0)
