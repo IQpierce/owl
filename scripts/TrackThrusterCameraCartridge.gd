@@ -24,7 +24,7 @@ var track_rect:Rect2
 var lock_rect:Rect2
 
 # TODO (sam) We might want a "Reserve" state that make returning to Lead easier for a brief period
-enum TrackingState { Rest, Follow, Lead }
+enum TrackingState { Rest, Follow, Lead, Recenter }
 var tracking = TrackingState.Rest
 
 func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
@@ -107,6 +107,10 @@ func build_plan(delta:float, data_rig:CameraRig) -> CameraRig.ExclusivePlan:
 				clamp((abs(to_prey.x) - to_track.x) / (to_lock.x - to_track.x), 0, 1),
 				clamp((abs(to_prey.y) - to_track.y) / (to_lock.y - to_track.y), 0, 1))
 		var tracking_importance = max(threshold_portions.x, threshold_portions.y)
+
+		if recenter:
+			plan.velocity = (to_focus).normalized() * min(min(plan.velocity.length() + 20, 200), to_focus.length())
+			tracking = TrackingState.Rest
 
 		if tracking == TrackingState.Rest:
 			plan.velocity *= rest_vel_damp

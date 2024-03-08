@@ -7,6 +7,7 @@ enum ProcessTiming { Physics, Idle }
 
 # TODO(sam) Is there a way to build vars on the stack, or is this the only way to prevent repeated allocation
 var plan:CameraRig.ExclusivePlan
+var recenter:bool = false
 
 func _ready():
 	plan = CameraRig.ExclusivePlan.new()

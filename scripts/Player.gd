@@ -11,6 +11,7 @@ enum ControlMode { Dynamic, Roam, Tank }
 @export var hopdart:Hopdart
 @export var warp_beam:WarpBeam
 @export var control_mode:ControlMode = ControlMode.Dynamic
+@export var idle_delay_secs:float = 2
 @export var heartbeat_by_health_curve:Curve
 
 @export_group("TankControls")
@@ -50,6 +51,8 @@ enum ControlMode { Dynamic, Roam, Tank }
 #var right_tap_time:int = 0;
 
 var camera_rig:CameraRig
+var time_since_input:float = 0
+var idling:bool = false
 var mouse_position:Vector2 = Vector2.ZERO
 var mouse_motion:Vector2 = Vector2.ZERO
 var known_turn:float = 0
@@ -118,8 +121,23 @@ func _physics_process(delta:float):
 			charge = min(charge + recharge_rate * delta, max_charge)
 
 	var gamepad_acting = process_gamepad(delta)
+	var keyboard_acting = false
 	if !gamepad_acting:
-		process_keyboard_mouse(delta)
+		keyboard_acting = process_keyboard_mouse(delta)
+	
+	if gamepad_acting || keyboard_acting:
+		time_since_input = 0
+		idling = false
+		if camera_leader != null:
+			camera_leader.recenter = false
+	else:
+		time_since_input += delta
+	
+	if time_since_input > idle_delay_secs && !idling:
+		if camera_leader != null:
+			idling = true
+			camera_leader.recenter = true
+
 	
 func process_gamepad(delta:float) -> bool:
 	var gamepad_acting = false
@@ -244,11 +262,12 @@ func process_gamepad(delta:float) -> bool:
 	
 	return gamepad_acting
 
-func process_keyboard_mouse(delta:float):
+func process_keyboard_mouse(delta:float) -> bool:
 	# OS-level commands and such should override player controls (eg. CMD-SHIFT-5 for screen record on macOS)
 	if Input.is_action_pressed("ignore_input"):
-		return
+		return false
 
+	var keyboard_acting = false
 	var mouse_pressed = allow_mouse && Input.is_action_pressed("mouse_left_click")
 	var mouse_moved = false
 	var view_speed = 1
@@ -267,6 +286,7 @@ func process_keyboard_mouse(delta:float):
 	if warp_beam != null:
 		var zoom_speed = 1.05
 		if Input.is_action_pressed("hyperspace") && try_discharge(10 * delta):
+			keyboard_acting = true
 			warp_beam.visible = true
 			preping_warp = true
 			angular_velocity = 0
@@ -314,6 +334,8 @@ func process_keyboard_mouse(delta:float):
 			var pos_on_canvas = get_global_transform_with_canvas().get_origin()
 			Input.warp_mouse(pos_on_canvas + (mouse_position - pos_on_canvas).normalized() * view_speed)
 
+		keyboard_acting = keyboard_acting || drive_factor > 0 || any_turn
+
 		if locomotor != null:
 			locomotor.locomote_towards(drive_factor, global_position + want_dir, turn_fraction, delta)
 
@@ -353,6 +375,8 @@ func process_keyboard_mouse(delta:float):
 			if turn_factor != 0:
 				any_turn = true
 
+		keyboard_acting = keyboard_acting || drive_factor > 0 || any_turn
+
 		if locomotor != null:
 			locomotor.locomote(drive_factor, turn_factor, delta)
 
@@ -365,6 +389,7 @@ func process_keyboard_mouse(delta:float):
 			known_turn = clamp(known_turn + angular_velocity * delta, -precise_turn_radians, precise_turn_radians)
 
 	if Input.is_action_pressed("shoot"):
+		keyboard_acting = true
 		shot_fired.emit(drive_factor > 0, any_turn)
 	
 	if hopdart != null:
@@ -380,12 +405,15 @@ func process_keyboard_mouse(delta:float):
 			hopdart_dir += Vector2.RIGHT
 
 		if hopdart_dir.length_squared() > 0:
+			keyboard_acting = true
 			hopdart.engage(hopdart_dir)
 
 	var mouse_reduction = mouse_motion.normalized() * mouse_gravity * view_speed * delta
 	if mouse_reduction.length_squared() > mouse_motion.length_squared():
 		mouse_reduction = mouse_motion
 	mouse_motion -= mouse_reduction
+
+	return keyboard_acting
 
 func try_discharge(amount:float) -> bool:
 	# TODO (sam) Is this a game that allows you to use charge you don't have?
