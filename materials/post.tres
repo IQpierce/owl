@@ -4,4 +4,4 @@
 
 [resource]
 shader = ExtResource("1_mj64n")
-shader_parameter/Trails = 0.2
+shader_parameter/Trails = 0.15

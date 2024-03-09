@@ -11,7 +11,7 @@
 [sub_resource type="Environment" id="Environment_4qsp5"]
 background_mode = 3
 glow_enabled = true
-glow_intensity = 0.379
+glow_intensity = 0.18
 glow_strength = 1.112
 glow_mix = 0.138
 glow_bloom = 1.0
@@ -19,7 +19,7 @@ glow_blend_mode = 1
 glow_hdr_threshold = 0.0
 glow_hdr_scale = 1.15
 glow_hdr_luminance_cap = 3.25
-glow_map_strength = 0.57
+glow_map_strength = 0.7
 glow_map = ExtResource("4_jj5g8")
 adjustment_color_correction = ExtResource("4_qm6oe")
 
@@ -33,13 +33,13 @@ viewport_containers = [NodePath("VpC_PostProcessing"), NodePath("VpC_PostProcess
 script = ExtResource("2_bmhjd")
 data_direction = 2
 world_env = NodePath("../WorldEnvironment")
-glow_intensity = 0.379
+glow_intensity = 0.18
 glow_strength = 1.112
 glow_bloom = 1.0
 cr_post_processing = NodePath("../VpC_PostProcessing/Vp_PostProcessing/CanvasLayer_PostProcessing/ColorRect_PostProcessing")
 trails_post_processing = 0.05
 cr_never_clear = NodePath("../VpC_PostProcessing/Vp_PostProcessing/VpC_NeverClear/Vp_NeverClear/CanvasLayer_NeverClear/ColorRect_NeverClear")
-trails_never_clear = 0.2
+trails_never_clear = 0.15
 
 [node name="Hum" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_u788m")

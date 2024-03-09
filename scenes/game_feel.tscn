@@ -597,6 +597,7 @@ metadata/_edit_lock_ = true
 [node name="Player" parent="." node_paths=PackedStringArray("turn_test") instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
 camera_adjust_speed = null
+idle_delay_secs = 2.0
 turn_band_degrees = null
 thrust_heading_alignment = null
 thrust_deadzone = 1.0

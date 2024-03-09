@@ -36,6 +36,7 @@ gun = NodePath("Anatomy/Gun")
 hopdart = NodePath("HopDart")
 warp_beam = NodePath("Anatomy/WarpBeam")
 control_mode = 0
+idle_delay_secs = 2.0
 heartbeat_by_health_curve = ExtResource("3_srwru")
 down_turn_fraction = 0.7
 initial_turn_fraction = 0.33

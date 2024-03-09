@@ -4,3 +4,4 @@
 
 [resource]
 shader = ExtResource("1_qsgys")
+shader_parameter/Warp_Amount = 1.1
