@@ -138,18 +138,22 @@ polygon = PackedVector2Array(-1.61592, 0.0443497, -3.89885, -21.0588, 4.78741, -
 [node name="Line2D" type="Line2D" parent="Anatomy/VitalPolygons/WingLeft" index="0"]
 points = PackedVector2Array(0, 0, -17, -5)
 width = 1.0
+antialiased = true
 
 [node name="Line2D2" type="Line2D" parent="Anatomy/VitalPolygons/WingLeft" index="1"]
 points = PackedVector2Array(0, 0, -24, -3)
 width = 1.0
+antialiased = true
 
 [node name="Line2D3" type="Line2D" parent="Anatomy/VitalPolygons/WingLeft" index="2"]
 points = PackedVector2Array(0, 0, -21, 1)
 width = 1.0
+antialiased = true
 
 [node name="Line2D4" type="Line2D" parent="Anatomy/VitalPolygons/WingLeft" index="3"]
 points = PackedVector2Array(0, 0, -16, 4)
 width = 1.0
+antialiased = true
 
 [node name="WingRight2" type="Node2D" parent="Anatomy/VitalPolygons" index="3"]
 
@@ -158,24 +162,28 @@ position = Vector2(17, 0)
 scale = Vector2(1, 1)
 points = PackedVector2Array(0, -5, -17, 0)
 width = 1.0
+antialiased = true
 
 [node name="Line2D2" type="Line2D" parent="Anatomy/VitalPolygons/WingRight2" index="1"]
 position = Vector2(24, 0)
 scale = Vector2(1, 1)
 points = PackedVector2Array(5.72205e-06, -3, -24, 0)
 width = 1.0
+antialiased = true
 
 [node name="Line2D3" type="Line2D" parent="Anatomy/VitalPolygons/WingRight2" index="2"]
 position = Vector2(21, 0)
 scale = Vector2(1, 1)
 points = PackedVector2Array(0, 1, -21, 0)
 width = 1.0
+antialiased = true
 
 [node name="Line2D4" type="Line2D" parent="Anatomy/VitalPolygons/WingRight2" index="3"]
 position = Vector2(16, 0)
 scale = Vector2(1, 1)
 points = PackedVector2Array(1.90735e-06, 4, -16, 0)
 width = 1.0
+antialiased = true
 
 [node name="Spear" parent="Anatomy" index="2" instance=ExtResource("12_ksl47")]
 position = Vector2(0, -4.343)
