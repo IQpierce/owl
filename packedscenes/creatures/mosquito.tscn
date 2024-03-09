@@ -228,7 +228,7 @@ polygon = PackedVector2Array(-1.83953, 4.9437, -0.0744865, 1.99955)
 stream = ExtResource("14_ia2nj")
 volume_db = -6.4
 autoplay = true
-attenuation = 2.21914
+attenuation = 5.65685
 bus = &"Effects"
 
 [connection signal="damaged" from="." to="MosquitoMind" method="on_damage_dealt"]
