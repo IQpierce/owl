@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=26 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_80w6u"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
@@ -22,6 +22,7 @@
 [ext_resource type="Script" path="res://scripts/TestCartridges/RoamCartridge.gd" id="17_28w32"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/GunCartridge.gd" id="18_cebdg"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/StrafeCartridge.gd" id="19_c0wvn"]
+[ext_resource type="PackedScene" uid="uid://dxk8kxig4jkr" path="res://packedscenes/creatures/mosquito.tscn" id="23_1rwcd"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
@@ -597,7 +598,6 @@ metadata/_edit_lock_ = true
 [node name="Player" parent="." node_paths=PackedStringArray("turn_test") instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
 camera_adjust_speed = null
-idle_delay_secs = 2.0
 turn_band_degrees = null
 thrust_heading_alignment = null
 thrust_deadzone = 1.0
@@ -808,6 +808,9 @@ finesse_distance = 200.0
 alignment = 1
 initial_msec = 150
 finesse_msec = 250
+
+[node name="Mosquito" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(4375, 4068)
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]

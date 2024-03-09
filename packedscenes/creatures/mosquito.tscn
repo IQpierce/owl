@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dxk8kxig4jkr"]
+[gd_scene load_steps=16 format=3 uid="uid://dxk8kxig4jkr"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_nskhh"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/CreatureMind.gd" id="2_ktaqx"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://scripts/DamageZone.gd" id="12_4uj1r"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="12_d5o6l"]
 [ext_resource type="PackedScene" uid="uid://dclbqd5q45c40" path="res://packedscenes/creatures/anatomy/spear.tscn" id="12_ksl47"]
+[ext_resource type="AudioStream" uid="uid://d0tmiih4w8gis" path="res://audio/mosquito.mp3" id="14_ia2nj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ibxja"]
 radius = 800.0
@@ -35,7 +36,6 @@ controlled_creature = NodePath("..")
 auto_think_delta_secs = 1.0
 
 [node name="SeekMeatWithFallbacksBrain" type="Node2D" parent="MosquitoMind" index="0" node_paths=PackedStringArray("prioritized_brains", "controlled_creature")]
-position = Vector2(-2, 0)
 script = ExtResource("3_guk12")
 prioritized_brains = [NodePath("SeekMeatConsumableBrain"), NodePath("WanderBrain")]
 controlled_creature = NodePath("../..")
@@ -52,6 +52,7 @@ disable_mode = 1
 collision_layer = 0
 
 [node name="Vision" type="CollisionShape2D" parent="MosquitoMind/SeekMeatWithFallbacksBrain/SeekMeatConsumableBrain/Area2D" index="0"]
+visible = false
 position = Vector2(-1.39203, 45.5198)
 shape = SubResource("CircleShape2D_ibxja")
 
@@ -110,15 +111,14 @@ consumable_type = 1
 
 [node name="TrunkPolygon" parent="Anatomy/VitalPolygons" index="0" node_paths=PackedStringArray("injected_polygons")]
 material = ExtResource("12_1psui")
-polygon = PackedVector2Array(0, 0, 12, 12, 0, 27, -12, 12)
+polygon = PackedVector2Array(0, 0, 12, 9, 0, 24, -12, 9)
 injected_polygons = [null]
 
 [node name="HeadPolygon" type="Polygon2D" parent="Anatomy/VitalPolygons" index="1" node_paths=PackedStringArray("injected_polygons")]
 editor_description = "visual aspect"
 material = ExtResource("12_1psui")
-position = Vector2(0, -4.89994)
-color = Color(0, 0, 0, 0)
-polygon = PackedVector2Array(0, 0, 3, 3, 0, 5, -3, 3)
+position = Vector2(0, -5.9)
+polygon = PackedVector2Array(0, 0, 3.5, 3.5, 0, 6, -3.5, 3.5)
 script = ExtResource("12_d5o6l")
 injected_polygons = [null]
 
@@ -133,6 +133,50 @@ things_to_ignore = [NodePath("../../../..")]
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Anatomy/VitalPolygons/HeadPolygon/NibbleZone" index="0"]
 polygon = PackedVector2Array(-1.61592, 0.0443497, -3.89885, -21.0588, 4.78741, -21.1145, 1.66927, 0.100031)
 
+[node name="WingLeft" type="Node2D" parent="Anatomy/VitalPolygons" index="2"]
+
+[node name="Line2D" type="Line2D" parent="Anatomy/VitalPolygons/WingLeft" index="0"]
+points = PackedVector2Array(0, 0, -17, -5)
+width = 1.0
+
+[node name="Line2D2" type="Line2D" parent="Anatomy/VitalPolygons/WingLeft" index="1"]
+points = PackedVector2Array(0, 0, -24, -3)
+width = 1.0
+
+[node name="Line2D3" type="Line2D" parent="Anatomy/VitalPolygons/WingLeft" index="2"]
+points = PackedVector2Array(0, 0, -21, 1)
+width = 1.0
+
+[node name="Line2D4" type="Line2D" parent="Anatomy/VitalPolygons/WingLeft" index="3"]
+points = PackedVector2Array(0, 0, -16, 4)
+width = 1.0
+
+[node name="WingRight2" type="Node2D" parent="Anatomy/VitalPolygons" index="3"]
+
+[node name="Line2D" type="Line2D" parent="Anatomy/VitalPolygons/WingRight2" index="0"]
+position = Vector2(17, 0)
+scale = Vector2(1, 1)
+points = PackedVector2Array(0, -5, -17, 0)
+width = 1.0
+
+[node name="Line2D2" type="Line2D" parent="Anatomy/VitalPolygons/WingRight2" index="1"]
+position = Vector2(24, 0)
+scale = Vector2(1, 1)
+points = PackedVector2Array(5.72205e-06, -3, -24, 0)
+width = 1.0
+
+[node name="Line2D3" type="Line2D" parent="Anatomy/VitalPolygons/WingRight2" index="2"]
+position = Vector2(21, 0)
+scale = Vector2(1, 1)
+points = PackedVector2Array(0, 1, -21, 0)
+width = 1.0
+
+[node name="Line2D4" type="Line2D" parent="Anatomy/VitalPolygons/WingRight2" index="3"]
+position = Vector2(16, 0)
+scale = Vector2(1, 1)
+points = PackedVector2Array(1.90735e-06, 4, -16, 0)
+width = 1.0
+
 [node name="Spear" parent="Anatomy" index="2" instance=ExtResource("12_ksl47")]
 position = Vector2(0, -4.343)
 scale = Vector2(3.6, 3.6)
@@ -144,6 +188,9 @@ extension_shaft_collision_active = 1
 
 [node name="Shaft" parent="Anatomy/Spear" index="0" node_paths=PackedStringArray("ignore_things")]
 ignore_things = [NodePath("../../..")]
+
+[node name="ShaftPolygon" parent="Anatomy/Spear/Shaft" index="1"]
+polygon = PackedVector2Array(0, -0.33, 0, -2.85, 0, -1.57139)
 
 [node name="Head" parent="Anatomy/Spear" index="1" node_paths=PackedStringArray("ignore_things")]
 scale = Vector2(0.3, 0.3)
@@ -168,6 +215,13 @@ polygon = PackedVector2Array(-1.81864, 4.6698, -0.0535947, 1.71842)
 position = Vector2(1.7787, 6.67659)
 scale = Vector2(1, -1)
 polygon = PackedVector2Array(-1.83953, 4.9437, -0.0744865, 1.99955)
+
+[node name="Buzz" type="AudioStreamPlayer2D" parent="." index="6"]
+stream = ExtResource("14_ia2nj")
+volume_db = -6.4
+autoplay = true
+attenuation = 2.21914
+bus = &"Effects"
 
 [connection signal="damaged" from="." to="MosquitoMind" method="on_damage_dealt"]
 [connection signal="on_target_location_changed" from="MosquitoMind/SeekMeatWithFallbacksBrain" to="DorsalFin" method="set_target_world_position"]
