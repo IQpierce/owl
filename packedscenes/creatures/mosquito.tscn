@@ -13,7 +13,7 @@
 [ext_resource type="Script" path="res://scripts/DamageZone.gd" id="12_4uj1r"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="12_d5o6l"]
 [ext_resource type="PackedScene" uid="uid://dclbqd5q45c40" path="res://packedscenes/creatures/anatomy/spear.tscn" id="12_ksl47"]
-[ext_resource type="AudioStream" uid="uid://d0tmiih4w8gis" path="res://audio/mosquito.mp3" id="14_ia2nj"]
+[ext_resource type="AudioStream" uid="uid://wsrhs1uc2vv6" path="res://audio/mosquito2.mp3" id="14_5hsda"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ibxja"]
 radius = 800.0
@@ -159,28 +159,24 @@ antialiased = true
 
 [node name="Line2D" type="Line2D" parent="Anatomy/VitalPolygons/WingRight2" index="0"]
 position = Vector2(17, 0)
-scale = Vector2(1, 1)
 points = PackedVector2Array(0, -5, -17, 0)
 width = 1.0
 antialiased = true
 
 [node name="Line2D2" type="Line2D" parent="Anatomy/VitalPolygons/WingRight2" index="1"]
 position = Vector2(24, 0)
-scale = Vector2(1, 1)
 points = PackedVector2Array(5.72205e-06, -3, -24, 0)
 width = 1.0
 antialiased = true
 
 [node name="Line2D3" type="Line2D" parent="Anatomy/VitalPolygons/WingRight2" index="2"]
 position = Vector2(21, 0)
-scale = Vector2(1, 1)
 points = PackedVector2Array(0, 1, -21, 0)
 width = 1.0
 antialiased = true
 
 [node name="Line2D4" type="Line2D" parent="Anatomy/VitalPolygons/WingRight2" index="3"]
 position = Vector2(16, 0)
-scale = Vector2(1, 1)
 points = PackedVector2Array(1.90735e-06, 4, -16, 0)
 width = 1.0
 antialiased = true
@@ -225,7 +221,7 @@ scale = Vector2(1, -1)
 polygon = PackedVector2Array(-1.83953, 4.9437, -0.0744865, 1.99955)
 
 [node name="Buzz" type="AudioStreamPlayer2D" parent="." index="6"]
-stream = ExtResource("14_ia2nj")
+stream = ExtResource("14_5hsda")
 volume_db = -6.4
 autoplay = true
 attenuation = 5.65685
