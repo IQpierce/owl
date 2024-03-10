@@ -19,6 +19,7 @@ polygon = PackedVector2Array(-0.01, -3, -0.01, 0, 0.01, 0, 0.01, -3)
 
 [node name="ShaftPolygon" type="Polygon2D" parent="Shaft"]
 material = ExtResource("3_yh3nl")
+antialiased = true
 polygon = PackedVector2Array(0, -0.33, 0, -2.85)
 script = ExtResource("2_42nd2")
 rank = 4
@@ -40,13 +41,15 @@ polygon = PackedVector2Array(-1.75, 0.2, 0, -2.75, 1.75, 0.2)
 [node name="HeadPolygonLeft" type="Polygon2D" parent="Head"]
 material = ExtResource("3_yh3nl")
 position = Vector2(0, -4.721)
-polygon = PackedVector2Array(-0.031, 5, -0.00474358, 1.73671, -1.76563, 4.721, -0.00474358, 1.68415)
+antialiased = true
+polygon = PackedVector2Array(-0.00474358, 1.73671, -1.76563, 4.721)
 script = ExtResource("2_42nd2")
 rank = 4
 
 [node name="HeadPolygonRight" type="Polygon2D" parent="Head/HeadPolygonLeft"]
 material = ExtResource("3_yh3nl")
 scale = Vector2(-1, 1)
-polygon = PackedVector2Array(-0.031, 5, -0.00474358, 1.73671, -1.76563, 4.721, -0.00474358, 1.68415)
+antialiased = true
+polygon = PackedVector2Array(-0.00474358, 1.73671, -1.76563, 4.721)
 script = ExtResource("2_42nd2")
 rank = 4

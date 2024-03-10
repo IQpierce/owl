@@ -6,11 +6,9 @@ class_name PatchworkPolygon2D
 @export var ccw_convexity:bool = true
 # TODO (sam) This is pretty gross, but Godot doesn't support exporting arbitrary data class, so we're stuck with this or a dictionary.
 @export var injected_polygons:Array[InjectedPolygon2D]
-@export var stencil_polygons:Array[PatchworkPolygon2D]
 
 var _missed_draw:bool = false
 var raw_polygon:PackedVector2Array
-#var patchwork:PackedVector2Array
 var patch_pairs:PackedByteArray
 var post_patch_extras:PackedByteArray
 var hidden_verts:PackedByteArray
@@ -61,7 +59,7 @@ func build_patchwork():
 	var polygon_size = raw_polygon.size()
 	var inject_count = injected_polygons.size()
 
-	if inject_count == 0 && stencil_polygons.size() == 0:
+	if inject_count == 0:
 		polygon = raw_polygon
 	else:
 		var patchwork = PackedVector2Array()

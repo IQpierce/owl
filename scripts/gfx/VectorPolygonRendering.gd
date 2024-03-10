@@ -16,7 +16,7 @@ static var draw_ranks:Array[RankData] = [
 	RankData.new(99, 50), # Fog
 	RankData.new(49, 20), # Default
 	RankData.new(19, 10), # Subspace
-	RankData.new(09, 05), # Auxilary
+	RankData.new(09, 05), # Accessory
 	RankData.new(00, 00), # Pierce
 ]
 
