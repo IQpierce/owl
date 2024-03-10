@@ -812,6 +812,12 @@ finesse_msec = 250
 [node name="Mosquito" parent="." instance=ExtResource("23_1rwcd")]
 position = Vector2(4375, 4068)
 
+[node name="Mosquito2" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(4503, 4168)
+
+[node name="Mosquito3" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(4661, 4000)
+
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/RightWrappingWall" to="WrappingWalls/RightWrappingWall" method="on_body_entered"]

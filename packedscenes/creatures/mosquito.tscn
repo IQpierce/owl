@@ -13,7 +13,7 @@
 [ext_resource type="Script" path="res://scripts/DamageZone.gd" id="12_4uj1r"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="12_d5o6l"]
 [ext_resource type="PackedScene" uid="uid://dclbqd5q45c40" path="res://packedscenes/creatures/anatomy/spear.tscn" id="12_ksl47"]
-[ext_resource type="AudioStream" uid="uid://wsrhs1uc2vv6" path="res://audio/mosquito2.mp3" id="14_5hsda"]
+[ext_resource type="AudioStream" uid="uid://bovvp18n8r78g" path="res://audio/mosquito3.mp3" id="14_cucy4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ibxja"]
 radius = 800.0
@@ -221,8 +221,7 @@ scale = Vector2(1, -1)
 polygon = PackedVector2Array(-1.83953, 4.9437, -0.0744865, 1.99955)
 
 [node name="Buzz" type="AudioStreamPlayer2D" parent="." index="6"]
-stream = ExtResource("14_5hsda")
-volume_db = -6.4
+stream = ExtResource("14_cucy4")
 autoplay = true
 attenuation = 5.65685
 bus = &"Effects"
