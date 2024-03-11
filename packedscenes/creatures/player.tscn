@@ -202,6 +202,9 @@ bus = &"Effects"
 wait_time = 2.5
 autostart = true
 
+[node name="AudioListener2D" type="AudioListener2D" parent="." index="13"]
+current = true
+
 [connection signal="shot_fired" from="." to="Anatomy/Gun" method="shoot"]
 [connection signal="warped_in" from="." to="ZoomSFX" method="play"]
 [connection signal="driving_state_change" from="Locomotor" to="Anatomy/ThrustTriangle" method="set_visible"]
