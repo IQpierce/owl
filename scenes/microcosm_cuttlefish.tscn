@@ -3,20 +3,23 @@
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_8v45w"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_5du3d"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="2_fj3bf"]
-[ext_resource type="PackedScene" uid="uid://cgjbstotnfcvd" path="res://packedscenes/asteroids/base_asteroid.tscn" id="3_dks4n"]
 [ext_resource type="PackedScene" uid="uid://jymuym62nmct" path="res://packedscenes/creatures/player.tscn" id="4_spigt"]
 [ext_resource type="PackedScene" uid="uid://cv5asni7oqeby" path="res://packedscenes/hud.tscn" id="5_606e0"]
 [ext_resource type="PackedScene" uid="uid://bs64p7ff3fvw2" path="res://packedscenes/camera_rig.tscn" id="5_o5wrr"]
 [ext_resource type="Script" path="res://scripts/CameraCartridge.gd" id="6_ba015"]
+[ext_resource type="PackedScene" uid="uid://dp24v7p2u0vki" path="res://packedscenes/feeding_wall.tscn" id="8_nccwt"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vbcit"]
 custom_solver_bias = 0.1
 
-[node name="Microcosm_Cuttlefish" type="Node2D" node_paths=PackedStringArray("player", "world_camera")]
+[node name="Microcosm_Cuttlefish" type="Node2D" node_paths=PackedStringArray("player", "world_camera", "occlusion_fills")]
 script = ExtResource("1_8v45w")
 player = NodePath("Player")
 world_camera = NodePath("CameraRig")
+occlusion_fills = NodePath("OcclusionFills")
 phosphor_emulation_proto = ExtResource("2_5du3d")
+
+[node name="OcclusionFills" type="Node2D" parent="."]
 
 [node name="WrappingWalls" type="Node2D" parent="."]
 position = Vector2(1, 1)
@@ -76,53 +79,44 @@ teleport_translation = Vector2(1900, 0)
 position = Vector2(0.166667, 0)
 shape = SubResource("WorldBoundaryShape2D_vbcit")
 
-[node name="Asteroids" type="Node2D" parent="."]
-
-[node name="Asteroid" parent="Asteroids" instance=ExtResource("3_dks4n")]
-position = Vector2(857, 327)
-linear_velocity = Vector2(210, 0)
-
-[node name="Asteroid2" parent="Asteroids" instance=ExtResource("3_dks4n")]
-position = Vector2(609, 433)
-linear_velocity = Vector2(150, -75)
-
-[node name="Asteroid3" parent="Asteroids" instance=ExtResource("3_dks4n")]
-position = Vector2(517, 571)
-linear_velocity = Vector2(150, -150)
-
-[node name="Asteroid4" parent="Asteroids" instance=ExtResource("3_dks4n")]
-position = Vector2(583, 691)
-linear_velocity = Vector2(-50, -200)
-
-[node name="Asteroid5" parent="Asteroids" instance=ExtResource("3_dks4n")]
-position = Vector2(725, 863)
-linear_velocity = Vector2(-150, 100)
-
-[node name="Asteroid6" parent="Asteroids" instance=ExtResource("3_dks4n")]
-position = Vector2(1087, 841)
-linear_velocity = Vector2(-210, 0)
-
-[node name="Asteroid7" parent="Asteroids" instance=ExtResource("3_dks4n")]
-position = Vector2(1329, 729)
-linear_velocity = Vector2(-150, 100)
-
-[node name="Asteroid8" parent="Asteroids" instance=ExtResource("3_dks4n")]
-position = Vector2(1371, 419)
-linear_velocity = Vector2(0, 200)
-
 [node name="CameraRig" parent="." node_paths=PackedStringArray("cartridge") instance=ExtResource("5_o5wrr")]
-position = Vector2(977, 547)
+position = Vector2(960, 540)
 cartridge = NodePath("CameraCartridge")
 
 [node name="CameraCartridge" type="Node2D" parent="CameraRig"]
 script = ExtResource("6_ba015")
 
 [node name="Player" parent="." instance=ExtResource("4_spigt")]
-position = Vector2(977, 547)
+position = Vector2(960, 540)
 
 [node name="HUD" parent="." instance=ExtResource("5_606e0")]
+
+[node name="TL_FeedingWall" parent="." instance=ExtResource("8_nccwt")]
+
+[node name="BL_FeedingWall" parent="." instance=ExtResource("8_nccwt")]
+position = Vector2(0, 1080)
+
+[node name="ScalingGroup2D" parent="BL_FeedingWall" index="1"]
+scale = Vector2(1, -1)
+
+[node name="BR_FeedingWall" parent="." instance=ExtResource("8_nccwt")]
+position = Vector2(1920, 1080)
+
+[node name="TrunkPolygon" parent="BR_FeedingWall/ScalingGroup2D" index="0"]
+scale = Vector2(-1, -1)
+
+[node name="TR_FeedingWall" parent="." instance=ExtResource("8_nccwt")]
+position = Vector2(1920, 0)
+
+[node name="TrunkPolygon" parent="TR_FeedingWall/ScalingGroup2D" index="0"]
+scale = Vector2(-1, 1)
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/RightWrappingWall" to="WrappingWalls/RightWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/LeftWrappingWall" to="WrappingWalls/LeftWrappingWall" method="on_body_entered"]
+
+[editable path="TL_FeedingWall"]
+[editable path="BL_FeedingWall"]
+[editable path="BR_FeedingWall"]
+[editable path="TR_FeedingWall"]

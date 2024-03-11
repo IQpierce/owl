@@ -11,7 +11,7 @@ func _ready():
 		jank_fighter = scene.jank_fighter
 
 func on_body_entered(body:Node2D):
-	var physics_body:PhysicsBody2D = body as PhysicsBody2D
+	var physics_body:RigidBody2D = body as RigidBody2D
 	if (physics_body):
 		assert(!teleport_translation.is_zero_approx())
 		if jank_fighter != null:
