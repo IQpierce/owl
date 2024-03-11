@@ -11,10 +11,10 @@ class_name PolygonCorrespondence
 @export var editortime_sync_data:bool = false
 
 func _ready():
-	assert(counterpart != null)
-	counterpart.matching_collider = self
-	#if !Engine.is_editor_hint() && runtime_sync_onready:
-	#	sync_polygon_data()
+	if !Engine.is_editor_hint() && runtime_sync_onready:
+		assert(counterpart != null)
+		counterpart.matching_collider = self
+		sync_polygon_data()
 
 func _process(delta:float):
 	
