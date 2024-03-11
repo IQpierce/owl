@@ -708,7 +708,7 @@ angular_damp = 3.0
 script = ExtResource("16_wpvoa")
 turn_force = 20.0
 angular_damp = 0.5
-drive_turn_factor = 0.85
+drive_turn_factor = 0.9
 initial_turn_fraction = 0.8
 
 [node name="RoamCartridges" type="Node2D" parent="Hideout"]
