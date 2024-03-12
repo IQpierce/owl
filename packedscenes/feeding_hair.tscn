@@ -17,7 +17,6 @@ counterpart = NodePath("../HairPolygon")
 thicken = true
 
 [node name="HairPolygon" type="Polygon2D" parent="."]
-position = Vector2(-0.0114193, -131.32)
 antialiased = true
 polygon = PackedVector2Array(0, 0, 0, 100)
 script = ExtResource("2_5cy8e")

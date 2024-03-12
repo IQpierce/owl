@@ -17,8 +17,90 @@ line_geometry = [NodePath("TrunkPolygon")]
 
 [node name="TrunkPolygon" type="Polygon2D" parent="ScalingGroup2D"]
 color = Color(1, 1, 1, 0.588235)
-polygon = PackedVector2Array(-1, -1, -1, 400, 400, 250, 700, -1)
+polygon = PackedVector2Array(-1, -1, -1, 400, 106, 382, 260, 340, 410, 285, 522, 210, 618, 108, 700, -1)
 script = ExtResource("1_41ffj")
+rank = 0
 
 [node name="FeedingHair" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
-position = Vector2(400, 400)
+position = Vector2(13, 396)
+rotation = -0.15708
+
+[node name="FeedingHair7" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(50, 391)
+rotation = -0.15708
+
+[node name="FeedingHair8" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(88, 385)
+rotation = -0.15708
+
+[node name="FeedingHair2" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(124, 377)
+rotation = -0.261799
+
+[node name="FeedingHair9" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(162, 366)
+rotation = -0.261799
+
+[node name="FeedingHair10" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(200, 356)
+rotation = -0.261799
+
+[node name="FeedingHair11" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(240, 345)
+rotation = -0.261799
+
+[node name="FeedingHair3" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(279, 333)
+rotation = -0.349066
+
+[node name="FeedingHair12" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(318, 318)
+rotation = -0.349066
+
+[node name="FeedingHair13" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(357, 304)
+rotation = -0.349066
+
+[node name="FeedingHair14" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(397, 289)
+rotation = -0.349066
+
+[node name="FeedingHair15" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(397, 289)
+rotation = -0.349066
+
+[node name="FeedingHair4" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(429, 272)
+rotation = -0.593412
+
+[node name="FeedingHair16" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(468, 245)
+rotation = -0.593412
+
+[node name="FeedingHair17" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(509, 217)
+rotation = -0.593412
+
+[node name="FeedingHair5" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(540, 189)
+rotation = -0.820305
+
+[node name="FeedingHair18" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(572, 156)
+rotation = -0.820305
+
+[node name="FeedingHair19" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(605, 121)
+rotation = -0.820305
+
+[node name="FeedingHair6" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(633, 89)
+rotation = -0.925025
+
+[node name="FeedingHair20" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(661, 51)
+rotation = -0.925025
+
+[node name="FeedingHair21" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(691, 12)
+rotation = -0.925025
