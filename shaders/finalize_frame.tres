@@ -94,7 +94,7 @@ default_input_values = [0, 0.0, 1, 0.0, 2, 0.0, 3, 0.0]
 op_type = 2
 
 [sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_xthn3"]
-default_input_values = [0, 0.0, 1, 1.2]
+default_input_values = [0, 0.0, 1, 1.7]
 operator = 2
 
 [sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_6natk"]
@@ -255,7 +255,7 @@ void fragment() {
 
 
 // FloatOp:46
-	float n_in46p1 = 1.20000;
+	float n_in46p1 = 1.70000;
 	float n_out46p0 = n_out51p0 * n_in46p1;
 
 
@@ -331,7 +331,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-54.7017, -918.753)
+graph_offset = Vector2(-3214.4, -411.753)
 mode = 1
 flags/unshaded = true
 flags/light_only = false
