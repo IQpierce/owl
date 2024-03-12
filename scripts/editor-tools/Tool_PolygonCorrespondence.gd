@@ -31,30 +31,27 @@ func _process(delta:float):
 		sync_polygon_data()
 
 func sync_polygon_data():
+	# Setting a negative global_scale is inconsistent because the transform matrix prefers to decompose as rotation.
+	# Lets always keep global_scale positive here and just flip vertices to compensate.
+	# If global_scale refuses to be positive, flip local scale because the math won't fight us there.
+
+	var real_global_scale = counterpart.global_scale
 	global_position = counterpart.global_position
 	global_rotation = counterpart.global_rotation
-	global_scale = counterpart.global_scale
-	polygon = counterpart.polygon if match_patchwork else counterpart.raw_polygon
-	#print(get_parent().name, global_scale, counterpart.global_scale, counterpart.global_rotation)
+	global_scale = Vector2(abs(real_global_scale.x), abs(real_global_scale.y))
+	if global_scale.y < 0:
+		scale.y *= -1
 
-	# Setting a negative global_scale is inconsistent (sometimes reverting to all positive),
-	# so lets always keep global_scale positive here and just flip vertices to compensate
-	var real_global_scale = counterpart.global_scale
-	var self_global_scale = global_scale
-	var neg_scale = min(real_global_scale.x * self_global_scale.x, real_global_scale.y * self_global_scale.y) < 0
+	polygon = counterpart.polygon if match_patchwork else counterpart.raw_polygon
+	#print(get_parent().name, global_scale, counterpart.global_scale, rotation, counterpart.global_rotation)
+
+	var neg_scale = min(real_global_scale.x, real_global_scale.y) < 0
 	if neg_scale || thicken:
-		global_scale = Vector2(abs(real_global_scale.x), abs(real_global_scale.y))
 		var new_polygon = PackedVector2Array()
 		new_polygon.resize(polygon.size())
 
 		var x_mul = -1 if real_global_scale.x < 0 else 1
 		var y_mul = -1 if real_global_scale.y < 0 else 1
-		# TODO (sam) It is a bit weird that we have to check rotations like this,
-		# but we need for Top Right Feeding Hairs of Cuttlefish
-		if counterpart.global_rotation - rotation > PI / 2:
-			var temp = x_mul
-			x_mul = y_mul
-			y_mul = temp
 
 		for i in polygon.size():
 			new_polygon[i] = Vector2(polygon[i].x * x_mul, polygon[i].y * y_mul)
@@ -62,6 +59,7 @@ func sync_polygon_data():
 			var poly_size = polygon.size()
 			new_polygon.resize(poly_size * 2)
 			for i in poly_size:
-				new_polygon[i + poly_size] = new_polygon[poly_size - 1 - i] + Vector2(1 * x_mul * y_mul, 0)
+				new_polygon[i] += Vector2(-1 * x_mul * y_mul, 0)
+				new_polygon[i + poly_size] = new_polygon[poly_size - 1 - i] + Vector2(2 * x_mul * y_mul, 0)
 		polygon = new_polygon
 	#print(get_parent().name, polygon)
