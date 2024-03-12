@@ -9,7 +9,7 @@ enum AffectMotionMode { Never, Always, OnShot }
 @export var shot_force:float
 @export var cooldown_duration_secs:float
 @export var inherit_velocity:RigidBody2D
-@export var immune_to_shots:Array[RigidBody2D]
+@export var immune_to_shots:Array[PhysicsBody2D]
 @export var shot_parent:Node2D
 
 # TODO (sam) See bullet: This is placeholder
