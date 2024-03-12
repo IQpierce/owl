@@ -1,12 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://dp24v7p2u0vki"]
+[gd_scene load_steps=5 format=3 uid="uid://dp24v7p2u0vki"]
 
 [ext_resource type="Script" path="res://scripts/editor-tools/Tool_PolygonCorrespondence.gd" id="1_28a2j"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="1_41ffj"]
 [ext_resource type="Script" path="res://scripts/ScalingGroup2D.gd" id="1_uihky"]
+[ext_resource type="PackedScene" uid="uid://env7d71ogqhr" path="res://packedscenes/feeding_hair.tscn" id="4_xsxmo"]
 
 [node name="FeedingWall" type="StaticBody2D"]
 
-[node name="PolygonCorrespondence" type="CollisionPolygon2D" parent="." node_paths=PackedStringArray("counterpart")]
+[node name="TrunkCollision" type="CollisionPolygon2D" parent="." node_paths=PackedStringArray("counterpart")]
 script = ExtResource("1_28a2j")
 counterpart = NodePath("../ScalingGroup2D/TrunkPolygon")
 
@@ -15,5 +16,9 @@ script = ExtResource("1_uihky")
 line_geometry = [NodePath("TrunkPolygon")]
 
 [node name="TrunkPolygon" type="Polygon2D" parent="ScalingGroup2D"]
+color = Color(1, 1, 1, 0.588235)
 polygon = PackedVector2Array(-1, -1, -1, 400, 400, 250, 700, -1)
 script = ExtResource("1_41ffj")
+
+[node name="FeedingHair" parent="ScalingGroup2D" instance=ExtResource("4_xsxmo")]
+position = Vector2(400, 400)

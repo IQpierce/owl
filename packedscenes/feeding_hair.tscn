@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://env7d71ogqhr"]
+
+[ext_resource type="Script" path="res://scripts/editor-tools/Tool_PolygonCorrespondence.gd" id="1_i70ef"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_5cy8e"]
+
+[node name="FeedingHair" type="StaticBody2D"]
+
+[node name="HairCollision" type="CollisionPolygon2D" parent="." node_paths=PackedStringArray("counterpart")]
+script = ExtResource("1_i70ef")
+counterpart = NodePath("../HairPolygon")
+
+[node name="HairPolygon" type="Polygon2D" parent="."]
+position = Vector2(-0.0114193, -131.32)
+antialiased = true
+polygon = PackedVector2Array(0, 0, 0, 100, 1, 0)
+script = ExtResource("2_5cy8e")

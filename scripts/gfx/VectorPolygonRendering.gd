@@ -1,6 +1,7 @@
 extends PatchworkPolygon2D
 class_name VectorPolygonRendering
 
+enum StrokeWidth { Full, Half, None }
 enum DrawState { Intro, Stable, Outro }
 enum DrawRank {
 	Fog = 0,
@@ -24,13 +25,13 @@ static var fill_proto:PackedScene = preload("res://packedscenes/occlusion_fill.t
 static var stencil_mat:Material = preload("res://materials/stencil_mat.tres")
 
 @export var rank:DrawRank = DrawRank.Default
-@export var has_stroke = true
+@export var has_stroke:bool = true
 @export var intro_secs:float = 0
 @export var _warpable:bool = false
-@export var draw_line_antialiased:bool = true
 @export var skip_line_indeces:Array[int]	# Each line that begins with a vert index that's in this list, will be skipped
 @export var split_points_max = 40
 
+var draw_line_antialiased:bool = true # (sam) I'm pretty sure we always want antialiasing
 var occlusion_fill:OcclusionFillPolygon2D
 var draw_state:DrawState = DrawState.Stable
 var draw_elapsed:float = 0
