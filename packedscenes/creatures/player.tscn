@@ -23,7 +23,7 @@ radius = 192.0
 
 [node name="Player" node_paths=PackedStringArray("camera_leader", "hard_focus", "locomotor", "gun", "hopdart", "warp_beam") instance=ExtResource("1_5vrjf")]
 disable_mode = 0
-collision_mask = 27
+collision_mask = 11
 freeze_mode = 1
 linear_damp = 0.5
 angular_damp = 10.0

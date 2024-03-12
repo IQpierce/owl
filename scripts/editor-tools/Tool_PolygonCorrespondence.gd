@@ -59,7 +59,7 @@ func sync_polygon_data():
 			var poly_size = polygon.size()
 			new_polygon.resize(poly_size * 2)
 			for i in poly_size:
-				new_polygon[i] += Vector2(-1 * x_mul * y_mul, 0)
-				new_polygon[i + poly_size] = new_polygon[poly_size - 1 - i] + Vector2(2 * x_mul * y_mul, 0)
+				new_polygon[i] += Vector2(-5 * x_mul * y_mul, 0)
+				new_polygon[i + poly_size] = new_polygon[poly_size - 1 - i] + Vector2(10 * x_mul * y_mul, 0)
 		polygon = new_polygon
 	#print(get_parent().name, polygon)
