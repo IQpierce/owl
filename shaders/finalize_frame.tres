@@ -1,4 +1,6 @@
-[gd_resource type="VisualShader" load_steps=36 format=3 uid="uid://d3x266n5mrbry"]
+[gd_resource type="VisualShader" load_steps=41 format=3 uid="uid://d3x266n5mrbry"]
+
+[ext_resource type="Texture2D" uid="uid://dlya1n612wj8i" path="res://textures/stupidReflection.png" id="1_rosmq"]
 
 [sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_p00dm"]
 default_input_values = [0, 1.0, 1, 3.0, 2, 0.0]
@@ -113,6 +115,17 @@ operator = 1
 [sub_resource type="VisualShaderNodeClamp" id="VisualShaderNodeClamp_wno7v"]
 default_input_values = [0, 0.0, 1, -5.0, 2, 1.0]
 
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_g4qus"]
+expanded_output_ports = [0]
+texture = ExtResource("1_rosmq")
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_s78un"]
+
+[sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_gp7q8"]
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_g3tua"]
+operator = 2
+
 [sub_resource type="Curve" id="Curve_e3vqb"]
 _data = [Vector2(0, 0), 0.0, 0.681358, 0, 0, Vector2(1, 0.92622), 0.521153, 0.0, 0, 0]
 point_count = 2
@@ -141,6 +154,7 @@ code = "shader_type canvas_item;
 render_mode blend_mix, unshaded;
 
 uniform float Warp_Amount : hint_range(0, 2.5) = 1.10000002384186;
+uniform sampler2D tex_frg_53;
 uniform sampler2D screen_tex_frg_2 : hint_screen_texture;
 uniform sampler2D tex_frg_7 : source_color;
 
@@ -207,6 +221,22 @@ void fragment() {
 // VectorOp:31
 	vec2 n_in31p1 = vec2(0.50000, 0.50000);
 	vec2 n_out31p0 = n_out30p0 * n_in31p1;
+
+
+// Texture2D:53
+	vec4 n_out53p0 = texture(tex_frg_53, n_out31p0);
+	float n_out53p1 = n_out53p0.r;
+	float n_out53p2 = n_out53p0.g;
+	float n_out53p3 = n_out53p0.b;
+	float n_out53p4 = n_out53p0.a;
+
+
+// VectorCompose:55
+	vec3 n_out55p0 = vec3(n_out53p1, n_out53p2, n_out53p3);
+
+
+// VectorOp:56
+	vec3 n_out56p0 = n_out55p0 * vec3(n_out53p4);
 
 
 // Input:13
@@ -291,16 +321,21 @@ void fragment() {
 	float n_out7p4 = n_out7p0.a;
 
 
+// VectorOp:54
+	vec3 n_out54p0 = n_out56p0 + vec3(n_out7p0.xyz);
+
+
 // Output:0
-	COLOR.rgb = vec3(n_out7p0.xyz);
+	COLOR.rgb = n_out54p0;
 
 
 }
 "
+graph_offset = Vector2(-54.7017, -918.753)
 mode = 1
 flags/unshaded = true
 flags/light_only = false
-nodes/fragment/0/position = Vector2(1040, -580)
+nodes/fragment/0/position = Vector2(1180, -600)
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_vt5wy")
 nodes/fragment/2/position = Vector2(-20, -400)
 nodes/fragment/4/node = SubResource("VisualShaderNodeVectorCompose_ga2yp")
@@ -363,4 +398,12 @@ nodes/fragment/50/node = SubResource("VisualShaderNodeFloatOp_pskyn")
 nodes/fragment/50/position = Vector2(-3280, 20)
 nodes/fragment/51/node = SubResource("VisualShaderNodeClamp_wno7v")
 nodes/fragment/51/position = Vector2(-3079.44, 58.1035)
-nodes/fragment/connections = PackedInt32Array(7, 1, 4, 0, 7, 3, 4, 2, 7, 4, 4, 3, 2, 2, 4, 1, 14, 0, 12, 2, 14, 0, 17, 2, 18, 0, 19, 0, 20, 0, 22, 0, 21, 0, 25, 0, 23, 0, 26, 0, 25, 0, 26, 1, 21, 0, 27, 0, 23, 0, 28, 0, 27, 0, 28, 1, 29, 0, 30, 0, 30, 0, 31, 0, 28, 0, 29, 1, 26, 0, 29, 0, 20, 2, 21, 0, 20, 1, 21, 1, 22, 0, 23, 0, 24, 0, 23, 1, 19, 0, 20, 0, 31, 0, 32, 0, 10, 0, 32, 1, 12, 0, 10, 1, 32, 2, 33, 0, 17, 0, 33, 1, 32, 1, 34, 0, 33, 0, 34, 1, 34, 0, 2, 0, 46, 0, 47, 0, 47, 0, 48, 1, 48, 0, 49, 0, 7, 0, 0, 0, 2, 0, 7, 0, 13, 0, 50, 0, 50, 0, 51, 0, 51, 0, 46, 0, 49, 0, 14, 0)
+nodes/fragment/53/node = SubResource("VisualShaderNodeTexture_g4qus")
+nodes/fragment/53/position = Vector2(300, -920)
+nodes/fragment/54/node = SubResource("VisualShaderNodeVectorOp_s78un")
+nodes/fragment/54/position = Vector2(980, -800)
+nodes/fragment/55/node = SubResource("VisualShaderNodeVectorCompose_gp7q8")
+nodes/fragment/55/position = Vector2(580, -880)
+nodes/fragment/56/node = SubResource("VisualShaderNodeVectorOp_g3tua")
+nodes/fragment/56/position = Vector2(740, -820)
+nodes/fragment/connections = PackedInt32Array(7, 1, 4, 0, 7, 3, 4, 2, 7, 4, 4, 3, 2, 2, 4, 1, 14, 0, 12, 2, 14, 0, 17, 2, 18, 0, 19, 0, 20, 0, 22, 0, 21, 0, 25, 0, 23, 0, 26, 0, 25, 0, 26, 1, 21, 0, 27, 0, 23, 0, 28, 0, 27, 0, 28, 1, 29, 0, 30, 0, 30, 0, 31, 0, 28, 0, 29, 1, 26, 0, 29, 0, 20, 2, 21, 0, 20, 1, 21, 1, 22, 0, 23, 0, 24, 0, 23, 1, 19, 0, 20, 0, 31, 0, 32, 0, 10, 0, 32, 1, 12, 0, 10, 1, 32, 2, 33, 0, 17, 0, 33, 1, 32, 1, 34, 0, 33, 0, 34, 1, 34, 0, 2, 0, 46, 0, 47, 0, 47, 0, 48, 1, 48, 0, 49, 0, 2, 0, 7, 0, 13, 0, 50, 0, 50, 0, 51, 0, 51, 0, 46, 0, 49, 0, 14, 0, 53, 1, 55, 0, 53, 2, 55, 1, 53, 3, 55, 2, 7, 0, 54, 1, 54, 0, 0, 0, 53, 4, 56, 1, 55, 0, 56, 0, 56, 0, 54, 0, 31, 0, 53, 0)
