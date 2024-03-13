@@ -22,6 +22,7 @@ color = Color(1, 1, 1, 0.588235)
 polygon = PackedVector2Array(-961, -541, -961, 541, 961, 541, 961, -541)
 script = ExtResource("3_n151l")
 rank = 4
+stroke_fill = 1
 
 [node name="Camera State" type="Label" parent="."]
 visible = false

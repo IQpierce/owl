@@ -1,7 +1,7 @@
 extends PatchworkPolygon2D
 class_name VectorPolygonRendering
 
-enum StrokeWidth { Full, Half, None }
+enum StrokeFill { Both, Stroke, Fill }
 enum DrawState { Intro, Stable, Outro }
 enum DrawRank {
 	Fog = 0,
@@ -25,7 +25,7 @@ static var fill_proto:PackedScene = preload("res://packedscenes/occlusion_fill.t
 static var stencil_mat:Material = preload("res://materials/stencil_mat.tres")
 
 @export var rank:DrawRank = DrawRank.Default
-@export var has_stroke:bool = true
+@export var stroke_fill:StrokeFill = StrokeFill.Both
 @export var intro_secs:float = 0
 @export var _warpable:bool = false
 @export var skip_line_indeces:Array[int]	# Each line that begins with a vert index that's in this list, will be skipped
@@ -73,7 +73,7 @@ func _quick_sync_occlusion():
 		occlusion_fill.global_scale    = global_scale
 
 func _sync_occlusion(resync_polygon:bool = false):
-	var should_occlude = rank != DrawRank.Pierce && OwlGame.instance.can_occlude
+	var should_occlude = stroke_fill != StrokeFill.Stroke && rank != DrawRank.Pierce && OwlGame.instance.can_occlude
 
 	if should_occlude:
 		if occlusion_fill == null:
@@ -150,7 +150,7 @@ func _draw():
 	cached_scale = global_scale
 	var draw_scale = (abs(cached_scale.x) + abs(cached_scale.y)) / 2
 
-	if draw_scale <= 0 || !has_stroke:
+	if draw_scale <= 0 || stroke_fill == StrokeFill.Fill:
 		return
 
 	var line_width = OwlGame.instance.draw_line_thickness / draw_scale
