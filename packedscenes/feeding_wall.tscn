@@ -17,7 +17,7 @@ line_geometry = [NodePath("TrunkPolygon")]
 
 [node name="TrunkPolygon" type="Polygon2D" parent="ScalingGroup2D"]
 color = Color(1, 1, 1, 0.588235)
-polygon = PackedVector2Array(-1, -1, -1, 400, 106, 382, 260, 340, 410, 285, 522, 210, 618, 108, 700, -1)
+polygon = PackedVector2Array(-3, -3, -3, 400, 106, 382, 260, 340, 410, 285, 522, 210, 618, 108, 700, -3)
 script = ExtResource("1_41ffj")
 rank = 0
 

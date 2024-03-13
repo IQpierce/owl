@@ -31,7 +31,17 @@ func _ready():
 	player.died.connect(self.on_player_died)
 
 	var default_view_size = Vector2(1920, 1080)
-	var view_size = get_viewport().size
+	var view_size = Vector2(get_viewport().size)
+	var strict_view_size = view_size
+	var border_size = Vector2.ZERO
+	if abs((view_size.x / default_view_size.x) - 1) > abs((view_size.y / default_view_size.y) - 1):
+		strict_view_size.y = (strict_view_size.x / default_view_size.x) * default_view_size.y
+		border_size.y = 1
+	else:
+		strict_view_size.x = (strict_view_size.y / default_view_size.y) * default_view_size.x
+		border_size.x = 1
+	border_size *= 5
+
 	if OS.has_feature("editor"):
 		print("Zoom ", view_size.x, "x",view_size.y, " to show ", default_view_size.x, "x", default_view_size.y, "(ish)")
 	
@@ -45,11 +55,21 @@ func _ready():
 			viewport_container.stretch = true
 			viewport_container.custom_minimum_size = view_size
 			viewport_container.set_anchors_preset(Control.LayoutPreset.PRESET_FULL_RECT)
-			viewport_container.size = view_size
 			viewport_container.position = Vector2.ZERO
-			viewport_container.size_flags_horizontal = Control.SizeFlags.SIZE_EXPAND_FILL
-			viewport_container.size_flags_vertical   = Control.SizeFlags.SIZE_EXPAND_FILL
+			viewport_container.size = view_size
+			if phosphor_emu.injection_viewport.get_parent() == viewport_container:
+				print(viewport_container.name)
+				viewport_container.size = strict_view_size
+			else:
+				viewport_container.size_flags_horizontal = Control.SizeFlags.SIZE_EXPAND_FILL
+				viewport_container.size_flags_vertical   = Control.SizeFlags.SIZE_EXPAND_FILL
 		
+		var uv_bounds = (strict_view_size + border_size) / view_size
+		var min_uv = Vector2(0.5, 0.5) - (uv_bounds / 2)
+		var max_uv = Vector2(0.5, 0.5) + (uv_bounds / 2)
+		phosphor_emu.finalize_canvas.material.set_shader_parameter("min_uv", min_uv)
+		phosphor_emu.finalize_canvas.material.set_shader_parameter("max_uv", max_uv)
+
 		var intermediary:Node2D = Node2D.new()
 		phosphor_emu.injection_viewport.add_child(intermediary)
 		intermediary.name = "WorldContainer"
@@ -57,7 +77,8 @@ func _ready():
 			child.reparent(intermediary)
 
 	var default_view_diagonal = default_view_size.length()
-	var view_diagonal = view_size.length()
+	var view_diagonal = strict_view_size.length()
+
 	
 	if world_camera != null:
 		world_camera.init_zoom(view_diagonal / default_view_diagonal, true)

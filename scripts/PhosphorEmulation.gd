@@ -5,6 +5,8 @@ class_name PhosphorEmulation
 @export var post_process:WorldEnvironment = null
 ## Expected parent of scene components when loaded dynamically. This is most likely the innermost viewport.
 @export var injection_viewport:SubViewport
+## Distorts, crops, and colorizes frame at the end of render pipeline.
+@export var finalize_canvas:ColorRect
 ## All the viewport containers that need to be synchronized with the game window and camera(s)
 @export var viewport_containers:Array[SubViewportContainer]
 

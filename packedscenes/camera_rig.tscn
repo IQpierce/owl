@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bs64p7ff3fvw2"]
+[gd_scene load_steps=5 format=3 uid="uid://bs64p7ff3fvw2"]
 
 [ext_resource type="Script" path="res://scripts/CameraRig.gd" id="1_5fqcy"]
 [ext_resource type="FontFile" uid="uid://bfc5s6j3cdokw" path="res://fonts/Vectorb.ttf" id="2_t6sr0"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="3_n151l"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_rs3gb"]
 font = ExtResource("2_t6sr0")
@@ -11,11 +12,16 @@ outline_color = Color(0, 0, 0, 1)
 
 [node name="CameraRig" type="Camera2D" node_paths=PackedStringArray("state_label")]
 position = Vector2(9599, 2567)
-process_callback = 0
 script = ExtResource("1_5fqcy")
 show_debug = false
 state_label = NodePath("Camera State")
 curious_speed = 200.0
+
+[node name="VectorPolygonRendering" type="Polygon2D" parent="."]
+color = Color(1, 1, 1, 0.588235)
+polygon = PackedVector2Array(-961, -541, -961, 541, 961, 541, 961, -541)
+script = ExtResource("3_n151l")
+rank = 4
 
 [node name="Camera State" type="Label" parent="."]
 visible = false
