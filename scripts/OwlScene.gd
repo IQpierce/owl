@@ -58,7 +58,6 @@ func _ready():
 			viewport_container.position = Vector2.ZERO
 			viewport_container.size = view_size
 			if phosphor_emu.injection_viewport.get_parent() == viewport_container:
-				print(viewport_container.name)
 				viewport_container.size = strict_view_size
 			else:
 				viewport_container.size_flags_horizontal = Control.SizeFlags.SIZE_EXPAND_FILL
@@ -78,7 +77,6 @@ func _ready():
 
 	var default_view_diagonal = default_view_size.length()
 	var view_diagonal = strict_view_size.length()
-
 	
 	if world_camera != null:
 		world_camera.init_zoom(view_diagonal / default_view_diagonal, true)

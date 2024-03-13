@@ -18,6 +18,8 @@ state_label = NodePath("Camera State")
 curious_speed = 200.0
 
 [node name="VectorPolygonRendering" type="Polygon2D" parent="."]
+process_mode = 4
+visible = false
 color = Color(1, 1, 1, 0.588235)
 polygon = PackedVector2Array(-961, -541, -961, 541, 961, 541, 961, -541)
 script = ExtResource("3_n151l")
