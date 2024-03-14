@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=84 format=3 uid="uid://d3x266n5mrbry"]
+[gd_resource type="VisualShader" load_steps=86 format=3 uid="uid://d3x266n5mrbry"]
 
 [ext_resource type="Texture2D" uid="uid://dlya1n612wj8i" path="res://textures/stupidReflection.png" id="1_rosmq"]
 [ext_resource type="Script" path="res://shaders/node_tools/blur.gd" id="4_iwcb7"]
@@ -82,9 +82,6 @@ function = 18
 default_input_values = [0, Vector2(0, 0), 1, Vector2(1, 1), 2, Vector2(0, 0)]
 op_type = 1
 
-[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_yye1k"]
-constant = Color(0.392157, 0.392157, 0.392157, 0.196078)
-
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_xipx3"]
 input_name = "screen_pixel_size"
 
@@ -118,6 +115,28 @@ default_input_values = [3, Vector4(0, 0, 0, 0)]
 expanded_output_ports = [0]
 initialized = true
 script = ExtResource("4_iwcb7")
+
+[sub_resource type="VisualShaderNodeExpression" id="VisualShaderNodeExpression_q47yh"]
+size = Vector2(2080, 1240)
+expression = "// TODO (sam) Do we want to also reflect that reflection map? If so, make this a node like blur.
+
+float above_x = (max_uv.x + ((max_uv.x - uv.x) / scaling)) * float(int(uv.x > max_uv.x));
+float above_y = (max_uv.y + ((max_uv.y - uv.y) / scaling)) * float(int(uv.y > max_uv.y));
+float under_x = (min_uv.x + ((min_uv.x - uv.x) / scaling)) * float(int(uv.x < min_uv.x));
+float under_y = (min_uv.y + ((min_uv.y - uv.y) / scaling)) * float(int(uv.y < min_uv.y));
+float at_x = uv.x * float(int(uv.x >= min_uv.x && uv.x <= max_uv.x));
+float at_y = uv.y * float(int(uv.y >= min_uv.y && uv.y <= max_uv.y));
+//float at_x = (uv.x + ((uv.x - 0.5) / scaling)) * float(int(uv.x >= min_uv.x && uv.x <= max_uv.x));
+//float at_y = (uv.y + ((uv.y - 0.5) / scaling)) * float(int(uv.y >= min_uv.y && uv.y <= max_uv.y));
+
+result = vec2(above_x + under_x + at_x, above_y + under_y + at_y);
+"
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_ob64p"]
+constant = 4.0
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_27tfe"]
+constant = Color(0, 0, 0, 0.784314)
 
 [sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_l5fbl"]
 default_input_values = [0, Vector2(0, 0), 1, Vector2(2, 2)]
@@ -185,6 +204,7 @@ operator = 2
 [sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_u8m52"]
 
 [sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_cfsb2"]
+expanded_output_ports = [0]
 op_type = 0
 
 [sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_ga2yp"]
@@ -608,8 +628,8 @@ void fragment() {
 	vec2 n_out170p0 = n_out169p0 * n_in170p1;
 
 
-// ColorConstant:168
-	vec4 n_out168p0 = vec4(0.392157, 0.392157, 0.392157, 0.196078);
+// ColorConstant:184
+	vec4 n_out184p0 = vec4(0.000000, 0.000000, 0.000000, 0.784314);
 
 
 	vec4 n_out181p0;
@@ -617,7 +637,7 @@ void fragment() {
 	{
 		vec2 uv = n_out163p0;
 		vec2 pixel_size = n_out170p0;
-		vec4 mix_in = n_out168p0;
+		vec4 mix_in = n_out184p0;
 		vec4 nw_color = texture(ReflectionTexture, uv - pixel_size);
 		vec4 n__color = texture(ReflectionTexture, uv - vec2(0.0, pixel_size.y));
 		vec4 ne_color = texture(ReflectionTexture, uv + vec2(pixel_size.x, -pixel_size.y));
@@ -649,20 +669,36 @@ void fragment() {
 	vec3 n_out71p0 = n_out70p0 * vec3(n_out181p4);
 
 
-// VectorOp:83
-	vec2 n_out83p0 = n_out34p0 - n_out80p0;
+// FloatConstant:183
+	float n_out183p0 = 4.000000;
 
 
-// MultiplyAdd:85
-	vec2 n_out85p0 = (n_out83p0 * n_out82p0) + n_out80p0;
+	vec2 n_out182p0;
+// Expression:182
+	n_out182p0 = vec2(0.0, 0.0);
+	{
+		// TODO (sam) Do we want to also reflect that reflection map? If so, make this a node like blur.
+		
+		float above_x = (n_out66p0.x + ((n_out66p0.x - n_out34p0.x) / n_out183p0)) * float(int(n_out34p0.x > n_out66p0.x));
+		float above_y = (n_out66p0.y + ((n_out66p0.y - n_out34p0.y) / n_out183p0)) * float(int(n_out34p0.y > n_out66p0.y));
+		float under_x = (n_out57p0.x + ((n_out57p0.x - n_out34p0.x) / n_out183p0)) * float(int(n_out34p0.x < n_out57p0.x));
+		float under_y = (n_out57p0.y + ((n_out57p0.y - n_out34p0.y) / n_out183p0)) * float(int(n_out34p0.y < n_out57p0.y));
+		float at_x = n_out34p0.x * float(int(n_out34p0.x >= n_out57p0.x && n_out34p0.x <= n_out66p0.x));
+		float at_y = n_out34p0.y * float(int(n_out34p0.y >= n_out57p0.y && n_out34p0.y <= n_out66p0.y));
+		//float at_x = (n_out34p0.x + ((n_out34p0.x - 0.5) / n_out183p0)) * float(int(n_out34p0.x >= n_out57p0.x && n_out34p0.x <= n_out66p0.x));
+		//float at_y = (n_out34p0.y + ((n_out34p0.y - 0.5) / n_out183p0)) * float(int(n_out34p0.y >= n_out57p0.y && n_out34p0.y <= n_out66p0.y));
+		
+		n_out182p0 = vec2(above_x + under_x + at_x, above_y + under_y + at_y);
+		
+	}
 
 
 	vec4 n_out180p0;
 // Blur:180
 	{
-		vec2 uv = n_out85p0;
+		vec2 uv = n_out182p0;
 		vec2 pixel_size = n_out170p0;
-		vec4 mix_in = n_out168p0;
+		vec4 mix_in = n_out184p0;
 		vec4 nw_color = texture(Texture2DParameter, uv - pixel_size);
 		vec4 n__color = texture(Texture2DParameter, uv - vec2(0.0, pixel_size.y));
 		vec4 ne_color = texture(Texture2DParameter, uv + vec2(pixel_size.x, -pixel_size.y));
@@ -716,11 +752,10 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-69.2961, 65.5282)
 mode = 1
 flags/unshaded = true
 flags/light_only = false
-nodes/fragment/0/position = Vector2(7580, -1400)
+nodes/fragment/0/position = Vector2(7560, -1160)
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_vt5wy")
 nodes/fragment/2/position = Vector2(1100, -460)
 nodes/fragment/4/node = SubResource("VisualShaderNodeVectorCompose_ga2yp")
@@ -809,13 +844,13 @@ nodes/fragment/67/position = Vector2(3840, -2120)
 nodes/fragment/68/node = SubResource("VisualShaderNodeFloatFunc_kmq7s")
 nodes/fragment/68/position = Vector2(4400, -540)
 nodes/fragment/69/node = SubResource("VisualShaderNodeVectorOp_ksq8h")
-nodes/fragment/69/position = Vector2(4880, 840)
+nodes/fragment/69/position = Vector2(4920, 900)
 nodes/fragment/70/node = SubResource("VisualShaderNodeVectorCompose_ia4e1")
 nodes/fragment/70/position = Vector2(3980, 600)
 nodes/fragment/71/node = SubResource("VisualShaderNodeVectorOp_hpdx7")
 nodes/fragment/71/position = Vector2(4400, 720)
 nodes/fragment/73/node = SubResource("VisualShaderNodeTexture_jrft5")
-nodes/fragment/73/position = Vector2(4120, 1220)
+nodes/fragment/73/position = Vector2(4260, 1200)
 nodes/fragment/78/node = SubResource("VisualShaderNodeVectorOp_icl5d")
 nodes/fragment/78/position = Vector2(7040, -1460)
 nodes/fragment/79/node = SubResource("VisualShaderNodeVectorOp_ayfiq")
@@ -867,9 +902,7 @@ nodes/fragment/133/position = Vector2(2700, -3420)
 nodes/fragment/134/node = SubResource("VisualShaderNodeFloatOp_sav3q")
 nodes/fragment/134/position = Vector2(3120, -4000)
 nodes/fragment/163/node = SubResource("VisualShaderNodeMultiplyAdd_7bypo")
-nodes/fragment/163/position = Vector2(1120, 780)
-nodes/fragment/168/node = SubResource("VisualShaderNodeColorConstant_yye1k")
-nodes/fragment/168/position = Vector2(2980, 1060)
+nodes/fragment/163/position = Vector2(1300, 780)
 nodes/fragment/169/node = SubResource("VisualShaderNodeInput_xipx3")
 nodes/fragment/169/position = Vector2(1500, 1160)
 nodes/fragment/170/node = SubResource("VisualShaderNodeVectorOp_iyye8")
@@ -879,7 +912,29 @@ nodes/fragment/177/position = Vector2(300, 60)
 nodes/fragment/179/node = SubResource("VisualShaderNodeTexture2DParameter_rgkc1")
 nodes/fragment/179/position = Vector2(-1660, -2260)
 nodes/fragment/180/node = SubResource("VisualShaderNodeCustom_f7m5x")
-nodes/fragment/180/position = Vector2(3360, 1380)
+nodes/fragment/180/position = Vector2(3620, 1440)
 nodes/fragment/181/node = SubResource("VisualShaderNodeCustom_a5lxx")
 nodes/fragment/181/position = Vector2(3400, 620)
-nodes/fragment/connections = PackedInt32Array(7, 1, 4, 0, 7, 3, 4, 2, 7, 4, 4, 3, 2, 2, 4, 1, 14, 0, 12, 2, 14, 0, 17, 2, 18, 0, 19, 0, 20, 0, 22, 0, 21, 0, 25, 0, 23, 0, 26, 0, 25, 0, 26, 1, 21, 0, 27, 0, 23, 0, 28, 0, 27, 0, 28, 1, 29, 0, 30, 0, 30, 0, 31, 0, 28, 0, 29, 1, 26, 0, 29, 0, 20, 2, 21, 0, 20, 1, 21, 1, 22, 0, 23, 0, 24, 0, 23, 1, 19, 0, 20, 0, 31, 0, 32, 0, 12, 0, 10, 1, 32, 2, 33, 0, 17, 0, 33, 1, 32, 1, 34, 0, 33, 0, 34, 1, 34, 0, 2, 0, 46, 0, 47, 0, 47, 0, 48, 1, 48, 0, 49, 0, 2, 0, 7, 0, 13, 0, 50, 0, 50, 0, 51, 0, 51, 0, 46, 0, 53, 1, 55, 0, 53, 2, 55, 1, 53, 3, 55, 2, 7, 0, 54, 1, 55, 0, 56, 0, 56, 0, 54, 0, 31, 0, 61, 2, 53, 4, 56, 1, 31, 0, 53, 0, 10, 0, 32, 1, 49, 0, 14, 0, 54, 0, 67, 1, 61, 0, 67, 0, 66, 0, 61, 0, 57, 0, 61, 1, 61, 0, 68, 0, 73, 0, 69, 1, 70, 0, 71, 0, 71, 0, 69, 0, 68, 0, 79, 0, 67, 0, 78, 0, 80, 0, 81, 1, 31, 0, 81, 0, 34, 0, 83, 0, 80, 0, 83, 1, 83, 0, 85, 0, 82, 0, 85, 1, 80, 0, 85, 2, 69, 0, 87, 0, 87, 0, 79, 1, 88, 0, 87, 1, 66, 0, 120, 1, 119, 0, 120, 0, 121, 0, 117, 0, 122, 0, 117, 1, 117, 0, 123, 1, 123, 2, 124, 1, 123, 1, 124, 0, 120, 0, 126, 0, 126, 0, 123, 0, 124, 0, 127, 0, 129, 0, 130, 0, 130, 0, 131, 0, 131, 2, 132, 1, 131, 1, 132, 0, 132, 0, 133, 0, 119, 0, 129, 1, 133, 0, 134, 1, 127, 0, 134, 0, 117, 0, 131, 1, 57, 0, 129, 0, 81, 0, 163, 0, 80, 0, 163, 2, 82, 0, 163, 1, 169, 0, 170, 0, 179, 0, 53, 2, 163, 0, 181, 1, 179, 0, 181, 0, 177, 0, 180, 0, 85, 0, 180, 1, 170, 0, 180, 2, 170, 0, 181, 2, 168, 0, 181, 3, 168, 0, 180, 3, 125, 0, 78, 1, 180, 0, 73, 0, 181, 1, 70, 0, 181, 2, 70, 1, 181, 3, 70, 2, 181, 4, 71, 1, 78, 0, 0, 0, 177, 0, 2, 2, 79, 0, 125, 1, 134, 0, 125, 0)
+nodes/fragment/182/node = SubResource("VisualShaderNodeExpression_q47yh")
+nodes/fragment/182/position = Vector2(1400, 2420)
+nodes/fragment/182/size = Vector2(2080, 1240)
+nodes/fragment/182/input_ports = "0,3,uv;1,3,max_uv;2,3,min_uv;3,0,scaling;"
+nodes/fragment/182/output_ports = "0,3,result;"
+nodes/fragment/182/expression = "// TODO (sam) Do we want to also reflect that reflection map? If so, make this a node like blur.
+
+float above_x = (max_uv.x + ((max_uv.x - uv.x) / scaling)) * float(int(uv.x > max_uv.x));
+float above_y = (max_uv.y + ((max_uv.y - uv.y) / scaling)) * float(int(uv.y > max_uv.y));
+float under_x = (min_uv.x + ((min_uv.x - uv.x) / scaling)) * float(int(uv.x < min_uv.x));
+float under_y = (min_uv.y + ((min_uv.y - uv.y) / scaling)) * float(int(uv.y < min_uv.y));
+float at_x = uv.x * float(int(uv.x >= min_uv.x && uv.x <= max_uv.x));
+float at_y = uv.y * float(int(uv.y >= min_uv.y && uv.y <= max_uv.y));
+//float at_x = (uv.x + ((uv.x - 0.5) / scaling)) * float(int(uv.x >= min_uv.x && uv.x <= max_uv.x));
+//float at_y = (uv.y + ((uv.y - 0.5) / scaling)) * float(int(uv.y >= min_uv.y && uv.y <= max_uv.y));
+
+result = vec2(above_x + under_x + at_x, above_y + under_y + at_y);
+"
+nodes/fragment/183/node = SubResource("VisualShaderNodeFloatConstant_ob64p")
+nodes/fragment/183/position = Vector2(1003.43, 2947.63)
+nodes/fragment/184/node = SubResource("VisualShaderNodeColorConstant_27tfe")
+nodes/fragment/184/position = Vector2(3020, 1040)
+nodes/fragment/connections = PackedInt32Array(7, 1, 4, 0, 7, 3, 4, 2, 7, 4, 4, 3, 2, 2, 4, 1, 14, 0, 12, 2, 14, 0, 17, 2, 18, 0, 19, 0, 20, 0, 22, 0, 21, 0, 25, 0, 23, 0, 26, 0, 25, 0, 26, 1, 21, 0, 27, 0, 23, 0, 28, 0, 27, 0, 28, 1, 29, 0, 30, 0, 30, 0, 31, 0, 28, 0, 29, 1, 26, 0, 29, 0, 20, 2, 21, 0, 20, 1, 21, 1, 22, 0, 23, 0, 24, 0, 23, 1, 19, 0, 20, 0, 31, 0, 32, 0, 12, 0, 10, 1, 32, 2, 33, 0, 17, 0, 33, 1, 32, 1, 34, 0, 33, 0, 34, 1, 34, 0, 2, 0, 46, 0, 47, 0, 47, 0, 48, 1, 48, 0, 49, 0, 2, 0, 7, 0, 13, 0, 50, 0, 50, 0, 51, 0, 51, 0, 46, 0, 53, 1, 55, 0, 53, 2, 55, 1, 53, 3, 55, 2, 7, 0, 54, 1, 55, 0, 56, 0, 56, 0, 54, 0, 31, 0, 61, 2, 53, 4, 56, 1, 31, 0, 53, 0, 10, 0, 32, 1, 49, 0, 14, 0, 54, 0, 67, 1, 61, 0, 67, 0, 66, 0, 61, 0, 57, 0, 61, 1, 61, 0, 68, 0, 73, 0, 69, 1, 70, 0, 71, 0, 71, 0, 69, 0, 68, 0, 79, 0, 67, 0, 78, 0, 80, 0, 81, 1, 31, 0, 81, 0, 80, 0, 83, 1, 83, 0, 85, 0, 82, 0, 85, 1, 80, 0, 85, 2, 69, 0, 87, 0, 88, 0, 87, 1, 66, 0, 120, 1, 119, 0, 120, 0, 121, 0, 117, 0, 122, 0, 117, 1, 117, 0, 123, 1, 123, 2, 124, 1, 123, 1, 124, 0, 120, 0, 126, 0, 126, 0, 123, 0, 124, 0, 127, 0, 129, 0, 130, 0, 130, 0, 131, 0, 131, 2, 132, 1, 131, 1, 132, 0, 132, 0, 133, 0, 119, 0, 129, 1, 133, 0, 134, 1, 127, 0, 134, 0, 117, 0, 131, 1, 57, 0, 129, 0, 81, 0, 163, 0, 80, 0, 163, 2, 82, 0, 163, 1, 169, 0, 170, 0, 179, 0, 53, 2, 163, 0, 181, 1, 179, 0, 181, 0, 177, 0, 180, 0, 170, 0, 180, 2, 170, 0, 181, 2, 125, 0, 78, 1, 180, 0, 73, 0, 181, 1, 70, 0, 181, 2, 70, 1, 181, 3, 70, 2, 181, 4, 71, 1, 177, 0, 2, 2, 79, 0, 125, 1, 134, 0, 125, 0, 66, 0, 182, 1, 57, 0, 182, 2, 87, 0, 79, 1, 78, 0, 0, 0, 34, 0, 182, 0, 182, 0, 180, 1, 34, 0, 83, 0, 183, 0, 182, 3, 184, 0, 181, 3, 184, 0, 180, 3)
