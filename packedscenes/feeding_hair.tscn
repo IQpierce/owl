@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://env7d71ogqhr"]
+[gd_scene load_steps=5 format=3 uid="uid://env7d71ogqhr"]
 
 [ext_resource type="Script" path="res://scripts/FeedingHair.gd" id="1_3wgnx"]
 [ext_resource type="Script" path="res://scripts/editor-tools/Tool_PolygonCorrespondence.gd" id="1_i70ef"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_5cy8e"]
+[ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="3_suoj6"]
 
 [node name="FeedingHair" type="RigidBody2D"]
 collision_layer = 16
@@ -17,6 +18,8 @@ counterpart = NodePath("../HairPolygon")
 thicken = true
 
 [node name="HairPolygon" type="Polygon2D" parent="."]
+material = ExtResource("3_suoj6")
 antialiased = true
 polygon = PackedVector2Array(0, 0, 0, 100)
 script = ExtResource("2_5cy8e")
+rank = 3

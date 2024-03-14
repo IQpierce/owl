@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dp24v7p2u0vki"]
+[gd_scene load_steps=6 format=3 uid="uid://dp24v7p2u0vki"]
 
 [ext_resource type="Script" path="res://scripts/editor-tools/Tool_PolygonCorrespondence.gd" id="1_28a2j"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="1_41ffj"]
 [ext_resource type="Script" path="res://scripts/ScalingGroup2D.gd" id="1_uihky"]
+[ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="3_dphqn"]
 [ext_resource type="PackedScene" uid="uid://env7d71ogqhr" path="res://packedscenes/feeding_hair.tscn" id="4_xsxmo"]
 
 [node name="FeedingWall" type="StaticBody2D"]
@@ -16,6 +17,7 @@ script = ExtResource("1_uihky")
 line_geometry = [NodePath("TrunkPolygon")]
 
 [node name="TrunkPolygon" type="Polygon2D" parent="ScalingGroup2D"]
+material = ExtResource("3_dphqn")
 color = Color(1, 1, 1, 0.588235)
 polygon = PackedVector2Array(700, 3, 3, 3, 3, 400, 106, 382, 260, 340, 410, 285, 522, 210, 618, 108)
 script = ExtResource("1_41ffj")
