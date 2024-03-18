@@ -121,17 +121,16 @@ func _process(delta:float):
 	if !OwlGame.in_first_lod(self, OwlGame.LOD.Draw):
 		_release_occlusion()
 		return
-
 	
 	var scale_change = global_scale - cached_scale
 	if scale_change.length_squared() > 0.00001:
 		# If scale has changed our line widths and injected vertices are wrong
 		build_patchwork()
+		cached_scale = global_scale
 		redraw = true
 	
 	if _missed_draw:
 		redraw = true
-
 
 	_sync_occlusion()
 
@@ -147,7 +146,6 @@ func _draw():
 	if _missed_draw:
 		return
 
-	cached_scale = global_scale
 	var draw_scale = (abs(cached_scale.x) + abs(cached_scale.y)) / 2
 
 	if draw_scale <= 0 || stroke_fill == StrokeFill.Fill:
@@ -208,19 +206,20 @@ func _draw():
 	
 	# @TODO - it would be nice to not have to repeat this entire loop verbatim!! dupe code!!!	
 	# ... actually not quite dupe code anymore if we support dashed lines
-	var polygon_vertex_count = polygon.size()
-	for i in range(polygon_vertex_count):
-		var x = polygon[i].x
-		var y = polygon[i].y
+	# PERF (sam) draw_circle is leading to a BUNCH of extra rendering that is hurting FPS way more than it should
+	#var polygon_vertex_count = polygon.size()
+	#for i in range(polygon_vertex_count):
+	#	var x = polygon[i].x
+	#	var y = polygon[i].y
 
-		var draw_vert = !hidden_verts.has(i)
-		if draw_state != DrawState.Stable:
-			var check_index = i
-			if draw_portion <= check_index / (polygon_vertex_count * 1.0):
-				draw_vert = false
+	#	var draw_vert = !hidden_verts.has(i)
+	#	if draw_state != DrawState.Stable:
+	#		var check_index = i
+	#		if draw_portion <= check_index / (polygon_vertex_count * 1.0):
+	#			draw_vert = false
 
-		if draw_vert:
-			draw_circle(Vector2(x, y), point_radius * zoom_scaling, point_color)
+	#	if draw_vert:
+	#		draw_circle(Vector2(x, y), point_radius * zoom_scaling, point_color)
 
 func undraw():
 	if draw_elapsed > intro_secs || draw_elapsed <= 0:

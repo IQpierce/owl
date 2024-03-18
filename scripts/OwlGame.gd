@@ -33,6 +33,7 @@ const MAX_LOD_STEPS:int = 100
 static var instance
 
 var zooming:bool = false
+var camera_global_position:Vector2 = Vector2.ZERO
 
 var scene:OwlScene:
 	get:
@@ -56,6 +57,9 @@ func _init():
 	muted = false
 
 func _process(delta:float):
+	# TODO (sam) This does have a moderate performance benefit, but does it cause problems for a frame after a teleport or something?
+	if scene != null && scene.world_camera != null:
+		camera_global_position = scene.world_camera.global_position
 	if Input.is_action_just_pressed("toggle_mute"):
 		muted = !muted
 
@@ -75,13 +79,13 @@ func beyond_screen(global_pos:Vector2) -> Vector2:
 	var scene = instance.scene
 	var beyond = Vector2.ZERO
 	if scene != null && scene.world_camera != null:
-		beyond = abs(global_pos - scene.world_camera.global_position) - (scene.world_camera.view_size() / 2)
+		beyond = abs(global_pos - camera_global_position) - (scene.world_camera.view_size() / 2)
 		if beyond.x > 0:
-			beyond.x *= -1 if global_pos.x < scene.world_camera.global_position.x else 1
+			beyond.x *= -1 if global_pos.x < camera_global_position.x else 1
 		else:
 			beyond.x = 0
 		if beyond.y > 0:
-			beyond.y *= -1 if global_pos.y < scene.world_camera.global_position.y else 1
+			beyond.y *= -1 if global_pos.y < camera_global_position.y else 1
 		else:
 			beyond.y = 0
 	return beyond
@@ -92,7 +96,7 @@ static func within_lod_steps(node:Node2D, lod:LOD) -> int:
 		return MAX_LOD_STEPS + 1
 	if instance == null || instance.scene == null || instance.scene.world_camera == null:
 		return 1
-	var to_node = node.global_position - instance.scene.world_camera.global_position
+	var to_node = node.global_position - instance.camera_global_position
 	return (max(abs(to_node.x), abs(to_node.y)) / threshold ) as int + 1
 
 static func in_first_lod(node:Node2D, lod:LOD) -> bool:
