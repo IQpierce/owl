@@ -55,5 +55,4 @@ script = ExtResource("2_lckca")
 [node name="DamagedSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_fmx7a")
 
-[connection signal="damaged" from="." to="DamagedSFX" method="play"]
 [connection signal="on_consumed_pickup" from="." to="Anatomy/Stomach" method="on_pickup_consumed"]

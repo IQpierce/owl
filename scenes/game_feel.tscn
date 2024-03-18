@@ -822,6 +822,8 @@ position = Vector2(4661, 4000)
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/RightWrappingWall" to="WrappingWalls/RightWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/LeftWrappingWall" to="WrappingWalls/LeftWrappingWall" method="on_body_entered"]
+[connection signal="damaged" from="Player" to="Player/DamagedSFX" method="play"]
+[connection signal="damaged" from="Cuttlesteroid/Salt/Cuttlefish" to="Cuttlesteroid/Salt/Cuttlefish/DamagedSFX" method="play"]
 
 [editable path="Testeraoids/ResizeAsteroid4"]
 [editable path="Testeraoids/ResizeAsteroid7"]
