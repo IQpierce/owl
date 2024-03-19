@@ -13,7 +13,7 @@ var things_to_damage:Array[Thing]
 
 func _ready():
 	self.body_entered.connect(_on_body_entered)
-	self.body_exited.connect(_on_body_entered)
+	self.body_exited.connect(_on_body_exited)
 
 func _process(delta:float):
 	var damage_amount:float = delta * damage_per_sec
