@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=29 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_80w6u"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
@@ -19,9 +19,13 @@
 [ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="16_8rlql"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/TurnCartridge.gd" id="16_wpvoa"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/RoamCartridge.gd" id="17_28w32"]
+[ext_resource type="PackedScene" uid="uid://d4cl53hj3tvl6" path="res://packedscenes/architecture/short_wall.tscn" id="17_rtg8a"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/GunCartridge.gd" id="18_cebdg"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/StrafeCartridge.gd" id="19_c0wvn"]
+[ext_resource type="PackedScene" uid="uid://eeq66uet34q4" path="res://packedscenes/architecture/wall_polygon.tscn" id="20_7dgxf"]
 [ext_resource type="PackedScene" uid="uid://dxk8kxig4jkr" path="res://packedscenes/creatures/mosquito.tscn" id="23_1rwcd"]
+[ext_resource type="PackedScene" uid="uid://b8ek8hg8i5qvi" path="res://packedscenes/architecture/medium_wall.tscn" id="24_tsj4o"]
+[ext_resource type="PackedScene" uid="uid://cltxvm3y6lsc5" path="res://packedscenes/architecture/long_wall.tscn" id="25_7mtp7"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
@@ -624,6 +628,7 @@ rank = 4
 
 [node name="Cuttlesteroid" parent="." node_paths=PackedStringArray("spawned_on_death") instance=ExtResource("16_3wf5d")]
 process_mode = 4
+visible = false
 position = Vector2(4200, 4300)
 spawned_on_death = [null]
 
@@ -658,6 +663,109 @@ position = Vector2(3.23974, -3.55219)
 
 [node name="Spear" parent="Cuttlesteroid/Salt/Cuttlefish/Anatomy" index="3"]
 visible = false
+
+[node name="Building" type="Node2D" parent="."]
+position = Vector2(4000, 4000)
+
+[node name="LongWall2" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(-431, 40)
+
+[node name="LongWall3" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(-484, 249)
+
+[node name="MediumWall2" parent="Building" instance=ExtResource("24_tsj4o")]
+position = Vector2(-459, 148)
+rotation = 0.785398
+
+[node name="ShortWall2" parent="Building" instance=ExtResource("17_rtg8a")]
+position = Vector2(-470, 343)
+rotation = -0.785398
+
+[node name="LongWall4" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(-376, 357)
+rotation = -1.5708
+
+[node name="LongWall5" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(-216, 357)
+rotation = -1.5708
+
+[node name="LongWall6" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(24, 357)
+rotation = -1.5708
+scale = Vector2(1, 2)
+
+[node name="LongWall7" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(249, 311)
+rotation = -2.18166
+
+[node name="LongWall8" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(-375, -256)
+rotation = 0.785398
+
+[node name="LongWall9" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(80.0005, -313)
+rotation = 1.5708
+scale = Vector2(1, 5)
+
+[node name="LongWall14" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(560, -313)
+rotation = 1.5708
+
+[node name="LongWall15" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(720, -313)
+rotation = 1.5708
+
+[node name="LongWall16" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(880, -313)
+rotation = 1.5708
+
+[node name="LongWall17" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(1040, -313)
+rotation = 1.5708
+
+[node name="LongWall18" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(1200, -313)
+rotation = 1.5708
+
+[node name="LongWall10" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(401, 263)
+rotation = -1.5708
+
+[node name="LongWall11" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(678, 125)
+rotation = -2.18166
+scale = Vector2(1, 3)
+
+[node name="MediumWall3" parent="Building" instance=ExtResource("24_tsj4o")]
+position = Vector2(875, -53)
+rotation = 3.14159
+
+[node name="LongWall12" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(941, -139)
+rotation = -2.18166
+
+[node name="LongWall13" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(1167, -184)
+rotation = -1.5708
+scale = Vector2(1, 2)
+
+[node name="MediumWall" parent="Building" instance=ExtResource("24_tsj4o")]
+
+[node name="LongWall" parent="Building" instance=ExtResource("25_7mtp7")]
+position = Vector2(-431, -120)
+
+[node name="ShortWall" parent="Building" instance=ExtResource("17_rtg8a")]
+position = Vector2(0, 60)
+
+[node name="WallPolygon" parent="Building" instance=ExtResource("20_7dgxf")]
+position = Vector2(1326, -184)
+polygon = PackedVector2Array(0, 0, 480, 0, 560, 80, 560, 160, 840, 440, 1120, 440, 1280, 520, 1840, 520, 1840, 540, 600, 540)
+skip_line_indeces = Array[int]([7, 8, 9])
+
+[node name="WallPolygon2" parent="Building" instance=ExtResource("20_7dgxf")]
+position = Vector2(1407, -313)
+polygon = PackedVector2Array(0, 0, 1660, 0, 1740, 100, 1740, 440, 1780, 480, 1780, 630, 1760, 650, 1760, 670, 1800, 670, 1800, -20, 0, -20)
+skip_line_indeces = Array[int]([6, 7, 8, 9, 10])
 
 [node name="Hideout" type="Node2D" parent="."]
 process_mode = 4
@@ -807,27 +915,35 @@ initial_msec = 150
 finesse_msec = 250
 
 [node name="Mosquito" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
 position = Vector2(4375, 4068)
 
 [node name="Mosquito2" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
 position = Vector2(4252, 4154)
 
 [node name="Mosquito3" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
 position = Vector2(3758, 4242)
 
 [node name="Mosquito4" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
 position = Vector2(3642, 4058)
 
 [node name="Mosquito5" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
 position = Vector2(4284, 3960)
 
 [node name="Mosquito6" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
 position = Vector2(3666, 4192)
 
 [node name="Mosquito7" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
 position = Vector2(3646, 3954)
 
 [node name="Mosquito8" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
 position = Vector2(4244, 3840)
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]

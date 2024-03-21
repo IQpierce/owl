@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cltxvm3y6lsc5"]
+
+[ext_resource type="Script" path="res://scripts/editor-tools/Tool_PolygonCorrespondence.gd" id="1_ftgtv"]
+[ext_resource type="Script" path="res://scripts/WallPolygon.gd" id="1_tn550"]
+
+[node name="LongWall" type="Polygon2D"]
+color = Color(1, 1, 1, 0.588235)
+polygon = PackedVector2Array(0, 80, 0, -80, -10, -80, -10, 80)
+script = ExtResource("1_tn550")
+skip_line_indeces = Array[int]([1, 2, 3])
+
+[node name="Body" type="StaticBody2D" parent="."]
+
+[node name="Collider" type="CollisionPolygon2D" parent="Body"]
+script = ExtResource("1_ftgtv")
