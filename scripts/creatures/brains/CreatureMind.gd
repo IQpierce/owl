@@ -7,7 +7,7 @@ class_name CreatureMind
 
 var is_threat_mode:bool:
 	get:
-		return known_threats.size() > 0
+		return known_threats.size() > 0 && threat_mode_brains.size() > 0
 
 # @TODO Clearly define the data in this dictionary...
 # ...preferably by making it a concrete "struct" type instead of a Dictionary.

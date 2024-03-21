@@ -43,9 +43,9 @@ signal driving_state_change(enabled:bool)
 signal turning_left_state_change(enabled:bool)
 signal turning_right_state_change(enabled:bool)
 
-func locomote_towards(drive_factor:float, turn_towards_global:Vector2, turn_fraction:float, delta:float):
+func _compute_turn(turn_towards_global:Vector2, turn_fraction:float, delta:float) -> float:
 	if body == null:
-		return
+		return 0.0
 
 	var turn_factor = 0
 	turn_fraction = max(turn_fraction, 0)
@@ -59,21 +59,16 @@ func locomote_towards(drive_factor:float, turn_towards_global:Vector2, turn_frac
 			axis = -1
 		var angle = acos(up.dot(to_turn_towards)) * axis
 		var max_angular_speed = turn_force * delta
+		#print("delta ", delta)
 		turn_factor = clamp(angle / max_angular_speed, -1, 1)
+		#print(angle / PI * 180, " / ", max_angular_speed / PI * 180, " = ", turn_factor)
+	return turn_factor * turn_fraction
 
-	locomote(drive_factor, turn_factor * turn_fraction, delta)
-
-func locomote(drive_factor:float, turn_factor:float, delta:float):
+func turn(turn_factor:float, turn_drift:float, delta:float):
 	if body == null:
 		return
 
-	var time_now = Time.get_ticks_msec()
-	var anti_zoom = OwlGame.instance.anti_zoom()
-
-	var turn_damp_factor = 1.0
-	var linear_damp_factor = 1.0
-	var max_speed_factor = 1.0
-	var acceleration_factor = drive_factor
+	#var turn_drift = 1.0
 
 	var heading_dir:Vector2 = Vector2.UP.rotated(body.global_rotation)
 
@@ -94,7 +89,42 @@ func locomote(drive_factor:float, turn_factor:float, delta:float):
 			turning_right = false
 
 	if heading_dir.rotated(body.angular_velocity * delta).dot(body.linear_velocity) >= heading_dir.dot(body.linear_velocity):
-		turn_damp_factor *= turn_with_velocity_turn_factor;
+		turn_drift *= turn_with_velocity_turn_factor;
+
+	# Godot Phyics applies damp as val *= 1.0 - step * damp (where step is essentially delta)
+	# We can combine that damp with ours to approximate a true max_turn_speed and the artificially reduce that
+	var approx_ang_damp = (1 - (delta * body.angular_damp)) * turn_drift
+	var new_turn_speed = body.angular_velocity + turn_force * turn_factor * delta
+	if (body.angular_velocity > 0 && turn_factor < 0) || (body.angular_velocity < 0 && turn_factor > 0):
+		# Allow some finesse when changing direction to avoid ping-ponging
+		body.angular_velocity *= 0.5
+		turn_factor *= 0.5
+
+	if abs(body.angular_velocity) < 0.001:
+		body.angular_velocity = 0
+
+	if abs(new_turn_speed * approx_ang_damp * turn_factor) > abs(body.angular_velocity):
+		body.angular_velocity = new_turn_speed
+	body.angular_velocity *= turn_drift
+	#if turn_factor == 0:
+	#	body.angular_velocity *= 0.75
+	#print(body.angular_velocity, " | ", approx_ang_damp)
+
+func turn_towards(turn_towards_global:Vector2, turn_fraction:float, delta:float):
+	var turn_factor = _compute_turn(turn_towards_global, turn_fraction, delta)
+	turn(turn_factor, 1, delta)
+
+func drive(drive_factor:float, drive_drift:float, delta:float, relative_direction:Vector2 = Vector2.UP):
+	if body == null:
+		return
+
+	var time_now = Time.get_ticks_msec()
+	var anti_zoom = OwlGame.instance.anti_zoom()
+
+	var max_speed_factor = 1.0
+	var acceleration_factor = drive_factor
+
+	var heading_dir:Vector2 = relative_direction.normalized().rotated(body.global_rotation)
 
 	var cap_speed = max_speed * max_speed_factor * anti_zoom
 	at_max_speed = false
@@ -143,38 +173,29 @@ func locomote(drive_factor:float, turn_factor:float, delta:float):
 			driving_state_change.emit(false)
 
 	if body.linear_velocity.length_squared() > (cap_speed * cap_speed):
-		linear_damp_factor *= excessive_speed_linear_damp_factor;
+		drive_drift *= excessive_speed_linear_damp_factor;
 
-	if !driving && turn_factor != 0:
-		linear_damp_factor *= turn_linear_damp_factor
-
-	if driving:
-		turn_damp_factor *= drive_turn_factor
-
-	if linear_damp_factor <= 0.99: # Cannot trust 1 to mean 1 every frame apparantly; maybe it is the rigidbody damping
-		body.linear_velocity *= linear_damp_factor
-
-	# Godot Phyics applies damp as val *= 1.0 - step * damp (where step is essentially delta)
-	# We can combine that damp with ours to approximate a true max_turn_speed and the artificially reduce that
-	var approx_ang_damp = (1 - (delta * body.angular_damp)) * turn_damp_factor
-	var new_turn_speed = body.angular_velocity + turn_force * turn_factor * delta
-	if (body.angular_velocity > 0 && turn_factor < 0) || (body.angular_velocity < 0 && turn_factor > 0):
-		body.angular_velocity *= 0.5
-		turn_factor *= 0.5
-
-	if abs(new_turn_speed * approx_ang_damp * turn_factor) > abs(body.angular_velocity):
-		body.angular_velocity = new_turn_speed
-	body.angular_velocity *= turn_damp_factor
-	#if turn_factor == 0:
-	#	body.angular_velocity *= 0.75
-	#print(body.angular_velocity, " | ", approx_ang_damp)
-	
+	if drive_drift <= 0.99: # Cannot trust 1 to mean 1 every frame apparantly; maybe it is the rigidbody damping
+		body.linear_velocity *= drive_drift
 
 	# TODO (sam) need to force velocity to zero if near it, because there are some calculations that behave subtely different 
 	var min_speed = stop_below_speed * anti_zoom
 	if !driving && body.linear_velocity.length_squared() < min_speed * min_speed:
 		body.linear_velocity = Vector2.ZERO
 
-	if abs(body.angular_velocity) < 0.001:
-		body.angular_velocity = 0
+func locomote(drive_factor:float, turn_factor:float, delta:float, relative_direction:Vector2 = Vector2.UP):
+	var drive_drift = 1.0
+	var turn_drift = 1.0
 
+	if !driving && turn_factor != 0:
+		drive_drift *= turn_linear_damp_factor
+
+	if driving:
+		turn_drift *= drive_turn_factor
+	
+	drive(drive_factor, drive_drift, delta, relative_direction)
+	turn(turn_factor, turn_drift, delta)
+
+func locomote_towards(drive_factor:float, turn_towards_global:Vector2, turn_fraction:float, delta:float):
+	var turn_factor = _compute_turn(turn_towards_global, turn_fraction, delta)
+	locomote(drive_factor, turn_factor, delta)

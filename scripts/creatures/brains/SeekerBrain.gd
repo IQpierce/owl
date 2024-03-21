@@ -24,6 +24,8 @@ func process_seek_result(most_relevant_target:CollisionObject2D):
 		on_target_location_changed.emit(most_relevant_target.global_position)
 		
 		var relative_velocity_to_target:Vector2 = most_relevant_target.global_position - controlled_creature.global_position
+
+		# TODO (sam) I really wish I could get the actual positioning I'm turning towards
 		on_target_velocity_changed.emit(relative_velocity_to_target)
 	else:
 		on_seek_failure.emit()

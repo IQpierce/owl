@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=25 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_80w6u"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
@@ -14,7 +14,6 @@
 [ext_resource type="PackedScene" uid="uid://bs64p7ff3fvw2" path="res://packedscenes/camera_rig.tscn" id="11_llngb"]
 [ext_resource type="Texture2D" uid="uid://d01krn0pvudlc" path="res://textures/dot.png" id="12_4aes3"]
 [ext_resource type="Script" path="res://scripts/hacks/HackParticlesEmission.gd" id="13_1js2g"]
-[ext_resource type="PackedScene" uid="uid://df8xel7mmjlk2" path="res://packedscenes/creatures/sheep.tscn" id="14_kovm1"]
 [ext_resource type="Script" path="res://scripts/TestCartridges/DriveCartridge.gd" id="15_5mt74"]
 [ext_resource type="PackedScene" uid="uid://22brxer3r2yy" path="res://packedscenes/asteroids/medium_asteroid_with_cuttlefish_roosting.tscn" id="16_3wf5d"]
 [ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="16_8rlql"]
@@ -108,6 +107,8 @@ notice_radius = 2501
 [node name="CameraRig" parent="." instance=ExtResource("11_llngb")]
 
 [node name="Testeraoids" type="Node2D" parent="."]
+process_mode = 4
+visible = false
 position = Vector2(4000, 4000)
 
 [node name="MediumAsteroid" parent="Testeraoids" instance=ExtResource("6_w6vm2")]
@@ -506,11 +507,9 @@ script = ExtResource("13_1js2g")
 
 [node name="HUD" parent="." instance=ExtResource("8_m427m")]
 
-[node name="Sheep" parent="." instance=ExtResource("14_kovm1")]
-position = Vector2(3600, 3600)
-disable_mode = 0
-
 [node name="ZOOM_ASTEROID" parent="." instance=ExtResource("6_w6vm2")]
+process_mode = 4
+visible = false
 position = Vector2(3975, 3675)
 collision_layer = 0
 collision_mask = 0
@@ -528,6 +527,8 @@ intro_secs = 1.0
 _warpable = true
 
 [node name="Fog_ASTEROID4" parent="." node_paths=PackedStringArray("ejection_spawner", "scaling_group", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+process_mode = 4
+visible = false
 position = Vector2(3975, 3575)
 collision_layer = 0
 collision_mask = 0
@@ -550,6 +551,8 @@ intro_secs = 1.0
 _warpable = true
 
 [node name="Covert_ASTEROID2" parent="." node_paths=PackedStringArray("ejection_spawner", "scaling_group", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+process_mode = 4
+visible = false
 position = Vector2(3900, 3675)
 collision_layer = 0
 collision_mask = 0
@@ -573,6 +576,8 @@ _warpable = true
 metadata/_edit_lock_ = true
 
 [node name="Auxillary_ASTEROID3" parent="." node_paths=PackedStringArray("ejection_spawner", "scaling_group", "spawned_on_death") instance=ExtResource("6_w6vm2")]
+process_mode = 4
+visible = false
 position = Vector2(3900, 3800)
 collision_layer = 0
 collision_mask = 0
@@ -595,19 +600,11 @@ intro_secs = 1.0
 _warpable = true
 metadata/_edit_lock_ = true
 
-[node name="Player" parent="." node_paths=PackedStringArray("turn_test") instance=ExtResource("8_ifucg")]
+[node name="Player" parent="." instance=ExtResource("8_ifucg")]
 position = Vector2(4000, 4000)
-camera_adjust_speed = null
-turn_band_degrees = null
-thrust_heading_alignment = null
 thrust_deadzone = 1.0
 thrust_smash_threshold = 1.0
-allow_mouse = null
-mouse_sensitivity = null
-mouse_gravity = null
-turn_test = NodePath("../Hideout/TurnCartridges/HighDrift")
-spawned_per_damage = null
-damage_sfx_cooldown_secs = null
+turn_test = NodePath("")
 
 [node name="TrunkPolygon" parent="Player/Anatomy/VitalPolygons" index="0"]
 material = ExtResource("16_8rlql")
@@ -813,16 +810,30 @@ finesse_msec = 250
 position = Vector2(4375, 4068)
 
 [node name="Mosquito2" parent="." instance=ExtResource("23_1rwcd")]
-position = Vector2(4503, 4168)
+position = Vector2(4252, 4154)
 
 [node name="Mosquito3" parent="." instance=ExtResource("23_1rwcd")]
-position = Vector2(4661, 4000)
+position = Vector2(3758, 4242)
+
+[node name="Mosquito4" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(3642, 4058)
+
+[node name="Mosquito5" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(4284, 3960)
+
+[node name="Mosquito6" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(3666, 4192)
+
+[node name="Mosquito7" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(3646, 3954)
+
+[node name="Mosquito8" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(4244, 3840)
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/RightWrappingWall" to="WrappingWalls/RightWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/LeftWrappingWall" to="WrappingWalls/LeftWrappingWall" method="on_body_entered"]
-[connection signal="damaged" from="Player" to="Player/DamagedSFX" method="play"]
 [connection signal="damaged" from="Cuttlesteroid/Salt/Cuttlefish" to="Cuttlesteroid/Salt/Cuttlefish/DamagedSFX" method="play"]
 
 [editable path="Testeraoids/ResizeAsteroid4"]

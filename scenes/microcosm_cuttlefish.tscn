@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dwmjel5ytxhac"]
+[gd_scene load_steps=11 format=3 uid="uid://dwmjel5ytxhac"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_8v45w"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_5du3d"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bs64p7ff3fvw2" path="res://packedscenes/camera_rig.tscn" id="5_o5wrr"]
 [ext_resource type="Script" path="res://scripts/CameraCartridge.gd" id="6_ba015"]
 [ext_resource type="PackedScene" uid="uid://dp24v7p2u0vki" path="res://packedscenes/feeding_wall.tscn" id="8_nccwt"]
+[ext_resource type="PackedScene" uid="uid://dxk8kxig4jkr" path="res://packedscenes/creatures/mosquito.tscn" id="9_x6y1y"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vbcit"]
 custom_solver_bias = 0.1
@@ -110,6 +111,24 @@ position = Vector2(1920, 0)
 
 [node name="ScalingGroup2D" parent="TR_FeedingWall" index="1"]
 scale = Vector2(-1, 1)
+
+[node name="Mosquito" parent="." instance=ExtResource("9_x6y1y")]
+position = Vector2(612, 783)
+
+[node name="Mosquito2" parent="." instance=ExtResource("9_x6y1y")]
+position = Vector2(1373, 656)
+
+[node name="Mosquito3" parent="." instance=ExtResource("9_x6y1y")]
+position = Vector2(391, 509)
+
+[node name="Mosquito4" parent="." instance=ExtResource("9_x6y1y")]
+position = Vector2(1393, 413)
+
+[node name="Mosquito5" parent="." instance=ExtResource("9_x6y1y")]
+position = Vector2(626, 339)
+
+[node name="Mosquito6" parent="." instance=ExtResource("9_x6y1y")]
+position = Vector2(1195, 840)
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
