@@ -226,6 +226,7 @@ polygon = PackedVector2Array(-1.83953, 4.9437, -0.0744865, 1.99955)
 
 [node name="Buzz" type="AudioStreamPlayer2D" parent="." index="7"]
 stream = ExtResource("14_cucy4")
+volume_db = -10.532
 autoplay = true
 attenuation = 5.65685
 bus = &"Effects"
