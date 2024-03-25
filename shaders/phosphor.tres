@@ -55,6 +55,7 @@ void fragment() {
 
 }
 "
+graph_offset = Vector2(-592, 165)
 mode = 1
 flags/unshaded = true
 flags/light_only = false

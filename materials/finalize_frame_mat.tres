@@ -8,4 +8,6 @@ shader = ExtResource("1_qsgys")
 shader_parameter/max_uv = Vector2(1, 1)
 shader_parameter/min_uv = Vector2(0, 0)
 shader_parameter/Warp_Amount = 1.1
+shader_parameter/Flicker_Speed = 60.0
+shader_parameter/FlickerAmount = 0.08
 shader_parameter/ReflectionTexture = ExtResource("2_cemuj")

@@ -288,42 +288,34 @@ rotation = -1.5708
 [node name="LongWall35" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(61, -643)
 rotation = -0.785398
-scale = Vector2(1, 1)
 
 [node name="MediumWall14" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(123, -581)
 rotation = -0.785398
-scale = Vector2(1, 1)
 
 [node name="LongWall36" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(208, -609)
 rotation = -2.35619
-scale = Vector2(1, 1)
 
 [node name="MediumWall15" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(274, -675)
 rotation = -2.35619
-scale = Vector2(1, 1)
 
 [node name="MediumWall16" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(33, -728)
 rotation = 0.785398
-scale = Vector2(1, 1)
 
 [node name="MediumWall17" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(71, -766)
 rotation = 0.785398
-scale = Vector2(1, 1)
 
 [node name="MediumWall18" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(273, -732)
 rotation = 2.35619
-scale = Vector2(1, 1)
 
 [node name="MediumWall19" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(243, -762)
 rotation = 2.35619
-scale = Vector2(1, 1)
 
 [node name="LongWall37" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(215, -870)
@@ -397,42 +389,34 @@ rotation = 1.5708
 [node name="MediumWall22" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(942, -1493)
 rotation = -0.785398
-scale = Vector2(1, 1)
 
 [node name="MediumWall23" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(903, -1532)
 rotation = -0.785398
-scale = Vector2(1, 1)
 
 [node name="MediumWall24" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(1115, -1492)
 rotation = -2.35619
-scale = Vector2(1, 1)
 
 [node name="MediumWall25" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(1157, -1534)
 rotation = -2.35619
-scale = Vector2(1, 1)
 
 [node name="LongWall52" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(931, -1617)
 rotation = 0.785398
-scale = Vector2(1, 1)
 
 [node name="MediumWall26" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(1002, -1688)
 rotation = 0.785398
-scale = Vector2(1, 1)
 
 [node name="MediumWall27" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(1059, -1688)
 rotation = 2.35619
-scale = Vector2(1, 1)
 
 [node name="LongWall53" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(1129, -1618)
 rotation = 2.35619
-scale = Vector2(1, 1)
 
 [node name="ShortWall23" parent="Walls" instance=ExtResource("3_c3j5j")]
 position = Vector2(671, -1213)
@@ -445,22 +429,18 @@ rotation = -3.14159
 [node name="MediumWall28" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(380, -1272)
 rotation = 0.785398
-scale = Vector2(1, 1)
 
 [node name="MediumWall29" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(423, -1315)
 rotation = 0.785398
-scale = Vector2(1, 1)
 
 [node name="MediumWall30" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(644, -1273)
 rotation = 2.35619
-scale = Vector2(1, 1)
 
 [node name="MediumWall31" parent="Walls" instance=ExtResource("2_1jv3x")]
 position = Vector2(600, -1317)
 rotation = 2.35619
-scale = Vector2(1, 1)
 
 [node name="LongWall54" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(451, -1423)
@@ -472,12 +452,10 @@ rotation = 3.14159
 [node name="LongWall56" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(394, -1559)
 rotation = -0.785398
-scale = Vector2(1, 1)
 
 [node name="LongWall57" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(630, -1561)
 rotation = -2.35619
-scale = Vector2(1, 1)
 
 [node name="LongWall58" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(686, -1697)
@@ -530,7 +508,6 @@ rotation = -1.45304
 [node name="LongWall66" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(-189, -1588)
 rotation = 0.29024
-scale = Vector2(1, 1)
 
 [node name="LongWall65" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(-143, -1742)
@@ -551,7 +528,6 @@ rotation = 0.120278
 [node name="LongWall70" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(-336, -977)
 rotation = 0.118702
-scale = Vector2(1, 1)
 
 [node name="LongWall71" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(-355, -818)
@@ -600,7 +576,6 @@ rotation = -1.31766
 [node name="LongWall82" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(462, 317)
 rotation = -1.79513
-scale = Vector2(1, 1)
 
 [node name="LongWall83" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(619, 282)
@@ -609,7 +584,6 @@ rotation = -1.79368
 [node name="LongWall84" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(775, 246)
 rotation = -1.79207
-scale = Vector2(1, 1)
 
 [node name="LongWall85" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(931, 211)
@@ -638,7 +612,6 @@ rotation = -2.69737
 [node name="LongWall91" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(1584, -284)
 rotation = -2.6992
-scale = Vector2(1, 1)
 
 [node name="LongWall92" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(1579, -425)
@@ -687,7 +660,6 @@ rotation = 2.28885
 [node name="LongWall103" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(1062, -1735)
 rotation = 2.29103
-scale = Vector2(1, 1)
 
 [node name="LongWall104" parent="Walls" instance=ExtResource("1_fsex2")]
 position = Vector2(933, -1823)
