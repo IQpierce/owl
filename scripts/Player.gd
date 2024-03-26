@@ -378,10 +378,12 @@ func process_keyboard_mouse(delta:float) -> bool:
 
 		keyboard_acting = keyboard_acting || drive_factor > 0 || any_turn
 
-		if any_turn || drive_factor <= 0:
-			intended_rotation = global_rotation
-		elif drive_factor > 0 && abs(intended_rotation - global_rotation) > abs(locomotor.body.angular_velocity * delta * 2):
-			locomotor.turn_towards(global_position + Vector2.UP.rotated(intended_rotation), 1, delta)
+		# TODO (sam) Does it make sense to slowly correct player heading after glancing of an asteroid?
+		# ... how do we make this not feel terrible in interior spaces?
+		#if any_turn || drive_factor <= 0:
+		#	intended_rotation = global_rotation
+		#elif drive_factor > 0 && abs(intended_rotation - global_rotation) > abs(locomotor.body.angular_velocity * delta * 2):
+		#	locomotor.turn_towards(global_position + Vector2.UP.rotated(intended_rotation), 1, delta)
 
 		if locomotor != null:
 			locomotor.locomote(drive_factor, turn_factor, delta)
