@@ -39,6 +39,7 @@ func shoot(moving:bool, turning:bool):
 
 	var shot_instance:Bullet = shot_proto.instantiate()
 	shot_instance.global_position = global_position
+	shot_instance.global_rotation = global_rotation
 	var initial_velocity:Vector2 = Vector2(0, -1).rotated(global_transform.get_rotation())
 	initial_velocity *= shot_force
 	initial_velocity += inherit_velocity.get_linear_velocity()
