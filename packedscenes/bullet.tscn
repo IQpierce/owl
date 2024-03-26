@@ -23,8 +23,13 @@ impact_force = 100.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_kybcg")
 
-[node name="VectorPolygonRendering" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(0, 0, 0, 5)
+[node name="OuterVectorRendering" type="Polygon2D" parent="."]
+scale = Vector2(2, 2)
+polygon = PackedVector2Array(0, -1, -0.707, -0.707, -1, 0, -0.707, 0.707, 0, 1, 0.707, 0.707, 1, 0, 0.707, -0.707)
+script = ExtResource("3_vtljo")
+
+[node name="InnerVectorRendering" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, -1, -0.707, -0.707, -1, 0, -0.707, 0.707, 0, 1, 0.707, 0.707, 1, 0, 0.707, -0.707)
 script = ExtResource("3_vtljo")
 
 [node name="SelfDestructor" type="Timer" parent="."]
