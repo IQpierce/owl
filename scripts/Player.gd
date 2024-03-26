@@ -59,6 +59,7 @@ var known_turn:float = 0
 var known_turn_gamepad:float = 0
 var prev_frame_left_stick:float = 0
 var rotating_towards:Vector2 = Vector2.ZERO
+var intended_rotation:float = 0
 
 #TODO (sam) where should these actually live? On Thing?
 var charge:float = 100
@@ -376,6 +377,11 @@ func process_keyboard_mouse(delta:float) -> bool:
 				any_turn = true
 
 		keyboard_acting = keyboard_acting || drive_factor > 0 || any_turn
+
+		if any_turn || drive_factor <= 0:
+			intended_rotation = global_rotation
+		elif drive_factor > 0 && abs(intended_rotation - global_rotation) > abs(locomotor.body.angular_velocity * delta * 2):
+			locomotor.turn_towards(global_position + Vector2.UP.rotated(intended_rotation), 1, delta)
 
 		if locomotor != null:
 			locomotor.locomote(drive_factor, turn_factor, delta)
