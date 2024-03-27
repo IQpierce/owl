@@ -1,15 +1,17 @@
-[gd_scene load_steps=12 format=3 uid="uid://cv5asni7oqeby"]
+[gd_scene load_steps=14 format=3 uid="uid://cv5asni7oqeby"]
 
 [ext_resource type="Script" path="res://scripts/HUD.gd" id="1_ohgch"]
+[ext_resource type="FontFile" uid="uid://oisfmnc0asf" path="res://fonts/Hyperspace.otf" id="2_drmya"]
 [ext_resource type="FontFile" uid="uid://bfc5s6j3cdokw" path="res://fonts/Vectorb.ttf" id="2_ebi6m"]
 [ext_resource type="Texture2D" uid="uid://bbba5x7uh1wid" path="res://textures/iconHealth.svg" id="3_jsnxx"]
 [ext_resource type="Texture2D" uid="uid://cheg3s1kcqpkr" path="res://textures/iconMeter.svg" id="4_tqtwv"]
 [ext_resource type="Texture2D" uid="uid://l35pvs5jupjn" path="res://textures/iconPower.svg" id="5_0sc5i"]
 [ext_resource type="Texture2D" uid="uid://dosuf1vsfjiee" path="res://textures/iconLine.svg" id="5_xbnum"]
 [ext_resource type="Texture2D" uid="uid://bp3lqpeye3rji" path="res://textures/iconCrystal.svg" id="6_m6xxm"]
+[ext_resource type="FontFile" uid="uid://d2aue1f45tmi3" path="res://fonts/Hyperspace Bold.otf" id="8_qgwfd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pl6hg"]
-font = ExtResource("2_ebi6m")
+font = ExtResource("2_drmya")
 font_size = 48
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
@@ -21,14 +23,14 @@ default_font = ExtResource("2_ebi6m")
 default_font_size = 40
 
 [sub_resource type="FontVariation" id="FontVariation_kvi18"]
-base_font = ExtResource("2_ebi6m")
+base_font = ExtResource("8_qgwfd")
 spacing_glyph = 21
 spacing_space = 5
+spacing_top = -5
 
 [sub_resource type="LabelSettings" id="LabelSettings_or5ah"]
-font = ExtResource("2_ebi6m")
-font_size = 26
-outline_size = 1
+font = ExtResource("8_qgwfd")
+font_size = 27
 
 [node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("health_line", "charge_line", "score_label")]
 script = ExtResource("1_ohgch")
@@ -173,5 +175,6 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 
 [node name="IconCrystal" type="Sprite2D" parent="Control/MarginContainer/VBoxContainer2/HBoxContainer/Control"]
+position = Vector2(0, 4)
 texture = ExtResource("6_m6xxm")
 centered = false
