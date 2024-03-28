@@ -24,5 +24,5 @@ func _process(_delta:float):
 
 
 	# TODO Attempting to repaint Inspector to see property changes but no dice
-	if OS.has_feature("editor"):
-		notify_property_list_changed()
+	#if OS.has_feature("editor"):
+	#	notify_property_list_changed()

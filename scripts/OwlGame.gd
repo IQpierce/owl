@@ -1,3 +1,5 @@
+@tool
+
 extends Node2D
 class_name OwlGame
 
@@ -57,6 +59,9 @@ func _init():
 	muted = false
 
 func _process(delta:float):
+	if Engine.is_editor_hint():
+		return
+
 	# TODO (sam) This does have a moderate performance benefit, but does it cause problems for a frame after a teleport or something?
 	if scene != null && scene.world_camera != null:
 		camera_global_position = scene.world_camera.global_position

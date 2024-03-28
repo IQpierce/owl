@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://jymuym62nmct"]
+[gd_scene load_steps=20 format=3 uid="uid://jymuym62nmct"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_5vrjf"]
 [ext_resource type="Script" path="res://scripts/Player.gd" id="2_6aefa"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://scripts/PlayerPickupVacuum.gd" id="5_iboy3"]
 [ext_resource type="Script" path="res://scripts/Hopdart.gd" id="5_jqx77"]
 [ext_resource type="AudioStream" uid="uid://gwmuuh2c41u4" path="res://audio/lazerLofi.wav" id="6_0an66"]
+[ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="8_qvfpm"]
 [ext_resource type="Script" path="res://scripts/WarpBeam.gd" id="10_xktmg"]
 [ext_resource type="Script" path="res://scripts/AttentiveAudio2D.gd" id="13_suvhi"]
 [ext_resource type="AudioStream" uid="uid://4tue0i75rkn0" path="res://audio/zoom.mp3" id="15_wyh7b"]
@@ -84,19 +85,16 @@ side_boost = 1000.0
 script = ExtResource("5_jqx77")
 motion = 1
 
-[node name="TrunkCollision" parent="." index="4"]
-polygon = PackedVector2Array(6, -3, 0, -12, -6, -3, -8.5, 7.5, -3.5, 5, 3.5, 5, 8.5, 7.5)
-
 [node name="Anatomy" parent="." index="5"]
 scale_mode = 1
 
 [node name="TrunkPolygon" parent="Anatomy/VitalPolygons" index="0"]
-color = Color(1, 1, 1, 0.588235)
 polygon = PackedVector2Array(6, -3, 0, -12, -6, -3, -8.5, 7.5, -3.5, 5, 3.5, 5, 8.5, 7.5)
 
 [node name="ThrustTriangle" type="Polygon2D" parent="Anatomy" index="2"]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
+material = ExtResource("8_qvfpm")
 position = Vector2(0, 20)
 rotation = 3.14159
 scale = Vector2(9.5, 9.5)
@@ -108,6 +106,7 @@ rank = 3
 [node name="TurnLeftTriangle" type="Polygon2D" parent="Anatomy" index="3"]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
+material = ExtResource("8_qvfpm")
 position = Vector2(4, 7)
 rotation = 3.14159
 scale = Vector2(9.5, 9.5)
@@ -119,6 +118,7 @@ rank = 3
 [node name="TurnRightTriangle" type="Polygon2D" parent="Anatomy" index="4"]
 visible = false
 modulate = Color(0.670588, 0.670588, 0.670588, 1)
+material = ExtResource("8_qvfpm")
 position = Vector2(-4, 7)
 rotation = 3.14159
 scale = Vector2(9.5, 9.5)

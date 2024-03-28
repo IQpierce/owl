@@ -1,3 +1,5 @@
+@tool
+
 extends PatchworkPolygon2D
 class_name VectorPolygonRendering
 
@@ -73,6 +75,9 @@ func _quick_sync_occlusion():
 		occlusion_fill.global_scale    = global_scale
 
 func _sync_occlusion(resync_polygon:bool = false):
+	if Engine.is_editor_hint():
+		return
+
 	var should_occlude = stroke_fill != StrokeFill.Stroke && rank != DrawRank.Pierce && OwlGame.instance.can_occlude
 
 	if should_occlude:
@@ -108,6 +113,9 @@ func _release_occlusion():
 		occlusion_fill = null
 
 func _process(delta:float):
+	if Engine.is_editor_hint():
+		return
+
 	var redraw = false
 	if draw_state == DrawState.Intro:
 		redraw = true
@@ -143,6 +151,9 @@ func _process(delta:float):
 
 func _draw():
 	super()
+	if Engine.is_editor_hint():
+		return
+
 	if _missed_draw:
 		return
 

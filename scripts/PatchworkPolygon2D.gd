@@ -1,3 +1,5 @@
+@tool
+
 extends Polygon2D
 class_name PatchworkPolygon2D
 
@@ -31,6 +33,13 @@ func _ready():
 		build_patchwork()
 
 func _draw():
+	if Engine.is_editor_hint():
+		var vertex_count = polygon.size()
+		var line_width = OwlGame.instance.draw_line_thickness / ((global_scale.x + global_scale.y) / 2.0)
+		for i in vertex_count:
+			draw_line(polygon[i], polygon[(i + 1) % vertex_count], Color.WHITE, line_width)
+		return
+
 	if !OwlGame.in_first_lod(self, OwlGame.LOD.Draw):
 		_missed_draw = true
 		return

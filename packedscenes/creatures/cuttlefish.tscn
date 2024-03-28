@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://1eu167rid5gi"]
+[gd_scene load_steps=10 format=3 uid="uid://1eu167rid5gi"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_u0a1w"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/CreatureMind.gd" id="2_dfcr7"]
 [ext_resource type="Script" path="res://scripts/creatures/anatomy/ThrustEngine.gd" id="3_bsp5l"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/VisionConeValidator.gd" id="3_jgjpx"]
+[ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="5_gwrcm"]
 [ext_resource type="PackedScene" uid="uid://dclbqd5q45c40" path="res://packedscenes/creatures/anatomy/spear.tscn" id="6_hgf5q"]
 [ext_resource type="Script" path="res://scripts/WarpZone.gd" id="6_igu2b"]
 [ext_resource type="Script" path="res://scripts/util/RotateTowards.gd" id="9_e5krn"]
@@ -37,13 +38,14 @@ power = 9001.0
 
 [node name="TrunkCollision" parent="." index="2"]
 scale = Vector2(0.8, 0.8)
-polygon = PackedVector2Array(10.5, 0, 10.271, 2.184, 9.592, 4.27, 8.495, 6.172, 7.026, 7.803, 5.25, 9.093, 3.245, 9.986, 1.962, 10.85, 0.005, 11.982, -1.962, 10.85, -3.244, 9.986, -5.25, 9.093, -7.026, 7.803, -8.494, 6.172, -9.592, 4.27, -10.271, 2.184, -10.5, 0, -10.271, -2.182, -9.592, -4.27, -8.494, -6.172, -7.026, -7.803, -5.25, -9.093, 5.25, -9.093, 7.026, -7.803, 8.495, -6.172, 9.592, -4.27, 10.271, -2.182, 10.5, 0)
 
 [node name="Anatomy" parent="." index="3" node_paths=PackedStringArray("line_geometry")]
 line_geometry = [NodePath("VitalPolygons/TrunkPolygon"), NodePath("Beak/BeakRight/Polygon"), NodePath("Beak/BeakLeft/Polygon"), NodePath("Spear/Shaft/ShaftPolygon"), NodePath("Spear/Head/HeadPolygonLeft"), NodePath("Spear/Head/HeadPolygonLeft/HeadPolygonRight")]
 
 [node name="TrunkPolygon" parent="Anatomy/VitalPolygons" index="0"]
+material = ExtResource("5_gwrcm")
 scale = Vector2(0.8, 0.8)
+color = Color(1, 1, 1, 0)
 polygon = PackedVector2Array(10.5, 0, 10.271, 2.184, 9.592, 4.27, 8.495, 6.172, 7.026, 7.803, 5.25, 9.093, 3.245, 9.986, 1.962, 10.85, 0.005, 11.982, -1.962, 10.85, -3.244, 9.986, -5.25, 9.093, -7.026, 7.803, -8.494, 6.172, -9.592, 4.27, -10.271, 2.184, -10.5, 0, -10.271, -2.182, -9.592, -4.27, -8.494, -6.172, -7.026, -7.803, -5.25, -9.093, 5.25, -9.093, 7.026, -7.803, 8.495, -6.172, 9.592, -4.27, 10.271, -2.182, 10.5, 0)
 skip_line_indeces = Array[int]([11])
 ccw_convexity = false
@@ -91,6 +93,9 @@ extension_shaft_collision_active = 1
 [node name="Shaft" parent="Anatomy/Spear" index="0" node_paths=PackedStringArray("ignore_things")]
 ignore_things = [NodePath("../../..")]
 
+[node name="ShaftPolygon" parent="Anatomy/Spear/Shaft" index="1"]
+color = Color(1, 1, 1, 0)
+
 [node name="Head" parent="Anatomy/Spear" index="1" node_paths=PackedStringArray("ignore_things")]
 disable_mode = 2
 collision_layer = 3
@@ -103,6 +108,12 @@ ignore_things = [NodePath("../../..")]
 
 [node name="HeadCollision" parent="Anatomy/Spear/Head" index="0"]
 scale = Vector2(2, 2)
+
+[node name="HeadPolygonLeft" parent="Anatomy/Spear/Head" index="1"]
+color = Color(1, 1, 1, 0)
+
+[node name="HeadPolygonRight" parent="Anatomy/Spear/Head/HeadPolygonLeft" index="0"]
+color = Color(1, 1, 1, 0)
 
 [node name="DorsalFin" type="Node2D" parent="Anatomy" index="4" node_paths=PackedStringArray("controlled_body")]
 rotation = -1.5708

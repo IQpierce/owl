@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dvs73k0tkjij4"]
+[gd_scene load_steps=10 format=3 uid="uid://dvs73k0tkjij4"]
 
 [ext_resource type="Script" path="res://scripts/creatures/Creature.gd" id="1_7fvrv"]
 [ext_resource type="PhysicsMaterial" uid="uid://bk8d6toxvi2yb" path="res://physics_materials/creature.tres" id="1_8m65c"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/creatures/anatomy/Stomach.gd" id="4_fwo6w"]
 [ext_resource type="Script" path="res://scripts/ConsumableContainer.gd" id="5_7rk73"]
 [ext_resource type="AudioStream" uid="uid://bb1c4e4ljwmtd" path="res://audio/asteroid_damaged.wav" id="6_fmx7a"]
+[ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="7_hthjg"]
 
 [node name="Creature" type="RigidBody2D" node_paths=PackedStringArray("scaling_group")]
 disable_mode = 2
@@ -25,7 +26,6 @@ scaling_group = NodePath("Anatomy")
 
 [node name="TrunkCollision" type="CollisionPolygon2D" parent="." node_paths=PackedStringArray("counterpart")]
 editor_description = "collision/physics aspect"
-polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
 script = ExtResource("3_yp5tx")
 counterpart = NodePath("../Anatomy/VitalPolygons/TrunkPolygon")
 runtime_sync_onready = true
@@ -49,6 +49,8 @@ decay_rate_per_sec = 0.05
 
 [node name="TrunkPolygon" type="Polygon2D" parent="Anatomy/VitalPolygons"]
 editor_description = "visual aspect"
+material = ExtResource("7_hthjg")
+color = Color(1, 1, 1, 0)
 polygon = PackedVector2Array(-6, 6, 6, 6, 0, -6)
 script = ExtResource("2_lckca")
 

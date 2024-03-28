@@ -1,3 +1,5 @@
+@tool
+
 extends PatchworkPolygon2D
 class_name InjectedPolygon2D
 
@@ -12,4 +14,6 @@ func _build_on_ready() -> bool:
 	return false
 
 func _draw():
+	if Engine.is_editor_hint():
+		super()
 	pass

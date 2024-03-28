@@ -101,7 +101,6 @@ power = 0.0
 locomotor = NodePath("../Locomotor")
 
 [node name="TrunkCollision" parent="." index="4"]
-polygon = PackedVector2Array(0, 0, 12, 12, 0, 27, -12, 12)
 match_patchwork = false
 
 [node name="Stomach" parent="Anatomy" index="0" node_paths=PackedStringArray("polygons_to_scale", "colliders_to_scale")]
@@ -115,6 +114,7 @@ consumable_type = 1
 
 [node name="TrunkPolygon" parent="Anatomy/VitalPolygons" index="0" node_paths=PackedStringArray("injected_polygons")]
 material = ExtResource("12_1psui")
+color = Color(1, 1, 1, 0)
 polygon = PackedVector2Array(0, 0, 12, 9, 0, 24, -12, 9)
 injected_polygons = [null]
 
@@ -122,6 +122,7 @@ injected_polygons = [null]
 editor_description = "visual aspect"
 material = ExtResource("12_1psui")
 position = Vector2(0, -5.9)
+color = Color(1, 1, 1, 0)
 polygon = PackedVector2Array(0, 0, 3.5, 3.5, 0, 6, -3.5, 3.5)
 script = ExtResource("12_d5o6l")
 injected_polygons = [null]
@@ -198,6 +199,7 @@ extension_shaft_collision_active = 1
 ignore_things = [NodePath("../../..")]
 
 [node name="ShaftPolygon" parent="Anatomy/Spear/Shaft" index="1"]
+color = Color(1, 1, 1, 0)
 polygon = PackedVector2Array(0, -0.33, 0, -2.85, 0, -1.57139)
 
 [node name="Head" parent="Anatomy/Spear" index="1" node_paths=PackedStringArray("ignore_things")]
@@ -217,11 +219,13 @@ scale = Vector2(2, 2)
 [node name="HeadPolygonLeft" parent="Anatomy/Spear/Head" index="1"]
 position = Vector2(0.121657, -9.14933)
 scale = Vector2(2, 2)
+color = Color(1, 1, 1, 0)
 polygon = PackedVector2Array(-1.81864, 4.6698, -0.0535947, 1.71842)
 
 [node name="HeadPolygonRight" parent="Anatomy/Spear/Head/HeadPolygonLeft" index="0"]
 position = Vector2(1.7787, 6.67659)
 scale = Vector2(1, -1)
+color = Color(1, 1, 1, 0)
 polygon = PackedVector2Array(-1.83953, 4.9437, -0.0744865, 1.99955)
 
 [node name="Buzz" type="AudioStreamPlayer2D" parent="." index="7"]

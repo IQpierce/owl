@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://df8xel7mmjlk2"]
+[gd_scene load_steps=15 format=3 uid="uid://df8xel7mmjlk2"]
 
 [ext_resource type="PackedScene" uid="uid://dvs73k0tkjij4" path="res://packedscenes/creatures/creature.tscn" id="1_aoyla"]
 [ext_resource type="Script" path="res://scripts/creatures/brains/CreatureMind.gd" id="2_bh2im"]
@@ -13,7 +13,6 @@
 [ext_resource type="Script" path="res://scripts/creatures/brains/WanderBrain.gd" id="8_31eyc"]
 [ext_resource type="Script" path="res://scripts/editor-tools/Tool_PolygonCorrespondence.gd" id="11_1eemr"]
 [ext_resource type="Script" path="res://scripts/InjectedPolygon2D.gd" id="12_1pme2"]
-[ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="12_7p8h1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ibxja"]
 radius = 800.0
@@ -109,12 +108,10 @@ power = 9001.0
 
 [node name="TrunkCollision" parent="." index="3"]
 position = Vector2(0, 8.28248)
-polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.538, 25, -58.538, 35.638, -44.803, 46.564, -24.247)
 match_patchwork = false
 
 [node name="HeadCollision" type="CollisionPolygon2D" parent="." index="4" node_paths=PackedStringArray("counterpart")]
 position = Vector2(0, 0.53)
-polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
 script = ExtResource("11_1eemr")
 counterpart = NodePath("../Anatomy/VitalPolygons/HeadRenderer")
 runtime_sync_onready = true
@@ -133,16 +130,15 @@ max_x_scale = 1.4
 consumable_type = 1
 
 [node name="TrunkPolygon" parent="Anatomy/VitalPolygons" index="0" node_paths=PackedStringArray("injected_polygons")]
-material = ExtResource("12_7p8h1")
 position = Vector2(0, 8.28248)
-polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.538, 25, -58.538, 35.638, -44.803, 46.564, -24.247)
+polygon = PackedVector2Array(50.4, 0, 46.564, 24.247, 35.638, 44.803, 19.287, 58.538, 0, 63.36, -19.287, 58.538, -35.638, 44.803, -46.564, 24.247, -50.4, 0, -46.564, -24.247, -35.638, -44.803, -25, -58.5425, 25, -58.5425, 35.638, -44.803, 46.564, -24.247)
 ccw_convexity = false
 injected_polygons = [NodePath("../HeadRenderer")]
 
 [node name="HeadRenderer" type="Polygon2D" parent="Anatomy/VitalPolygons" index="1"]
 editor_description = "visual aspect"
 position = Vector2(0, 0.53)
-color = Color(1, 1, 1, 0.588235)
+color = Color(1, 1, 1, 0)
 polygon = PackedVector2Array(-25, -50.79, -19.287, -66.52, -12, -72, -12, -68, 12, -68, 12, -72, 19.287, -66.52, 25, -50.79)
 script = ExtResource("12_1pme2")
 injectee_open = 10
