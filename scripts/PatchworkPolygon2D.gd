@@ -3,6 +3,9 @@
 extends Polygon2D
 class_name PatchworkPolygon2D
 
+#TODO (sam) Maybe remove InjectedPolygon and just make Patchwork injectable
+# and instead of an array of children, just keep a parent... If I don't have a parent, I do the draw
+
 #TODO (sam) We can remove patchwork field and always just edit raw polygon data, but children must define all verts 
 #  this is to allow for Polygon to draw its fill so we can properly stencil
 @export var ccw_convexity:bool = true
@@ -60,6 +63,9 @@ func _draw():
 					draw_line(mid, mid + normal, normal_color, 1 / draw_scale, true)
 
 func build_patchwork():
+	if Engine.is_editor_hint():
+		return
+
 	# We need at least one vertex to attach to, and we don't want to build before we've hit _ready.
 	if raw_polygon.size() < 1:
 		return

@@ -35,6 +35,10 @@ window/dpi/allow_hidpi=false
 
 project/assembly_name="Owl"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/PolyVertSelect/plugin.cfg")
+
 [input]
 
 left_primary={
