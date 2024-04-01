@@ -113,6 +113,7 @@ func _release_occlusion():
 		occlusion_fill = null
 
 func _process(delta:float):
+	super(delta)
 	if Engine.is_editor_hint():
 		return
 

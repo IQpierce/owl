@@ -1,34 +1,20 @@
-[gd_scene load_steps=10 format=3 uid="uid://davvclb66h3nf"]
+[gd_scene load_steps=7 format=3 uid="uid://davvclb66h3nf"]
 
 [ext_resource type="Texture2D" uid="uid://cjsjjryawwk6l" path="res://textures/temple01.png" id="1_61ip3"]
-[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="1_ff24o"]
 [ext_resource type="PackedScene" uid="uid://cltxvm3y6lsc5" path="res://packedscenes/architecture/long_wall.tscn" id="1_fsex2"]
-[ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="1_x67hr"]
 [ext_resource type="PackedScene" uid="uid://b8ek8hg8i5qvi" path="res://packedscenes/architecture/medium_wall.tscn" id="2_1jv3x"]
-[ext_resource type="Texture2D" uid="uid://c74aqcma8dr2u" path="res://svg/temple.svg" id="2_uwyqv"]
 [ext_resource type="PackedScene" uid="uid://d4cl53hj3tvl6" path="res://packedscenes/architecture/short_wall.tscn" id="3_c3j5j"]
 [ext_resource type="PackedScene" uid="uid://eeq66uet34q4" path="res://packedscenes/architecture/wall_polygon.tscn" id="5_3tuwx"]
 [ext_resource type="PackedScene" uid="uid://dxk8kxig4jkr" path="res://packedscenes/creatures/mosquito.tscn" id="6_d3n6k"]
 
 [node name="Temple01" type="Node2D"]
 
-[node name="Temple" type="Polygon2D" parent="."]
-material = ExtResource("1_x67hr")
-color = Color(1, 1, 1, 0)
-polygon = PackedVector2Array(1472, 2, 1479.5, 2, 1477.5, 39, 1479.5, 43.5, 1480.5, 43.5, 1480.5, 124, 1485.5, 124, 1485.5, 128, 1481, 132.5, 1481, 173, 1483, 175, 1483, 189.5, 1485, 189.5, 1485, 238.5, 1488.5, 242, 1488.5, 251, 1494.5, 251)
-script = ExtResource("1_ff24o")
-svg = ExtResource("2_uwyqv")
-editor_line_width = 8
-
 [node name="Temple01" type="Sprite2D" parent="."]
-process_mode = 4
 visible = false
 position = Vector2(85, -1039)
 texture = ExtResource("1_61ip3")
 
 [node name="Walls" parent="." instance=ExtResource("1_fsex2")]
-process_mode = 4
-visible = false
 position = Vector2(-510, -149)
 rank = 4
 
@@ -865,41 +851,25 @@ rotation = -1.05044
 rank = 4
 
 [node name="Mosquito" parent="." instance=ExtResource("6_d3n6k")]
-process_mode = 4
-visible = false
 position = Vector2(-373, -438)
 
 [node name="Mosquito2" parent="." instance=ExtResource("6_d3n6k")]
-process_mode = 4
-visible = false
 position = Vector2(-349, -342)
 
 [node name="Mosquito3" parent="." instance=ExtResource("6_d3n6k")]
-process_mode = 4
-visible = false
 position = Vector2(-391, -223)
 
 [node name="Mosquito4" parent="." instance=ExtResource("6_d3n6k")]
-process_mode = 4
-visible = false
 position = Vector2(282, -515)
 
 [node name="Mosquito5" parent="." instance=ExtResource("6_d3n6k")]
-process_mode = 4
-visible = false
 position = Vector2(-225, -1297)
 
 [node name="Mosquito6" parent="." instance=ExtResource("6_d3n6k")]
-process_mode = 4
-visible = false
 position = Vector2(-359, -1192)
 
 [node name="Mosquito7" parent="." instance=ExtResource("6_d3n6k")]
-process_mode = 4
-visible = false
 position = Vector2(371, -1276)
 
 [node name="Mosquito8" parent="." instance=ExtResource("6_d3n6k")]
-process_mode = 4
-visible = false
 position = Vector2(265, -1274)

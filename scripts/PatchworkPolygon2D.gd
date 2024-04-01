@@ -12,6 +12,13 @@ class_name PatchworkPolygon2D
 # TODO (sam) This is pretty gross, but Godot doesn't support exporting arbitrary data class, so we're stuck with this or a dictionary.
 @export var injected_polygons:Array[InjectedPolygon2D]
 
+@export var editor_line_width:int = 0
+@export var refresh_svg:bool = true
+@export var write_svg:bool = false
+@export var svg:CompressedTexture2D = null
+@export var svg_scale:float = 1.0
+@export var svg_children:Array[PatchworkPolygon2D]
+
 var _missed_draw:bool = false
 var raw_polygon:PackedVector2Array
 var patch_pairs:PackedByteArray
@@ -35,12 +42,24 @@ func _ready():
 	if _build_on_ready():
 		build_patchwork()
 
+func _process(delta:float):
+	if Engine.is_editor_hint():
+		if refresh_svg:
+			load_svg()
+			refresh_svg = false
+		if write_svg:
+			# TODO overwrite svg paths... need to replace existing paths and shapes
+			write_svg = false
+
 func _draw():
 	if Engine.is_editor_hint():
 		var vertex_count = polygon.size()
 		var line_width = OwlGame.instance.draw_line_thickness / ((global_scale.x + global_scale.y) / 2.0)
+		if editor_line_width > 0:
+			line_width = editor_line_width
 		for i in vertex_count:
 			draw_line(polygon[i], polygon[(i + 1) % vertex_count], Color.WHITE, line_width)
+
 		return
 
 	if !OwlGame.in_first_lod(self, OwlGame.LOD.Draw):
@@ -133,4 +152,180 @@ func reinject(inject:InjectedPolygon2D):
 			pass
 	# TODO (sam) only rebuild the verts between the injected open and close
 
+# TODO move this to PolygonSVG plugin
+func load_svg():
+	if Engine.is_editor_hint() && svg != null:
+		print("load svg ", svg.resource_path)
+		var svg_file = FileAccess.open(svg.resource_path, FileAccess.READ)
+		if svg_file.get_error() != OK:
+			print("Failed to load ", svg.resource_path, " with code ", svg_file.get_error())
+		var svg_text = svg_file.get_as_text()
+		svg_file.close()
+		#print(svg_text)
+		#var find_index = 0
+		#var file_len = svg_text.size()
+		#while find_index >= 0 && find_index < file_len:
+		#	print(svg_text
+		var paths = svg_text.split("<path ", false)
+		for i in range(paths.size() - 1, -1, -1):
+			#if paths[i].size() < 2 || paths[i][0] != 'd' || paths[i][1] != '=':
+			var stripped_path = paths[i].strip_edges()
+			if stripped_path.begins_with("d="):
+				paths[i] = stripped_path.get_slice("\"", 1).strip_edges()
+			else:
+				paths.remove_at(i)
+		#print(paths)
 
+		for i in svg_children.size():
+			svg_children[i].queue_free()
+		svg_children.clear()
+
+		polygon = PackedVector2Array()
+		var write_polygon = self
+		var coordinates:Array[PathCoordinate] = []
+		var full_coord_idx = 0
+		var cache_to_type = PathCoordinate.ToType.Move
+		var need_space = false
+		for path in paths:
+			var find_start = 0
+			var path_len = path.length()
+			while find_start < path_len:
+				#print(find_start)#, path.substr(find_start))
+				if false:#need_space:
+					pass
+				else:
+					#TODO (sam) Currently only supporting absolute coordinates, relative is denoted with lower case
+					var m_idx = path.find("M", find_start)
+					var l_idx = path.find("L", find_start)
+					var c_idx = path.find("C", find_start)
+					var h_idx = path.find("H", find_start)
+					var v_idx = path.find("V", find_start)
+					var __idx = path.find(" ", find_start)
+					#print("coord from ", find_start, ": ", m_idx, " ", l_idx, " ", c_idx, " ", h_idx, " ", v_idx, " ", __idx)
+
+					if m_idx < 0:
+						m_idx = path_len
+					if l_idx < 0:
+						l_idx = path_len
+					if c_idx < 0:
+						c_idx = path_len
+					if h_idx < 0:
+						h_idx = path_len
+					if v_idx < 0:
+						v_idx = path_len
+					if __idx < 0:
+						__idx = path_len
+					
+					var coord_start = path_len
+					if m_idx < path_len && m_idx < l_idx && m_idx < c_idx && m_idx < h_idx && m_idx < v_idx && m_idx < __idx:
+						cache_to_type = PathCoordinate.ToType.Move
+						coord_start = m_idx + 1
+					elif l_idx < path_len && l_idx < c_idx && l_idx < h_idx && l_idx < v_idx && l_idx < __idx:
+						cache_to_type = PathCoordinate.ToType.Line
+						coord_start = l_idx + 1
+					elif c_idx < path_len && c_idx < h_idx && c_idx < v_idx && c_idx < __idx:
+						cache_to_type = PathCoordinate.ToType.Curve
+						coord_start = c_idx + 1
+					elif h_idx < path_len && h_idx < v_idx && h_idx < __idx:
+						cache_to_type = PathCoordinate.ToType.Horizontal
+						coord_start = h_idx + 1
+					elif v_idx < path_len && v_idx < __idx:
+						cache_to_type = PathCoordinate.ToType.Vertical
+						coord_start = v_idx + 1
+					elif __idx < path_len:
+						coord_start = __idx + 1
+
+					if coord_start < path_len:
+						#print("found coord ", coord_start, " ", cache_to_type)#, " | ", path.substr(coord_start))
+						#if coordinates.size() > full_coord_idx:
+						#	coordinates[coordinates.size() - 1].y = path.substr(find_start, coord_start).to_float()
+						#	full_coord_idx = coordinates.size()
+
+						if cache_to_type == PathCoordinate.ToType.Horizontal:
+							var coord = PathCoordinate.new()
+							coord.to_type = cache_to_type
+							coord.x = path.substr(coord_start).to_float()
+							coord.y = coordinates[coordinates.size() - 1].y
+							coordinates.append(coord)
+							full_coord_idx = coordinates.size()
+							find_start = coord_start + 1
+						elif cache_to_type == PathCoordinate.ToType.Vertical:
+							var coord = PathCoordinate.new()
+							coord.to_type = cache_to_type
+							coord.y = path.substr(coord_start).to_float()
+							coord.x = coordinates[coordinates.size() - 1].x
+							coordinates.append(coord)
+							full_coord_idx = coordinates.size()
+							find_start = coord_start + 1
+						else:
+							var coord = PathCoordinate.new()
+							coord.to_type = cache_to_type
+							coord.x = path.substr(coord_start).to_float()
+							__idx = path.find(" ", coord_start)
+							#if coordinates.size() > full_coord_idx:
+							#	full_coord_idx = coordinates.size()
+							if __idx >= 0:
+								find_start = __idx + 1
+								coord.y = path.substr(find_start).to_float()
+							else:
+								find_start = path_len
+							coordinates.append(coord)
+						#print("find from", find_start)
+						#need_space = true
+						#for coord in coordinates:
+						#	print(coord.to_type, ": ", coord.x, " ", coord.y)
+					else:
+						#print("end path")
+						full_coord_idx = coordinates.size()
+						find_start = path_len
+						break
+
+			if write_polygon.polygon.size() > 0:
+				write_polygon = write_polygon.duplicate()
+				write_polygon.svg = null
+				write_polygon.injected_polygons.clear()
+				svg_children.append(write_polygon)
+				write_polygon.name = str(name, "_Child", svg_children.size())
+				add_child(write_polygon)
+				write_polygon.owner = owner
+				print(write_polygon.get_parent())
+
+			var new_polygon = PackedVector2Array()
+			var coords_size = coordinates.size()
+			print("coord count ", coords_size)
+			for c_i in coords_size:
+				new_polygon.append(Vector2(coordinates[c_i].x, coordinates[c_i].y))
+			write_polygon.polygon = new_polygon
+			#write_polygon = null
+			coordinates.clear()
+			full_coord_idx = 0
+
+		#print("coordinates")
+		#for coord in coordinates:
+		#	print(coord.to_type, ": ", coord.x, " ", coord.y)
+
+		#var new_polygon = PackedVector2Array()
+		#var coords_size = coordinates.size()
+		#for i in coords_size:
+		#	new_polygon.append(Vector2(coordinates[i].x, coordinates[i].y))
+		##polygon = new_polygon
+
+		#for i in svg_children.size():
+		#	svg_children[i].queue_free()
+		#svg_children.clear()
+		#var child_poly = self.duplicate()
+		#child_poly.svg = null
+		#child_poly.injected_polygons.clear()
+		##child_poly.polygon = PackedVector2Array()
+		#child_poly.polygon = new_polygon
+		#svg_children.append(child_poly)
+		#child_poly.name = str(name, "_Child", svg_children.size())
+		#add_child(child_poly)
+		#child_poly.owner = owner
+		#print(child_poly.get_parent())
+
+class PathCoordinate:
+	enum ToType { Move, Line, Curve, Horizontal, Vertical }
+	var to_type:ToType
+	var x:float
+	var y:float
