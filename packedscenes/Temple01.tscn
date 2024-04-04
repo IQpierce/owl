@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://davvclb66h3nf"]
+[gd_scene load_steps=11 format=3 uid="uid://davvclb66h3nf"]
 
 [ext_resource type="Texture2D" uid="uid://cjsjjryawwk6l" path="res://textures/temple01.png" id="1_61ip3"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="1_ff24o"]
@@ -7,18 +7,218 @@
 [ext_resource type="PackedScene" uid="uid://b8ek8hg8i5qvi" path="res://packedscenes/architecture/medium_wall.tscn" id="2_1jv3x"]
 [ext_resource type="Texture2D" uid="uid://c74aqcma8dr2u" path="res://svg/temple.svg" id="2_uwyqv"]
 [ext_resource type="PackedScene" uid="uid://d4cl53hj3tvl6" path="res://packedscenes/architecture/short_wall.tscn" id="3_c3j5j"]
+[ext_resource type="Script" path="res://scripts/editor-tools/Tool_PolygonCorrespondence.gd" id="4_4ad6b"]
 [ext_resource type="PackedScene" uid="uid://eeq66uet34q4" path="res://packedscenes/architecture/wall_polygon.tscn" id="5_3tuwx"]
 [ext_resource type="PackedScene" uid="uid://dxk8kxig4jkr" path="res://packedscenes/creatures/mosquito.tscn" id="6_d3n6k"]
 
 [node name="Temple01" type="Node2D"]
 
-[node name="Temple" type="Polygon2D" parent="."]
+[node name="Temple" type="Polygon2D" parent="." node_paths=PackedStringArray("svg_children")]
 material = ExtResource("1_x67hr")
 color = Color(1, 1, 1, 0)
 polygon = PackedVector2Array(1472, 2, 1479.5, 2, 1477.5, 39, 1479.5, 43.5, 1480.5, 43.5, 1480.5, 124, 1485.5, 124, 1485.5, 128, 1481, 132.5, 1481, 173, 1483, 175, 1483, 189.5, 1485, 189.5, 1485, 238.5, 1488.5, 242, 1488.5, 251, 1494.5, 251)
 script = ExtResource("1_ff24o")
-svg = ExtResource("2_uwyqv")
 editor_line_width = 8
+svg = ExtResource("2_uwyqv")
+svg_children = [NodePath("Temple_Child1"), NodePath("Temple_Child2"), NodePath("Temple_Child3"), NodePath("Temple_Child4"), NodePath("Temple_Child5"), null, NodePath("Temple_Child7"), NodePath("Temple_Child8"), NodePath("Temple_Child9"), NodePath("Temple_Child10"), NodePath("Temple_Child11"), NodePath("Temple_Child12"), NodePath("Temple_Child13"), NodePath("Temple_Child14"), NodePath("Temple_Child15"), NodePath(""), null, NodePath(""), null, null, NodePath(""), NodePath(""), null, NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), null, null, NodePath(""), null, null, NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), NodePath(""), null, NodePath("Temple_Child42"), NodePath("Temple_Child43"), NodePath("Temple_Child44"), NodePath("Temple_Child45"), NodePath("Temple_Child46"), NodePath("Temple_Child47"), NodePath("Temple_Child48"), NodePath("Temple_Child49"), NodePath("Temple_Child50"), NodePath("Temple_Child51"), NodePath("Temple_Child52"), NodePath("Temple_Child53"), NodePath("Temple_Child54")]
+
+[node name="Temple_Child1" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(1477.5, 2, 1470, 2, 1472, 39, 1470, 43.5, 1469, 43.5, 1469, 124, 1464, 124, 1464, 128, 1468.5, 132.5, 1468.5, 173, 1466.5, 175, 1466.5, 189.5, 1464.5, 189.5, 1464.5, 238.5, 1461, 242, 1461, 251, 1455, 251)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child2" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(1435, 2, 1442.5, 2, 1440.5, 39, 1442.5, 43.5, 1443.5, 43.5, 1443.5, 124, 1448.5, 124, 1448.5, 128, 1444, 132.5, 1444, 173, 1446, 175, 1446, 189.5, 1448, 189.5, 1448, 238.5, 1451.5, 242, 1451.5, 251, 1457.5, 251)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child3" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(1440.5, 2, 1433, 2, 1435, 39, 1433, 43.5, 1432, 43.5, 1432, 124, 1427, 124, 1427, 128, 1431.5, 132.5, 1431.5, 173, 1429.5, 175, 1429.5, 189.5, 1427.5, 189.5, 1427.5, 238.5, 1424, 242, 1424, 251, 1418, 251)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child4" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(1418, 252, 1317, 453, 1395, 582, 1444, 459, 1461.5, 459)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child5" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(1495.5, 252, 1596.5, 453, 1518.5, 582, 1469.5, 459, 1452, 459)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child7" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(650.101, 2014.25, 669.262, 2006.31, 688.423, 2014.25, 696.36, 2033.41, 688.423, 2052.57, 669.262, 2060.51, 650.101, 2052.57, 642.165, 2033.41, 650.101, 2014.25)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child8" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(1185.18, 2014.25, 1204.34, 2006.31, 1223.51, 2014.25, 1231.44, 2033.41, 1223.51, 2052.57, 1204.34, 2060.51, 1185.18, 2052.57, 1177.25, 2033.41, 1185.18, 2014.25)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child9" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(650.101, 1826.45, 669.262, 1818.52, 688.423, 1826.45, 696.36, 1845.62, 688.423, 1864.78, 669.262, 1872.71, 650.101, 1864.78, 642.165, 1845.62, 650.101, 1826.45)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child10" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(918.101, 1398.1, 937.262, 1390.16, 956.423, 1398.1, 964.36, 1417.26, 956.423, 1436.42, 937.262, 1444.36, 918.101, 1436.42, 910.165, 1417.26, 918.101, 1398.1)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child11" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(562.101, 1398.1, 581.262, 1390.16, 600.423, 1398.1, 608.36, 1417.26, 600.423, 1436.42, 581.262, 1444.36, 562.101, 1436.42, 554.165, 1417.26, 562.101, 1398.1)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child12" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(573.28, 1469.4, 578.76, 1467.13, 579.525, 1468.98, 581.5, 1468.16, 583.475, 1468.98, 584.24, 1467.13, 589.72, 1469.4, 588.955, 1471.25, 590.929, 1472.07, 591.747, 1474.05, 593.595, 1473.28, 595.865, 1478.76, 594.017, 1479.53, 594.835, 1481.5, 594.017, 1483.47, 595.865, 1484.24, 593.595, 1489.72, 591.747, 1488.95, 590.929, 1490.93, 588.955, 1491.75, 589.72, 1493.6, 584.24, 1495.87, 583.475, 1494.02, 581.5, 1494.84, 579.525, 1494.02, 578.76, 1495.87, 573.28, 1493.6, 574.045, 1491.75, 572.071, 1490.93, 571.253, 1488.95, 569.405, 1489.72, 567.135, 1484.24, 568.983, 1483.47, 568.165, 1481.5, 568.983, 1479.53, 567.135, 1478.76, 569.405, 1473.28, 571.253, 1474.05, 572.071, 1472.07, 574.045, 1471.25, 573.28, 1469.4)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child13" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(561, 1397, 575, 1402, 581, 1417)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child14" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(918.101, 1105.1, 937.262, 1097.16, 956.423, 1105.1, 964.36, 1124.26, 956.423, 1143.42, 937.262, 1151.36, 918.101, 1143.42, 910.165, 1124.26, 918.101, 1105.1)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child15" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(1185.18, 1826.45, 1204.34, 1818.52, 1223.51, 1826.45, 1231.44, 1845.62, 1223.51, 1864.78, 1204.34, 1872.71, 1185.18, 1864.78, 1177.25, 1845.62, 1185.18, 1826.45)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child42" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(581, 1388.5, 588, 1402, 581.5, 1417)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child43" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(601.5, 1397, 597, 1411, 581.5, 1417)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child44" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(610, 1417.5, 597, 1424, 581.5, 1417)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child45" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(601.5, 1437.5, 588, 1433, 581.5, 1417)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child46" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(581.5, 1446, 575, 1433, 581.5, 1417)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child47" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(561, 1437.5, 566, 1424, 581.5, 1417.5)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child48" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(552.5, 1417.5, 566, 1411, 581.5, 1417.5)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child49" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(1477.31, 529.363, 1481.77, 541.908, 1479.89, 542.578, 1481.81, 547.985, 1479.15, 552.643, 1480.88, 553.636, 1474.65, 564.545, 1472.91, 563.553, 1470.37, 568, 1464.27, 568, 1464.27, 570, 1449.73, 570, 1449.73, 568, 1443.63, 568, 1441.09, 563.553, 1439.35, 564.545, 1433.12, 553.636, 1434.85, 552.643, 1432.19, 547.985, 1434.11, 542.578, 1432.23, 541.908, 1436.69, 529.363, 1438.57, 530.033, 1443.03, 517.487, 1441.14, 516.818, 1445.6, 504.273, 1447.48, 504.942, 1449.24, 500, 1452.41, 500, 1452.41, 498, 1461.59, 498, 1461.59, 500, 1464.76, 500, 1466.52, 504.942, 1468.4, 504.273, 1472.86, 516.818, 1470.97, 517.487, 1475.43, 530.033, 1477.31, 529.363)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child50" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(908.174, 837, 898, 837, 898, 847.174)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child51" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(965.826, 837, 976, 837, 976, 847.174)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child52" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(908.174, 915.241, 898, 915.241, 898, 905.067)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child53" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(965.826, 915.241, 976, 915.241, 976, 905.067)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="Temple_Child54" type="Polygon2D" parent="Temple"]
+material = ExtResource("1_x67hr")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(1095.5, 152, 1037, 152, 1037, 110, 1136, 110, 1138, 188, 1455, 354, 1889, 732, 1667, 1144, 2039, 1756, 1841, 2170, 1633, 2318, 1429, 2312, 801, 2452, 193, 2296, 135, 1856, 3, 1664, 107, 828, 199, 672, 309, 306, 580, 345, 737, 188, 737, 108, 827, 108, 827, 144, 778.5, 144, 779, 534, 878, 633, 879, 774.5, 779, 872, 779, 927, 642, 927, 524, 927, 524, 1320.5, 427, 1417, 581, 1571, 735, 1417, 642, 1324, 642, 1125.5, 642, 1045, 779, 1045, 779, 1045.5, 779, 1626, 1095, 1626, 1095, 1476, 1513, 1475.5, 1513, 1584.5, 1513, 1811, 1447, 1810, 1447, 1681, 427, 1681, 427, 2197, 779, 2197, 779, 2336, 1095, 2336, 1094.57, 2197, 1447, 2197, 1447, 2068, 1697, 2068, 1697, 1811, 1631, 1811, 1631, 1358, 1513, 1358, 1095, 1358.5, 1095, 1045, 1395, 1045, 1513, 1045, 1513, 651, 1514.43, 653, 1613, 555.152, 1456.5, 399, 1300, 555.152, 1395, 648, 1395, 846.5, 1395, 927, 1095, 927, 1095, 872, 996, 774, 995, 631.5, 1095, 534)
+script = ExtResource("1_ff24o")
+editor_line_width = 8
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Temple/Temple_Child54"]
+collision_layer = 2
+collision_mask = 3
+
+[node name="PolygonCorrespondence" type="CollisionPolygon2D" parent="Temple/Temple_Child54/StaticBody2D" node_paths=PackedStringArray("counterpart")]
+polygon = PackedVector2Array(1095.5, 152, 1037, 152, 1037, 110, 1136, 110, 1138, 188, 1455, 354, 1889, 732, 1667, 1144, 2039, 1756, 1841, 2170, 1633, 2318, 1429, 2312, 801, 2452, 193, 2296, 135, 1856, 3, 1664, 107, 828, 199, 672, 309, 306, 580, 345, 737, 188, 737, 108, 827, 108, 827, 144, 778.5, 144, 779, 534, 878, 633, 879, 774.5, 779, 872, 779, 927, 642, 927, 524, 927, 524, 1320.5, 427, 1417, 581, 1571, 735, 1417, 642, 1324, 642, 1125.5, 642, 1045, 779, 1045, 779, 1045.5, 779, 1626, 1095, 1626, 1095, 1476, 1513, 1475.5, 1513, 1584.5, 1513, 1811, 1447, 1810, 1447, 1681, 427, 1681, 427, 2197, 779, 2197, 779, 2336, 1095, 2336, 1094.57, 2197, 1447, 2197, 1447, 2068, 1697, 2068, 1697, 1811, 1631, 1811, 1631, 1358, 1513, 1358, 1095, 1358.5, 1095, 1045, 1395, 1045, 1513, 1045, 1513, 651, 1514.43, 653, 1613, 555.152, 1456.5, 399, 1300, 555.152, 1395, 648, 1395, 846.5, 1395, 927, 1095, 927, 1095, 872, 996, 774, 995, 631.5, 1095, 534)
+script = ExtResource("4_4ad6b")
+counterpart = NodePath("../..")
 
 [node name="Temple01" type="Sprite2D" parent="."]
 process_mode = 4

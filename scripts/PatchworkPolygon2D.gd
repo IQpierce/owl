@@ -13,7 +13,7 @@ class_name PatchworkPolygon2D
 @export var injected_polygons:Array[InjectedPolygon2D]
 
 @export var editor_line_width:int = 0
-@export var refresh_svg:bool = true
+@export var refresh_svg:bool = false
 @export var write_svg:bool = false
 @export var svg:CompressedTexture2D = null
 @export var svg_scale:float = 1.0
@@ -172,8 +172,13 @@ func load_svg():
 			var stripped_path = paths[i].strip_edges()
 			if stripped_path.begins_with("d="):
 				paths[i] = stripped_path.get_slice("\"", 1).strip_edges()
+				var moves = paths[i].split("M", false)
+				for j in range(moves.size() - 1, 0, -1):
+					paths.insert(i + 1, str("M", moves[j]))
+				paths[i] = str("M", moves[0])
 			else:
 				paths.remove_at(i)
+
 		#print(paths)
 
 		for i in svg_children.size():
@@ -288,11 +293,11 @@ func load_svg():
 				write_polygon.name = str(name, "_Child", svg_children.size())
 				add_child(write_polygon)
 				write_polygon.owner = owner
-				print(write_polygon.get_parent())
+				#print(write_polygon.get_parent())
 
 			var new_polygon = PackedVector2Array()
 			var coords_size = coordinates.size()
-			print("coord count ", coords_size)
+			#print("coord count ", coords_size)
 			for c_i in coords_size:
 				new_polygon.append(Vector2(coordinates[c_i].x, coordinates[c_i].y))
 			write_polygon.polygon = new_polygon
