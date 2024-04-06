@@ -182,7 +182,9 @@ func load_svg():
 		#print(paths)
 
 		for i in svg_children.size():
-			svg_children[i].queue_free()
+			if svg_children[i] != null:
+				svg_children[i].get_parent().remove_child(svg_children[i])
+				svg_children[i].owner = null
 		svg_children.clear()
 
 		polygon = PackedVector2Array()
@@ -305,29 +307,10 @@ func load_svg():
 			coordinates.clear()
 			full_coord_idx = 0
 
-		#print("coordinates")
-		#for coord in coordinates:
-		#	print(coord.to_type, ": ", coord.x, " ", coord.y)
+	for i in range(svg_children.size(), -1 -1):
+		if svg_children[i] == null:
+			svg_children.remove_at(i)
 
-		#var new_polygon = PackedVector2Array()
-		#var coords_size = coordinates.size()
-		#for i in coords_size:
-		#	new_polygon.append(Vector2(coordinates[i].x, coordinates[i].y))
-		##polygon = new_polygon
-
-		#for i in svg_children.size():
-		#	svg_children[i].queue_free()
-		#svg_children.clear()
-		#var child_poly = self.duplicate()
-		#child_poly.svg = null
-		#child_poly.injected_polygons.clear()
-		##child_poly.polygon = PackedVector2Array()
-		#child_poly.polygon = new_polygon
-		#svg_children.append(child_poly)
-		#child_poly.name = str(name, "_Child", svg_children.size())
-		#add_child(child_poly)
-		#child_poly.owner = owner
-		#print(child_poly.get_parent())
 
 class PathCoordinate:
 	enum ToType { Move, Line, Curve, Horizontal, Vertical }
