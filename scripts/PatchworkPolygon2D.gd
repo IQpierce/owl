@@ -48,7 +48,7 @@ func _process(delta:float):
 			load_svg()
 			refresh_svg = false
 		if write_svg:
-			# TODO overwrite svg paths... need to replace existing paths and shapes
+			save_svg()
 			write_svg = false
 
 func _draw():
@@ -311,6 +311,76 @@ func load_svg():
 		if svg_children[i] == null:
 			svg_children.remove_at(i)
 
+# TODO move this to PolygonSVG plugin
+func save_svg():
+	if Engine.is_editor_hint() && svg != null:
+		var in_svg_file = FileAccess.open(svg.resource_path, FileAccess.READ)
+		print("save svg from ", svg.resource_path)
+		if in_svg_file.get_error() != OK:
+			print("Failed to load ", svg.resource_path, " with code ", in_svg_file.get_error())
+		var svg_text = in_svg_file.get_as_text()
+		in_svg_file.close()
+
+		#print(svg_text)
+		#var find_index = 0
+		#var file_len = svg_text.size()
+		#while find_index >= 0 && find_index < file_len:
+		#	print(svg_text
+		var start_idx = 0
+		while start_idx >= 0:
+			var path_open_idx = svg_text.find("<path", max(start_idx - 1, 0))
+			if path_open_idx < 0:
+				break
+			var path_close_idx = svg_text.find("/>", path_open_idx)
+			if path_close_idx >= 0:
+				path_close_idx += 2
+			else:
+				path_close_idx = svg_text.find("</path>", path_open_idx)
+				if path_close_idx >= 0:
+					path_close_idx += 7
+
+			if path_close_idx >= 0:
+				# TODO (sam) There is probably a better way to slice up the string.
+				svg_text = str(svg_text.substr(0, path_open_idx), svg_text.substr(path_close_idx).strip_edges())
+			start_idx = path_open_idx
+			
+		var add_path_idx = start_idx
+		var poly_string = _stringify_polygon(self)
+		svg_text = str(svg_text.substr(0, add_path_idx), poly_string, svg_text.substr(add_path_idx))
+		add_path_idx += poly_string.length()
+		for poly_child in svg_children:
+			if poly_child != null:
+				poly_string = _stringify_polygon(poly_child)
+				svg_text = str(svg_text.substr(0, add_path_idx), poly_string, svg_text.substr(add_path_idx))
+				add_path_idx += poly_string.length()
+
+		var test_svg_path = svg.resource_path.substr(0, svg.resource_path.length() - 4) + "_new.svg"
+		var out_svg_file = FileAccess.open(test_svg_path, FileAccess.WRITE)
+		print("to ", test_svg_path)
+		if out_svg_file.get_error() != OK:
+			print("Failed to save ", svg.resource_path, " with code ", out_svg_file.get_error())
+		out_svg_file.store_string(svg_text)
+		out_svg_file.close()
+
+func _stringify_polygon(poly:Polygon2D) -> String:
+	if poly.polygon.size() < 1:
+		return ""
+	else:
+		var output = "<path d=\""
+		output += str("M", poly.polygon[0].x, " ", poly.polygon[0].y)
+		for i in range(1, poly.polygon.size() + 1, 1):
+			var vert = poly.polygon[i % poly.polygon.size()]
+			var prev = poly.polygon[(i - 1) % poly.polygon.size()]
+			if vert == prev:
+				continue
+			elif vert.x == prev.x:
+				output += str("V", vert.y)
+			elif vert.y == prev.y:
+				output += str("H", vert.x)
+			else:
+				output += str("L", vert.x, " ", vert.y)
+		output += "\" stroke=\"#0038FF\" stroke-width=\"4\"/>\n"
+		return output
 
 class PathCoordinate:
 	enum ToType { Move, Line, Curve, Horizontal, Vertical }
