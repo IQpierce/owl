@@ -11,11 +11,14 @@ var was_verts:PackedInt32Array
 var clicked_vert:int = -1
 var hovered_vert:int = -1
 var mouse_down:bool = false
+var mouse_up:bool = false
 var alt_down:bool = false
 var shift_down:bool = false
 var grafting:bool = false
 var select_start:Vector2 = Vector2(-1, -1)
 var mouse_pos:Vector2 = Vector2.ZERO
+var group_move_step:MoveStep = null
+var move_steps:Array[MoveStep]
 var graft_steps:Array[GraftStep]
 var undo_redo:EditorUndoRedoManager
 
@@ -209,10 +212,12 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 		if key_event.keycode == Key.KEY_S && key_event.pressed && alt_down:
 			pass
 
+	# Group Select
 	if poly != null:
 		var mouse_button_event = event as InputEventMouseButton
 		if mouse_button_event != null && mouse_button_event.button_index == 1:
 			mouse_down = mouse_button_event.pressed && alt_down
+			mouse_up = !mouse_button_event.pressed && alt_down
 			event_consumed = alt_down
 			if mouse_down:
 				select_start = event.position
@@ -229,17 +234,28 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 					_cache_verts()
 			else:
 				select_start = Vector2(-1, -1)
+				if mouse_up:
+					if group_move_step != null:
+						move_steps.append(group_move_step)
+						group_move_step = null
+						undo_redo.create_action("Group Move Vertices")
+						undo_redo.add_undo_method(self, _undo_group_move.get_method())
+						undo_redo.commit_action()
 
+		# Group Move
 		var mouse_motion_event = event as InputEventMouseMotion
 		if mouse_motion_event != null:
 			if alt_down:
 				mouse_pos = event.position
 				hovered_vert = _vert_near_mouse()
 				if mouse_down && clicked_vert != -1:
+					if group_move_step == null:
+						group_move_step = MoveStep.new()
+						group_move_step.polygon = poly
+						group_move_step.vertices = poly.polygon
 					var verts_size = verts.size()
 					for i in verts_size:
 						poly.polygon[verts[i]] += poly.to_local(poly.get_viewport_transform().inverse() * event.relative)
-						# TODO gotta add to undo stack when we stop dragging
 				else:
 					_group_select_verts()
 			event_consumed = alt_down
@@ -317,6 +333,13 @@ func _wind_vertices_backwards(poly:Polygon2D):
 	new_polygon.insert(0, poly.polygon[0])
 	poly.polygon = new_polygon
 
+func _undo_group_move():
+	if move_steps.size() > 0:
+		var top_move = move_steps[move_steps.size() - 1]
+		move_steps.remove_at(move_steps.size() - 1)
+		if top_move.polygon != null:
+			top_move.polygon.polygon = top_move.vertices
+
 func _undo_graft():
 	if graft_steps.size() > 0:
 		var top_graft = graft_steps[graft_steps.size() - 1]
@@ -328,6 +351,10 @@ func _undo_graft():
 				top_graft.grafted_parents[i].add_child(top_graft.grafted_polygons[i])
 				top_graft.grafted_parents[i].move_child(top_graft.grafted_polygons[i], top_graft.grafted_slots[i])
 				top_graft.grafted_polygons[i].owner = top_graft.grafted_owners[i]
+
+class MoveStep:
+	var polygon:Polygon2D
+	var vertices:PackedVector2Array
 
 class GraftStep:
 	var base_polygon:Polygon2D
