@@ -45,7 +45,7 @@ func _ready():
 func _process(delta:float):
 	if Engine.is_editor_hint():
 		if refresh_svg:
-			load_svg()
+			#load_svg()
 			refresh_svg = false
 		if write_svg:
 			save_svg()
@@ -152,7 +152,7 @@ func reinject(inject:InjectedPolygon2D):
 			pass
 	# TODO (sam) only rebuild the verts between the injected open and close
 
-# TODO move this to PolygonSVG plugin
+# TODO (sam) maybe everything below this should be moved to an EditorPlugin
 func load_svg():
 	if Engine.is_editor_hint() && svg != null:
 		print("load svg ", svg.resource_path)
@@ -321,11 +321,6 @@ func save_svg():
 		var svg_text = in_svg_file.get_as_text()
 		in_svg_file.close()
 
-		#print(svg_text)
-		#var find_index = 0
-		#var file_len = svg_text.size()
-		#while find_index >= 0 && find_index < file_len:
-		#	print(svg_text
 		var start_idx = 0
 		while start_idx >= 0:
 			var path_open_idx = svg_text.find("<path", max(start_idx - 1, 0))
@@ -354,9 +349,10 @@ func save_svg():
 				svg_text = str(svg_text.substr(0, add_path_idx), poly_string, svg_text.substr(add_path_idx))
 				add_path_idx += poly_string.length()
 
-		var test_svg_path = svg.resource_path.substr(0, svg.resource_path.length() - 4) + "_new.svg"
-		var out_svg_file = FileAccess.open(test_svg_path, FileAccess.WRITE)
-		print("to ", test_svg_path)
+		var old_svg_path = svg.resource_path
+		#var old_svg_path = svg.resource_path.substr(0, svg.resource_path.length() - 4) + "_new.svg"
+		var out_svg_file = FileAccess.open(old_svg_path, FileAccess.WRITE)
+		print("to ", old_svg_path)
 		if out_svg_file.get_error() != OK:
 			print("Failed to save ", svg.resource_path, " with code ", out_svg_file.get_error())
 		out_svg_file.store_string(svg_text)

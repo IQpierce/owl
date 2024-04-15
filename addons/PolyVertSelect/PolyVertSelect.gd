@@ -1,9 +1,6 @@
 @tool
 extends EditorPlugin
 
-# TODO (maybe a different tool, graft polygons together (alt-g), and hack them apart (alt-h)
-
-#var undo_redo:EditorUndoRedoManager = EditorUndoRedoManager.new()
 var poly:Polygon2D = null
 var was_poly:Polygon2D = null
 var verts:PackedInt32Array
@@ -23,6 +20,7 @@ var graft_steps:Array[GraftStep]
 var undo_redo:EditorUndoRedoManager
 
 const SELECT_RADIUS = 20
+const MERGE_FACTOR = 50
 
 func _enter_tree():
 	get_editor_interface().get_selection().selection_changed.connect(_on_selection_changed)
@@ -84,6 +82,13 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 			verts.clear()
 			for vert in was_verts:
 				verts.append(vert)
+		# Make polygon begin with hovered vertex
+		if key_event.keycode == Key.KEY_B && key_event.pressed && alt_down:
+			if hovered_vert > 0:
+				var reorder_polygon = poly.polygon
+				for i in reorder_polygon.size():
+					reorder_polygon[i] = poly.polygon[(hovered_vert + i) % reorder_polygon.size()]
+				poly.polygon = reorder_polygon
 		# Reverse all vertices
 		if key_event.keycode == Key.KEY_R && key_event.pressed && alt_down:
 			_reverse_vertices(poly)
@@ -101,7 +106,7 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 			for sel in selection:
 				var graft_poly = sel as Polygon2D
 				if graft_poly != null:
-					if base_poly == null:
+					if base_poly == null || _bad_parenting(base_poly, graft_poly):
 						base_poly = graft_poly
 						new_graft_step.base_polygon = base_poly
 						new_graft_step.base_vertices = base_poly.polygon
@@ -114,7 +119,7 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 							for i in base_poly.polygon.size():
 								sum_sqr_dist += (base_poly.polygon[(i + 1) % base_poly.polygon.size()] - base_poly.polygon[i]).length_squared()
 							var avg_sqr_dist = sum_sqr_dist / base_poly.polygon.size()
-							remove_sqr_dist = pow(sqrt(avg_sqr_dist) / 100, 2)
+							remove_sqr_dist = pow(sqrt(avg_sqr_dist) / MERGE_FACTOR, 2)
 					ungrafted.append(graft_poly)
 
 			while base_poly != null && ungrafted.size() > 1:
@@ -153,16 +158,17 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 				if graft_poly != null:
 					var new_polygon = base_poly.polygon
 					var need_reorder = false
-					if graft_poly.polygon.size() > 2:
-						var graft_0 = Vector3(graft_poly.polygon[0].x, graft_poly.polygon[0].y, 0)
-						var graft_1 = Vector3(graft_poly.polygon[1].x, graft_poly.polygon[1].y, 0)
-						var graft_2 = Vector3(graft_poly.polygon[2].x, graft_poly.polygon[2].y, 0)
-						var graft_wind = (graft_1 - graft_0).cross(graft_2 - graft_1)
-						need_reorder = (base_wind.z < 0) != (graft_wind.z < 0)
-					elif graft_poly.polygon.size() == 2:
-						var to_graft_0 = (graft_poly.polygon[0] - base_poly.polygon[base_poly.polygon.size() - 1]).length_squared()
-						var to_graft_1 = (graft_poly.polygon[1] - base_poly.polygon[base_poly.polygon.size() - 1]).length_squared()
-						need_reorder = to_graft_1 < to_graft_0
+					if shift_down:
+						if graft_poly.polygon.size() > 2:
+							var graft_0 = Vector3(graft_poly.polygon[0].x, graft_poly.polygon[0].y, 0)
+							var graft_1 = Vector3(graft_poly.polygon[1].x, graft_poly.polygon[1].y, 0)
+							var graft_2 = Vector3(graft_poly.polygon[2].x, graft_poly.polygon[2].y, 0)
+							var graft_wind = (graft_1 - graft_0).cross(graft_2 - graft_1)
+							need_reorder = (base_wind.z < 0) != (graft_wind.z < 0)
+						elif graft_poly.polygon.size() == 2:
+							var to_graft_0 = (graft_poly.polygon[0] - base_poly.polygon[base_poly.polygon.size() - 1]).length_squared()
+							var to_graft_1 = (graft_poly.polygon[1] - base_poly.polygon[base_poly.polygon.size() - 1]).length_squared()
+							need_reorder = to_graft_1 < to_graft_0
 
 					if need_reorder:
 						_wind_vertices_backwards(graft_poly)
@@ -253,9 +259,9 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 		# Group Move
 		var mouse_motion_event = event as InputEventMouseMotion
 		if mouse_motion_event != null:
+			mouse_pos = event.position
+			hovered_vert = _vert_near_mouse()
 			if alt_down:
-				mouse_pos = event.position
-				hovered_vert = _vert_near_mouse()
 				if mouse_down && clicked_vert != -1:
 					if group_move_step == null:
 						group_move_step = MoveStep.new()
@@ -275,6 +281,15 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 
 	update_overlays()
 	return event_consumed
+
+func _bad_parenting(base_polygon:Polygon2D, expectedNotParent:Polygon2D):
+	if base_polygon != null && expectedNotParent != null:
+		var p_parent = base_polygon
+		while p_parent != null:
+			p_parent = p_parent.get_parent()
+			if p_parent == expectedNotParent:
+				return true
+		return false
 
 func _vert_in_viewport(index:int) -> Vector2:
 	if poly != null && index >= 0 && index < poly.polygon.size():
