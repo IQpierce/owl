@@ -220,21 +220,29 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 			mouse_up = !mouse_button_event.pressed && alt_down
 			event_consumed = alt_down
 			if mouse_down:
-				select_start = event.position
-				mouse_pos = select_start
-				print(select_start, " ", poly.get_viewport_transform() * poly.to_global(poly.polygon[0]))
-				var polygon_size = poly.polygon.size()
+				#print(select_start, " ", poly.get_viewport_transform() * poly.to_global(poly.polygon[0]))
 				clicked_vert = _vert_near_mouse()
 				if clicked_vert >= 0:
-					var clicked_vert_index = verts.find(clicked_vert)
-					if clicked_vert_index < 0:
+					if shift_down:
+						var clicked_vert_index = verts.find(clicked_vert)
+						if clicked_vert_index < 0:
+							verts.append(clicked_vert)
+						else:
+							verts.remove_at(clicked_vert_index)
+					elif verts.size() < 0:
 						verts.append(clicked_vert)
-					else:
-						verts.remove_at(clicked_vert_index)
 					_cache_verts()
+				else:
+					select_start = event.position
+					mouse_pos = select_start
+					if !shift_down:
+						verts.clear()
+						_cache_verts()
 			else:
 				select_start = Vector2(-1, -1)
 				if mouse_up:
+					if verts.size() > 0:
+						_cache_verts()
 					if group_move_step != null:
 						move_steps.append(group_move_step)
 						group_move_step = null
@@ -254,8 +262,13 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 						group_move_step.polygon = poly
 						group_move_step.vertices = poly.polygon
 					var verts_size = verts.size()
+					var view_trans = poly.get_viewport_transform()
+					view_trans.origin = Vector2.ZERO
+					var poly_trans = poly.get_transform()
+					poly_trans.origin = Vector2.ZERO
+					var vert_delta = poly_trans.affine_inverse() * view_trans.affine_inverse() * event.relative
 					for i in verts_size:
-						poly.polygon[verts[i]] += poly.to_local(poly.get_viewport_transform().inverse() * event.relative)
+						poly.polygon[verts[i]] += vert_delta
 				else:
 					_group_select_verts()
 			event_consumed = alt_down
@@ -298,6 +311,9 @@ func _group_select_verts():
 	if !_any_select():
 		return
 
+	if !shift_down:
+		verts.clear()
+
 	var new_verts = PackedInt32Array()
 	var lose_verts = PackedInt32Array()
 	var polygon_size = poly.polygon.size()
@@ -306,14 +322,12 @@ func _group_select_verts():
 	for i in polygon_size:
 		var vert_pos = _vert_in_viewport(i)
 		if vert_pos.x >= min_pos.x && vert_pos.x <= max_pos.x && vert_pos.y >= min_pos.y && vert_pos.y <= max_pos.y:
-			if !verts.has(i):
+			var in_verts = verts.has(i)
+			var was_in_verts = was_verts.has(i)
+			if !in_verts && !was_in_verts:
 				new_verts.append(i)
-		else:
-			if verts.has(i):
+			elif in_verts && was_in_verts:
 				lose_verts.append(i)
-
-	if new_verts.size() > 0:
-		_cache_verts()
 
 	for vert in new_verts:
 		verts.append(vert)
