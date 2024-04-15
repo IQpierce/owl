@@ -16,11 +16,14 @@ var shift_down:bool = false
 var grafting:bool = false
 var select_start:Vector2 = Vector2(-1, -1)
 var mouse_pos:Vector2 = Vector2.ZERO
+var graft_steps:Array[GraftStep]
+var undo_redo:EditorUndoRedoManager
 
 const SELECT_RADIUS = 20
 
 func _enter_tree():
 	get_editor_interface().get_selection().selection_changed.connect(_on_selection_changed)
+	undo_redo = self.get_undo_redo()
 
 func _exit_tree():
 	get_editor_interface().get_selection().selection_changed.disconnect(_on_selection_changed)
@@ -86,6 +89,7 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 			_wind_vertices_backwards(poly)
 		# Graft
 		if key_event.keycode == Key.KEY_G && key_event.pressed && alt_down:
+			var new_graft_step = GraftStep.new()
 			var remove_sqr_dist = 1.0
 			var selection = get_editor_interface().get_selection().get_selected_nodes()
 			var base_poly = null
@@ -96,6 +100,8 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 				if graft_poly != null:
 					if base_poly == null:
 						base_poly = graft_poly
+						new_graft_step.base_polygon = base_poly
+						new_graft_step.base_vertices = base_poly.polygon
 						if base_poly.polygon.size() > 2:
 							var base_0 = Vector3(base_poly.polygon[0].x, base_poly.polygon[0].y, 0)
 							var base_1 = Vector3(base_poly.polygon[1].x, base_poly.polygon[1].y, 0)
@@ -108,7 +114,7 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 							remove_sqr_dist = pow(sqrt(avg_sqr_dist) / 100, 2)
 					ungrafted.append(graft_poly)
 
-			while ungrafted.size() > 1:
+			while base_poly != null && ungrafted.size() > 1:
 				var graft_idx = 1
 				# TODO (sam) If holding shift ... find the nearest vert to the ending vert and pick that polygon, and order from that vert
 				if shift_down:
@@ -135,7 +141,6 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 						new_graft_polygon[i] = ungrafted[graft_idx].polygon[(nearest_vert_i + i) % new_graft_polygon.size()]
 					ungrafted[graft_idx].polygon = new_graft_polygon
 				var graft_poly = ungrafted[graft_idx]
-				print(graft_poly.name)
 				if graft_poly == base_poly:
 					# If our best polygon to graft is the one we started with, we are done and can ignore any stragglers.
 					break
@@ -172,11 +177,15 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 					base_poly.polygon = new_polygon
 					# NOTE (sam) DO NOT call queue_free here, it will prevent future Saves.
 					# Removing from tree and owner is sufficent to drop the uneeded polygon.
+					new_graft_step.grafted_polygons.append(graft_poly)
+					new_graft_step.grafted_parents.append(graft_poly.get_parent())
+					new_graft_step.grafted_slots.append(graft_poly.get_index())
+					new_graft_step.grafted_owners.append(graft_poly.owner)
+					graft_steps.append(new_graft_step)
 					graft_poly.get_parent().remove_child(graft_poly)
 					graft_poly.owner = null
 
-			# Merge extremely nearby vertices because they are likely just artifacts of grafting
-			if base_poly != null && base_poly.polygon.size() > 2:
+				# Merge extremely nearby vertices because they are likely just artifacts of grafting if base_poly != null && base_poly.polygon.size() > 2:
 				var new_polygon = base_poly.polygon
 				for i in range(new_polygon.size() - 1, 0, -1):
 					if (new_polygon[i] - new_polygon[i - 1]).length_squared() < remove_sqr_dist:
@@ -191,6 +200,10 @@ func _forward_canvas_gui_input(event:InputEvent) -> bool:
 				#if (wrap_wind.z > 0) != (real_wind.z > 0):
 				#	new_polygon.remove_at(new_polygon.size() - 1)
 				base_poly.polygon = new_polygon
+
+			undo_redo.create_action("Graft Polygons")
+			undo_redo.add_undo_method(self, _undo_graft.get_method())
+			undo_redo.commit_action()
 
 		# Split
 		if key_event.keycode == Key.KEY_S && key_event.pressed && alt_down:
@@ -303,3 +316,23 @@ func _wind_vertices_backwards(poly:Polygon2D):
 	new_polygon.reverse()
 	new_polygon.insert(0, poly.polygon[0])
 	poly.polygon = new_polygon
+
+func _undo_graft():
+	if graft_steps.size() > 0:
+		var top_graft = graft_steps[graft_steps.size() - 1]
+		graft_steps.remove_at(graft_steps.size() - 1)
+		if top_graft.base_polygon != null:
+			top_graft.base_polygon.polygon = top_graft.base_vertices
+		for i in top_graft.grafted_polygons.size():
+			if top_graft.grafted_polygons[i] != null:
+				top_graft.grafted_parents[i].add_child(top_graft.grafted_polygons[i])
+				top_graft.grafted_parents[i].move_child(top_graft.grafted_polygons[i], top_graft.grafted_slots[i])
+				top_graft.grafted_polygons[i].owner = top_graft.grafted_owners[i]
+
+class GraftStep:
+	var base_polygon:Polygon2D
+	var base_vertices:PackedVector2Array
+	var grafted_polygons:Array[Polygon2D]
+	var grafted_parents:Array[Node2D]
+	var grafted_slots:PackedInt32Array
+	var grafted_owners:Array[Node2D]
