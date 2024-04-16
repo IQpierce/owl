@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://l0ljwo0hkdoq"]
+[gd_scene load_steps=22 format=3 uid="uid://l0ljwo0hkdoq"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_lu7r6"]
 [ext_resource type="Script" path="res://scripts/WrappingWall.gd" id="1_vm4r1"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://scripts/hacks/JankFighter.gd" id="14_wb8y2"]
 [ext_resource type="Script" path="res://scripts/Orbiter.gd" id="15_8plg5"]
 [ext_resource type="PackedScene" uid="uid://davvclb66h3nf" path="res://packedscenes/Temple01.tscn" id="18_dwm4f"]
+[ext_resource type="PackedScene" uid="uid://ddbaernwcjrcx" path="res://packedscenes/templeTest.tscn" id="19_xfl2a"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
@@ -164,6 +165,9 @@ full_orbit_time_secs = 1800.0
 
 [node name="Temple01" parent="." instance=ExtResource("18_dwm4f")]
 position = Vector2(28038, 26587)
+
+[node name="TempleTest" parent="." instance=ExtResource("19_xfl2a")]
+position = Vector2(30199, 26592)
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]

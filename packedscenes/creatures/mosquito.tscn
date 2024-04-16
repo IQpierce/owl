@@ -113,8 +113,6 @@ max_x_scale = 1.4
 consumable_type = 1
 
 [node name="TrunkPolygon" parent="Anatomy/VitalPolygons" index="0" node_paths=PackedStringArray("injected_polygons")]
-material = ExtResource("12_1psui")
-color = Color(1, 1, 1, 0)
 polygon = PackedVector2Array(0, 0, 12, 9, 0, 24, -12, 9)
 injected_polygons = [null]
 
