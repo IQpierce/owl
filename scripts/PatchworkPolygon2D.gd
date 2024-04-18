@@ -45,7 +45,7 @@ func _ready():
 func _process(delta:float):
 	if Engine.is_editor_hint():
 		if refresh_svg:
-			#load_svg()
+			load_svg()
 			refresh_svg = false
 		if write_svg:
 			save_svg()
