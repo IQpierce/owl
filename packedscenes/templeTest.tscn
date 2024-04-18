@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://ddbaernwcjrcx"]
+[gd_scene load_steps=5 format=3 uid="uid://ddbaernwcjrcx"]
 
 [ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="1_wmfwc"]
 [ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="2_4kq2h"]
 [ext_resource type="Texture2D" uid="uid://dod008s4jc7l0" path="res://svg/templeTest.svg" id="3_40bpx"]
+[ext_resource type="Script" path="res://scripts/editor-tools/Tool_PolygonCorrespondence.gd" id="4_jtsms"]
 
 [node name="TempleTest" type="Node2D"]
 
@@ -13,3 +14,10 @@ polygon = PackedVector2Array(688.945, 53.7221, 688.945, 1, 555.438, 70.7292, 497
 script = ExtResource("2_4kq2h")
 rank = 4
 svg = ExtResource("3_40bpx")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="VectorPolygonRendering"]
+
+[node name="PolygonCorrespondence" type="CollisionPolygon2D" parent="VectorPolygonRendering/StaticBody2D" node_paths=PackedStringArray("counterpart")]
+polygon = PackedVector2Array(688.945, 53.7221, 688.945, 1, 555.438, 70.7292, 497.613, 285.019, 279.92, 791.831, 467, 1237.42, 130.255, 1720.42, 1, 2074.17, 313.934, 2489.14, 198.285, 2927.93, 834.358, 3261.27, 1072.46, 3581, 1967.04, 3353.1, 1841.19, 2734.05, 2331, 2529.96, 2150.72, 1883.69, 2201.74, 1002.72, 1858.2, 747.613, 1892.21, 414.273, 1484.04, 254.406, 1416.01, 16.3064, 1312.05, 2.06295, 1312.05, 54.785, 1124.12, 242.714, 1124.12, 376.22, 1459.59, 711.685, 1298.44, 872.828, 1298.44, 1133.04, 1359.67, 1194.26, 1402.19, 1151.74, 1402.19, 888.134, 1586.72, 703.607, 1759.34, 876.229, 1759.34, 1214.67, 1618.18, 1214.67, 1504.23, 1328.62, 1709.17, 1533.55, 1806.96, 1533.55, 1806.96, 1779.31, 2006.8, 1979.14, 2006.8, 2252.11, 1749.14, 2533.15, 1298.66, 2531.66, 1298.66, 2859.9, 1385.39, 2946.63, 1385.39, 3162.62, 1211.07, 3336.95, 997.628, 3123.51, 997.628, 2907.52, 1128.58, 2776.56, 1128.58, 2546.54, 848.389, 2546.54, 581.799, 2279.95, 581.799, 2003.59, 832.657, 1752.73, 832.657, 1536.74, 1298.66, 1536.74, 1298.66, 1463.61, 1074.16, 1239.12, 725.511, 1239.12, 725.511, 829.247, 583.5, 687.238, 827.555, 443.185, 1101.37, 717, 984.022, 834.349, 984.022, 1126.87, 1071.61, 1126.87, 1071.61, 865.812, 1219.57, 717.85, 876.876, 375.157, 876.876, 241.651, 688.945, 53.7221)
+script = ExtResource("4_jtsms")
+counterpart = NodePath("../..")
