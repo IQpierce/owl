@@ -26,7 +26,7 @@ enum LOD {
 
 const _lod_distances:Array[float] = [
 	INF,   # Ignore
-	2000,  # Draw
+	4000,#2000,  # Draw
 	5000,  # Think Small
 ]
 
@@ -95,6 +95,7 @@ func beyond_screen(global_pos:Vector2) -> Vector2:
 			beyond.y = 0
 	return beyond
 
+#TODO (sam) Temples fail to show because they are bigger than the LOD ... how fix? can encode radius with the scale of the temple?
 static func within_lod_steps(node:Node2D, lod:LOD) -> int:
 	var threshold = _lod_distances[lod]
 	if node == null || threshold <= 0:
