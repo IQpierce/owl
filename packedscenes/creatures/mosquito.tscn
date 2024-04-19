@@ -18,7 +18,7 @@
 [ext_resource type="AudioStream" uid="uid://bovvp18n8r78g" path="res://audio/mosquito3.mp3" id="14_cucy4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ibxja"]
-radius = 800.0
+radius = 2500.0
 
 [node name="Mosquito" instance=ExtResource("1_nskhh")]
 mass = 1.5
@@ -43,7 +43,6 @@ prioritized_brains = [NodePath("SeekMeatConsumableBrain"), NodePath("WanderBrain
 controlled_creature = NodePath("../..")
 
 [node name="SeekMeatConsumableBrain" type="Node2D" parent="MosquitoMind/SeekMeatWithFallbacksBrain" index="0" node_paths=PackedStringArray("controlled_creature")]
-position = Vector2(0, -60)
 script = ExtResource("4_c13lt")
 target_consumable_type = 2
 controlled_creature = NodePath("../../..")

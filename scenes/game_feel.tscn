@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://db8x1abnnwv3d"]
+[gd_scene load_steps=31 format=3 uid="uid://db8x1abnnwv3d"]
 
 [ext_resource type="Script" path="res://scripts/OwlScene.gd" id="1_80w6u"]
 [ext_resource type="PackedScene" uid="uid://bbnjjkemfetim" path="res://packedscenes/phosphor_emulation.tscn" id="2_eojni"]
@@ -25,6 +25,9 @@
 [ext_resource type="PackedScene" uid="uid://dxk8kxig4jkr" path="res://packedscenes/creatures/mosquito.tscn" id="23_1rwcd"]
 [ext_resource type="PackedScene" uid="uid://b8ek8hg8i5qvi" path="res://packedscenes/architecture/medium_wall.tscn" id="24_tsj4o"]
 [ext_resource type="PackedScene" uid="uid://cltxvm3y6lsc5" path="res://packedscenes/architecture/long_wall.tscn" id="25_7mtp7"]
+[ext_resource type="Material" uid="uid://bj6g0meayytlo" path="res://materials/stencil_mat.tres" id="26_0m8c6"]
+[ext_resource type="Script" path="res://scripts/gfx/VectorPolygonRendering.gd" id="27_3wfdg"]
+[ext_resource type="Script" path="res://scripts/editor-tools/Tool_PolygonCorrespondence.gd" id="28_esfe5"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ed0ja"]
 custom_solver_bias = 0.1
@@ -110,6 +113,8 @@ notice_radius = 2501
 [node name="CameraRig" parent="." instance=ExtResource("11_llngb")]
 
 [node name="Testeraoids" type="Node2D" parent="."]
+process_mode = 4
+visible = false
 position = Vector2(4000, 4000)
 
 [node name="MediumAsteroid" parent="Testeraoids" instance=ExtResource("6_w6vm2")]
@@ -633,11 +638,11 @@ intro_secs = 1.0
 _warpable = true
 metadata/_edit_lock_ = true
 
-[node name="Player" parent="." instance=ExtResource("8_ifucg")]
-position = Vector2(4000, 4000)
+[node name="Player" parent="." node_paths=PackedStringArray("turn_test") instance=ExtResource("8_ifucg")]
+position = Vector2(4665, 3004)
 thrust_deadzone = 1.0
 thrust_smash_threshold = 1.0
-turn_test = NodePath("")
+turn_test = NodePath("../Hideout/TurnCartridges/HighDrift")
 
 [node name="TrunkPolygon" parent="Player/Anatomy/VitalPolygons" index="0"]
 rank = 2
@@ -800,6 +805,49 @@ position = Vector2(1407, -313)
 polygon = PackedVector2Array(0, 0, 1660, 0, 1740, 100, 1740, 440, 1780, 480, 1780, 630, 1760, 650, 1760, 670, 1800, 670, 1800, -20, 0, -20)
 skip_line_indeces = Array[int]([6, 7, 8, 9, 10])
 
+[node name="Mosquito" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(5484, 2883)
+angular_damp = 1.0
+
+[node name="SeekMeatWithFallbacksBrain" parent="Mosquito/MosquitoMind" index="0"]
+sub_think_seek = true
+debug_seek = true
+
+[node name="Mosquito2" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
+visible = false
+position = Vector2(4252, 4154)
+
+[node name="Mosquito3" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
+visible = false
+position = Vector2(3758, 4242)
+
+[node name="Mosquito4" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
+visible = false
+position = Vector2(3642, 4058)
+
+[node name="Mosquito5" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
+visible = false
+position = Vector2(4284, 3960)
+
+[node name="Mosquito6" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
+visible = false
+position = Vector2(3666, 4192)
+
+[node name="Mosquito7" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
+visible = false
+position = Vector2(3646, 3954)
+
+[node name="Mosquito8" parent="." instance=ExtResource("23_1rwcd")]
+process_mode = 4
+visible = false
+position = Vector2(4244, 3840)
+
 [node name="Hideout" type="Node2D" parent="."]
 process_mode = 4
 
@@ -947,29 +995,17 @@ alignment = 1
 initial_msec = 150
 finesse_msec = 250
 
-[node name="Mosquito" parent="." instance=ExtResource("23_1rwcd")]
-position = Vector2(4375, 4068)
+[node name="Arena" type="Polygon2D" parent="."]
+material = ExtResource("26_0m8c6")
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(2802.86, 4217.34, 4050, 4213, 4044, 3798, 4157, 3910, 4279, 3784, 4289, 4208, 4490, 4548, 5040, 4555, 6701, 4148, 6238, 3371, 4865, 3273, 4848, 3431, 4686, 3434, 4712, 3267, 4749, 3060, 6114, 3039, 6019, 2725, 4628, 2865, 4303, 3644, 4153, 3798, 3990, 3651, 2784.55, 2972.84, 2392.55, 3223.84, 2404.86, 4394.34, 2138.86, 4399.34, 2136.55, 3069.84, 2634.55, 2704.84, 3928, 3334, 4385, 2551, 6112, 2096, 7065, 3110, 7125, 4115, 6229, 4858, 4790, 4989, 4292, 4968, 4083, 4419, 2821.86, 4408.34, 2563.86, 4394.34, 2538.55, 3201.84, 2733.55, 3067.84)
+script = ExtResource("27_3wfdg")
 
-[node name="Mosquito2" parent="." instance=ExtResource("23_1rwcd")]
-position = Vector2(4252, 4154)
+[node name="StaticBody2D" type="StaticBody2D" parent="Arena"]
 
-[node name="Mosquito3" parent="." instance=ExtResource("23_1rwcd")]
-position = Vector2(3758, 4242)
-
-[node name="Mosquito4" parent="." instance=ExtResource("23_1rwcd")]
-position = Vector2(3642, 4058)
-
-[node name="Mosquito5" parent="." instance=ExtResource("23_1rwcd")]
-position = Vector2(4284, 3960)
-
-[node name="Mosquito6" parent="." instance=ExtResource("23_1rwcd")]
-position = Vector2(3666, 4192)
-
-[node name="Mosquito7" parent="." instance=ExtResource("23_1rwcd")]
-position = Vector2(3646, 3954)
-
-[node name="Mosquito8" parent="." instance=ExtResource("23_1rwcd")]
-position = Vector2(4244, 3840)
+[node name="PolygonCorrespondence" type="CollisionPolygon2D" parent="Arena/StaticBody2D" node_paths=PackedStringArray("counterpart")]
+script = ExtResource("28_esfe5")
+counterpart = NodePath("../..")
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
@@ -998,3 +1034,5 @@ position = Vector2(4244, 3840)
 [editable path="Cuttlesteroid/Salt/Cuttlefish"]
 [editable path="Cuttlesteroid/Salt/Cuttlefish/Anatomy/Beak"]
 [editable path="Cuttlesteroid/Salt/Cuttlefish/Anatomy/Spear"]
+[editable path="Mosquito"]
+[editable path="Mosquito/Anatomy/Spear"]
