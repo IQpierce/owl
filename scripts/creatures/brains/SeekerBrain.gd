@@ -4,6 +4,7 @@ class_name SeekerBrain
 
 var last_seeked_target:CollisionObject2D = null
 var last_seeked_position:Vector2 = global_position
+var predict_seeked_position:Vector2 = global_position
 
 @export var debug_seek:bool = false
 
@@ -29,6 +30,7 @@ func think():
 	
 func process_seek_result(most_relevant_target:CollisionObject2D, quick_process = false):
 	var seek_pos = last_seeked_position
+	var relevant_velocity = Vector2.ZERO
 	#print(name, ": ", most_relevant_target, " | ", last_seeked_target, " | ", last_seeked_position)
 	if most_relevant_target == null:
 		if last_seeked_target != null:
@@ -42,10 +44,19 @@ func process_seek_result(most_relevant_target:CollisionObject2D, quick_process =
 		seek_pos = most_relevant_target.global_position
 		last_seeked_target = most_relevant_target
 		last_seeked_position = last_seeked_target.global_position
+		relevant_velocity = last_seeked_target.linear_velocity
 
 	if most_relevant_target != null:
-		if true:#!quick_process:
+		if !quick_process:
 			on_target_body_changed.emit(most_relevant_target)
+
+		var controlled_vel_sqr = controlled_creature.linear_velocity.length_squared()
+		if controlled_vel_sqr > 0 && relevant_velocity.length_squared() > controlled_vel_sqr:
+			# TODO (sam) Is this actually better at heading-off the prey? Is is it expensive across all seekers?
+			var time_to = (seek_pos - controlled_creature.global_position).length() / controlled_creature.linear_velocity.length()
+			seek_pos += relevant_velocity * min(time_to, 1)
+
+		predict_seeked_position = seek_pos
 
 		on_target_location_changed.emit(seek_pos)
 		
@@ -76,6 +87,9 @@ func seek() -> CollisionObject2D:
 	if most_relevant_targets != null && most_relevant_targets.size() > 0:
 		var nearest_dist:float = NAN
 		var nearest_relevant_target:CollisionObject2D = null
+		if last_seeked_target != null:
+			nearest_dist = (last_seeked_target.global_position - controlled_creature.global_position).length_squared()
+			nearest_relevant_target = last_seeked_target
 		for relevant_target in most_relevant_targets:
 			assert(relevant_target != null)
 			var dist:float = (relevant_target.global_position - controlled_creature.global_position).length_squared()
@@ -95,7 +109,9 @@ func is_body_relevant(body:CollisionObject2D):
 func is_body_detectable(body:CollisionObject2D) -> bool:
 	if body != null:
 		var space_state = get_world_2d().direct_space_state
-		var raycast = PhysicsRayQueryParameters2D.create(controlled_creature.global_position, body.global_position)
+		var to_body = body.global_position - controlled_creature.global_position
+		var	beyond_body = controlled_creature.global_position + (to_body * 2)
+		var raycast = PhysicsRayQueryParameters2D.create(controlled_creature.global_position, beyond_body)
 		var hit = space_state.intersect_ray(raycast)
 		# TODO (sam) We might need a way to check if the hit is a "child" body of the body we want
 		if hit.has("collider"):
@@ -151,4 +167,5 @@ func _draw():
 		if last_seeked_target != null:
 			draw_line(Vector2.ZERO, to_local(last_seeked_position), OwlGame.instance.draw_point_color)
 			draw_dashed_line(to_local(last_seeked_position), to_local(last_seeked_target.global_position), OwlGame.instance.draw_point_color)
+			draw_dashed_line(Vector2.ZERO, to_local(predict_seeked_position), OwlGame.instance.draw_point_color)
 		

@@ -6,6 +6,7 @@ class_name ThrustEngine
 @export var target_velocity:Vector2: set = set_target_velocity
 @export var force_position:Vector2
 @export var power:float = 1
+@export var arrive_smooth:bool = true
 # TODO (sam) We should probably just remove this class and go directly to locomotor.
 @export var locomotor:Locomotor = null
 
@@ -23,7 +24,7 @@ func _process(delta:float):
 	#TODO (sam) We can remove the extra delta here applying force already incorporates delta twice before position
 	if locomotor != null:
 		var heading = Vector2.UP.rotated(target_body.global_rotation)
-		var slow_down = heading.dot(velocity_delta) < 0
+		var slow_to_arrive = arrive_smooth && heading.dot(velocity_delta) < 0
 		var head_dot_want = 0
 		if target_velocity.length_squared() > 0:
 			head_dot_want = clamp(heading.dot(target_velocity.normalized()), 0, 1)
@@ -31,7 +32,7 @@ func _process(delta:float):
 		var drive_factor = 0
 		# TODO MAYBE it depends on distance, like as I get closer I should stop to turn more ... or even back up for a wind up
 		#if head_dot_delta > 0.7:#0.9:
-		if !slow_down && head_dot_want > 0.9:
+		if !slow_to_arrive && head_dot_want > 0.9:
 			#print("GO ", head_dot_want)
 			drive_factor = head_dot_want
 			#locomotor.locomote(drive_factor, 0, delta)

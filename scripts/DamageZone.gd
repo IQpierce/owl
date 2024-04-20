@@ -5,6 +5,7 @@ class_name DamageZone
 @export var damage_per_sec:float = 1
 @export var damage_cooldown_secs:float = 2
 @export var things_to_ignore:Array[Thing]
+@export var exclusive_damagees:Array[Thing]
 
 signal on_damaged_thing(damaged_thing:Thing, damage_amt:float)
 signal on_damaged_body(damaged_body:RigidBody2D, damage_amt:float)
@@ -27,8 +28,9 @@ func _process(delta:float):
 
 func _on_body_entered(body:RigidBody2D):
 	var body_thing:Thing = body as Thing
-	if body_thing && things_to_ignore.count(body_thing) == 0:
-		things_to_damage.append(body_thing)
+	if exclusive_damagees.size() < 1 || exclusive_damagees.has(body_thing):
+		if body_thing && things_to_ignore.count(body_thing) == 0:
+			things_to_damage.append(body_thing)
 
 func _on_body_exited(body:RigidBody2D):
 	var body_thing:Thing = body as Thing

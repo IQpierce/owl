@@ -23,7 +23,7 @@ func _process(delta:float):
 		if controlled_body.linear_velocity.dot(to_target) > 0:
 			var to_para_vel = to_target.project(controlled_body.linear_velocity)
 			var to_perp_vel = to_target - to_para_vel
-			#target_world_position += to_perp_vel * delta
+			target_world_position += to_perp_vel * delta
 			#target_world_position = (global_position + Vector2.UP.rotated(global_rotation)) + to_perp_vel * delta
 		#locomotor.locomote_towards(target_world_position, 1, delta)
 		locomotor.turn_towards(target_world_position, 1, delta)

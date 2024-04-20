@@ -639,7 +639,7 @@ _warpable = true
 metadata/_edit_lock_ = true
 
 [node name="Player" parent="." node_paths=PackedStringArray("turn_test") instance=ExtResource("8_ifucg")]
-position = Vector2(4665, 3004)
+position = Vector2(3661, 3881)
 thrust_deadzone = 1.0
 thrust_smash_threshold = 1.0
 turn_test = NodePath("../Hideout/TurnCartridges/HighDrift")
@@ -806,47 +806,42 @@ polygon = PackedVector2Array(0, 0, 1660, 0, 1740, 100, 1740, 440, 1780, 480, 178
 skip_line_indeces = Array[int]([6, 7, 8, 9, 10])
 
 [node name="Mosquito" parent="." instance=ExtResource("23_1rwcd")]
-position = Vector2(5484, 2883)
+position = Vector2(5128, 3417)
 angular_damp = 1.0
+
+[node name="MosquitoMind" parent="Mosquito" index="0"]
+auto_think_delta_secs = 10.0
 
 [node name="SeekMeatWithFallbacksBrain" parent="Mosquito/MosquitoMind" index="0"]
 sub_think_seek = true
 debug_seek = true
 
+[node name="TrunkPolygon" parent="Mosquito/Anatomy/VitalPolygons" index="0" node_paths=PackedStringArray("injected_polygons")]
+injected_polygons = [null]
+
+[node name="HeadPolygon" parent="Mosquito/Anatomy/VitalPolygons" index="1" node_paths=PackedStringArray("injected_polygons")]
+injected_polygons = [null]
+
 [node name="Mosquito2" parent="." instance=ExtResource("23_1rwcd")]
-process_mode = 4
-visible = false
-position = Vector2(4252, 4154)
+position = Vector2(6740, 5386)
 
 [node name="Mosquito3" parent="." instance=ExtResource("23_1rwcd")]
-process_mode = 4
-visible = false
-position = Vector2(3758, 4242)
+position = Vector2(6246, 5474)
 
 [node name="Mosquito4" parent="." instance=ExtResource("23_1rwcd")]
-process_mode = 4
-visible = false
-position = Vector2(3642, 4058)
+position = Vector2(6130, 5290)
 
 [node name="Mosquito5" parent="." instance=ExtResource("23_1rwcd")]
-process_mode = 4
-visible = false
-position = Vector2(4284, 3960)
+position = Vector2(6772, 5192)
 
 [node name="Mosquito6" parent="." instance=ExtResource("23_1rwcd")]
-process_mode = 4
-visible = false
-position = Vector2(3666, 4192)
+position = Vector2(6154, 5424)
 
 [node name="Mosquito7" parent="." instance=ExtResource("23_1rwcd")]
-process_mode = 4
-visible = false
-position = Vector2(3646, 3954)
+position = Vector2(6134, 5186)
 
 [node name="Mosquito8" parent="." instance=ExtResource("23_1rwcd")]
-process_mode = 4
-visible = false
-position = Vector2(4244, 3840)
+position = Vector2(6732, 5072)
 
 [node name="Hideout" type="Node2D" parent="."]
 process_mode = 4
@@ -998,7 +993,7 @@ finesse_msec = 250
 [node name="Arena" type="Polygon2D" parent="."]
 material = ExtResource("26_0m8c6")
 color = Color(1, 1, 1, 0)
-polygon = PackedVector2Array(2802.86, 4217.34, 4050, 4213, 4044, 3798, 4157, 3910, 4279, 3784, 4289, 4208, 4490, 4548, 5040, 4555, 6701, 4148, 6238, 3371, 4865, 3273, 4848, 3431, 4686, 3434, 4712, 3267, 4749, 3060, 6114, 3039, 6019, 2725, 4628, 2865, 4303, 3644, 4153, 3798, 3990, 3651, 2784.55, 2972.84, 2392.55, 3223.84, 2404.86, 4394.34, 2138.86, 4399.34, 2136.55, 3069.84, 2634.55, 2704.84, 3928, 3334, 4385, 2551, 6112, 2096, 7065, 3110, 7125, 4115, 6229, 4858, 4790, 4989, 4292, 4968, 4083, 4419, 2821.86, 4408.34, 2563.86, 4394.34, 2538.55, 3201.84, 2733.55, 3067.84)
+polygon = PackedVector2Array(2802.86, 4217.34, 4050, 4213, 4044, 3798, 4157, 3910, 4279, 3784, 4265, 4776, 4258, 5804, 4584, 6379, 8117, 6244, 7595.33, 3856.68, 4678.33, 3838.68, 4661.33, 3996.68, 4446, 3992, 4392, 3710, 4580, 3328, 4698, 3316, 4712, 3604, 7088.02, 3339.14, 7099.45, 1785.97, 4763.76, 1999.51, 4303, 3644, 4153, 3798, 3990, 3651, 2784.55, 2972.84, 2392.55, 3223.84, 2404.86, 4394.34, 2138.86, 4399.34, 2136.55, 3069.84, 2634.55, 2704.84, 3928, 3334, 4317.12, 1510.14, 7492.27, 998.569, 8009.69, 3036.46, 8933, 6579, 7645, 6954, 4214, 6837, 3716, 6816, 3555, 5187, 2821.86, 4408.34, 2563.86, 4394.34, 2538.55, 3201.84, 2733.55, 3067.84)
 script = ExtResource("27_3wfdg")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Arena"]
@@ -1006,6 +1001,27 @@ script = ExtResource("27_3wfdg")
 [node name="PolygonCorrespondence" type="CollisionPolygon2D" parent="Arena/StaticBody2D" node_paths=PackedStringArray("counterpart")]
 script = ExtResource("28_esfe5")
 counterpart = NodePath("../..")
+
+[node name="Mosquito9" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(6473, 5609)
+
+[node name="Mosquito10" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(6617, 5537)
+
+[node name="Mosquito11" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(6505, 5061)
+
+[node name="Mosquito12" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(6273, 5117)
+
+[node name="Mosquito13" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(6345, 5289)
+
+[node name="Mosquito14" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(6525, 5293)
+
+[node name="Mosquito15" parent="." instance=ExtResource("23_1rwcd")]
+position = Vector2(6433, 5417)
 
 [connection signal="body_entered" from="WrappingWalls/BottomWrappingWall" to="WrappingWalls/BottomWrappingWall" method="on_body_entered"]
 [connection signal="body_entered" from="WrappingWalls/TopWrappingWall" to="WrappingWalls/TopWrappingWall" method="on_body_entered"]
