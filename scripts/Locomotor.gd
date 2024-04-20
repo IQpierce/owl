@@ -96,12 +96,6 @@ func turn(turn_factor:float, turn_drift:float, delta:float):
 			turning_right_state_change.emit(false)
 			turning_right = false
 
-	# TODO (sam) Are we cool checking exactly Zero here or do we need is_equal_approx
-	if turn_factor != 0:
-		_body.lock_rotation = true
-	else:
-		_body.lock_rotation = _body_lock_rotation
-
 	if heading_dir.rotated(_body.angular_velocity * delta).dot(_body.linear_velocity) >= heading_dir.dot(_body.linear_velocity):
 		turn_drift *= turn_with_velocity_turn_factor;
 
@@ -206,6 +200,13 @@ func locomote(drive_factor:float, turn_factor:float, delta:float, relative_direc
 
 	if driving:
 		turn_drift *= drive_turn_factor
+
+	# TODO (sam) Are we cool checking exactly Zero here or do we need is_equal_approx
+	# TODO (sam) Is there a way to separate this between turn and drive?
+	if turn_factor != 0 || drive_factor != 0:
+		_body.lock_rotation = true
+	else:
+		_body.lock_rotation = _body_lock_rotation
 	
 	drive(drive_factor, drive_drift, delta, relative_direction)
 	turn(turn_factor, turn_drift, delta)

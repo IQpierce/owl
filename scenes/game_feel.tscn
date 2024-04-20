@@ -638,11 +638,11 @@ intro_secs = 1.0
 _warpable = true
 metadata/_edit_lock_ = true
 
-[node name="Player" parent="." node_paths=PackedStringArray("turn_test") instance=ExtResource("8_ifucg")]
+[node name="Player" parent="." instance=ExtResource("8_ifucg")]
 position = Vector2(3661, 3881)
 thrust_deadzone = 1.0
 thrust_smash_threshold = 1.0
-turn_test = NodePath("../Hideout/TurnCartridges/HighDrift")
+turn_test = NodePath("")
 
 [node name="TrunkPolygon" parent="Player/Anatomy/VitalPolygons" index="0"]
 rank = 2
